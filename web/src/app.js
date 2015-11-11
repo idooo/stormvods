@@ -10,7 +10,7 @@ var Config = require('./core/config.js');
 
 Config.pew();
 
-const D = '3';
+const D = '4';
 
 console.log('load', D);
 

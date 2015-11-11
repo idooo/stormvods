@@ -22,9 +22,10 @@ module.exports = function (grunt) {
 
     // Tasks
 
-    grunt.registerTask('dev', [
+    grunt.registerTask('serve', [
         'sass',
         'browserify',
+        'develop:normal',
         'watch'
     ]);
     
