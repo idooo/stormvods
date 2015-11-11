@@ -2,7 +2,7 @@
   "name": "heroesvods",
   "version": "1.0.0",
   "description": "My HOTS VODS project",
-  "main": "index.js",
+  "main": "server/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,8 +10,8 @@
     "type": "git",
     "url": "git+https://github.com/idooo/heroesvods.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Alex Shteinikov",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/idooo/heroesvods/issues"
   },
@@ -33,5 +33,8 @@
     "presets": [
       "es2015"
     ]
+  },
+  "dependencies": {
+    "angular": "^1.4.7"
   }
 }

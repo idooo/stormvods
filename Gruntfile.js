@@ -11,6 +11,7 @@ module.exports = function (grunt) {
             webSrc: 'web/src',
             webAssets: 'web/assets',
             webDist: 'web/dist',
+            server: 'server',
             tmp: '.tmp'
         }
     }
@@ -19,10 +20,17 @@ module.exports = function (grunt) {
 
     grunt.initConfig(configs);
 
+    // Tasks
+
     grunt.registerTask('dev', [
         'sass',
         'browserify',
         'watch'
+    ]);
+    
+    grunt.registerTask('test', [
+        'eslint'
+        // tests
     ]);
 
 };

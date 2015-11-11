@@ -1,6 +1,6 @@
 module.exports = {
-	test: 'pew',
-	pew: function () {
-		console.log('test');
-	}
-}
+    test: 'pew',
+    pew: function () {
+        console.log('test');
+    }
+};

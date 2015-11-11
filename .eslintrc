@@ -1,0 +1,15 @@
+{
+    "env": {
+        "browser": true,
+        "node": true,
+        "commonjs": true,
+        "es6": true
+    },
+    "globals": {
+        "angular": true
+    },
+    "rules": {
+        "semi": 2,
+        "brace-style": [2, "stroustrup", { "allowSingleLine": true }]
+    }
+}
