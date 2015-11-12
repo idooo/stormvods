@@ -6,6 +6,7 @@ class Route {
 		this.server = server;
 		this.model = model;
 		this.config = config;
+		this.name = this.constructor.name;
 	}
 
 	static success (r, response) {
@@ -16,7 +17,7 @@ class Route {
 
 	static fail (r, response, code) {
 		response = response || {};
-		code = code || 404;
+		code = code || 400;
 
 		if (response.name === 'MongoError') response = {error: response.err};
 		else if (response.name === 'ValidationError') response = {error: response.errors};

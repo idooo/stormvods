@@ -18,6 +18,7 @@ class Server {
 		this.server = restify.createServer({});
 
 		this.server.use(restify.bodyParser());
+		this.server.use(restify.queryParser());
 
 		// Load routing
 		require('./routing')(this.server, this.model, this.config);

@@ -41,6 +41,8 @@
   "dependencies": {
     "angular": "^1.4.7",
     "mongoose": "^4.2.5",
+    "node-uuid": "^1.4.4",
+    "request": "^2.65.0",
     "restify": "^4.0.3",
     "winston": "^2.1.0"
   }

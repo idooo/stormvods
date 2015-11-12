@@ -1,15 +1,24 @@
 {
-  "server": {
-    "port": 8088
-  },
-  "database": {
-    "uri": "mongodb://ds061620.mongolab.com",
-    "port": 61620,
-    "db": "teaparty2",
-    "username": "test",
-    "password": "test"
-  },
-  "logs": {
-    "level": "debug"
-  }
+	"server": {
+		"port": 8088
+	},
+	"database": {
+		"uri": "mongodb://ds061620.mongolab.com",
+		"port": 61620,
+		"db": "teaparty2",
+		"username": "test",
+		"password": "test"
+	},
+	"logs": {
+		"level": "debug"
+	},
+	"reddit": {
+		"url": "https://www.reddit.com/api/v1/",
+		"oauthUrl": "https://oauth.reddit.com/api/v1/",
+		"clientId": "mayQBZFocpPb7Q",
+		"secret": "jMgOim9gg-5aSicLxHLbJU1e5X8",
+		"scope": "identity",
+		"callbackDomain": "http:%2F%2Flocalhost:8088",
+		"duration": "temporary"
+	}
 }

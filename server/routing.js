@@ -3,6 +3,7 @@
 'use strict';
 
 var routes = [
+	'auth',
 	'test',
 	'static'
 ];
