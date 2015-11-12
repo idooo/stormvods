@@ -5,7 +5,7 @@ var restify = require('restify'),
 
 class StaticRoute extends Route {
 
-	configure() {
+	configure () {
 		this.server.get(/\/?.*/, restify.serveStatic({
 			directory: __dirname + '/../../web',
 			default: 'index.html',

@@ -1,29 +1,20 @@
 'use strict';
 
-var sanitize = require('../helpers/sanitize');
-
 class Route {
 
-	constructor(server, model, config) {
+	constructor (server, model, config) {
 		this.server = server;
 		this.model = model;
 		this.config = config;
 	}
 
-	static success(r, response, keys) {
+	static success (r, response) {
 		if (typeof response === 'undefined') response = {};
-		else try {
-			response = response.toObject();
-		}
-		catch (e) { }
-
 		response.status = 'ok';
-		response = sanitize(response, keys);
-
 		r.send(200, response);
 	}
 
-	static fail(r, response, code) {
+	static fail (r, response, code) {
 		response = response || {};
 		code = code || 404;
 

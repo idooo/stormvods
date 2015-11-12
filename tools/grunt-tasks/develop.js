@@ -1,8 +1,8 @@
 module.exports.tasks = {
 
-    develop: {
-        normal: {
-            file: '<%= settings.server %>/server.js'
-        }
-    }
-}
+	develop: {
+		normal: {
+			file: 'server.js'
+		}
+	}
+};

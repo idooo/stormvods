@@ -4,12 +4,12 @@
 var restify = require('restify');
 
 class Server {
-	constructor(configName) {
+	constructor (configName) {
 		try {
 			this.config = require(configName);
 		}
 		catch (e) {
-			console.error(`Error! Cannot find config file '${process.env.config}'. Existing now...`);
+			console.error(`Error! Cannot find config file '${process.env.config}'. Existing now...`); // eslint-disable-line no-console
 			process.exit(1);
 		}
 
@@ -22,7 +22,7 @@ class Server {
 		// Load routing
 		require('./routing')(this.server, this.model, this.config);
 	}
-	start() {
+	start () {
 		var self = this;
 		self.server.listen(self.config.server.port, function () {
 			self.logger.info('Server is listening at %s', self.server.url);

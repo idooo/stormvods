@@ -1,9 +1,9 @@
 module.exports.tasks = {
-    
-    eslint: {
-        target: [
-            '<%= settings.webSrc %>/**/*.js',
-            '<%= settings.server %>/**/*.js'
-        ]
-    }
-}
+
+	eslint: {
+		target: [
+			'<%= settings.webSrc %>/**/*.js',
+			'<%= settings.server %>/**/*.js'
+		]
+	}
+};
