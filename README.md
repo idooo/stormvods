@@ -1,2 +1,1 @@
-# heroesvods
-My HOTS VODS project
+# Project

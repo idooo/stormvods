@@ -1,0 +1,15 @@
+{
+  "server": {
+    "port": 8088
+  },
+  "database": {
+    "uri": "mongodb://ds061620.mongolab.com",
+    "port": 61620,
+    "db": "teaparty2",
+    "username": "test",
+    "password": "test"
+  },
+  "logs": {
+    "level": "debug"
+  }
+}

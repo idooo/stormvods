@@ -1,26 +1,33 @@
 /* global __dirname */
+'use strict';
 
 var restify = require('restify');
 
-var server = restify.createServer();
+class Server {
+	constructor(configName) {
+		try {
+			this.config = require(configName);
+		}
+		catch (e) {
+			console.error(`Error! Cannot find config file '${process.env.config}'. Existing now...`);
+			process.exit(1);
+		}
 
-server.get('/hello/:name', function (req, res, next) {
-    res.send('hello ' + req.params.name);
-    next();
-});
+		this.logger = require('./logging')(this.config);
+		this.model = require('./database')(this.config);
+		this.server = restify.createServer({});
 
+		this.server.use(restify.bodyParser());
 
-server.get(/\/?.*/, restify.serveStatic({
-    directory: __dirname + '/../web',
-    default: 'index.html',
-    maxAge: 1 // TODO: disable in production
-}));
+		// Load routing
+		require('./routing')(this.server, this.model, this.config);
+	}
+	start() {
+		var self = this;
+		self.server.listen(self.config.server.port, function () {
+			self.logger.info('Server is listening at %s', self.server.url);
+		});
+	}
+}
 
-
-console.log(__dirname + '/../web/dist');
-
-
-// Start server
-server.listen(8080, function () {
-    console.log('Server is listening at %s', server.url);
-});
+module.exports = Server;

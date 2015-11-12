@@ -35,8 +35,13 @@
       "es2015"
     ]
   },
+  "engines": {
+    "node": ">4.0.0"
+  },
   "dependencies": {
     "angular": "^1.4.7",
-    "restify": "^4.0.3"
+    "mongoose": "^4.2.5",
+    "restify": "^4.0.3",
+    "winston": "^2.1.0"
   }
 }
