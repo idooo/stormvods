@@ -19,7 +19,7 @@ class AuthRoute extends Route {
 		var r = this.config.reddit,
 			code = uuid.v4(),
 			url = `${r.url}authorize?client_id=${r.clientId}&response_type=code&state=${code}&redirect_uri=${r.callbackDomain}${CALLBACK_PATH}&duration=${r.duration}&scope=${r.scope}`;
-			
+
 		Route.success(res, {
 			url: url
 		});
@@ -27,24 +27,24 @@ class AuthRoute extends Route {
 	}
 	routeCallback (req, res, next) {
 		var self = this;
-		
-		logger.info(`${self.name}: auth process started`);
-		
+
+		logger.info('Auth process started');
+
 		// TODO: check everything for errors
-		
+
 		if (!req.params.code) {
 			Route.fail(res, {
 				message: 'No code received'
 			});
 			return next();
 		}
-		
+
 		this.getAccessToken(req.params.code)
 			.then(function (tokenResponse) {
 				return self.getUserData(tokenResponse.access_token);
 			})
 			.then(function (userData) {
-				logger.info(`${self.name}: auth process finished`);
+				logger.info('Auth process finished');
 				Route.success(res, userData);
 				return next();
 			})
@@ -56,9 +56,9 @@ class AuthRoute extends Route {
 	getAccessToken (code) {
 		var r = this.config.reddit,
 			auth = 'Basic ' + new Buffer(`${r.clientId}:${r.secret}`).toString('base64');
-		
+
 		return new Promise((resolve, reject) => {
-			logger.debug(`${this.name}: sending request to ${r.url}access_token`);
+			logger.debug(`Sending request to ${r.url}access_token`);
 			request({
 				url: `${r.url}access_token`,
 				method: 'POST',
@@ -75,9 +75,9 @@ class AuthRoute extends Route {
 	}
 	getUserData (accessToken) {
 		var r = this.config.reddit;
-		
+
 		return new Promise((resolve, reject) => {
-			logger.debug(`${this.name}: sending request to ${r.oauthUrl}me`);
+			logger.debug(`Sending request to ${r.oauthUrl}me`);
 			request({
 				url: `${r.oauthUrl}me`,
 				method: 'GET',
@@ -91,7 +91,7 @@ class AuthRoute extends Route {
 			});
 		});
 	}
-	
+
 }
 
 module.exports = AuthRoute;

@@ -6,7 +6,6 @@ class Route {
 		this.server = server;
 		this.model = model;
 		this.config = config;
-		this.name = this.constructor.name;
 	}
 
 	static success (r, response) {
