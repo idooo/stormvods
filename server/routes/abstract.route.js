@@ -25,12 +25,18 @@ class Route {
 		if (options.auth) {
 			wrapper = function (req, res, next) {
 				var token = req.header(AUTH_HEADER);
-				if (Auth.validate(token)) route.call(self, req, res, next);
+				if (Auth.validateToken(token)) route.call(self, req, res, next);
 				else Route.fail(res, {message: 'Auth failed'}, 403);
 			}
 		}
 
 		this.server.get(url, wrapper);
+	}
+
+	static setCookie (r, name, value) {
+		r.writeHead(200, {
+			'Set-Cookie': `${name}=${value}`
+		});
 	}
 
 	static success (r, response) {
