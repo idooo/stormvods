@@ -5,7 +5,7 @@ var Route = require('./abstract.route');
 class TestRoute extends Route {
 
 	configure () {
-		this.server.get('/api/data', this.routeData.bind(this));
+		this.bind('/api/data', this.routeData, {auth:true});
 	}
 	routeData (req, res, next) {
 		this.model.Datasource.getList()

@@ -3,11 +3,11 @@
 		"port": 8088
 	},
 	"database": {
-		"uri": "mongodb://ds061620.mongolab.com",
-		"port": 61620,
-		"db": "teaparty2",
-		"username": "test",
-		"password": "test"
+		"uri": "ds035844.mongolab.com:35844",
+		"port": 35844,
+		"db": "hots",
+		"username": "admin",
+		"password": "pewpewpew"
 	},
 	"logs": {
 		"level": "debug"

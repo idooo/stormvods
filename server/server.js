@@ -13,15 +13,15 @@ class Server {
 			process.exit(1);
 		}
 
-		this.logger = require('./logging')(this.config);
-		this.model = require('./database')(this.config);
+		this.logger = require('./core/logging')(this.config);
+		this.model = require('./core/database')(this.config);
 		this.server = restify.createServer({});
 
 		this.server.use(restify.bodyParser());
 		this.server.use(restify.queryParser());
 
 		// Load routing
-		require('./routing')(this.server, this.model, this.config);
+		require('./core/routing')(this.server, this.model, this.config);
 	}
 	start () {
 		var self = this;

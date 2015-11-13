@@ -3,9 +3,9 @@
 'use strict';
 
 var routes = [
-	'auth',
-	'test',
-	'static'
+	'auth.route',
+	'test.route',
+	'static.route'
 ];
 
 var logger = require('winston');
@@ -19,7 +19,7 @@ module.exports = function (server, model, config) {
 
 	var Route;
 	routes.forEach(function (routeName) {
-		Route = require(__dirname + '/routes/' + routeName);
+		Route = require(`${__dirname}/../routes/${routeName}`);
 		new Route(server, model, config).configure();
 	});
 };

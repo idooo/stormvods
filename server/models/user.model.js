@@ -3,30 +3,25 @@
 var mongoose = require('mongoose'),
 	SchemaDefinition = require('./abstract.definition');
 
-class Datasource extends SchemaDefinition {
-	
+class User extends SchemaDefinition {
+
 	constructor () {
 		super();
 		this.schema = new mongoose.Schema({
-			url: {
+			name: {
 				type: String,
 				trim: true,
 				required: true
 			},
-			type: {
-				type: String,
-				required: true,
-				default: 'PULL'
-			},
-			jsonlt: {
+			redditInfo: {
 				type: Object
 			},
-			widget: {
-				type: mongoose.Schema.Types.ObjectId,
-				required: true
+			creation_date: {
+				type: Date,
+				default: Date.now
 			}
 		});
 	}
 }
 
-module.exports = Datasource;
+module.exports = User;
