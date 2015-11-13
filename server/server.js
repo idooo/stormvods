@@ -1,7 +1,8 @@
-/* global __dirname */
+/* global __dirname, process */
 'use strict';
 
-var restify = require('restify');
+var	CookieParser = require('restify-cookies'),
+	restify = require('restify');
 
 class Server {
 	constructor (configName) {
@@ -19,6 +20,7 @@ class Server {
 
 		this.server.use(restify.bodyParser());
 		this.server.use(restify.queryParser());
+		this.server.use(CookieParser.parse);
 
 		// Load routing
 		require('./core/routing')(this.server, this.model, this.config);

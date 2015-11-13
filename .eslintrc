@@ -27,7 +27,7 @@
 		"comma-spacing": [2, {"before": false, "after": true}],
 		"computed-property-spacing": [2, "never"],
 		"consistent-this": [2, "self"],
-		"curly": [2, "multi"],
+		"curly": [2, "multi-line"],
 		"eqeqeq": [2],
 		"max-nested-callbacks": [2, 4],
 		"no-alert": [1],

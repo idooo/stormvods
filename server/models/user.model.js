@@ -21,6 +21,7 @@ class User extends SchemaDefinition {
 				default: Date.now
 			}
 		});
+		
 	}
 }
 

@@ -20,5 +20,9 @@
 		"scope": "identity",
 		"callbackDomain": "http:%2F%2Flocalhost:8088",
 		"duration": "temporary"
+	},
+	"reddis": {
+		"uri": "127.0.0.1",
+		"port": 6379
 	}
 }

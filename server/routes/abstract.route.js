@@ -27,7 +27,7 @@ class Route {
 				var token = req.header(AUTH_HEADER);
 				if (Auth.validateToken(token)) route.call(self, req, res, next);
 				else Route.fail(res, {message: 'Auth failed'}, 403);
-			}
+			};
 		}
 
 		this.server.get(url, wrapper);
@@ -49,7 +49,10 @@ class Route {
 		response = response || {};
 		code = code || 400;
 
-		if (response.name === 'MongoError') response = {error: response.err};
+		if (response.name === 'MongoError') {
+			code = 500;
+			response = {error: response.err};
+		}
 		else if (response.name === 'ValidationError') response = {error: response.errors};
 
 		response.status = 'error';

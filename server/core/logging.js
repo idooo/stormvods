@@ -21,7 +21,7 @@ module.exports = function (config) {
 		},
 		formatter:  function (options) {
 			return winston.config.colorize(options.level, (options.level.toUpperCase()  + '  ').slice(0, 5))
-				+ ": " + this.timestamp() +" - " + getStack() + " - " + options.message;
+				+ ': ' + this.timestamp() + ' - ' + getLastStack() + ' - ' + options.message;
 		}
 	});
 
@@ -31,7 +31,7 @@ module.exports = function (config) {
 		filename: (config.logs || {}).file || `${__dirname}/../logs/server.log`
 	});
 
-	function getStack() {
+	function getLastStack () {
 		var e = new Error('dummy');
 
 		return e.stack.replace(RE_STACK_REPLACE1, '')

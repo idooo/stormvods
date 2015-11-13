@@ -6,6 +6,7 @@ class SchemaDefinition {
 	}
 	configure () {
 		this.schema.statics.getList = this.getList;
+		this.schema.statics.findOne = this.findOne;
 	}
 	/**
 	* Generate the 'get collection' function with promises for scheme
@@ -22,6 +23,19 @@ class SchemaDefinition {
 				if (objects) resolve(objects);
 				else if (err) reject(err);
 				else reject([]);
+			});
+		});
+	}
+	findOne (query, fields) {
+		var self = this;
+		
+		if (!fields) fields = '-__v';
+		
+		return new Promise(function (resolve, reject) {
+			query = self.where(query).select(fields);
+			query.findOne(function (err, object) {
+				if (err) reject(err);
+				else resolve(object);
 			});
 		});
 	}

@@ -1,3 +1,4 @@
+/* global __dirname */
 var mongoose = require('mongoose'),
 	logger = require('winston');
 
