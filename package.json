@@ -28,6 +28,8 @@
     "grunt-sass": "^1.1.0",
     "load-grunt-configs": "^0.4.3",
     "load-grunt-tasks": "^3.3.0",
+    "node-bourbon": "^4.2.3",
+    "node-neat": "^1.7.2",
     "time-grunt": "^1.2.2"
   },
   "babel": {
@@ -42,6 +44,7 @@
     "angular": "^1.4.7",
     "angular-local-storage": "^0.2.2",
     "angular-ui-router": "^0.2.15",
+    "base64url": "^1.0.5",
     "handlebars": "^4.0.4",
     "mongoose": "^4.2.5",
     "node-uuid": "^1.4.4",

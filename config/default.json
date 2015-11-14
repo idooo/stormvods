@@ -28,6 +28,7 @@
 	},
 	"debug": {
 		"disableTemplateCaching": true,
-		"showStackTrace": true
+		"showStackTrace": true,
+		"alwaysLogin": "idonreddit"
 	}
 }

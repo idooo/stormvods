@@ -7,7 +7,6 @@ angular
 const TEMPLATE = `
 	<div>
 		index page
-		<auth/>
 	</div>
 `;
 

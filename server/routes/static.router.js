@@ -2,19 +2,20 @@
 
 'use strict';
 
-const TEMPLATE_PATH = `${__dirname}/../../web/index.html`;
+const TEMPLATES_PATH = `${__dirname}/../../web`;
 
 var restify = require('restify'),
 	fs = require('fs'),
+	logger = require('winston'),
 	Handlebars = require('handlebars'),
 	Router = require('./abstract.router');
 
 class StaticRouter extends Router {
 
 	configure () {
-		this.compileTemplate();
+		this.compileIndexTemplate();
 
-		// This rout should go first
+		// This route should go first
 		this.bind(/\/($|\?.*|\#.*|index.html)/, this.indexRender);
 		
 		this.server.get(/\/?.*/, restify.serveStatic({
@@ -24,12 +25,13 @@ class StaticRouter extends Router {
 		}));
 	}
 	
-	compileTemplate () {
-		this.template = Handlebars.compile(fs.readFileSync(TEMPLATE_PATH).toString());
+	compileIndexTemplate () {
+		this.template = Handlebars.compile(fs.readFileSync(`${TEMPLATES_PATH}/index.html`).toString());
+		logger.info('index.html template compiled');
 	}
 
 	indexRender (req, res) {
-		if (this.config.debug.disableTemplateCaching) this.compileTemplate();
+		if (this.config.debug.disableTemplateCaching) this.compileIndexTemplate();
 		
 		var body = this.template(this.config);
 		res.writeHead(200, {

@@ -1,5 +1,12 @@
+@import "bourbon";
+@import "neat";
+
+@import "./reset";
+@import "./common/header";
+
 $color: #dddddd;
 
-body {
+html, body {
+	font-family: 'PT Sans', sans-serif;
 	background-color: $color;
 }

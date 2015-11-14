@@ -25,10 +25,14 @@ class Router {
 
 		options = util._extend(util._extend({}, DEFAULT_ROUTE_OPTIONS), options || {});
 		
+		// Auth
 		if (options.auth) {
 			wrapper = function (req, res, next) {
-				var sessionId = req.header(AUTH_HEADER),
-					username = Auth.findUserBySessionId(sessionId);
+				var token = req.header(AUTH_HEADER),
+					username = Auth.findUserByToken(token);
+					
+				// Debug	
+				if (self.config.debug && self.config.debug.alwaysLogin) username = self.config.debug.alwaysLogin;	
 					
 				if (username) route.call(self, req, res, next, username);
 				else Router.fail(res, {message: 'Access denied'}, 403);

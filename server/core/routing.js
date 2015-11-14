@@ -5,6 +5,7 @@
 const ROUTERS_PATH = `${__dirname}/../routes`;
 const STATIC_ROUTER = 'static.router.js';
 const ABSTRACT_ROUTER = 'abstract.router.js';
+const RE_DEBUG_LOG = /(^\/api\/|^\/\??$)/; // /api and /
 
 var fs = require('fs'),
 	logger = require('winston');
@@ -17,7 +18,7 @@ class RouterLoader {
 		
 		// Add debug logger to endpoints
 		server.use(function (req, res, next) {
-			logger.debug(req.method + ' ' + req.url);
+			if (RE_DEBUG_LOG.test(req.url)) logger.debug(req.method + ' ' + req.url);
 			return next();
 		});
 	}

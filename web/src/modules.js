@@ -17,6 +17,7 @@ appModules.forEach((moduleName) => angular.module(moduleName, []));
 // App modules
 require('./common/auth.service.js');
 require('./common/auth.directive.js');
+require('./common/header.directive.js');
 require('./index/index.page.js');
 require('./callback/callback.page.js');
 

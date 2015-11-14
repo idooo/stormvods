@@ -2,16 +2,17 @@
 
 var logger = require('winston'),
 	uuid = require('node-uuid'),
+	base64url = require('base64url'),
 	Cache = require('./cache');
 
 class Auth {
 
-	static findUserBySessionId (sessionId) {
+	static findUserByToken (token) {
 		var cache = new Cache(),
-			username = cache.get(sessionId);
+			username = cache.get(token);
 		
 		if (!username) {
-			logger.debug(`Session ID "${sessionId}" not found in cache`);
+			logger.debug(`Token "${token}" not found in cache`);
 			return false;
 		}
 		return username;
@@ -19,12 +20,14 @@ class Auth {
 	
 	static authorize (username) {
 		var cache = new Cache(),	
-			sessionId = uuid.v4();
+			token = base64url(uuid.v4());
 
-		cache.put(sessionId, username);
+		token = token.slice(9) + token.slice(0, 9);
+		
+		cache.put(token, username);
 		logger.debug(`User ${username} authorized`);
 		
-		return {sessionId, username};
+		return {token, username};
 	}
 }
 

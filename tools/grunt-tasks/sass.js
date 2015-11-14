@@ -2,7 +2,8 @@ module.exports.tasks = {
 
 	sass: {
 		options: {
-			sourceMap: true
+			sourceMap: true,
+			includePaths: require('node-bourbon').with(require('node-neat').includePaths)
 		},
 		dist: {
 			files: {

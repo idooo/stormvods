@@ -6,12 +6,14 @@ angular
 
 const TEMPLATE = `
 	<div>
-		Auth link will be here <a href="#" ng-click="ctrl.openAuthUrl()">aa</a>
+		<div style="color: white" ng-if="ctrl.isAuth">
+			Welcome, {{ctrl.user.name}}
+		</div>
+		<a style="color: white" href="#" ng-if="!ctrl.isAuth" ng-click="ctrl.openAuthUrl()">Login</a>
 	</div>
 `;
 
 const ENDPOINT_GET_URL = '/api/auth/url';
-const ENDPOINT_ME = '/api/users/me';
 
 function authDirective () {
 
@@ -19,14 +21,12 @@ function authDirective () {
 		restrict: 'E',
 		controllerAs: 'ctrl',
 		replace: true,
-		scope: {
-			
-		},
+		scope: true,
 		template: TEMPLATE,
 		controller: controller
 	};
 	
-	function controller ($http, $window) {
+	function controller ($http, $window, Auth) {
 		
 		this.openAuthUrl = openAuthUrl;
 		
@@ -35,10 +35,11 @@ function authDirective () {
 			authUrl = response.data.url;
 		});
 		
-		$http.get(ENDPOINT_ME).then((response) => {
-			console.log(response)
+		Auth.observe((isAuth) => {
+			this.isAuth = isAuth;
+			this.user = Auth.user;
 		});
-		
+			
 		function openAuthUrl () {
 			if (!authUrl) authPromise.then(openAuthUrl);
 			else $window.location.href = authUrl;
