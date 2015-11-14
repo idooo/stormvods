@@ -7,6 +7,8 @@ angular
 const TEMPLATE = `
 	<div>
 		index page
+		
+		<video-container></video-container>
 	</div>
 `;
 
