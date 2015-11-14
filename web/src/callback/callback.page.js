@@ -22,8 +22,17 @@ function callbackPage () {
 		controller: controller
 	};
 	
-	function controller ($http, $location) {
-		var params = $location.search();
+	function controller ($http, $window) {
+		var params = {};
+		$window.location.search
+			.replace('?', '')
+			.split('&')
+			.forEach(item => {
+				var i = item.split('=');
+				params[i[0]] = i[1];
+			});
+			
+		console.log(params)
 		
 		var authPromise = $http.get(ENDPOINT_CALLBACK, {params}).then((response) => {
 			console.log(response)

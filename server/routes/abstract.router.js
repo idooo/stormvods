@@ -2,7 +2,8 @@
 
 var util = require('util'),
 	logger = require('winston'),
-	Auth = require('../core/auth');
+	Auth = require('../core/auth'),
+	Database = require('../core/database');
 
 const AUTH_HEADER = 'Authorization';
 const DEFAULT_ROUTE_OPTIONS = {
@@ -14,6 +15,7 @@ class Router {
 	constructor (server, config) {
 		this.server = server;
 		this.config = config;
+		this.models = new Database().models;
 		logger.debug('Router has been loaded');
 	}
 

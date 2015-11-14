@@ -29,7 +29,7 @@ class Server {
 		this.server.use(CookieParser.parse);
 
 		// Load routing
-		new RouterLoader(this.server, this.model, this.config).loadRouters();
+		new RouterLoader(this.server, this.config).loadRouters();
 		
 		// Check debug settings
 		if (this.config.debug) {

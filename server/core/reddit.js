@@ -14,23 +14,33 @@ class RedditAPIClient {
 	}
 	
 	getAccessToken (code) {
-		var self = this,
-			r = this.config,
+		var r = this.config,
 			auth = 'Basic ' + new Buffer(`${r.clientId}:${r.secret}`).toString('base64');
 
 		return new Promise((resolve, reject) => {
-			logger.debug(`Sending request to ${r.url}access_token`);
-			request({
+			var options = {
 				url: `${r.url}access_token`,
 				method: 'POST',
 				headers : {
 					'Authorization': auth,
 					'User-Agent': REDDIT_UA
 				},
-				body: `grant_type=authorization_code&code=${code}&redirect_uri=${r.callbackDomain}${self.callbackPath}`
-			}, function (error, response, body) {
-				if (!error && response.statusCode === 200) resolve(JSON.parse(body));
-				else reject(error);
+				body: `grant_type=authorization_code&code=${code}&redirect_uri=${r.callbackUrl}`
+			};
+			
+			logger.debug(`Sending request to ${r.url}access_token`, options);
+			request(options, function (error, response, body) {
+				try {
+					body = JSON.parse(body);
+				}
+				catch (e) {
+					logger.debug('Body is not JSON');
+				}
+				if (!error && response.statusCode === 200 && !body.error) resolve(body);
+				else {
+					logger.info(`Bad response from /access_token (${body.error})`);
+					reject(error);
+				}
 			});
 		});
 	}
@@ -39,17 +49,28 @@ class RedditAPIClient {
 		var r = this.config;
 
 		return new Promise((resolve, reject) => {
-			logger.debug(`Sending request to ${r.oauthUrl}me`);
-			request({
+			var options = {
 				url: `${r.oauthUrl}me`,
 				method: 'GET',
 				headers : {
 					'Authorization': `bearer ${accessToken}`,
 					'User-Agent': REDDIT_UA
 				}
-			}, function (error, response, body) {
-				if (!error && response.statusCode === 200) resolve(JSON.parse(body));
-				else reject(error);
+			};
+			
+			logger.debug(`Sending request to ${r.oauthUrl}me`, options);
+			request(options, function (error, response, body) {
+				try {
+					body = JSON.parse(body);
+				}
+				catch (e) {
+					logger.debug('Body is not JSON');
+				}
+				if (!error && response.statusCode === 200 && !body.error) resolve(body);
+				else {
+					logger.info(`Bad response from /me (${body.error})`);
+					reject(error);
+				}
 			});
 		});
 	}

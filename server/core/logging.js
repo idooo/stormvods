@@ -6,7 +6,7 @@ const RE_STACK_REPLACE2 = /(.*)(\s+\().*(\/server.*)\)/;
 var winston = require('winston');
 
 module.exports = function (config) {
-
+	
 	winston.remove(winston.transports.Console);
 
 	winston.add(winston.transports.Console, {
@@ -21,7 +21,7 @@ module.exports = function (config) {
 		},
 		formatter:  function (options) {
 			return winston.config.colorize(options.level, (options.level.toUpperCase()  + '  ').slice(0, 5))
-				+ ': ' + this.timestamp() + ' - ' + getLastStack() + ' - ' + options.message;
+				+ ': ' + this.timestamp() + ' - ' + getLastStack() + ' - ' + options.message + getMeta(options);
 		}
 	});
 
@@ -30,6 +30,11 @@ module.exports = function (config) {
 		json: false,
 		filename: (config.logs || {}).file || `${__dirname}/../logs/server.log`
 	});
+	
+	function getMeta (options) {
+		if (Object.keys(options.meta).length) return ' - ' + JSON.stringify(options.meta);
+		else return '';
+	}
 
 	function getLastStack () {
 		var e = new Error('dummy');

@@ -1,12 +1,10 @@
 'use strict';
 
-var Router = require('./abstract.router'),
-	Database = require('../core/database');
+var Router = require('./abstract.router');
 
 class TestRouter extends Router {
 
 	configure () {
-		this.models = new Database().models;
 		this.bind('/api/users', this.routeData, {auth:true});
 	}
 	routeData (req, res, next) {

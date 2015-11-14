@@ -22,7 +22,7 @@ class Auth {
 		
 		logger.debug(`User ${username} authorized`);
 		
-		return sessionId;
+		return {sessionId, username};
 	}
 }
 

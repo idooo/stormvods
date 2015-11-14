@@ -19,7 +19,7 @@
 		"clientId": "mayQBZFocpPb7Q",
 		"secret": "jMgOim9gg-5aSicLxHLbJU1e5X8",
 		"scope": "identity",
-		"callbackUrl": "http:%2F%2Flocalhost:8088%2%23%2Fcallback",
+		"callbackUrl": "http:%2F%2Flocalhost:8088%2F%23%2Fcallback",
 		"duration": "temporary"
 	},
 	"reddis": {
@@ -27,6 +27,7 @@
 		"port": 6379
 	},
 	"debug": {
-		"disableTemplateCaching": true
+		"disableTemplateCaching": true,
+		"showStackTrace": true
 	}
 }

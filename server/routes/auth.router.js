@@ -16,6 +16,7 @@ const API_CALLBACK_PATH = '/api/auth/callback';
 const API_URL_PATH = '/api/auth/url';
 
 var uuid = require('node-uuid'),
+	logger = require('winston'),
 	Auth = require('../core/auth'),
 	RedditAPIClient = require('../core/reddit'),
 	Router = require('./abstract.router');
@@ -66,14 +67,13 @@ class AuthRouter extends Router {
 			// Search for user in database
 			.then(function (_userData) {
 				userData = _userData;
-				return self.model.User.findOne({name: userData.name}, 'name');
+				return self.models.User.findOne({name: userData.name}, 'name');
 			})
 			
 			// Create user if necessary
 			.then(function (userDataFromDB) {
-				if (userDataFromDB) Promise.resolve();
-				
-				var user = new self.model.User({
+				if (userDataFromDB) return Promise.resolve();
+				var user = new self.models.User({
 					name: userData.name,
 					redditInfo: {
 						id: userData.id,
@@ -92,11 +92,18 @@ class AuthRouter extends Router {
 			
 			// Authorise user 
 			.then(function () {
-				res.setCookie('sessionId', Auth.authorize(userData.name));
-				return res.redirect('/', next);
+				Router.success(res, Auth.authorize(userData.name));
+				return next();
 			})
 			
 			.catch(function (err) {
+				if (err.stack) {
+					logger.warn(err.stack);
+					if (self.config.debug && self.config.debug.showStackTrace) {
+						err = {message: err.stack.toString()};
+					}
+				}
+				
 				Router.fail(res, err);
 				return next();
 			});
