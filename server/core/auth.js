@@ -1,7 +1,7 @@
 'use strict';
 
 var logger = require('winston'),
-	uuid = require('uuid'),
+	uuid = require('node-uuid'),
 	Cache = require('./cache');
 
 class Auth {
