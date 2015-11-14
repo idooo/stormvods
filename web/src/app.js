@@ -15,7 +15,7 @@ function configuration ($stateProvider, $urlRouterProvider) {
 	$urlRouterProvider.otherwise('/');
 
 	$stateProvider
-		.state('app', {
+		.state('index', {
 			url: '/',
 			template: '<index-page/>'
 		})

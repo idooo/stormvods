@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "angular": "^1.4.7",
+    "angular-local-storage": "^0.2.2",
     "angular-ui-router": "^0.2.15",
     "handlebars": "^4.0.4",
     "mongoose": "^4.2.5",

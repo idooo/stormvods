@@ -15,9 +15,9 @@ class RouterLoader {
 		this.server = server;
 		this.config = config;
 		
-		// Add debug logger for /api/* endpoints
+		// Add debug logger to endpoints
 		server.use(function (req, res, next) {
-			if (req.url.indexOf('/api') >= 0) logger.debug(req.method + ' ' + req.url);
+			logger.debug(req.method + ' ' + req.url);
 			return next();
 		});
 	}

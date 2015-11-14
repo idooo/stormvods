@@ -23,13 +23,15 @@ class Router {
 		var self = this,
 			wrapper = route.bind(this);
 
-		options = util._extend(DEFAULT_ROUTE_OPTIONS, options || {});
-
+		options = util._extend(util._extend({}, DEFAULT_ROUTE_OPTIONS), options || {});
+		
 		if (options.auth) {
 			wrapper = function (req, res, next) {
-				var token = req.header(AUTH_HEADER);
-				if (Auth.validateToken(token)) route.call(self, req, res, next);
-				else Router.fail(res, {message: 'Auth failed'}, 403);
+				var sessionId = req.header(AUTH_HEADER),
+					username = Auth.findUserBySessionId(sessionId);
+					
+				if (username) route.call(self, req, res, next, username);
+				else Router.fail(res, {message: 'Access denied'}, 403);
 			};
 		}
 

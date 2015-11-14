@@ -11,6 +11,7 @@ const TEMPLATE = `
 `;
 
 const ENDPOINT_GET_URL = '/api/auth/url';
+const ENDPOINT_ME = '/api/users/me';
 
 function authDirective () {
 
@@ -32,6 +33,10 @@ function authDirective () {
 		var authUrl = '';
 		var authPromise = $http.get(ENDPOINT_GET_URL).then((response) => {
 			authUrl = response.data.url;
+		});
+		
+		$http.get(ENDPOINT_ME).then((response) => {
+			console.log(response)
 		});
 		
 		function openAuthUrl () {

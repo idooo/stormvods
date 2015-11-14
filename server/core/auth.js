@@ -6,20 +6,22 @@ var logger = require('winston'),
 
 class Auth {
 
-	static validateToken (token) {
-		// send request to DB
-		if (token === 'test') {
-			logger.debug('Auth failed');
+	static findUserBySessionId (sessionId) {
+		var cache = new Cache(),
+			username = cache.get(sessionId);
+		
+		if (!username) {
+			logger.debug(`Session ID "${sessionId}" not found in cache`);
 			return false;
 		}
-		return true;
+		return username;
 	}
+	
 	static authorize (username) {
-		var cache = new Cache(), // singleton
+		var cache = new Cache(),	
 			sessionId = uuid.v4();
-			
+
 		cache.put(sessionId, username);
-		
 		logger.debug(`User ${username} authorized`);
 		
 		return {sessionId, username};

@@ -22,7 +22,7 @@ function callbackPage () {
 		controller: controller
 	};
 	
-	function controller ($http, $window) {
+	function controller ($http, $window, $state, Auth) {
 		var params = {};
 		$window.location.search
 			.replace('?', '')
@@ -32,10 +32,10 @@ function callbackPage () {
 				params[i[0]] = i[1];
 			});
 			
-		console.log(params)
-		
-		var authPromise = $http.get(ENDPOINT_CALLBACK, {params}).then((response) => {
-			console.log(response)
+		// TODO: handle errors
+		$http.get(ENDPOINT_CALLBACK, {params}).then((response) => {
+			Auth.updateSessionInfo(response.data.username, response.data.sessionId);
+			$state.go('index');
 		});
 		
 	}

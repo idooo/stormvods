@@ -1,6 +1,7 @@
 // Project third-party dependencies
 var modules = [
-	'ui.router'
+	'ui.router',
+	'LocalStorageModule'
 ];
 
 // Application modules list
@@ -14,6 +15,7 @@ var appModules = [
 appModules.forEach((moduleName) => angular.module(moduleName, []));
 
 // App modules
+require('./common/auth.service.js');
 require('./common/auth.directive.js');
 require('./index/index.page.js');
 require('./callback/callback.page.js');
