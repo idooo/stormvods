@@ -56,7 +56,7 @@ class RedditAPIClient {
 	
 	generateAuthUrl (state) {
 		var r = this.config,
-			url = `${r.url}authorize?client_id=${r.clientId}&response_type=code&state=${state}&redirect_uri=${r.callbackDomain}${this.callbackPath}&duration=${r.duration}&scope=${r.scope}`;
+			url = `${r.url}authorize?client_id=${r.clientId}&response_type=code&state=${state}&redirect_uri=${r.callbackUrl}&duration=${r.duration}&scope=${r.scope}`;
 
 		return url;
 	}

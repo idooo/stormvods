@@ -7,7 +7,8 @@
 		"port": 35844,
 		"db": "hots",
 		"username": "admin",
-		"password": "pewpewpew"
+		"password": "pewpewpew",
+		"autoConnect": true
 	},
 	"logs": {
 		"level": "debug"
@@ -18,11 +19,14 @@
 		"clientId": "mayQBZFocpPb7Q",
 		"secret": "jMgOim9gg-5aSicLxHLbJU1e5X8",
 		"scope": "identity",
-		"callbackDomain": "http:%2F%2Flocalhost:8088",
+		"callbackUrl": "http:%2F%2Flocalhost:8088%2%23%2Fcallback",
 		"duration": "temporary"
 	},
 	"reddis": {
 		"uri": "127.0.0.1",
 		"port": 6379
+	},
+	"debug": {
+		"disableTemplateCaching": true
 	}
 }

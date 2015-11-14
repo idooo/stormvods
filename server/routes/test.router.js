@@ -1,8 +1,8 @@
 'use strict';
 
-var Route = require('./abstract.route');
+var Router = require('./abstract.router');
 
-class TestRoute extends Route {
+class TestRouter extends Router {
 
 	configure () {
 		this.bind('/api/users', this.routeData, {auth:true});
@@ -10,14 +10,14 @@ class TestRoute extends Route {
 	routeData (req, res, next) {
 		this.model.User.getList()
 			.then(function (datasources) {
-				Route.success(res, datasources);
+				Router.success(res, datasources);
 				return next();
 			})
 			.catch(function (err) {
-				Route.fail(res, err);
+				Router.fail(res, err);
 				return next();
 			});
 	}
 }
 
-module.exports = TestRoute;
+module.exports = TestRouter;

@@ -1,6 +1,7 @@
 'use strict';
 
 var util = require('util'),
+	logger = require('winston'),
 	Auth = require('../core/auth');
 
 const AUTH_HEADER = 'Authorization';
@@ -8,12 +9,13 @@ const DEFAULT_ROUTE_OPTIONS = {
 	auth: false
 };
 
-class Route {
+class Router {
 
 	constructor (server, model, config) {
 		this.server = server;
 		this.model = model;
 		this.config = config;
+		logger.debug('Router has been loaded');
 	}
 
 	bind (url, route, options) {
@@ -26,7 +28,7 @@ class Route {
 			wrapper = function (req, res, next) {
 				var token = req.header(AUTH_HEADER);
 				if (Auth.validateToken(token)) route.call(self, req, res, next);
-				else Route.fail(res, {message: 'Auth failed'}, 403);
+				else Router.fail(res, {message: 'Auth failed'}, 403);
 			};
 		}
 
@@ -62,4 +64,4 @@ class Route {
 	}
 }
 
-module.exports = Route;
+module.exports = Router;

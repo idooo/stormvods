@@ -1,8 +1,11 @@
 'use strict';
 
+var logger = require('winston');
+
 class SchemaDefinition {
 	constructor () {
 		this.name = this.constructor.name;
+		logger.debug('Schema has been loaded');
 	}
 	configure () {
 		this.schema.statics.getList = this.getList;

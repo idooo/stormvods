@@ -1,9 +1,30 @@
 /* global angular */
 
-require('angular');
+window.APP_NAME = 'hotsVideos';
 
-angular.module('app', []);
+var modules = require('./modules');
 
-var Config = require('./core/config.js');
+// Initial app config
+angular
+	.module(window.APP_NAME, modules)
+	.config(configuration)
+	.run(init);
+	
+function configuration ($stateProvider, $urlRouterProvider) {
 
-Config.pew();
+	$urlRouterProvider.otherwise('/');
+
+	$stateProvider
+		.state('app', {
+			url: '/',
+			template: '<index-page/>'
+		})
+		.state('callback', {
+			url: '/callback',
+			template: '<callback-page/>'
+		});
+}
+
+function init () {
+
+}

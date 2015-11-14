@@ -16,13 +16,13 @@ class Auth {
 	}
 	static authorize (username) {
 		var cache = new Cache(), // singleton
-			token = uuid.v4();
+			sessionId = uuid.v4();
 			
-		cache.put(username, token);
+		cache.put(sessionId, username);
 		
 		logger.debug(`User ${username} authorized`);
 		
-		return {username, token};
+		return sessionId;
 	}
 }
 

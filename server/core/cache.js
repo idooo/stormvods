@@ -3,12 +3,15 @@
 var logger = require('winston'),
 	instance = null;
 
+/** singleton */
 class Cache {
 	
 	constructor () {
-		if (!instance) instance = this; // eslint-disable-line consistent-this
+		if (instance) return instance;
+		instance = this; // eslint-disable-line consistent-this
+		
 		this.cache = {};
-		return instance;
+		logger.info('Cache instance have been created');
 	}
 	put (key, value) {
 		this.cache[key] = value;

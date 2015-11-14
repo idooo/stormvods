@@ -1,38 +1,60 @@
 /* global __dirname */
-var mongoose = require('mongoose'),
-	logger = require('winston');
+'use strict';
 
-var modelsFiles = ['user.model'];
+const MODELS_PATH = `${__dirname}/../models`;
 
-module.exports = function (config) {
+var fs = require('fs'),
+	mongoose = require('mongoose'),
+	logger = require('winston'),
+	instance = null;
 
-	config.database.isConnected = false;
+/** singleton */
+class Database {
+	
+	constructor (config) {
+		if (instance) return instance;
+		instance = this; // eslint-disable-line consistent-this
+		
+		this.config = config;
+		this.isConnected = false;
+		this.models = {};
+		
+		if (this.config.autoConnect) this.connect();
+	}
+	
+	connect () {
+		var options = {
+			db: {native_parser: true},
+			server: {poolSize: 5},
+			user: this.config.username,
+			pass: this.config.password
+		};
+	
+		mongoose.connect(`${this.config.uri}:${this.config.port}/${this.config.db}`, options);
+	
+		mongoose.connection
+			.on('error', (err) => logger.error('Database connection error', JSON.stringify(err)))
+			.once('open', () => {
+				this.isConnected = true;
+				logger.info(`DB connected ${this.config.uri}/${this.config.db}`);
+			});
+	}
+	
+	loadModel () {
+			
+		// load models
+		var modelsFiles = fs.readdirSync(MODELS_PATH);
+		
+		modelsFiles
+			.filter((filename) => /.*\.model\.js/.test(filename))
+			.forEach((filename) => {
+				var schemaDefinition = new (require(`${MODELS_PATH}/${filename}`));
+				schemaDefinition.configure();
+				this.models[schemaDefinition.name] = mongoose.model(schemaDefinition.name, schemaDefinition.schema);
+			});
+	
+		return this.models;
+	}
+}
 
-	var options = {
-		db: {native_parser: true},
-		server: {poolSize: 5},
-		user: config.database.username,
-		pass: config.database.password
-	};
-	var models = [];
-
-	mongoose.connect(config.database.uri + ':' + config.database.port + '/' + config.database.db, options);
-
-	var connection = mongoose.connection;
-	connection.on('error', function (err) {
-		logger.error('Database connection error', JSON.stringify(err));
-	});
-	connection.once('open', function callback () {
-		config.database.isConnected = true;
-		logger.info('DB connected ' + config.database.uri + '/' + config.database.db);
-	});
-
-	modelsFiles.forEach(function (modelName) {
-		var schemaDefinition = new (require(`${__dirname}/../models/${modelName}`));
-		schemaDefinition.configure();
-		models[schemaDefinition.name] = mongoose.model(schemaDefinition.name, schemaDefinition.schema);
-
-	});
-
-	return models;
-};
+module.exports = Database;

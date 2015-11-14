@@ -16,15 +16,14 @@ const API_CALLBACK_PATH = '/api/auth/callback';
 const API_URL_PATH = '/api/auth/url';
 
 var uuid = require('node-uuid'),
-	logger = require('winston'),
 	Auth = require('../core/auth'),
 	RedditAPIClient = require('../core/reddit'),
-	Route = require('./abstract.route');
+	Router = require('./abstract.router');
 
-class AuthRoute extends Route {
+class AuthRouter extends Router {
 
 	configure () {
-		this.reddit = new RedditAPIClient(this.config.reddit, API_CALLBACK_PATH);
+		this.reddit = new RedditAPIClient(this.config.reddit);
 
 		// routes	
 		this.bind(API_CALLBACK_PATH, this.routeCallback);
@@ -36,7 +35,7 @@ class AuthRoute extends Route {
 			url = this.reddit.generateAuthUrl(state);
 
 		// TODO: state should exprire
-		Route.success(res, {
+		Router.success(res, {
 			url: url,
 			state: state
 		});
@@ -48,11 +47,10 @@ class AuthRoute extends Route {
 			userData;
 
 		// TODO: check everything for errors
-		// TODO: handle if user click deny access
 
-		if (!req.params.code) {
-			Route.fail(res, {
-				message: 'No code received'
+		if (req.params.error) {
+			Router.fail(res, {
+				message: 'Reddit auth error'
 			});
 			return next();
 		}
@@ -92,17 +90,17 @@ class AuthRoute extends Route {
 				});
 			})
 			
-			// Authorise user
+			// Authorise user 
 			.then(function () {
-				Route.success(res, Auth.authorize(userData.name));
-				return next();
+				res.setCookie('sessionId', Auth.authorize(userData.name));
+				return res.redirect('/', next);
 			})
 			
 			.catch(function (err) {
-				Route.fail(res, err);
+				Router.fail(res, err);
 				return next();
 			});
 	}
 }
 
-module.exports = AuthRoute;
+module.exports = AuthRouter;

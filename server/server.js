@@ -2,7 +2,9 @@
 'use strict';
 
 var	CookieParser = require('restify-cookies'),
-	restify = require('restify');
+	restify = require('restify'),
+	Database = require('./core/database'),
+	RouterLoader = require('./core/routing');
 
 class Server {
 	constructor (configName) {
@@ -15,15 +17,27 @@ class Server {
 		}
 
 		this.logger = require('./core/logging')(this.config);
-		this.model = require('./core/database')(this.config);
+		
+		// Connect to DB and load model
+		var db = new Database(this.config.database);
+		this.model = db.loadModel();
+		
+		// Setup server
 		this.server = restify.createServer({});
-
 		this.server.use(restify.bodyParser());
 		this.server.use(restify.queryParser());
 		this.server.use(CookieParser.parse);
 
 		// Load routing
-		require('./core/routing')(this.server, this.model, this.config);
+		var routeLoader = new RouterLoader(this.server, this.model, this.config);
+		routeLoader.loadRouters();
+		
+		// Check debug settings
+		if (this.config.debug) {
+			Object.keys(this.config.debug).forEach((key) => {
+				if (this.config.debug[key]) this.logger.warn(`Server: debug setting "${key}" enabled`);
+			});
+		}
 	}
 	start () {
 		var self = this;
