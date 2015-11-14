@@ -11,9 +11,8 @@ var fs = require('fs'),
 
 class RouterLoader {
 	
-	constructor (server, model, config) {
+	constructor (server, config) {
 		this.server = server;
-		this.model = model;
 		this.config = config;
 		
 		// Add debug logger for /api/* endpoints
@@ -34,13 +33,11 @@ class RouterLoader {
 		
 		// static must be the last
 		this.loadRouter(STATIC_ROUTER);
-	
-		return this.models;
 	}
 	
 	loadRouter (routeName) {
 		var Router = require(`${ROUTERS_PATH}/${routeName}`);
-		new Router(this.server, this.model, this.config).configure();
+		new Router(this.server, this.config).configure();
 	}
 }
 

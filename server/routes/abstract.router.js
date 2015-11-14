@@ -11,9 +11,8 @@ const DEFAULT_ROUTE_OPTIONS = {
 
 class Router {
 
-	constructor (server, model, config) {
+	constructor (server, config) {
 		this.server = server;
-		this.model = model;
 		this.config = config;
 		logger.debug('Router has been loaded');
 	}
