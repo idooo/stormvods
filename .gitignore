@@ -124,3 +124,4 @@ node_modules
 ### Project specific
 web/dist
 docs
+.vscode

@@ -40,8 +40,7 @@ class RouterLoader {
 	
 	loadRouter (routeName) {
 		var Router = require(`${ROUTERS_PATH}/${routeName}`);
-		var router = (new Router(this.server, this.model, this.config))
-		router.configure();
+		new Router(this.server, this.model, this.config).configure();
 	}
 }
 
