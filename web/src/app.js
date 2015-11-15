@@ -26,6 +26,10 @@ function configuration ($stateProvider, $urlRouterProvider) {
 		.state('addvideo', {
 			url: '/addvideo',
 			template: '<add-video-page/>'
+		})
+		.state('video', {
+			url: '/video/:id',
+			template: '<video-page/>'
 		});
 }
 

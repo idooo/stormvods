@@ -24,7 +24,7 @@ const TEMPLATE = `
 		-->
 		
 		<div ng-repeat="video in ctrl.videos">
-			<video-container video="video"></video-container>
+			<a href="#" ui-sref="video({id: video._id})">{{video.youtubeId || 'broken'}}</a>	
 		</div>
 	</div>
 `;

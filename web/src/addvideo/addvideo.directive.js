@@ -30,17 +30,34 @@ function addVideoDirective () {
 		controllerAs: 'ctrl'
 	};
 	
-	function controller ($http, Constants) {
+	function controller ($scope, $http, Constants) {
 		var self = this;
 		
 		self.submit = submit;
+		self.youtubeId = '';
+		
+		$scope.$watch('ctrl.url', function (newValue) {
+			self.youtubeId = youtubeUrlParser(newValue);
+		});
+		
+		// a2Nj9BlJmEs
+		// https://www.youtube.com/watch?v=a2Nj9BlJmEs
 		
 		function submit () {
-			if (!self.form.$valid) return;
+			if (!self.form.$valid && !self.youtubeId) return;
 			$http.post(Constants.Api.ADD_VIDEO, {
-				url: self.url
+				url: self.url,
+				youtubeId: self.youtubeId
 			});
 		}
+		
+		function youtubeUrlParser (url) {
+			if (!url) return false;
+			var regExp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
+			var match = url.match(regExp);
+			return (match && match[1].length === 11) ? match[1] : false;
+		}
+
 	}
 		
 }

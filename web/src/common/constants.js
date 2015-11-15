@@ -9,6 +9,7 @@ angular
 			AUTH_GET_URL: '/api/auth/url',
 		
 			ADD_VIDEO: '/api/video/add',
+			GET_VIDEO: '/api/video',
 			GET_VIDEO_LIST: '/api/video/list'
 		}
 	});
