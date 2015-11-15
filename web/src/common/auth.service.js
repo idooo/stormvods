@@ -4,11 +4,10 @@ angular
 	.module(`${window.APP_NAME}.common`)
 	.service('Auth', authService);
 
-const ENDPOINT_ME = '/api/users/me';
 const LS_KEY = 'token';
 const HEADER = 'Authorization';
 
-function authService ($rootScope, $http, localStorageService) {
+function authService ($rootScope, $http, localStorageService, Constants) {
 	var self = this;
 	var observers = [];
 	
@@ -27,7 +26,7 @@ function authService ($rootScope, $http, localStorageService) {
 	}
 	
 	function authorize () {
-		$http.get(ENDPOINT_ME)
+		$http.get(Constants.Api.AUTH_ME)
 			.then((response) => {
 				self.isAuth = true;
 				self.user = response.data;

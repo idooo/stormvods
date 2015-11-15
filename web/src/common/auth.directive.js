@@ -13,8 +13,6 @@ const TEMPLATE = `
 	</div>
 `;
 
-const ENDPOINT_GET_URL = '/api/auth/url';
-
 function authDirective () {
 
 	return {
@@ -26,12 +24,12 @@ function authDirective () {
 		controller: controller
 	};
 	
-	function controller ($http, $window, Auth) {
+	function controller ($http, $window, Auth, Constants) {
 		
 		this.openAuthUrl = openAuthUrl;
 		
 		var authUrl = '';
-		var authPromise = $http.get(ENDPOINT_GET_URL).then((response) => {
+		var authPromise = $http.get(Constants.Api.AUTH_GET_URL).then((response) => {
 			authUrl = response.data.url;
 		});
 		

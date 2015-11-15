@@ -6,6 +6,8 @@ var logger = require('winston'),
 	Cache = require('./cache');
 
 class Auth {
+	
+	// TODO: Cache user _id
 
 	static findUserByToken (token) {
 		var cache = new Cache(),

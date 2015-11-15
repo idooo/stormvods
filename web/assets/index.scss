@@ -2,11 +2,12 @@
 @import "neat";
 
 @import "./reset";
+@import "./variables";
+
+@import "./common/container";
 @import "./common/header";
+@import "./common/page";
+@import "./common/form";
+@import "./common/buttons";
 
-$color: #dddddd;
-
-html, body {
-	font-family: 'PT Sans', sans-serif;
-	background-color: $color;
-}
+@import "./pages/addvideo.page";

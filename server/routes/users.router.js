@@ -5,8 +5,8 @@ var Router = require('./abstract.router');
 class UsersRouter extends Router {
 
 	configure () {
-		this.bind('/api/users/me', this.routeMe, {auth:true}); 
-		this.bind('/api/users', this.routeData); // TODO: Remove
+		this.bindGET('/api/users/me', this.routeMe, {auth:true}); 
+		this.bindGET('/api/users', this.routeData); // TODO: Remove
 	}
 	
 	routeMe (req, res, next, username) {

@@ -1,0 +1,9 @@
+
+html, body {
+	font-family: $base-font-family;
+	background-color: $base-background-color;
+}
+
+.content {
+	@include outer-container;
+}

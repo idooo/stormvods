@@ -8,7 +8,24 @@ const TEMPLATE = `
 	<div>
 		index page
 		
-		<video-container></video-container>
+		<!--
+		<iframe 
+			width="560" 
+			height="315" 
+			src="https://www.youtube-nocookie.com/embed/IwoFyRYc_V0?rel=0&amp;controls=0&amp;showinfo=0" 
+			frameborder="0" 
+			allowfullscreen>
+		</iframe>
+			
+		<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/aJFi3ANmR_w?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+		<div>
+			<input type="checkbox" ng-model="ctrl.hideControls">hide controls
+		</div>
+		-->
+		
+		<div ng-repeat="video in ctrl.videos">
+			<video-container video="video"></video-container>
+		</div>
 	</div>
 `;
 
@@ -16,19 +33,20 @@ function indexPage () {
 
 	return {
 		restrict: 'E',
+		controllerAs: 'ctrl',
 		replace: true,
 		scope: true,
 		template: TEMPLATE,
-		link: link,
 		controller: controller
 	};
 	
-	function link (scope, element) {
-
-	}
-	
-	function controller () {
+	function controller ($http, Constants) {
+		var self = this;
 		
+		self.videos = [];
+		
+		$http.get(Constants.Api.GET_VIDEO_LIST)
+			.then(response => self.videos = response.data);
 	}
 		
 }

@@ -22,6 +22,10 @@ function configuration ($stateProvider, $urlRouterProvider) {
 		.state('callback', {
 			url: '/callback',
 			template: '<callback-page/>'
+		})
+		.state('addvideo', {
+			url: '/addvideo',
+			template: '<add-video-page/>'
 		});
 }
 

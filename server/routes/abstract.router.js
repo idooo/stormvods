@@ -18,8 +18,16 @@ class Router {
 		this.models = new Database().models;
 		logger.debug('Router has been loaded');
 	}
+	
+	bindGET (url, route, options) {
+		this.bind(url, 'get', route, options);
+	}
 
-	bind (url, route, options) {
+	bindPOST (url, route, options) {
+		this.bind(url, 'post', route, options);
+	}
+
+	bind (url, methodName, route, options) {
 		var self = this,
 			wrapper = route.bind(this);
 
@@ -34,12 +42,14 @@ class Router {
 				// Debug	
 				if (self.config.debug && self.config.debug.alwaysLogin) username = self.config.debug.alwaysLogin;	
 					
+				// TODO: we need user _id as well
+				
 				if (username) route.call(self, req, res, next, username);
 				else Router.fail(res, {message: 'Access denied'}, 403);
 			};
 		}
 
-		this.server.get(url, wrapper);
+		this.server[methodName](url, wrapper);
 	}
 
 	static setCookie (r, name, value) {

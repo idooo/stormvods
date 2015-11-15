@@ -10,8 +10,17 @@ class Video extends SchemaDefinition {
 		this.schema = new mongoose.Schema({
 			name: {
 				type: String,
-				trim: true,
-				required: true
+				trim: true
+			},
+			youtubeId: {
+				type: String,
+				trim: true
+			},
+			
+			// TODO: Remove
+			url: {
+				type: String,
+				trim: true
 			}
 		});
 		

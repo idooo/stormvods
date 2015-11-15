@@ -15,11 +15,14 @@ var appModules = [
 appModules.forEach((moduleName) => angular.module(moduleName, []));
 
 // App modules
+require('./common/constants.js');
 require('./common/auth.service.js');
 require('./common/auth.directive.js');
 require('./common/header.directive.js');
 require('./common/video.directive.js');
 require('./index/index.page.js');
 require('./callback/callback.page.js');
+require('./addvideo/addvideo.page.js');
+require('./addvideo/addvideo.directive.js');
 
 module.exports = modules.concat(appModules);

@@ -27,8 +27,8 @@ class AuthRouter extends Router {
 		this.reddit = new RedditAPIClient(this.config.reddit);
 
 		// routes	
-		this.bind(API_CALLBACK_PATH, this.routeCallback);
-		this.bind(API_URL_PATH, this.routeAuthUrl);
+		this.bindGET(API_CALLBACK_PATH, this.routeCallback);
+		this.bindGET(API_URL_PATH, this.routeAuthUrl);
 	}
 
 	routeAuthUrl (req, res, next) {
@@ -85,7 +85,10 @@ class AuthRouter extends Router {
 				});
 
 				user.save(function (err) {
-					if (err) throw {message: 'Internal error'};
+					if (err) {
+						logger.error(err);	
+						throw {message: 'Internal error'};
+					}
 					else Promise.resolve();
 				});
 			})

@@ -16,7 +16,7 @@ class StaticRouter extends Router {
 		this.compileIndexTemplate();
 
 		// This route should go first
-		this.bind(/\/($|\?.*|\#.*|index.html)/, this.indexRender);
+		this.bindGET(/\/($|\?.*|\#.*|index.html)/, this.indexRender);
 		
 		this.server.get(/\/?.*/, restify.serveStatic({
 			directory: __dirname + '/../../web',
