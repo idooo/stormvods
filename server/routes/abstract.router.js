@@ -36,16 +36,19 @@ class Router {
 		// Auth
 		if (options.auth) {
 			wrapper = function (req, res, next) {
-				var token = req.header(AUTH_HEADER),
-					username = Auth.findUserByToken(token);
-					
-				// Debug	
-				if (self.config.debug && self.config.debug.alwaysLogin) username = self.config.debug.alwaysLogin;	
-					
-				// TODO: we need user _id as well
+				var token = req.header(AUTH_HEADER);
 				
-				if (username) route.call(self, req, res, next, username);
-				else Router.fail(res, {message: 'Access denied'}, 403);
+				Auth.findUserByToken(token, function (username) {
+					
+					// Debug	
+					if (self.config.debug && self.config.debug.alwaysLogin) {
+						// username = self.config.debug.alwaysLogin;
+					}	
+						
+					// TODO: we need user _id as well
+					if (username) route.call(self, req, res, next, username);
+					else Router.fail(res, {message: 'Access denied'}, 403);
+				});
 			};
 		}
 

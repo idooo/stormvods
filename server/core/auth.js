@@ -9,15 +9,16 @@ class Auth {
 	
 	// TODO: Cache user _id
 
-	static findUserByToken (token) {
-		var cache = new Cache(),
-			username = cache.get(token);
+	static findUserByToken (token, callback) {
+		var cache = new Cache();
 		
-		if (!username) {
-			logger.debug(`Token "${token}" not found in cache`);
-			return false;
-		}
-		return username;
+		cache.get(token, function (err, value) {
+			if (!value) {
+				logger.debug(`Token "${token}" not found in cache`);
+				callback(false);
+			}
+			callback(value);
+		});
 	}
 	
 	static authorize (username) {

@@ -3,7 +3,8 @@
 
 var	restify = require('restify'),
 	Database = require('./core/database'),
-	RouterLoader = require('./core/routing');
+	RouterLoader = require('./core/routing'),
+	Cache = require('./core/cache');
 
 class Server {
 	constructor (configName) {
@@ -35,6 +36,9 @@ class Server {
 				if (this.config.debug[key]) this.logger.warn(`Server: debug setting "${key}" enabled`);
 			});
 		}
+		
+		// Init other things
+		new Cache(this.config.redis);
 	}
 	start () {
 		var self = this;
