@@ -1,12 +1,15 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-	SchemaDefinition = require('./abstract.definition');
+	uniqueValidator = require('mongoose-unique-validator'),
+	SchemaDefinition = require('./abstract.definition'),
+	Constants = require('../constants');
 
 class Video extends SchemaDefinition {
 
 	constructor () {
 		super();
+		
 		this.schema = new mongoose.Schema({
 			name: {
 				type: String,
@@ -14,7 +17,12 @@ class Video extends SchemaDefinition {
 			},
 			youtubeId: {
 				type: String,
-				trim: true
+				trim: true,
+				unique: true, 
+				validate: {
+					validator: (value) => value.toString().length === Video.constants().YOUTUBE_ID_LENGTH,
+					message: Constants.ERROR_INVALID
+				}
 			},
 			
 			// TODO: Remove
@@ -24,6 +32,11 @@ class Video extends SchemaDefinition {
 			}
 		});
 		
+		this.schema.plugin(uniqueValidator, {message: Constants.ERROR_UNIQUE});
+	}
+	
+	static constants () {
+		return {YOUTUBE_ID_LENGTH: 11};
 	}
 }
 

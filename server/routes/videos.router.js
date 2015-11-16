@@ -1,17 +1,19 @@
 'use strict';
 
-var Router = require('./abstract.router'),
+var logger = require('winston'),
+	_omit = require('lodash/object/omit'),
 	ObjectId = require('mongoose').Types.ObjectId,
-	logger = require('winston');
-
-const NOT_FOUND_MESSAGE = 'Video not found'; 
+	Router = require('./abstract.router'),
+	Video = require('../models/video.model'),
+	Constants = require('../constants');
 
 class VideoRouter extends Router {
 
 	configure () {
 		this.bindPOST('/api/video/add', this.routeAdd, {auth:true});
 		this.bindGET('/api/video/list', this.routeList); // TODO: Remove
-		this.bindGET('/api/video/:id', this.routeVideo);
+		this.bindGET('/api/video/validate', this.routeValidate);
+		this.bindGET('/api/video/:id', this.routeVideo); // Must be the latest
 	}
 	
 	routeAdd (req, res, next, username) {
@@ -24,7 +26,7 @@ class VideoRouter extends Router {
 
 		video.save(function (err, videoFromDB) {
 			if (err) {
-				logger.error(err);
+				logger.error(_omit(err, 'stack'));
 				Router.fail(res, err);
 				return next();
 			}
@@ -54,18 +56,43 @@ class VideoRouter extends Router {
 			id = ObjectId(req.params.id); 
 		}
 		catch (e) {
-			logger.info(`${NOT_FOUND_MESSAGE} "${req.params.id}"`)
-			Router.fail(res, {message: NOT_FOUND_MESSAGE}, 404);
+			logger.info(`${Constants.NOT_FOUND_MESSAGE} "${req.params.id}"`);
+			Router.fail(res, {message: Constants.NOT_FOUND_MESSAGE}, 404);
 			return next();
 		}
 		
 		this.models.Video.findOne({_id: id})
 			.then(function (video) {
-				Router.success(res, video);
+				if (!video) Router.fail(res, {message: Constants.NOT_FOUND_MESSAGE}, 404);
+				else Router.success(res, video);
 				return next();
 			})
 			.catch(function (err) {
-				Router.fail(res, {message: NOT_FOUND_MESSAGE}, 404);
+				Router.fail(res, err);
+				return next();
+			});
+	}
+	
+	routeValidate (req, res, next) {
+		var error;
+		
+		if (!req.params.id) error = Constants.ERROR_REQUIRED;
+		else if (req.params.id.length !== Video.constants().YOUTUBE_ID_LENGTH) error = Constants.ERROR_INVALID;
+		
+		if (error) {
+			Router.fail(res, {message: {id: error}});
+			return next();
+		}
+		
+		this.models.Video.findOne({youtubeId: req.params.id}, '_id')
+			.then(function (video) {
+				var data = {isFound: !!(video)};
+				if (data.isFound) data.id = video._id;
+				Router.success(res, data);
+				return next();
+			})
+			.catch(function (err) {
+				Router.fail(res, err);
 				return next();
 			});
 	}

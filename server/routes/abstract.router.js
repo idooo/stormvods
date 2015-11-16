@@ -52,14 +52,8 @@ class Router {
 		this.server[methodName](url, wrapper);
 	}
 
-	static setCookie (r, name, value) {
-		r.writeHead(200, {
-			'Set-Cookie': `${name}=${value}`
-		});
-	}
-
 	static success (r, response) {
-		if (typeof response === 'undefined') response = {};
+		if (typeof response === 'undefined' || response === null) response = {};
 		response.status = 'ok';
 		r.send(200, response);
 	}
@@ -72,7 +66,15 @@ class Router {
 			code = 500;
 			response = {error: response.err};
 		}
-		else if (response.name === 'ValidationError') response = {error: response.errors};
+		else if (response.name === 'ValidationError') {
+			var errors = {};
+				
+			for (let fieldName of Object.keys(response.errors)) {
+				errors[fieldName] = response.errors[fieldName].properties.message;
+			}
+			
+			response = {message: errors};
+		}
 
 		response.status = 'error';
 		response.code = code;

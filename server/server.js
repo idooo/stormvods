@@ -1,8 +1,7 @@
 /* global __dirname, process */
 'use strict';
 
-var	CookieParser = require('restify-cookies'),
-	restify = require('restify'),
+var	restify = require('restify'),
 	Database = require('./core/database'),
 	RouterLoader = require('./core/routing');
 
@@ -26,7 +25,6 @@ class Server {
 		this.server = restify.createServer({});
 		this.server.use(restify.bodyParser());
 		this.server.use(restify.queryParser());
-		this.server.use(CookieParser.parse);
 
 		// Load routing
 		new RouterLoader(this.server, this.config).loadRouters();

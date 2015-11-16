@@ -3,14 +3,17 @@
 var logger = require('winston');
 
 class SchemaDefinition {
+	
 	constructor () {
 		this.name = this.constructor.name;
 		logger.debug('Schema has been loaded');
 	}
+	
 	configure () {
 		this.schema.statics.getList = this.getList;
 		this.schema.statics.findOne = this.findOne;
 	}
+	
 	/**
 	* Generate the 'get collection' function with promises for scheme
 	* @returns {Promise}
@@ -29,6 +32,7 @@ class SchemaDefinition {
 			});
 		});
 	}
+	
 	findOne (query, fields) {
 		var self = this;
 		

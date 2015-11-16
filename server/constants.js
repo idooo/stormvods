@@ -1,0 +1,11 @@
+// list of constants
+
+module.exports = {
+	
+	// Errors
+	ERROR_INVALID: 'INVALID_VALUE',
+	ERROR_UNIQUE: 'EXPECTED_UNIQUE_VALUE',
+	ERROR_NOT_FOUND: 'NOT_FOUND',
+	ERROR_REQUIRED: 'REQUIRED'
+};
+	

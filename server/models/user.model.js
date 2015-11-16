@@ -16,7 +16,7 @@ class User extends SchemaDefinition {
 			redditInfo: {
 				type: Object
 			},
-			creation_date: {
+			creation_date: { // eslint-disable-line camelcase
 				type: Date,
 				default: Date.now
 			}

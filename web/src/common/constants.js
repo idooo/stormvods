@@ -1,4 +1,4 @@
-/* global angular, Rx */
+/* global angular */
 
 angular
 	.module(`${window.APP_NAME}.common`)
@@ -10,6 +10,7 @@ angular
 		
 			ADD_VIDEO: '/api/video/add',
 			GET_VIDEO: '/api/video',
-			GET_VIDEO_LIST: '/api/video/list'
+			GET_VIDEO_LIST: '/api/video/list',
+			VALIDATE_VIDEO: '/api/video/validate'
 		}
 	});

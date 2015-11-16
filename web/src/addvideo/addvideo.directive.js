@@ -10,6 +10,8 @@ const TEMPLATE = `
 		<label>Link to video</label>
 		<input type="text" name="url" ng-model="ctrl.url" required="">
 		
+		<div>isUnique: {{ctrl.isYoutubeIdUnique}}</div>
+		
 		<span ng-show="ctrl.form.$submitted">
 			<div ng-show="ctrl.form.url.$error.required">URL is required</div>
 		</span>
@@ -30,18 +32,20 @@ function addVideoDirective () {
 		controllerAs: 'ctrl'
 	};
 	
-	function controller ($scope, $http, Constants) {
-		var self = this;
+	function controller ($scope, $http, $interval, Constants) {
+		var self = this,
+			isServerValidationInProgress = false,
+			serverValidationInterval;
+		
+		self.youtubeId = '';
+		self.isYoutubeIdUnique = false;
 		
 		self.submit = submit;
-		self.youtubeId = '';
 		
 		$scope.$watch('ctrl.url', function (newValue) {
 			self.youtubeId = youtubeUrlParser(newValue);
+			if (self.youtubeId) serverValidation();
 		});
-		
-		// a2Nj9BlJmEs
-		// https://www.youtube.com/watch?v=a2Nj9BlJmEs
 		
 		function submit () {
 			if (!self.form.$valid && !self.youtubeId) return;
@@ -56,6 +60,29 @@ function addVideoDirective () {
 			var regExp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
 			var match = url.match(regExp);
 			return (match && match[1].length === 11) ? match[1] : false;
+		}
+		
+		/**
+		 * Validate youtube ID on the server side to prevent duplicates
+		 */
+		function serverValidation () {
+			if (isServerValidationInProgress) {
+				if (!serverValidationInterval) serverValidationInterval = $interval(serverValidation, 1000);
+				return;
+			} 	
+			
+			if (serverValidationInterval) {
+				$interval.cancel(serverValidationInterval);
+				serverValidationInterval = null;
+			}
+			isServerValidationInProgress = true;
+			
+			$http.get(`${Constants.Api.VALIDATE_VIDEO}?id=${self.youtubeId}`)
+				.then((response) => {
+					self.isYoutubeIdUnique = response.data;
+				})
+				.finally(() => isServerValidationInProgress = false);
+			
 		}
 
 	}

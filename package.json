@@ -46,12 +46,13 @@
     "angular-ui-router": "^0.2.15",
     "base64url": "^1.0.5",
     "handlebars": "^4.0.4",
+    "lodash": "^3.10.1",
     "mongoose": "^4.2.5",
+    "mongoose-unique-validator": "^0.6.1",
     "node-uuid": "^1.4.4",
     "redis": "^2.3.0",
     "request": "^2.65.0",
     "restify": "^4.0.3",
-    "restify-cookies": "^0.2.0",
     "winston": "^2.1.0"
   }
 }

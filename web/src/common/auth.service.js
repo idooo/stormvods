@@ -1,4 +1,4 @@
-/* global angular, Rx */
+/* global angular */
 
 angular
 	.module(`${window.APP_NAME}.common`)
@@ -32,7 +32,7 @@ function authService ($rootScope, $http, localStorageService, Constants) {
 				self.user = response.data;
 				notify();
 			})
-			.catch((response) => {
+			.catch(() => {
 				self.isAuth = false;
 				self.user = {};
 				updateSessionInfo();

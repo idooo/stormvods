@@ -24,7 +24,7 @@ class Database {
 	
 	connect () {
 		var options = {
-			db: {native_parser: true},
+			db: {native_parser: true}, // eslint-disable-line camelcase
 			server: {poolSize: 5},
 			user: this.config.username,
 			pass: this.config.password

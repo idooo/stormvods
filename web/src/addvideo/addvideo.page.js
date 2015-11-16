@@ -25,7 +25,7 @@ function addVideoPage () {
 		controller: controller
 	};
 	
-	function link (scope, element) {
+	function link () {
 
 	}
 	

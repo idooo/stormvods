@@ -17,6 +17,7 @@ const API_URL_PATH = '/api/auth/url';
 
 var uuid = require('node-uuid'),
 	logger = require('winston'),
+	_omit = require('lodash/object/omit'),
 	Auth = require('../core/auth'),
 	RedditAPIClient = require('../core/reddit'),
 	Router = require('./abstract.router');
@@ -86,6 +87,7 @@ class AuthRouter extends Router {
 
 				user.save(function (err) {
 					if (err) {
+						logger.error(_omit(err, 'stack'));
 						logger.error(err);	
 						throw {message: 'Internal error'};
 					}
