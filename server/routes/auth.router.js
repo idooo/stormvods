@@ -73,7 +73,7 @@ class AuthRouter extends Router {
 			
 			// Create user if necessary
 			.then(function (userDataFromDB) {
-				if (userDataFromDB) return Promise.resolve();
+				if (userDataFromDB) return Promise.resolve(userDataFromDB);
 				var user = new self.models.User({
 					name: userData.name,
 					redditInfo: {
@@ -85,19 +85,21 @@ class AuthRouter extends Router {
 					}
 				});
 
-				user.save(function (err) {
+				user.save(function (err, createdUser) {
 					if (err) {
 						logger.error(_omit(err, 'stack'));
 						logger.error(err);	
 						throw {message: 'Internal error'};
 					}
-					else Promise.resolve();
+					else {
+						Promise.resolve(createdUser);
+					}
 				});
 			})
 			
 			// Authorise user 
-			.then(function () {
-				Router.success(res, Auth.authorize(userData.name));
+			.then(function (userDataFromDB) {
+				Router.success(res, Auth.authorize(userDataFromDB._id, userDataFromDB.name));
 				return next();
 			})
 			

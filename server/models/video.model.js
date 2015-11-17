@@ -24,6 +24,10 @@ class Video extends SchemaDefinition {
 					message: Constants.ERROR_INVALID
 				}
 			},
+			rating: {
+				type: Number,
+				default: 0
+			},
 			
 			// TODO: Remove
 			url: {

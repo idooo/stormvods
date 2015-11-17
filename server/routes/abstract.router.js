@@ -40,15 +40,23 @@ class Router {
 				var token = req.header(AUTH_HEADER);
 				
 				Auth.findUserByToken(token)
-					.then(function (username) {
-							
+					.then(function (authResponse) {
+						var name, id;
+						
+						if (authResponse) {
+							authResponse = authResponse.split(':');
+							id = authResponse[0];
+							name = authResponse[1];
+						}
+						 	
 						// Debug	
 						if (self.config.debug && self.config.debug.alwaysLogin) {
-							username = self.config.debug.alwaysLoginUsername;
+							name = self.config.debug.alwaysLoginUsername;
+							id = 'MOCKED';
 						}	
 						
 						// TODO: we need user _id as well
-						if (username) route.call(self, req, res, next, username);
+						if (name) route.call(self, req, res, next, {id, name});
 						else Router.fail(res, {message: Constants.ERROR_ACCESS_DENIED}, 403);
 					})
 					.catch(function () {

@@ -16,9 +16,13 @@ class User extends SchemaDefinition {
 			redditInfo: {
 				type: Object
 			},
-			creation_date: { // eslint-disable-line camelcase
+			creationDate: {
 				type: Date,
 				default: Date.now
+			},
+			votesVideos: {
+				type: Array,
+				default: Array
 			}
 		});
 		

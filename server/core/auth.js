@@ -14,13 +14,13 @@ class Auth {
 		return cache.get(token);
 	}
 	
-	static authorize (username) {
+	static authorize (id, username) {
 		var cache = new Cache(),	
 			token = base64url(uuid.v4());
 
 		token = token.slice(9) + token.slice(0, 9);
 		
-		cache.put(token, username);
+		cache.put(token, `${id.toString()}:${username}`);
 		logger.debug(`User ${username} authorized`);
 		
 		return {token, username};

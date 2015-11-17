@@ -1,6 +1,7 @@
 'use strict';
 
-var Router = require('./abstract.router');
+var Router = require('./abstract.router'),
+	Constants = require('../constants');
 
 class UsersRouter extends Router {
 
@@ -9,10 +10,11 @@ class UsersRouter extends Router {
 		this.bindGET('/api/users', this.routeData); // TODO: Remove
 	}
 	
-	routeMe (req, res, next, username) {
-		this.models.User.findOne({name: username}, '_id name')
+	routeMe (req, res, next, auth) {
+		this.models.User.findOne({name: auth.name}, '_id name')
 			.then(function (user) {
-				Router.success(res, user);
+				if (!user) Router.fail(res, {message: Constants.ERROR_NOT_FOUND});
+				else Router.success(res, auth);
 				return next();
 			})
 			.catch(function (err) {
