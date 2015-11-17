@@ -3,7 +3,8 @@
 var util = require('util'),
 	logger = require('winston'),
 	Auth = require('../core/auth'),
-	Database = require('../core/database');
+	Database = require('../core/database'),
+	Constants = require('../constants');
 
 const AUTH_HEADER = 'Authorization';
 const DEFAULT_ROUTE_OPTIONS = {
@@ -38,17 +39,21 @@ class Router {
 			wrapper = function (req, res, next) {
 				var token = req.header(AUTH_HEADER);
 				
-				Auth.findUserByToken(token, function (username) {
-					
-					// Debug	
-					if (self.config.debug && self.config.debug.alwaysLogin) {
-						// username = self.config.debug.alwaysLogin;
-					}	
+				Auth.findUserByToken(token)
+					.then(function (username) {
+							
+						// Debug	
+						if (self.config.debug && self.config.debug.alwaysLogin) {
+							username = self.config.debug.alwaysLoginUsername;
+						}	
 						
-					// TODO: we need user _id as well
-					if (username) route.call(self, req, res, next, username);
-					else Router.fail(res, {message: 'Access denied'}, 403);
-				});
+						// TODO: we need user _id as well
+						if (username) route.call(self, req, res, next, username);
+						else Router.fail(res, {message: Constants.ERROR_ACCESS_DENIED}, 403);
+					})
+					.catch(function () {
+						Router.fail(res, {message: Constants.ERROR_INTERNAL}, 500);
+					});
 			};
 		}
 

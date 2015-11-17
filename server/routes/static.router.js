@@ -27,7 +27,7 @@ class StaticRouter extends Router {
 	
 	compileIndexTemplate () {
 		this.template = Handlebars.compile(fs.readFileSync(`${TEMPLATES_PATH}/index.html`).toString());
-		logger.info('index.html template compiled');
+		logger.debug('index.html template compiled');
 	}
 
 	indexRender (req, res) {

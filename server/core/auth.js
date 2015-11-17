@@ -5,20 +5,13 @@ var logger = require('winston'),
 	base64url = require('base64url'),
 	Cache = require('./cache');
 
+var cache = new Cache();
+
 class Auth {
-	
 	// TODO: Cache user _id
 
-	static findUserByToken (token, callback) {
-		var cache = new Cache();
-		
-		cache.get(token, function (err, value) {
-			if (!value) {
-				logger.debug(`Token "${token}" not found in cache`);
-				callback(false);
-			}
-			callback(value);
-		});
+	static findUserByToken (token) {
+		return cache.get(token);
 	}
 	
 	static authorize (username) {

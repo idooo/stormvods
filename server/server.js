@@ -38,7 +38,7 @@ class Server {
 		}
 		
 		// Init other things
-		new Cache(this.config.redis);
+		new Cache().start(this.config.redis);
 	}
 	start () {
 		var self = this;

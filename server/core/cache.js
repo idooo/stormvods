@@ -4,50 +4,60 @@ var logger = require('winston'),
 	redis = require('redis'),
 	instance = null;
 
-const TYPE_UNKNOWN = 'UNKNOWN'
+const TYPE_UNKNOWN = 'UNKNOWN';
 const TYPE_REDIS = 'REDIS';
 const TYPE_MEMORY = 'MEMORY';
+const RECONNECT_TIMER = 20 * 1000; // each 1 min try to reconnect to redis if connection is broken
 
 /** singleton */
 class Cache {
 	
-	constructor (config) {
+	constructor () {
 		if (instance) return instance;
 		instance = this; // eslint-disable-line consistent-this
 		
 		logger.info('Cache instance have been created');
-		
-		this.config = config;
 		this.type = TYPE_UNKNOWN;
-		
-		this.start();		
 	}
 	
-	start () {
-		var self = this,
-			connectionAttempts = 0;
+	start (config) {
+		var self = this;
 		
-		this.reddisClient = redis.createClient({
-			host: this.config.host,
-			port: this.config.port,
-			max_attempts: this.config.maxAttempts
+		logger.info('Trying to connect to Redis');
+		
+		self.config = config;
+		
+		self.redisClient = redis.createClient({
+			host: self.config.host,
+			port: self.config.port,
+			max_attempts: self.config.maxAttempts // eslint-disable-line camelcase
 		});
 		
-		this.reddisClient
+		self.redisClient
 			.on('error', function (err) {
-				logger.warn(err.toString());
-				if (self.type === TYPE_UNKNOWN) {
-					connectionAttempts++;
-					if (connectionAttempts >= self.config.maxAttempts) {
-						self.type = TYPE_MEMORY;
-						self.localFallback();
-					}	
+				if (err.code === 'CONNECTION_BROKEN') {
+					logger.error(err.toString());
+					self.type = TYPE_MEMORY;
+					self.localFallback();
+					self.startReconnectTimer();
 				}
+				else logger.warn(err.toString());
 			})
 			.on('ready', function () {
 				logger.info('Connection established');
+				if (self.type === TYPE_MEMORY) {
+					self.type = TYPE_REDIS; // to set right type before the migration 
+					self.moveCache();
+				}
 				self.type = TYPE_REDIS;
 			});
+	}
+	
+	startReconnectTimer () {
+		logger.info(`Redis reconnect timer was started ${RECONNECT_TIMER} ms`);
+		setTimeout (() => {
+			this.start(this.config);
+		}, RECONNECT_TIMER);
 	}
 	
 	localFallback () {
@@ -55,23 +65,41 @@ class Cache {
 		this.cache = {};	
 	}
 	
+	moveCache () {
+		var migrated = 0;
+		for (var key in this.cache) {
+			this.put(key, this.cache[key]);
+			migrated++;
+		}
+		this.cache = {};
+		logger.info(`Migrated ${migrated} records from local cache to Redis`);
+	}
+	
 	put (key, value) {
-		if (this.type === TYPE_REDIS) this.reddisClient.set(key, value);
+		if (this.type === TYPE_REDIS) this.redisClient.set(key, value);
 		else this.cache[key] = value;
 		
 		logger.debug(`Put "${key}" => "${value}" to cache`);
 	}
 	
-	// TODO Promises
-	get (key, callback) {
-		if (typeof callback !== 'function') {
-			return logger.err(`Expecting callback to return value from Cache for "${key}"`);
-		}		
-		
-		if (this.type === TYPE_REDIS) this.reddisClient.get(key, callback);
-		else callback(null, this.cache[key]);
-		
-		logger.debug(`Return "${key}" => "${this.cache[key]}" from cache`);		
+	get (key) {
+		var self = this;
+		return new Promise(function (resolve, reject) {
+			if (self.type === TYPE_REDIS) {
+				self.redisClient.get(key, (err, value) => {
+					if (err) {
+						logger.error(err);
+						return reject(err);
+					}
+					logger.debug(`Returning "${key}" => "${value}" from Redis`);	
+					resolve(value);
+				});
+			}
+			else {
+				logger.debug(`Returning "${key}" => "${self.cache[key]}" from local cache`);	
+				resolve(self.cache[key]);
+			}
+		});	
 	}
 }
 

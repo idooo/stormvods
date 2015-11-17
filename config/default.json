@@ -30,6 +30,7 @@
 	"debug": {
 		"disableTemplateCaching": true,
 		"showStackTrace": true,
-		"alwaysLogin": "idonreddit"
+		"alwaysLogin": false,
+		"alwaysLoginUsername": "idonreddit"
 	}
 }
