@@ -7,8 +7,13 @@ angular
 const TEMPLATE = `
 	<form name="ctrl.form" novalidate>
 		
-		<label>Link to video</label>
-		<input type="text" name="url" ng-model="ctrl.url" required="">
+		<fieldset>
+			<label>Link to video</label>
+			<input type="text" name="url" ng-model="ctrl.url" required="">
+		
+			<label>Tournament</label>
+			<input type="text" name="tournament" ng-model="ctrl.tournament" required="">
+		</fieldset>
 		
 		<div>isUnique: {{ctrl.isYoutubeIdUnique}}</div>
 		

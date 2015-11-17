@@ -7,9 +7,20 @@ var logger = require('winston'),
 const TYPE_UNKNOWN = 'UNKNOWN';
 const TYPE_REDIS = 'REDIS';
 const TYPE_MEMORY = 'MEMORY';
-const RECONNECT_TIMER = 20 * 1000; // each 1 min try to reconnect to redis if connection is broken
+const RECONNECT_TIMER = 60 * 1000; // each 1 min try to reconnect to redis if connection is broken
 
-/** singleton */
+/** 
+ * @singleton 
+ * 
+ * This object will try to establish connection with Redis
+ * and will use local cache in case of errors.
+ * 
+ * If connection with Redis was lost, the reconnect attempts
+ * will be started by timer (RECONNECT_TIMER).
+ *  
+ * The local cache will be migrated to Redis once connection 
+ * will be restored
+ */
 class Cache {
 	
 	constructor () {
