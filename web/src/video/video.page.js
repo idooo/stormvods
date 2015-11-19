@@ -1,5 +1,3 @@
-/* global angular */
-
 angular
 	.module(`${window.APP_NAME}.pages`)
 	.directive('videoPage', videoPage);

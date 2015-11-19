@@ -30,7 +30,11 @@
 	"debug": {
 		"disableTemplateCaching": true,
 		"showStackTrace": true,
-		"alwaysLogin": false,
-		"alwaysLoginUsername": "idonreddit"
-	}
+		"alwaysLogin": true,
+		"alwaysLoginUsername": "idonreddit",
+		"alwaysLoginId": "564b00fe5d63f20f4444e4b6"
+	},
+	"votes": {
+		"delayRestriction": 1000
+	} 
 }

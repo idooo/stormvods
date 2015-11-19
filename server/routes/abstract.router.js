@@ -48,11 +48,11 @@ class Router {
 							id = authResponse[0];
 							name = authResponse[1];
 						}
-						 	
+
 						// Debug	
 						if (self.config.debug && self.config.debug.alwaysLogin) {
 							name = self.config.debug.alwaysLoginUsername;
-							id = 'MOCKED';
+							id = self.config.debug.alwaysLoginId;
 						}	
 						
 						// TODO: we need user _id as well

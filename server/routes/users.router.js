@@ -7,7 +7,7 @@ class UsersRouter extends Router {
 
 	configure () {
 		this.bindGET('/api/users/me', this.routeMe, {auth:true}); 
-		this.bindGET('/api/users', this.routeData); // TODO: Remove
+		this.bindGET('/api/users', this.routeUsers); // TODO: Remove
 	}
 	
 	routeMe (req, res, next, auth) {
@@ -23,7 +23,7 @@ class UsersRouter extends Router {
 			});
 	}
 	
-	routeData (req, res, next) {
+	routeUsers (req, res, next) {
 		this.models.User.getList()
 			.then(function (datasources) {
 				Router.success(res, datasources);
