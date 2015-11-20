@@ -4,12 +4,13 @@ var logger = require('winston'),
 	Router = require('./abstract.router'),
 	Constants = require('../constants');
 
+const API_VOTE_PATH = '/api/vote/:type/:id';
 const TYPES = ['video'];
 
 class VoteRouter extends Router {
 
 	configure () {
-		this.bindPOST('/api/vote/:type/:id', this.routeVote, {auth:true});
+		this.bindPOST(API_VOTE_PATH, this.routeVote, {auth:true});
 	}
 
 	routeVote (req, res, next, auth) {

@@ -1,11 +1,9 @@
-/* global Buffer */
-
 /**
  * Routes
  *
  * GET /api/auth/url
  * Returns auth link for reddit
- * 
+ *
  * GET /api/auth/callback
  *
  */
@@ -27,7 +25,7 @@ class AuthRouter extends Router {
 	configure () {
 		this.reddit = new RedditAPIClient(this.config.reddit);
 
-		// routes	
+		// routes
 		this.bindGET(API_CALLBACK_PATH, this.routeCallback);
 		this.bindGET(API_URL_PATH, this.routeAuthUrl);
 	}
@@ -70,7 +68,7 @@ class AuthRouter extends Router {
 				userData = _userData;
 				return self.models.User.findOne({name: userData.name}, 'name');
 			})
-			
+
 			// Create user if necessary
 			.then(function (userDataFromDB) {
 				if (userDataFromDB) return Promise.resolve(userDataFromDB);
@@ -88,7 +86,7 @@ class AuthRouter extends Router {
 				user.save(function (err, createdUser) {
 					if (err) {
 						logger.error(_omit(err, 'stack'));
-						logger.error(err);	
+						logger.error(err);
 						throw {message: 'Internal error'};
 					}
 					else {
@@ -96,13 +94,13 @@ class AuthRouter extends Router {
 					}
 				});
 			})
-			
-			// Authorise user 
+
+			// Authorise user
 			.then(function (userDataFromDB) {
 				Router.success(res, Auth.authorize(userDataFromDB._id, userDataFromDB.name));
 				return next();
 			})
-			
+
 			.catch(function (err) {
 				if (err.stack) {
 					logger.warn(err.stack);
@@ -110,7 +108,7 @@ class AuthRouter extends Router {
 						err = {message: err.stack.toString()};
 					}
 				}
-				
+
 				Router.fail(res, err);
 				return next();
 			});

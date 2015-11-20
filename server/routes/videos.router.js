@@ -2,7 +2,6 @@
 
 var logger = require('winston'),
 	_omit = require('lodash/object/omit'),
-	ObjectId = require('mongoose').Types.ObjectId,
 	Router = require('./abstract.router'),
 	Video = require('../models/video.model'),
 	Constants = require('../constants');
@@ -19,7 +18,8 @@ class VideoRouter extends Router {
 	routeAdd (req, res, next, auth) {
 		var self = this;
 
-		// TODO: Search for video first to prevent duplicates
+		// TODO: add author id to the details
+		// TODO: add video id to the author?
 		// TODO: check required params
 
 		var video = new self.models.Video(req.params);

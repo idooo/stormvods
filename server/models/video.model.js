@@ -9,7 +9,7 @@ class Video extends SchemaDefinition {
 
 	constructor () {
 		super();
-		
+
 		this.schema = new mongoose.Schema({
 			name: {
 				type: String,
@@ -18,7 +18,8 @@ class Video extends SchemaDefinition {
 			youtubeId: {
 				type: String,
 				trim: true,
-				unique: true, 
+				unique: true,
+				index: true,
 				validate: {
 					validator: (value) => value.toString().length === Video.constants().YOUTUBE_ID_LENGTH,
 					message: Constants.ERROR_INVALID
@@ -28,17 +29,37 @@ class Video extends SchemaDefinition {
 				type: Number,
 				default: 0
 			},
-			
+
+			caster: {
+				type: Array,
+				default: Array
+			},
+
+			tournament: {
+				type: Array,
+				default: Array
+			},
+
+			teams: {
+				type: Array,
+				default: Array
+			},
+
+			stage: {
+				type: Array,
+				default: Array
+			},
+
 			// TODO: Remove
 			url: {
 				type: String,
 				trim: true
 			}
 		});
-		
+
 		this.schema.plugin(uniqueValidator, {message: Constants.ERROR_UNIQUE});
 	}
-	
+
 	static constants () {
 		return {YOUTUBE_ID_LENGTH: 11};
 	}

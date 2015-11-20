@@ -26,7 +26,8 @@
 	"redis": {
 		"host": "127.0.0.1",
 		"port": 6379,
-		"maxAttempts": 5
+		"maxAttempts": 5,
+	  	"expire": 604800
 	},
 	"debug": {
 		"disableTemplateCaching": true,

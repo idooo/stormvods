@@ -33,6 +33,22 @@ class User extends SchemaDefinition {
 				video: {
 					type: Array,
 					default: Array
+				},
+				caster: {
+					type: Array,
+					default: Array
+				},
+				tournament: {
+					type: Array,
+					default: Array
+				},
+				teams: {
+					type: Array,
+					default: Array
+				},
+				stage: {
+					type: Array,
+					default: Array
 				}
 			}
 		});
