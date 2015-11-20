@@ -3,7 +3,8 @@
 var logger = require('winston'),
 	uuid = require('node-uuid'),
 	base64url = require('base64url'),
-	Cache = require('./cache');
+	Cache = require('./cache'),
+	Constants = require('../constants');
 
 var cache = new Cache();
 
@@ -14,6 +15,12 @@ class Auth {
 			cache.get(token)
 				.then((data) => {
 					var tmp = data.split(':');
+					try {
+						tmp[2] = parseInt(tmp[2], 10);
+					}
+					catch (e) {
+						tmp[2] = Constants.ROLES.USER
+					}
 					resolve({
 						id: tmp[0],
 						name: tmp[1],

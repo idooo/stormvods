@@ -4,8 +4,7 @@ var util = require('util'),
 	logger = require('winston'),
 	Auth = require('../core/auth'),
 	Database = require('../core/database'),
-	Constants = require('../constants'),
-	User = require('../models/user.model');
+	Constants = require('../constants');
 
 const AUTH_HEADER = 'Authorization';
 const DEFAULT_ROUTE_OPTIONS = {
@@ -35,12 +34,12 @@ class Router {
 		options = util._extend(util._extend({}, DEFAULT_ROUTE_OPTIONS), options || {});
 
 		// Auth
-		if (options.auth) wrapper = this.wrapAuth(route);
+		if (options.auth) wrapper = this.wrapAuth(route, options.restrict || Constants.ROLES.USER);
 
 		this.server[methodName](url, wrapper);
 	}
 
-	wrapAuth (route) {
+	wrapAuth (route, restrictLevel) {
 		var self = this;
 		return function (req, res, next) {
 			var token = req.header(AUTH_HEADER);
@@ -54,9 +53,9 @@ class Router {
 						role = self.config.debug.alwaysLoginDetails.role;
 					}
 
-					// TODO: should handle error in catch
-					if (name) route.call(self, req, res, next, {id, name, role});
-					else Router.fail(res, {message: Constants.ERROR_ACCESS_DENIED}, 403);
+					if (!id) Router.fail(res, {message: Constants.ERROR_AUTH_REQUIRED}, 403);
+					else if (role < restrictLevel) Router.fail(res, {message: Constants.ERROR_ACCESS_DENIED}, 403);
+					else route.call(self, req, res, next, {id, name, role});
 				})
 				.catch(function () {
 					Router.fail(res, {message: Constants.ERROR_INTERNAL}, 500);

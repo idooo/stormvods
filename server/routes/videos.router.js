@@ -10,18 +10,18 @@ var logger = require('winston'),
 class VideoRouter extends Router {
 
 	configure () {
-		this.bindPOST('/api/video/add', this.routeAdd, {auth:true});
+		this.bindPOST('/api/video/add', this.routeAdd, {auth:true}); // TODO: REST
 		this.bindGET('/api/video/list', this.routeList); // TODO: Remove
 		this.bindGET('/api/video/validate', this.routeValidate);
 		this.bindGET('/api/video/:id', this.routeVideo); // Must be the latest
 	}
-	
-	routeAdd (req, res, next, username) {
+
+	routeAdd (req, res, next, auth) {
 		var self = this;
-		
+
 		// TODO: Search for video first to prevent duplicates
 		// TODO: check required params
-		
+
 		var video = new self.models.Video(req.params);
 
 		video.save(function (err, videoFromDB) {
@@ -36,7 +36,7 @@ class VideoRouter extends Router {
 			}
 		});
 	}
-	
+
 	routeList (req, res, next) {
 		this.models.Video.getList()
 			.then(function (datasources) {
@@ -48,19 +48,9 @@ class VideoRouter extends Router {
 				return next();
 			});
 	}
-	
+
 	routeVideo (req, res, next) {
-		var id;
-		
-		try {
-			id = ObjectId(req.params.id); 
-		}
-		catch (e) {
-			logger.info(`${Constants.NOT_FOUND_MESSAGE} "${req.params.id}"`);
-			Router.fail(res, {message: Constants.NOT_FOUND_MESSAGE}, 404);
-			return next();
-		}
-		
+		var id = this.models.ObjectId(res, next, req.params.id);
 		this.models.Video.findOne({_id: id})
 			.then(function (video) {
 				if (!video) Router.fail(res, {message: Constants.NOT_FOUND_MESSAGE}, 404);
@@ -72,18 +62,18 @@ class VideoRouter extends Router {
 				return next();
 			});
 	}
-	
+
 	routeValidate (req, res, next) {
 		var error;
-		
+
 		if (!req.params.id) error = Constants.ERROR_REQUIRED;
 		else if (req.params.id.length !== Video.constants().YOUTUBE_ID_LENGTH) error = Constants.ERROR_INVALID;
-		
+
 		if (error) {
 			Router.fail(res, {message: {id: error}});
 			return next();
 		}
-		
+
 		this.models.Video.findOne({youtubeId: req.params.id}, '_id')
 			.then(function (video) {
 				var data = {isFound: !!(video)};
