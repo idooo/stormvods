@@ -57,6 +57,13 @@ class Database {
 
 		return this.models;
 	}
+	
+	disconnect (callback) {
+		mongoose.disconnect(function (err, value) {
+			if (typeof callback === 'function') callback(err, value);
+			logger.info('Database connection was closed');
+		});
+	}
 
 	static ObjectId (res, next, id) {
 		try {

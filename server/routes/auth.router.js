@@ -66,7 +66,7 @@ class AuthRouter extends Router {
 			// Search for user in database
 			.then(function (_userData) {
 				userData = _userData;
-				return self.models.User.findOne({name: userData.name}, 'name');
+				return self.models.User.findOne({name: userData.name}, 'name role');
 			})
 
 			// Create user if necessary
@@ -97,7 +97,7 @@ class AuthRouter extends Router {
 
 			// Authorise user
 			.then(function (userDataFromDB) {
-				Router.success(res, Auth.authorize(userDataFromDB._id, userDataFromDB.name));
+				Router.success(res, Auth.authorize(userDataFromDB._id, userDataFromDB.name, userDataFromDB.role));
 				return next();
 			})
 

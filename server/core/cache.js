@@ -98,6 +98,7 @@ class Cache {
 		return new Promise(function (resolve, reject) {
 			if (self.type === TYPE_REDIS) {
 				self.redisClient.get(key, (err, value) => {
+					console.log(value, err)
 					if (err) {
 						logger.error(err);
 						return reject(err);

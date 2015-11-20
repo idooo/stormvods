@@ -19,7 +19,7 @@ class Auth {
 						tmp[2] = parseInt(tmp[2], 10);
 					}
 					catch (e) {
-						tmp[2] = Constants.ROLES.USER
+						tmp[2] = Constants.ROLES.USER;
 					}
 					resolve({
 						id: tmp[0],
@@ -27,7 +27,7 @@ class Auth {
 						role: tmp[2]
 					});
 				})
-				.catch(() => resolve(null))
+				.catch(() => resolve(null));
 		});
 	}
 
