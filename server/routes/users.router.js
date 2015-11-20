@@ -6,10 +6,10 @@ var Router = require('./abstract.router'),
 class UsersRouter extends Router {
 
 	configure () {
-		this.bindGET('/api/users/me', this.routeMe, {auth:true}); 
-		this.bindGET('/api/users', this.routeUsers); // TODO: Remove
+		this.bindGET('/api/users/me', this.routeMe, {auth: true});
+		this.bindGET('/api/users', this.routeUsers, {auth: true, restrict: Constants.ROLES.ADMIN});
 	}
-	
+
 	routeMe (req, res, next, auth) {
 		this.models.User.findOne({name: auth.name}, '_id name')
 			.then(function (user) {
@@ -22,7 +22,7 @@ class UsersRouter extends Router {
 				return next();
 			});
 	}
-	
+
 	routeUsers (req, res, next) {
 		this.models.User.getList()
 			.then(function (datasources) {

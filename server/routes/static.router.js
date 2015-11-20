@@ -17,14 +17,14 @@ class StaticRouter extends Router {
 
 		// This route should go first
 		this.bindGET(/\/($|\?.*|\#.*|index.html)/, this.indexRender);
-		
+
 		this.server.get(/\/?.*/, restify.serveStatic({
 			directory: __dirname + '/../../web',
 			default: 'index.html',
-			maxAge: 1 // TODO: disable in production
+			maxAge: this.config.server.staticMaxAge
 		}));
 	}
-	
+
 	compileIndexTemplate () {
 		this.template = Handlebars.compile(fs.readFileSync(`${TEMPLATES_PATH}/index.html`).toString());
 		logger.debug('index.html template compiled');
@@ -32,7 +32,7 @@ class StaticRouter extends Router {
 
 	indexRender (req, res) {
 		if (this.config.debug.disableTemplateCaching) this.compileIndexTemplate();
-		
+
 		var body = this.template(this.config);
 		res.writeHead(200, {
 			'Content-Length': Buffer.byteLength(body),

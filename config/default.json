@@ -1,6 +1,7 @@
 {
 	"server": {
-		"port": 8088
+		"port": 8088,
+	  	"staticMaxAge": 1
 	},
 	"database": {
 		"uri": "ds035844.mongolab.com:35844",
@@ -31,10 +32,13 @@
 		"disableTemplateCaching": true,
 		"showStackTrace": true,
 		"alwaysLogin": true,
-		"alwaysLoginUsername": "idonreddit",
-		"alwaysLoginId": "564b00fe5d63f20f4444e4b6"
+		"alwaysLoginDetails": {
+		 	"name": "idonreddit",
+		  	"id": "564b00fe5d63f20f4444e4b6",
+		  	"role": 10
+		}
 	},
 	"votes": {
 		"delayRestriction": 1000
-	} 
+	}
 }

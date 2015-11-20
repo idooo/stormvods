@@ -4,7 +4,8 @@ var util = require('util'),
 	logger = require('winston'),
 	Auth = require('../core/auth'),
 	Database = require('../core/database'),
-	Constants = require('../constants');
+	Constants = require('../constants'),
+	User = require('../models/user.model');
 
 const AUTH_HEADER = 'Authorization';
 const DEFAULT_ROUTE_OPTIONS = {
@@ -19,7 +20,7 @@ class Router {
 		this.models = new Database().models;
 		logger.debug('Router has been loaded');
 	}
-	
+
 	bindGET (url, route, options) {
 		this.bind(url, 'get', route, options);
 	}
@@ -29,43 +30,38 @@ class Router {
 	}
 
 	bind (url, methodName, route, options) {
-		var self = this,
-			wrapper = route.bind(this);
+		var wrapper = route.bind(this);
 
 		options = util._extend(util._extend({}, DEFAULT_ROUTE_OPTIONS), options || {});
-		
-		// Auth
-		if (options.auth) {
-			wrapper = function (req, res, next) {
-				var token = req.header(AUTH_HEADER);
-				
-				Auth.findUserByToken(token)
-					.then(function (authResponse) {
-						var name, id;
-						
-						if (authResponse) {
-							authResponse = authResponse.split(':');
-							id = authResponse[0];
-							name = authResponse[1];
-						}
 
-						// Debug	
-						if (self.config.debug && self.config.debug.alwaysLogin) {
-							name = self.config.debug.alwaysLoginUsername;
-							id = self.config.debug.alwaysLoginId;
-						}	
-						
-						// TODO: we need user _id as well
-						if (name) route.call(self, req, res, next, {id, name});
-						else Router.fail(res, {message: Constants.ERROR_ACCESS_DENIED}, 403);
-					})
-					.catch(function () {
-						Router.fail(res, {message: Constants.ERROR_INTERNAL}, 500);
-					});
-			};
-		}
+		// Auth
+		if (options.auth) wrapper = this.wrapAuth(route);
 
 		this.server[methodName](url, wrapper);
+	}
+
+	wrapAuth (route) {
+		var self = this;
+		return function (req, res, next) {
+			var token = req.header(AUTH_HEADER);
+
+			Auth.findUserByToken(token)
+				.then(function (id, name, role) {
+					// Debug
+					if (self.config.debug && self.config.debug.alwaysLogin) {
+						name = self.config.debug.alwaysLoginDetails.name;
+						id = self.config.debug.alwaysLoginDetails.id;
+						role = self.config.debug.alwaysLoginDetails.role;
+					}
+
+					// TODO: should handle error in catch
+					if (name) route.call(self, req, res, next, {id, name, role});
+					else Router.fail(res, {message: Constants.ERROR_ACCESS_DENIED}, 403);
+				})
+				.catch(function () {
+					Router.fail(res, {message: Constants.ERROR_INTERNAL}, 500);
+				});
+		};
 	}
 
 	static success (r, response) {
@@ -84,11 +80,11 @@ class Router {
 		}
 		else if (response.name === 'ValidationError') {
 			var errors = {};
-				
+
 			for (let fieldName of Object.keys(response.errors)) {
 				errors[fieldName] = response.errors[fieldName].properties.message;
 			}
-			
+
 			response = {message: errors};
 		}
 
