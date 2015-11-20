@@ -8,9 +8,11 @@ angular
 			AUTH_ME: '/api/users/me',
 			AUTH_GET_URL: '/api/auth/url',
 		
-			ADD_VIDEO: '/api/video/add',
-			GET_VIDEO: '/api/video',
+			VIDEO: '/api/video',
 			GET_VIDEO_LIST: '/api/video/list',
 			VALIDATE_VIDEO: '/api/video/validate'
+		},
+		Roles: {
+			ADMIN: 10
 		}
 	});

@@ -25,7 +25,8 @@ class VoteRouter extends Router {
 			return next();
 		}
 
-		entityId = this.models.ObjectId(res, next, req.params.id);
+		entityId = this.models.ObjectId(req.params.id);
+		if (!entityId) return Router.notFound(res, next, req.params.id);
 
 		self.models.User.findOne({name: auth.name}, 'votes lastVoteTime')
 			.then(function (_user) {

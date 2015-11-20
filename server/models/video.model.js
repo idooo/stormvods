@@ -29,6 +29,10 @@ class Video extends SchemaDefinition {
 				type: Number,
 				default: 0
 			},
+			isRemoved: {
+				type: Boolean,
+				default: false
+			},
 
 			caster: {
 				type: Array,

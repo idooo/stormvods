@@ -65,14 +65,12 @@ class Database {
 		});
 	}
 
-	static ObjectId (res, next, id) {
+	static ObjectId (id) {
 		try {
-			id = mongoose.Types.ObjectId(id);
+			return mongoose.Types.ObjectId(id);
 		}
 		catch (e) {
-			logger.info(`${Constants.NOT_FOUND_MESSAGE} "${id}"`);
-			Router.fail(res, {message: Constants.NOT_FOUND_MESSAGE}, 404);
-			return next();
+			return null;
 		}
 	}
 }

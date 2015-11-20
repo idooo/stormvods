@@ -80,10 +80,6 @@ class User extends SchemaDefinition {
         });
 	}
 
-	static roles () {
-		return ROLES;
-	}
-
 }
 
 module.exports = User;

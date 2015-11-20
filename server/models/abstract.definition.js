@@ -12,6 +12,9 @@ class SchemaDefinition {
 	configure () {
 		this.schema.statics.getList = this.getList;
 		this.schema.statics.findOne = this.findOne;
+		this.schema.statics.removeOne = this.removeOne;
+		
+		this.schema.methods.markAsRemoved = this.markAsRemoved;
 	}
 	
 	/**
@@ -43,6 +46,28 @@ class SchemaDefinition {
 			query.findOne(function (err, object) {
 				if (err) reject(err);
 				else resolve(object);
+			});
+		});
+	}
+	
+	removeOne (query) {
+		var self = this;
+		return new Promise(function (resolve, reject) {
+			self.remove(query, function (err) {
+				if (err) reject(err);
+				else resolve();
+			});
+		});
+	}
+	
+	markAsRemoved () {
+		var self = this;
+		return new Promise(function (resolve, reject) {
+			self.isRemoved = true;
+
+			self.save(function (err) {
+				if (err) reject(err);
+				else resolve();
 			});
 		});
 	}

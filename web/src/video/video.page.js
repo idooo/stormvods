@@ -52,7 +52,7 @@ function videoPage () {
 		
 		// TODO: handle 404
 		
-		$http.get(`${Constants.Api.GET_VIDEO}/${$state.params.id}`)
+		$http.get(`${Constants.Api.VIDEO}/${$state.params.id}`)
 			.then(response => {
 				self.video = response.data;
 			});

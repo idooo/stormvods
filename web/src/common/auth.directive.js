@@ -10,6 +10,11 @@ const TEMPLATE = `
 			Welcome, {{ctrl.user.name}}
 		</div>
 		<a style="color: white" href="#" ng-if="!ctrl.isAuth" ng-click="ctrl.openAuthUrl()">Login</a>
+		
+		<br/>
+		<div ng-if="ctrl.user.role == 10">
+			<a href="#" ui-sref="zone">Secret Zone</a>
+		</div>
 	</div>
 `;
 

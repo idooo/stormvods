@@ -9,12 +9,18 @@ var logger = require('winston'),
 class VideoRouter extends Router {
 
 	configure () {
-		this.bindPOST('/api/video/add', this.routeAdd, {auth:true}); // TODO: REST
+		this.bindPOST('/api/video', this.routeAdd, {auth:true}); // TODO: REST
 		this.bindGET('/api/video/list', this.routeList); // TODO: Remove
 		this.bindGET('/api/video/validate', this.routeValidate);
-		this.bindGET('/api/video/:id', this.routeVideo); // Must be the latest
+		
+		// Must be the latest
+		this.bindGET('/api/video/:id', this.routeVideo);
+		this.bindDELETE('/api/video/:id', this.routeDelete, {auth:true}); 
 	}
 
+	/**
+	 * Add video
+	 */ 
 	routeAdd (req, res, next, auth) {
 		var self = this;
 
@@ -37,7 +43,15 @@ class VideoRouter extends Router {
 		});
 	}
 
+	/**
+	 * Get list of videos
+	 */
 	routeList (req, res, next) {
+		
+		// TODO: sorting and paging
+		// TODO: rights for admin
+		// TODO: hide deleted
+		
 		this.models.Video.getList()
 			.then(function (datasources) {
 				Router.success(res, datasources);
@@ -49,11 +63,16 @@ class VideoRouter extends Router {
 			});
 	}
 
+	/**
+	 * Get video by {id}
+	 */
 	routeVideo (req, res, next) {
-		var id = this.models.ObjectId(res, next, req.params.id);
+		var id = this.models.ObjectId(req.params.id);
+		if (!id) return Router.notFound(res, next, req.params.id);
+		
 		this.models.Video.findOne({_id: id})
 			.then(function (video) {
-				if (!video) Router.fail(res, {message: Constants.NOT_FOUND_MESSAGE}, 404);
+				if (!video) Router.fail(res, {message: Constants.ERROR_NOT_FOUND}, 404);
 				else Router.success(res, video);
 				return next();
 			})
@@ -62,7 +81,61 @@ class VideoRouter extends Router {
 				return next();
 			});
 	}
-
+	
+	/**
+	 * Remove video by {id}
+	 * Body:
+	 * - permanent {Boolean} [optional] removes record from db permanently
+	 */
+	routeDelete (req, res, next) {
+		var self = this,
+			id = this.models.ObjectId(req.params.id),
+			body = Router.body(req);
+			
+		if (!id) return VideoRouter.notFound(res, next, req.params.id);
+		
+		if (body.permanent) {
+			this.models.Video.removeOne({_id: id})
+				.then(function () {
+					Router.success(res);
+					logger.info(`Video "${id}" has been permanently removed`);
+					return next();
+				})
+				.catch(function (err) {
+					logger.debug(err);
+					Router.fail(res, {message: Constants.ERROR_NOT_FOUND}, 404);
+					return next();
+				});
+		}
+		else {
+			self.models.Video.findOne({_id: id}, 'isRemoved')
+				.then(function (video) {
+					if (video) {
+						if (!video.isRemoved) return video.markAsRemoved();
+						else Router.fail(res, {message: Constants.ERROR_ALREADY_REMOVED});
+					}
+					else Router.fail(res, {message: Constants.ERROR_NOT_FOUND}, 404);
+					
+					return next();
+				})
+				.then(function () {
+					Router.success(res);
+					return next();
+				})
+				.catch(function (err) {
+					Router.fail(res, err);
+					return next();
+				});
+		}
+			
+	}
+	
+	/**
+	 * Validate video by youtubeId {id}
+	 * Fails if at leas one of the following is true:
+	 * - length != 11
+	 * - video with that youtubeId already in the database (returns id)
+	 */ 
 	routeValidate (req, res, next) {
 		var error;
 

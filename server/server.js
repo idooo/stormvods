@@ -24,7 +24,7 @@ class Server {
 		
 		// Setup server
 		this.server = restify.createServer({});
-		this.server.use(restify.bodyParser());
+		this.server.use(restify.bodyParser({mapParams: true}));
 		this.server.use(restify.queryParser());
 
 		// Load routing

@@ -27,6 +27,10 @@ class Router {
 	bindPOST (url, route, options) {
 		this.bind(url, 'post', route, options);
 	}
+	
+	bindDELETE (url, route, options) {
+		this.bind(url, 'del', route, options);
+	}
 
 	bind (url, methodName, route, options) {
 		var wrapper = route.bind(this);
@@ -34,8 +38,9 @@ class Router {
 		options = util._extend(util._extend({}, DEFAULT_ROUTE_OPTIONS), options || {});
 
 		// Auth
-		if (options.auth) wrapper = this.wrapAuth(route, options.restrict || Constants.ROLES.USER);
-
+		if (options.auth) {
+			wrapper = this.wrapAuth(route, options.restrict || Constants.ROLES.USER);
+		}
 		this.server[methodName](url, wrapper);
 	}
 
@@ -43,7 +48,9 @@ class Router {
 		var self = this;
 		return function (req, res, next) {
 			var token = req.header(AUTH_HEADER);
-
+			
+			logger.debug('Auth for route in progress');
+			
 			Auth.findUserByToken(token)
 				.then(function (authData) {
 					
@@ -98,6 +105,21 @@ class Router {
 		response.code = code;
 
 		r.send(code, response);
+	}
+	
+	static notFound (res, next, id) {
+		logger.info(`${Constants.ERROR_NOT_FOUND} "${id}"`);
+		Router.fail(res, {message: Constants.ERROR_NOT_FOUND}, 404);
+		return next();
+	}
+	
+	static body (req) {
+		try {
+			return JSON.parse(req.body);
+		}
+		catch (e) {
+			return {};
+		}
 	}
 }
 

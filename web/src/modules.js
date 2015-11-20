@@ -24,5 +24,6 @@ require('./callback/callback.page.js');
 require('./addvideo/addvideo.page.js');
 require('./addvideo/addvideo.directive.js');
 require('./video/video.page.js');
+require('./admin/zone.page');
 
 module.exports = modules.concat(appModules);

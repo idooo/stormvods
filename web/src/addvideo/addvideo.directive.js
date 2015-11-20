@@ -54,7 +54,7 @@ function addVideoDirective () {
 		
 		function submit () {
 			if (!self.form.$valid && !self.youtubeId) return;
-			$http.post(Constants.Api.ADD_VIDEO, {
+			$http.post(Constants.Api.VIDEO, {
 				url: self.url,
 				youtubeId: self.youtubeId
 			});

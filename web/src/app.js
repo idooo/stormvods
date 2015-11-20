@@ -30,6 +30,10 @@ function configuration ($stateProvider, $urlRouterProvider) {
 		.state('video', {
 			url: '/video/:id',
 			template: '<video-page/>'
+		})
+		.state('zone', {
+			url: '/zone',
+			template: '<zone-page/>'
 		});
 }
 
