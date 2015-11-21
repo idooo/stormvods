@@ -25,6 +25,7 @@ module.exports = function (grunt) {
 
 	grunt.registerTask('serve', [
 		'sass',
+		'copy:images',
 		'browserify',
 		'develop:normal',
 		'watch'

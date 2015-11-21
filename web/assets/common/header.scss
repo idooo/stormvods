@@ -1,7 +1,7 @@
 // http://refills.bourbon.io/
 
 $navigation-padding: 1em;
-$navigation-background: $dark-gray;
+$navigation-background: #17214b;
 $navigation-color: transparentize(white, 0.3);
 $navigation-color-hover: white;
 $navigation-height: 60px;
@@ -17,7 +17,6 @@ $horizontal-bar-mode: $large-screen;
 
 header.navigation {
 	background-color: $navigation-background;
-	border-bottom: 1px solid darken($navigation-background, 10);
 	min-height: $navigation-height;
 	width: 100%;
 	z-index: 999;
@@ -32,12 +31,10 @@ header.navigation {
 	.logo {
 		float: left;
 		max-height: $navigation-height;
-		padding-left: $navigation-padding;
 		padding-right: 2em;
 	
 		img {
-			max-height: $navigation-height;
-			padding: 0.8em 0;
+			padding-top: 17px;
 		}
 	}
 	
@@ -259,7 +256,7 @@ header.navigation {
 	// Elements on the far right
 	
 	.navigation-tools {
-		background: #505050;
+		background: $navigation-background;
 		clear: both;
 		display: block;
 		height: $navigation-height;

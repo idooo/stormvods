@@ -1,0 +1,73 @@
+$video-width: 640px;
+$video-height: 360px;
+$video-container-top-color: #172c58;
+$video-container-bottom-color: #2c0448;
+
+.video {
+	
+	&__cover {
+		max-width: $video-width;
+		height: $video-height;
+		@include linear-gradient($video-container-top-color, $video-container-bottom-color);
+	}
+	
+	&__play {
+		width: 91px;
+		height: 105px;
+		margin: 55px auto 20px;
+		cursor: pointer;
+		@include background-image(url("/dist/images/play.png") center no-repeat);
+	}
+	
+	&__description {
+		text-align: center;
+		color: $light-text-color;
+		font-weight: 700;
+		
+		a {
+			color: $light-text-color;
+			text-decoration: none;
+			border-bottom: 1px dotted $light-text-color-blend;
+			@include transition(all 0.3s ease-in-out);
+			
+			&:hover {
+				color: $light-text-color-bright;
+				border-bottom-color: $light-text-color-blend;
+			}
+		}
+		
+		span {
+			display: block;
+			text-transform: uppercase;
+		}
+	}
+	
+		&__stage {
+			font-size: 16px;
+			margin-bottom: 8px;
+		}
+		
+		&__tournament {
+			font-size: 22px;
+			letter-spacing: 1px;
+			margin-bottom: 15px;
+		}
+		
+		&__type {
+			font-size: 14px;
+			color: $light-text-color-blend;
+			margin-bottom: 15px;
+		}
+		
+		&__teams {
+			color: $light-text-color-blend;
+			a {
+				text-transform: none;
+			}
+		}
+		
+	iframe {
+		width: $video-width;
+		height: $video-height;
+	}
+}

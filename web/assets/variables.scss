@@ -3,7 +3,7 @@ $base-font-family: 'PT Sans', sans-serif;
 // Font Sizes
 $base-font-size: 1em;
 
-$max-width: em(1200);
+$max-width: em(1000);
 $large-screen: em(860) !default;
 
 $base-spacing: 1.5em;
@@ -14,12 +14,15 @@ $base-border: 1px solid $base-border-color;
 $base-border-radius: 3px !default;
 $base-line-height: 1.5em !default;
 
-
-// Background Colors
+// Colors
 $base-background-color: #ffffff;
 $secondary-background-color: tint($base-border-color, 75%);
 $action-color: #477DCA !default;
 $dark-gray: #333 !default;
+
+$light-text-color: #c3e9ed;
+$light-text-color-bright: #ffffff;
+$light-text-color-blend: #6c738c;
 
 // Forms
 $form-box-shadow: inset 0 1px 3px rgba(#000, 0.06);

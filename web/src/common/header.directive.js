@@ -10,7 +10,7 @@ const TEMPLATE = `
 		<div class="navigation-wrapper">
 			
 			<a href="#" ui-sref="index" class="logo">
-				<img src="https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/placeholder_logo_1.png" alt="Logo Image"> 
+				<img src="/dist/images/logo.png" alt="Logo Image"> 
 			</a>
 			
 			<a href="#" class="navigation-menu-button" ng-click="ctrl.isMenuHidden = !ctrl.isMenuHidden">MENU</a>

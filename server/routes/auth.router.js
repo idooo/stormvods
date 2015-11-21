@@ -102,6 +102,8 @@ class AuthRouter extends Router {
 			})
 
 			.catch(function (err) {
+				
+				// TODO: Do this globally 
 				if (err.stack) {
 					logger.warn(err.stack);
 					if (self.config.debug && self.config.debug.showStackTrace) {
