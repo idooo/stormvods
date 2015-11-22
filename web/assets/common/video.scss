@@ -11,10 +11,14 @@ $video-container-bottom-color: #2c0448;
 		@include linear-gradient($video-container-top-color, $video-container-bottom-color);
 	}
 	
+	&__hide-duration-container {
+		padding: 16px 0 0 20px;
+	}
+	
 	&__play {
 		width: 91px;
 		height: 105px;
-		margin: 55px auto 20px;
+		margin: 35px auto 20px;
 		cursor: pointer;
 		@include background-image(url("/dist/images/play.png") center no-repeat);
 	}
@@ -61,6 +65,7 @@ $video-container-bottom-color: #2c0448;
 		
 		&__teams {
 			color: $light-text-color-blend;
+			
 			a {
 				text-transform: none;
 			}

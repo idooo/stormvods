@@ -19,6 +19,7 @@ require('./common/constants.js');
 require('./common/auth.service.js');
 require('./common/auth.directive.js');
 require('./common/header.directive.js');
+require('./common/checkbox.directive.js');
 require('./common/video.directive.js');
 require('./index/index.page.js');
 require('./callback/callback.page.js');

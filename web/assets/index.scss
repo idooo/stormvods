@@ -9,6 +9,11 @@
 @import "./common/section";
 @import "./common/form";
 @import "./common/buttons";
+@import "./common/checkbox";
 @import "./common/video";
 
 @import "./pages/addvideo.page";
+
+a[ng-click]{
+    cursor: pointer;
+}

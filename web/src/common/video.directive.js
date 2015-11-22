@@ -10,7 +10,7 @@ const TEMPLATE = `
 		<div class="video__cover" ng-hide="isPlaying">
 			
 			<div class="video__hide-duration-container">
-				<span>Hide Duration</span>
+				<checkbox label="Hide Duration" value="hideDuration"></checkbox>
 			</div>
 			
 			<div class="video__play" ng-click="play()"></div>
@@ -20,9 +20,14 @@ const TEMPLATE = `
 				<span class="video__tournament"><a href="#">World Championship 2015</a></span>
 				<span class="video__type">Best of 3</span>
 				<span class="video__teams">
-					<a href="#">Natus Vincere</a>
-					vs.
-					<a href="#">Team Dignitas</a>
+					<span ng-hide="showTeams">
+						<a ng-click="toggleTeams()">Show teams</a>
+					</span>
+					<span ng-show="showTeams">
+						<a href="#">Natus Vincere</a>
+						vs.
+						<a href="#">Team Dignitas</a>
+					</span>
 				</span>
 			</div>
 			
@@ -56,16 +61,27 @@ function videoDirective ($sce) {
 	function link (scope) {
 			
 		scope.isPlaying = false;
+		scope.showTeams = false; 
+		scope.hideDuration = true;
+		
 		scope.getIframeSrc = getIframeSrc;
+		scope.toggleTeams = toggleTeams;
 		scope.play = play;
 		
 		function getIframeSrc () {
-			var url = `https://www.youtube-nocookie.com/embed/${scope.object.youtubeId}?autoplay=1&rel=0&amp;controls=0&amp;showinfo=0"`;
+			var controls = scope.hideDuration ? 'controls=0&amp;' : '',
+				url = `https://www.youtube-nocookie.com/embed/${scope.object.youtubeId}?autoplay=1&rel=0&amp;${controls}showinfo=0"`;
+				
 			return $sce.trustAsResourceUrl(url);
 		}
 		
 		function play () {
 			scope.isPlaying = true;	
+		}
+		
+		function toggleTeams () {
+			scope.showTeams = !scope.showTeams;
+			return false;
 		}
 
 	}
