@@ -1,5 +1,3 @@
-/* global Buffer, __dirname */
-
 'use strict';
 
 const TEMPLATES_PATH = `${__dirname}/../../web`;

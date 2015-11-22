@@ -21,13 +21,14 @@ class SchemaDefinition {
 	* Generate the 'get collection' function with promises for scheme
 	* @returns {Promise}
 	*/
-	getList (ids) {
+	getList (query, fields) {
 		var self = this;
+		
+		fields = fields || '-__v';
+		query = query || {};
+		
 		return new Promise(function (resolve, reject) {
-			var query = {};
-			if (typeof ids !== 'undefined') query = {_id: {$in: ids}};
-	
-			query = self.where(query).select('-__v');
+			query = self.where(query).select(fields);
 			query.find(function (err, objects) {
 				if (objects) resolve(objects);
 				else if (err) reject(err);
@@ -39,7 +40,8 @@ class SchemaDefinition {
 	findOne (query, fields) {
 		var self = this;
 		
-		if (!fields) fields = '-__v';
+		fields = fields || '-__v';
+		query = query || {};
 		
 		return new Promise(function (resolve, reject) {
 			query = self.where(query).select(fields);
@@ -52,6 +54,9 @@ class SchemaDefinition {
 	
 	removeOne (query) {
 		var self = this;
+		
+		query = query || {};
+		
 		return new Promise(function (resolve, reject) {
 			self.remove(query, function (err) {
 				if (err) reject(err);

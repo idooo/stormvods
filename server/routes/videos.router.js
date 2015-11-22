@@ -4,24 +4,28 @@ var logger = require('winston'),
 	_omit = require('lodash/object/omit'),
 	Router = require('./abstract.router'),
 	Video = require('../models/video.model'),
-	Constants = require('../constants');
+	Constants = require('../constants'),
+	RouteFactory = require('../core/route.factory');
 
 class VideoRouter extends Router {
 
 	configure () {
-		this.bindPOST('/api/video', this.routeAdd, {auth:true}); // TODO: REST
-		this.bindGET('/api/video/list', this.routeList); // TODO: Remove
-		this.bindGET('/api/video/validate', this.routeValidate);
+		this.bindPOST('/api/video', this.routeAddVideo, {auth: true}); // TODO: REST
+		this.bindGET('/api/video/validate', this.routeValidate, {auth: true});
+		this.bindGET('/api/video/list', this.routeList); 
 		
 		// Must be the latest
-		this.bindGET('/api/video/:id', this.routeVideo);
-		this.bindDELETE('/api/video/:id', this.routeDelete, {auth:true}); 
+		this.bindGET('/api/video/:id', this.routeGetVideo);
+		this.bindDELETE('/api/video/:id', RouteFactory.generateRemoveRoute(this.models.Video), {
+			auth: true,
+			restrict: Constants.ROLES.ADMIN
+		}); 
 	}
 
 	/**
 	 * Add video
 	 */ 
-	routeAdd (req, res, next, auth) {
+	routeAddVideo (req, res, next, auth) {
 		var self = this;
 
 		// TODO: add author id to the details
@@ -66,7 +70,7 @@ class VideoRouter extends Router {
 	/**
 	 * Get video by {id}
 	 */
-	routeVideo (req, res, next) {
+	routeGetVideo (req, res, next) {
 		var id = this.models.ObjectId(req.params.id);
 		if (!id) return Router.notFound(res, next, req.params.id);
 		
@@ -80,54 +84,6 @@ class VideoRouter extends Router {
 				Router.fail(res, err);
 				return next();
 			});
-	}
-	
-	/**
-	 * Remove video by {id}
-	 * Body:
-	 * - permanent {Boolean} [optional] removes record from db permanently
-	 */
-	routeDelete (req, res, next) {
-		var self = this,
-			id = this.models.ObjectId(req.params.id),
-			body = Router.body(req);
-			
-		if (!id) return VideoRouter.notFound(res, next, req.params.id);
-		
-		if (body.permanent) {
-			this.models.Video.removeOne({_id: id})
-				.then(function () {
-					Router.success(res);
-					logger.info(`Video "${id}" has been permanently removed`);
-					return next();
-				})
-				.catch(function (err) {
-					logger.debug(err);
-					Router.fail(res, {message: Constants.ERROR_NOT_FOUND}, 404);
-					return next();
-				});
-		}
-		else {
-			self.models.Video.findOne({_id: id}, 'isRemoved')
-				.then(function (video) {
-					if (video) {
-						if (!video.isRemoved) return video.markAsRemoved();
-						else Router.fail(res, {message: Constants.ERROR_ALREADY_REMOVED});
-					}
-					else Router.fail(res, {message: Constants.ERROR_NOT_FOUND}, 404);
-					
-					return next();
-				})
-				.then(function () {
-					Router.success(res);
-					return next();
-				})
-				.catch(function (err) {
-					Router.fail(res, err);
-					return next();
-				});
-		}
-			
 	}
 	
 	/**

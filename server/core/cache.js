@@ -87,6 +87,7 @@ class Cache {
 	}
 
 	put (key, value) {
+		// TODO: Test Expire
 		if (this.type === TYPE_REDIS) this.redisClient.set(key, value, 'EX', this.config.expire);
 		else this.cache[key] = value;
 

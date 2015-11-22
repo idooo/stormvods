@@ -6,6 +6,7 @@ var util = require('util'),
 	Database = require('../core/database'),
 	Constants = require('../constants');
 
+const RE_FILTER = /[^a-zA-Z0-9\s\#]+/g;
 const AUTH_HEADER = 'Authorization';
 const DEFAULT_ROUTE_OPTIONS = {
 	auth: false
@@ -68,10 +69,12 @@ class Router {
 						Router.fail(res, {message: Constants.ERROR_ACCESS_DENIED}, 403);
 					}
 					else {
+						authData.id = self.models.ObjectId(authData.id);
 						route.call(self, req, res, next, authData);
 					}
 				})
-				.catch(function () {
+				.catch(function (err) {
+					logger.error(err.stack);
 					Router.fail(res, {message: Constants.ERROR_INTERNAL}, 500);
 				});
 		};
@@ -86,7 +89,7 @@ class Router {
 	static fail (r, response, code) {
 		response = response || {};
 		code = code || 400;
-
+		
 		if (response.name === 'MongoError') {
 			code = 500;
 			response = {error: response.err};
@@ -121,6 +124,11 @@ class Router {
 			return {};
 		}
 	}
+	
+	static filter (str) {
+		return (str || '').replace(RE_FILTER, '').replace(/(\s+|\t+)/g, ' ');	
+	}
+	
 }
 
 module.exports = Router;
