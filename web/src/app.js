@@ -37,6 +37,6 @@ function configuration ($stateProvider, $urlRouterProvider) {
 		});
 }
 
-function init () {
-
+function init (Auth) {
+	Auth.authorize();
 }

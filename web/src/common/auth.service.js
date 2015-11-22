@@ -1,5 +1,3 @@
-/* global angular */
-
 angular
 	.module(`${window.APP_NAME}.common`)
 	.service('Auth', authService);
@@ -7,43 +5,69 @@ angular
 const LS_KEY = 'token';
 const HEADER = 'Authorization';
 
-function authService ($rootScope, $http, localStorageService, Constants) {
-	var self = this;
-	var observers = [];
+function authService ($rootScope, $window, $http, $interval, localStorageService, Constants) {
+	var self = this,
+		isInitialised = false,
+		authUrl = '',
+		authPromise;
 	
 	self.user = {};
-	self.isAuth = false;
+	self.isAuthorised = false;
 	
-	self.observe = observe;
 	self.authorize = authorize;
 	self.updateSessionInfo = updateSessionInfo;
-	
-	var authData = localStorageService.get(LS_KEY);
-	
-	if (authData) {
-		$http.defaults.headers.common[HEADER] = authData.token;
-		authorize();	
-	}
+	self.get = get;
+	self.openAuthUrl = openAuthUrl;
 	
 	function authorize () {
-		$http.get(Constants.Api.AUTH_ME)
-			.then((response) => {
-				self.isAuth = true;
-				self.user = response.data;
-				notify();
-			})
-			.catch(() => {
-				self.isAuth = false;
-				self.user = {};
-				updateSessionInfo();
-				notify();
-			});
+		
+		return new Promise(function (resolve) {
+			
+			var authData = localStorageService.get(LS_KEY);
+		
+			if (!authData) {
+				getAuthUrl();
+				return resolve(null);
+			}
+			
+			$http.defaults.headers.common[HEADER] = authData.token;
+			
+			$http.get(Constants.Api.AUTH_ME)
+				.then((response) => {
+					isInitialised = true;
+					self.isAuthorised = true;
+					self.user = response.data;
+					resolve(self.user);
+				})
+				.catch(() => {
+					isInitialised = true;
+					self.isAuthorised = false;
+					self.user = {};
+					updateSessionInfo();
+					getAuthUrl();
+					resolve(null);
+				});
+		});
 	}
 	
+	function get () {
 		
-	function observe (func) {
-		observers.push(func);
-		notify(func);
+		return new Promise(function (resolve) {
+			
+			if (isInitialised) return resolve(self.user);
+			
+			var interval = $interval(() => {
+				if (!isInitialised) return;
+				$interval.cancel(interval);
+				resolve(self.user);
+				try {
+					$rootScope.$digest();
+				}
+				catch (e) {
+					// Do nothing
+				}
+			}, 100);
+		});
 	}
 	
 	function updateSessionInfo (username, token) {
@@ -57,10 +81,12 @@ function authService ($rootScope, $http, localStorageService, Constants) {
 		}
 	}
 	
-	function notify (observer) {
-		if (angular.isFunction(observer)) return observer(self.isAuth);
-		observers.forEach((func) => func(self.isAuth));
+	function getAuthUrl () {
+		authPromise = $http.get(Constants.Api.AUTH_GET_URL).then(response => authUrl = response.data.url);
 	}
 	
-	return this;
+	function openAuthUrl () {
+		if (!authUrl) authPromise.then(openAuthUrl);
+		else $window.location.href = authUrl;
+	}
 }

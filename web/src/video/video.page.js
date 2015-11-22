@@ -3,13 +3,11 @@ angular
 	.directive('videoPage', videoPage);
 
 const TEMPLATE = `
-	<div>
 		
-		video page
-		
-		<video object="ctrl.video"></video>
-		
-	</div>
+	video page
+	
+	<video object="ctrl.video"></video>
+	
 `;
 
 function videoPage () {
@@ -17,7 +15,6 @@ function videoPage () {
 	return {
 		restrict: 'E',
 		controllerAs: 'ctrl',
-		replace: true,
 		scope: true,
 		template: TEMPLATE,
 		controller: controller

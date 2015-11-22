@@ -8,3 +8,11 @@ html, body {
 	@include outer-container;
 	margin-top: 1em;
 }
+
+	.page-container {
+		@include span-columns(8);
+	}
+	
+	.sidebar-container {
+		@include span-columns(4);
+	}

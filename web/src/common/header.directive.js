@@ -17,14 +17,19 @@ const TEMPLATE = `
 			
 			<nav role="navigation">
 				<ul class="navigation-menu" ng-class="{show: !ctrl.isMenuHidden}">
-					<li class="nav-link" ng-repeat="link in ctrl.links">
-						<a href="#" ui-sref="{{link.state}}">{{link.caption}}</a>
+					<li class="nav-link" ng-if="ctrl.user.role == 10">
+						<a href="#" ui-sref="zone">Secret Zone</a>
 					</li>
 				</ul>
 			</nav>
 			
 			<div class="navigation-tools">
-				<auth></auth>
+				
+				<div style="color: white" ng-if="ctrl.user.name">
+					Welcome, {{ctrl.user.name}}
+				</div>
+				<a style="color: white" href="#" ng-if="!ctrl.user.name" ng-click="ctrl.openAuthUrl()">Login</a>
+				
 			</div>
 		
 		</div>	
@@ -43,15 +48,14 @@ function headerDirective () {
 		controllerAs: 'ctrl'
 	};
 	
-	function controller () {
-		this.isMenuHidden = true;
+	function controller (Auth) {
+		var self = this;
 		
-		this.links = [
-			{
-				state: 'addvideo',
-				caption: 'Add video'
-			}	
-		];
+		self.user;
+		self.isMenuHidden = true;
+		self.openAuthUrl = Auth.openAuthUrl;
+		
+		Auth.get().then(user => self.user = user);
 	}
 		
 }

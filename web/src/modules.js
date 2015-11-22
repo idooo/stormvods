@@ -17,7 +17,6 @@ appModules.forEach((moduleName) => angular.module(moduleName, []));
 // App modules
 require('./common/constants.js');
 require('./common/auth.service.js');
-require('./common/auth.directive.js');
 require('./common/header.directive.js');
 require('./common/checkbox.directive.js');
 require('./common/video.directive.js');
@@ -27,5 +26,6 @@ require('./addvideo/addvideo.page.js');
 require('./addvideo/addvideo.directive.js');
 require('./video/video.page.js');
 require('./admin/zone.page');
+require('./sidebar/sidebar.directive');
 
 module.exports = modules.concat(appModules);
