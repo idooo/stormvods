@@ -2,6 +2,7 @@
 
 var logger = require('winston'),
 	_omit = require('lodash/object/omit'),
+	_max = require('lodash/math/max'),
 	Router = require('./abstract.router'),
 	Video = require('../models/video.model'),
 	Constants = require('../constants'),
@@ -31,20 +32,66 @@ class VideoRouter extends Router {
 		// TODO: add author id to the details
 		// TODO: add video id to the author?
 		// TODO: check required params
+		
+		getTournament(req.params.tournament)
+			.then(function (tournament) {
+				var data = {
+					youtubeId: VideoRouter.filter(req.params.youtubeId),
+					author: auth.id
+				};
+				
+				if (tournament) {
+					data.tournament = [{
+						rating: 1,
+						_id: tournament._id
+					}];
+				}
+				
+				var video = new self.models.Video(data);
+						
+				video.save(function (err, videoFromDB) {
+					if (err) {
+						logger.error(_omit(err, 'stack'));
+						Router.fail(res, err);
+						return next();
+					}
+					else {
+						Router.success(res, videoFromDB);
+						return next();
+					}
+				});
 
-		var video = new self.models.Video(req.params);
-
-		video.save(function (err, videoFromDB) {
-			if (err) {
-				logger.error(_omit(err, 'stack'));
+			})
+			.catch(function (err) {
 				Router.fail(res, err);
 				return next();
-			}
-			else {
-				Router.success(res, videoFromDB);
-				return next();
-			}
-		});
+			});
+		
+		/**
+		 * Create tournament if it doesn't exist
+		 */
+		function getTournament (tournamentParam) {
+			return new Promise(function (resolve, reject) {
+						
+				var tournamentName = VideoRouter.filter(tournamentParam);
+				if (!tournamentName) return resolve(null);
+				
+				self.models.Tournament.findOne({name: tournamentName})
+					.then(function (tournament) {
+						if (tournament) return resolve(tournament);
+						
+						tournament = new self.models.Tournament({
+							name: tournamentName,
+							author: auth.id
+						});
+						tournament.save(function (err, tournamentFromDB) {
+							if (err) return reject(err);
+							resolve(tournamentFromDB);
+						});
+						
+					});
+			});
+		}
 	}
 
 	/**
@@ -71,13 +118,29 @@ class VideoRouter extends Router {
 	 * Get video by {id}
 	 */
 	routeGetVideo (req, res, next) {
-		var id = this.models.ObjectId(req.params.id);
+		var self = this,
+			id = self.models.ObjectId(req.params.id),
+			video;
+			
 		if (!id) return Router.notFound(res, next, req.params.id);
 		
-		this.models.Video.findOne({_id: id})
-			.then(function (video) {
-				if (!video) Router.fail(res, {message: Constants.ERROR_NOT_FOUND}, 404);
-				else Router.success(res, video);
+		self.models.Video.findOne({_id: id})
+			.then(function (_video) {
+				video = _video;
+				if (video) {
+					var topTournament = _max(video.tournament, 'rating');
+					if (topTournament) {
+						return self.models.Tournament.findOne({_id: topTournament._id}, 'name _id');
+					}  	
+					else Router.success(res, video);
+				}
+				else Router.fail(res, {message: Constants.ERROR_NOT_FOUND}, 404);
+				return next();
+			})
+			.then(function (tournament) {
+				video = video.toObject(); // Convert because tournament is Array in scheme
+				video.tournament = tournament;
+				Router.success(res, video);
 				return next();
 			})
 			.catch(function (err) {

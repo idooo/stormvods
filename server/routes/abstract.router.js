@@ -6,7 +6,7 @@ var util = require('util'),
 	Database = require('../core/database'),
 	Constants = require('../constants');
 
-const RE_FILTER = /[^a-zA-Z0-9\s\#]+/g;
+const RE_FILTER = /[^a-zA-Z0-9\s\#_\-]+/g;
 const AUTH_HEADER = 'Authorization';
 const DEFAULT_ROUTE_OPTIONS = {
 	auth: false
@@ -126,7 +126,7 @@ class Router {
 	}
 	
 	static filter (str) {
-		return (str || '').replace(RE_FILTER, '').replace(/(\s+|\t+)/g, ' ');	
+		return (str || '').trim().replace(RE_FILTER, '').replace(/(\s+|\t+)/g, ' ');	
 	}
 	
 }

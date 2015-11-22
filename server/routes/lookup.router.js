@@ -12,7 +12,7 @@ const LOOKUP = {
 class LookupRouter extends Router {
 
 	configure () {
-		this.bindGET('/api/lookup/:type/:query', this.routeLookup, {auth: true});
+		this.bindGET('/api/lookup/:type', this.routeLookup, {auth: true});
 	}
 
 	routeLookup (req, res, next) {

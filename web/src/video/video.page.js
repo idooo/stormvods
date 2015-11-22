@@ -4,7 +4,7 @@ angular
 
 const TEMPLATE = `
 		
-	video page
+	<h1>Video</h1>
 	
 	<video object="ctrl.video"></video>
 	

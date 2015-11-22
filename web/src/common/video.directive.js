@@ -17,7 +17,7 @@ const TEMPLATE = `
 			
 			<div class="video__description"> 
 				<span class="video__stage">Semifinal</span>
-				<span class="video__tournament"><a href="#">World Championship 2015</a></span>
+				<span class="video__tournament"><a href="#">{{object.tournament.name}}</a></span>
 				<span class="video__type">Best of 3</span>
 				<span class="video__teams">
 					<span ng-hide="showTeams">

@@ -33,6 +33,10 @@ class Video extends SchemaDefinition {
 				type: Boolean,
 				default: false
 			},
+			author: {
+				type: mongoose.Schema.Types.ObjectId,
+				required: true
+			},
 
 			caster: {
 				type: Array,

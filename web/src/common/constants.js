@@ -10,7 +10,9 @@ angular
 		
 			VIDEO: '/api/video',
 			GET_VIDEO_LIST: '/api/video/list',
-			VALIDATE_VIDEO: '/api/video/validate'
+			VALIDATE_VIDEO: '/api/video/validate',
+			
+			LOOKUP: '/api/lookup'
 		},
 		Roles: {
 			ADMIN: 10
