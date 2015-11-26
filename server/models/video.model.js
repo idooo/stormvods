@@ -3,7 +3,7 @@
 var mongoose = require('mongoose'),
 	uniqueValidator = require('mongoose-unique-validator'),
 	mongoosePaginate = require('mongoose-paginate'),
-	SchemaDefinition = require('./abstract.definition'),
+	SchemaDefinition = require('./schema.definition'),
 	Constants = require('../constants');
 
 class Video extends SchemaDefinition {

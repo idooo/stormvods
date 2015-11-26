@@ -2,31 +2,35 @@
 
 var logger = require('winston');
 
+const DEFAULT_FIELDS = '-__v -isRemoved';
+
 class SchemaDefinition {
-	
+
 	constructor () {
 		this.name = this.constructor.name;
 		logger.debug('Schema has been loaded');
 	}
-	
+
 	configure () {
 		this.schema.statics.getList = this.getList;
 		this.schema.statics.findOne = this.findOne;
 		this.schema.statics.removeOne = this.removeOne;
-		
+
 		this.schema.methods.markAsRemoved = this.markAsRemoved;
 	}
-	
+
 	/**
-	* Generate the 'get collection' function with promises for scheme
-	* @returns {Promise}
-	*/
+	 * Promise-based function for getting list of objects from collection
+	 * @param {Object} query
+	 * @param {String} fields
+	 * @return {Promise}
+	 */
 	getList (query, fields) {
 		var self = this;
-		
-		fields = fields || '-__v';
+
+		fields = fields || DEFAULT_FIELDS;
 		query = query || {};
-		
+
 		return new Promise(function (resolve, reject) {
 			query = self.where(query).select(fields);
 			query.find(function (err, objects) {
@@ -36,13 +40,19 @@ class SchemaDefinition {
 			});
 		});
 	}
-	
+
+	/**
+	 * Promise-based function to get one object from collection
+	 * @param {Object} query
+	 * @param {String} fields
+	 * @return {Promise}
+	 */
 	findOne (query, fields) {
 		var self = this;
-		
-		fields = fields || '-__v';
+
+		fields = fields || DEFAULT_FIELDS;
 		query = query || {};
-		
+
 		return new Promise(function (resolve, reject) {
 			query = self.where(query).select(fields);
 			query.findOne(function (err, object) {
@@ -51,12 +61,17 @@ class SchemaDefinition {
 			});
 		});
 	}
-	
+
+	/**
+	 * Promise-based function to remove object from collection
+	 * @param {Object} query
+	 * @return {Promise}
+	 */
 	removeOne (query) {
 		var self = this;
-		
+
 		query = query || {};
-		
+
 		return new Promise(function (resolve, reject) {
 			self.remove(query, function (err) {
 				if (err) reject(err);
@@ -64,7 +79,12 @@ class SchemaDefinition {
 			});
 		});
 	}
-	
+
+	/**
+	 * Promise-based function mark object as removed
+	 * Note: applied to model but not for schema
+	 * @return {Promise}
+	 */
 	markAsRemoved () {
 		var self = this;
 		return new Promise(function (resolve, reject) {

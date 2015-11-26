@@ -1,12 +1,15 @@
 'use strict';
 
-var Router = require('./abstract.router'),
+var logger = require('winston'),
+	Router = require('./abstract.router'),
 	Constants = require('../constants');
 
 const QUERY_MIN_LENGTH = 3;
 // type param => Model mappings
 const LOOKUP = {
-	tournament: 'Tournament'
+	tournament: 'Tournament',
+	caster: 'Caster',
+	team: 'Team'
 };
 
 class LookupRouter extends Router {
@@ -17,11 +20,14 @@ class LookupRouter extends Router {
 
 	routeLookup (req, res, next) {
 		var self = this;
-		
+
 		// Validate params
 		var modelName = LOOKUP[req.params.type];
 		if (!modelName) {
-			if (!self.models[modelName]) Router.fail(res, {message: Constants.ERROR_INTERNAL}, 500); // shouldn't happen
+			if (!self.models[modelName]) {
+				logger.warn(`Invalid model name "${modelName}" - shouldn't happen!`);
+				Router.fail(res, {message: Constants.ERROR_INTERNAL}, 500);
+			}
 			else Router.fail(res, {message: Constants.ERROR_TYPE});
 			return next();
 		}
@@ -31,7 +37,7 @@ class LookupRouter extends Router {
 			Router.fail(res, {message: {'query': Constants.ERROR_INVALID}});
 			return next();
 		}
-		
+
 		this.models[modelName].getList({'name': {'$regex': `.*${query}.*`, '$options': 'i'}}, 'name _id')
 			.then(function (values) {
 				Router.success(res, values);

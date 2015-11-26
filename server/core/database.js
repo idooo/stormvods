@@ -1,7 +1,8 @@
-/* global __dirname */
 'use strict';
 
 const MODELS_PATH = `${__dirname}/../models`;
+const RE_PATTERN_TO_LOAD =  /.*\.model\.js/;
+const EXCLUDED_FILES = ['basic.model.js'];
 
 var fs = require('fs'),
 	mongoose = require('mongoose'),
@@ -41,12 +42,11 @@ class Database {
 	}
 
 	loadModel () {
-
 		// load models
 		var modelsFiles = fs.readdirSync(MODELS_PATH);
 
 		modelsFiles
-			.filter((filename) => /.*\.model\.js/.test(filename))
+			.filter((filename) => RE_PATTERN_TO_LOAD.test(filename) && EXCLUDED_FILES.indexOf(filename) === -1)
 			.forEach((filename) => {
 				var schemaDefinition = new (require(`${MODELS_PATH}/${filename}`));
 				schemaDefinition.configure();
@@ -57,7 +57,7 @@ class Database {
 
 		return this.models;
 	}
-	
+
 	disconnect (callback) {
 		mongoose.disconnect(function (err, value) {
 			if (typeof callback === 'function') callback(err, value);

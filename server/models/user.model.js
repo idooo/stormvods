@@ -1,7 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-	SchemaDefinition = require('./abstract.definition'),
+	SchemaDefinition = require('./schema.definition'),
 	Constants = require('../constants');
 
 class User extends SchemaDefinition {
