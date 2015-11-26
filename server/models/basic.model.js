@@ -33,7 +33,7 @@ class BasicModel extends SchemaDefinition {
 	}
 
 	static constants () {
-		return {MIN_LENGTH: 6};
+		return {MIN_LENGTH: 5};
 	}
 }
 

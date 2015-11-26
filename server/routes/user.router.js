@@ -14,7 +14,7 @@ class UsersRouter extends Router {
 		this.models.User.findOne({name: auth.name}, '_id name votes')
 			.then(function (user) {
 				if (!user) Router.fail(res, {message: Constants.ERROR_NOT_FOUND});
-				else Router.success(res, auth);
+				else Router.success(res, user);
 				return next();
 			})
 			.catch(function (err) {

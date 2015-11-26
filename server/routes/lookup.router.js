@@ -9,7 +9,8 @@ const QUERY_MIN_LENGTH = 3;
 const LOOKUP = {
 	tournament: 'Tournament',
 	caster: 'Caster',
-	team: 'Team'
+	team: 'Team',
+	stage: 'Stage'
 };
 
 class LookupRouter extends Router {
@@ -40,7 +41,7 @@ class LookupRouter extends Router {
 
 		this.models[modelName].getList({'name': {'$regex': `.*${query}.*`, '$options': 'i'}}, 'name _id')
 			.then(function (values) {
-				Router.success(res, values);
+				Router.success(res, {values});
 				return next();
 			})
 			.catch(function (err) {

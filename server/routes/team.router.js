@@ -11,39 +11,10 @@ var logger = require('winston'),
 class TeamRouter extends Router {
 
 	configure () {
-		this.bindPOST('/api/team', this.routeAddTeam, {auth: true});
+		this.bindPOST('/api/team', RouteFactory.generateAddRoute(this.models.Team), {auth: true});
 		this.bindDELETE('/api/team/:id', RouteFactory.generateRemoveRoute(this.models.Team), {
 			auth: true,
 			restrict: Constants.ROLES.ADMIN
-		});
-	}
-
-	routeAddTeam (req, res, next, auth) {
-		var self = this;
-
-		// Validate params
-		var name = TeamRouter.filter(req.params.name);
-
-		if (name < Team.constants().MIN_LENGTH) {
-			Router.fail(res, {message: {'name': Constants.ERROR_INVALID}});
-			return next();
-		}
-
-		var tournament = new self.models.Team({
-			name,
-			author: auth.id
-		});
-
-		tournament.save(function (err, responseFromDB) {
-			if (err) {
-				logger.debug(_omit(err, 'stack'));
-				Router.fail(res, err);
-				return next();
-			}
-			else {
-				Router.success(res, _pick(responseFromDB, ['_id', 'name']));
-				return next();
-			}
 		});
 	}
 }

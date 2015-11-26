@@ -100,19 +100,28 @@ class VideoRouter extends Router {
 	 * Get list of videos
 	 */
 	routeList (req, res, next) {
+
+		// TODO: add users' votes
+
 		var self = this,
 			query = {isRemoved: {'$ne': true}},
 			page = parseInt(req.params.p, 10) || 1,
 			fields = '-isRemoved -__v',
-			videos;
+			videos,
+			pageCount,
+			itemCount;
 
 		self.models.Video.paginate(query, {
 			page: page,
 			limit: LIST_PAGE_SIZE,
 			columns: fields
 		})
-			.spread(function (_videos) {
+			.spread(function (_videos, _pageCount, _itemCount) {
 				var tournamentIds = [];
+
+				pageCount = _pageCount;
+				itemCount = _itemCount;
+
 				videos = _videos.map(function (video) {
 					video = video.toObject(); // Convert because tournament is Array in scheme
 					video.tournament = _max(video.tournament, 'rating');
@@ -137,7 +146,7 @@ class VideoRouter extends Router {
 						videos[i].tournament.name = tournament ? tournament.name : null;
 					}
 				}
-				Router.success(res, videos);
+				Router.success(res, {videos, pageCount, itemCount});
 				return next();
 			})
 			.catch(function (err) {
@@ -150,6 +159,9 @@ class VideoRouter extends Router {
 	 * Get video by {id}
 	 */
 	routeGetVideo (req, res, next) {
+
+		// TODO: add users' votes
+
 		var self = this,
 			id = self.models.ObjectId(req.params.id),
 			video;

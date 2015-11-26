@@ -1,6 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose'),
+	logger = require('winston'),
 	SchemaDefinition = require('./schema.definition'),
 	Constants = require('../constants');
 
@@ -42,7 +43,7 @@ class User extends SchemaDefinition {
 					type: Array,
 					default: Array
 				},
-				teams: {
+				team: {
 					type: Array,
 					default: Array
 				},
@@ -56,22 +57,33 @@ class User extends SchemaDefinition {
 		this.schema.methods.vote = this.vote;
 	}
 
-	vote (entity) {
+	vote (video, entityType, entityId) {
 		var self = this;
 
+		if (entityType === 'video') {
+			video.rating++;
+			entityId = video._id;
+		}
+		else {
+			for (var i = 0; i < video[entityType].length; i++) {
+				if (video[entityType][i]._id.equals(entityId)) video[entityType][i].rating++;
+			}
+			video.markModified(entityType);
+		}
+
 		// update video rating (we do not care about the result)
-		entity.rating++;
-		entity.save();
+		video.save((err) => {
+			if (err) logger.debug(`Saving vote for video "${video._id}" failed`, err);
+		});
 
 		self.lastVoteTime = Date.now();
 
         return new Promise(function (resolve, reject) {
-			for (var i = 0; i < self.votes.video.length; i++) {
-				if (entity._id.equals(self.votes.video[i])) reject({message: Constants.ERROR_VOTE_TWICE});
+			for (var i = 0; i < self.votes[entityType].length; i++) {
+				if (entityId.equals(self.votes[entityType][i])) reject({message: Constants.ERROR_VOTE_TWICE});
 			}
 
-			// TODO: support different entity types
-			self.votes.video.push(entity._id);
+			self.votes[entityType].push(entityId);
 
 			self.save(function (err) {
 				if (err) reject(err);

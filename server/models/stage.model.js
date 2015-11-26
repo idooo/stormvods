@@ -2,8 +2,8 @@
 
 var BasicModel = require('./basic.model');
 
-class Team extends BasicModel {
+class Stage extends BasicModel {
 
 }
 
-module.exports = Team;
+module.exports = Stage;
