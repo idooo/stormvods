@@ -49,6 +49,7 @@
     "handlebars": "^4.0.4",
     "lodash": "^3.10.1",
     "mongoose": "^4.2.5",
+    "mongoose-paginate": "^4.2.0",
     "mongoose-unique-validator": "^0.6.1",
     "node-uuid": "^1.4.4",
     "redis": "^2.3.0",

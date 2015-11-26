@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose'),
 	uniqueValidator = require('mongoose-unique-validator'),
+	mongoosePaginate = require('mongoose-paginate'),
 	SchemaDefinition = require('./abstract.definition'),
 	Constants = require('../constants');
 
@@ -56,16 +57,11 @@ class Video extends SchemaDefinition {
 			stage: {
 				type: Array,
 				default: Array
-			},
-
-			// TODO: Remove
-			url: {
-				type: String,
-				trim: true
 			}
 		});
 
 		this.schema.plugin(uniqueValidator, {message: Constants.ERROR_UNIQUE});
+		this.schema.plugin(mongoosePaginate);
 	}
 
 	static constants () {

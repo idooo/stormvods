@@ -32,7 +32,7 @@
 	"debug": {
 		"disableTemplateCaching": true,
 		"showStackTrace": true,
-		"alwaysLogin": false,
+		"alwaysLogin": true,
 		"alwaysLoginDetails": {
 		 	"name": "idonreddit",
 		  	"id": "564b00fe5d63f20f4444e4b6",
