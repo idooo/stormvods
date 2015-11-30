@@ -127,7 +127,7 @@ class Router {
 	}
 
 	static filter (str) {
-		return (str || '').trim().replace(RE_FILTER, '').replace(/(\s+|\t+)/g, ' ');
+		return (str.toString() || '').trim().replace(RE_FILTER, '').replace(/(\s+|\t+)/g, ' ');
 	}
 
 }

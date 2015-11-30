@@ -20,16 +20,11 @@ class LookupRouter extends Router {
 	}
 
 	routeLookup (req, res, next) {
-		var self = this;
-
 		// Validate params
 		var modelName = LOOKUP[req.params.type];
 		if (!modelName) {
-			if (!self.models[modelName]) {
-				logger.warn(`Invalid model name "${modelName}" - shouldn't happen!`);
-				Router.fail(res, {message: Constants.ERROR_INTERNAL}, 500);
-			}
-			else Router.fail(res, {message: Constants.ERROR_TYPE});
+			logger.warn(`Invalid lookup model name "${modelName}"`);
+			Router.fail(res, {message: Constants.ERROR_TYPE});
 			return next();
 		}
 		// Validate params
@@ -38,7 +33,7 @@ class LookupRouter extends Router {
 			Router.fail(res, {message: {'query': Constants.ERROR_INVALID}});
 			return next();
 		}
-
+		
 		this.models[modelName].getList({'name': {'$regex': `.*${query}.*`, '$options': 'i'}}, 'name _id')
 			.then(function (values) {
 				Router.success(res, {values});

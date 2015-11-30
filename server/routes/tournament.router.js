@@ -1,10 +1,7 @@
 'use strict';
 
-var logger = require('winston'),
-	_omit = require('lodash/object/omit'),
-	Router = require('./abstract.router'),
+var Router = require('./abstract.router'),
 	Constants = require('../constants'),
-	Tournament = require('../models/tournament.model'),
 	RouteFactory = require('../core/route.factory');
 
 class TournamentRouter extends Router {

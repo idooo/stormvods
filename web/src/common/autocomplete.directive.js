@@ -40,7 +40,7 @@ function autoCompleteDirective () {
 			if (!newValue || newValue === oldValue) return;
 			
 			$http.get(`${endpoint}?query=${newValue}`)
-				.then(response => self.items = response.data.filter(item => item.name !== newValue));
+				.then(response => self.items = response.data.values.filter(item => item.name !== newValue));
 			
 		}, DEBOUNCE_LOOKUP));
 		

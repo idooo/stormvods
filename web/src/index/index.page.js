@@ -35,7 +35,7 @@ function indexPage () {
 		self.videos = [];
 		
 		$http.get(Constants.Api.GET_VIDEO_LIST)
-			.then(response => self.videos = response.data);
+			.then(response => self.videos = response.data.videos);
 	}
 		
 }

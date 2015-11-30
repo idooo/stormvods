@@ -44,8 +44,8 @@ function zonePage () {
 		
 		self.remove = remove;
 		
-		$http.get(Constants.Api.GET_VIDEO_LIST)
-			.then(response => self.videos = response.data);
+		$http.get(Constants.Api.GET_REMOVED_VIDEO_LIST)
+			.then(response => self.videos = response.data.videos);
 			
 		function remove (videoId, isPermanent) {
 			

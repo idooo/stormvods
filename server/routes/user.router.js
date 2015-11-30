@@ -11,7 +11,7 @@ class UsersRouter extends Router {
 	}
 
 	routeMe (req, res, next, auth) {
-		this.models.User.findOne({name: auth.name}, '_id name votes')
+		this.models.User.findOne({name: auth.name}, '_id name votes role')
 			.then(function (user) {
 				if (!user) Router.fail(res, {message: Constants.ERROR_NOT_FOUND});
 				else Router.success(res, user);

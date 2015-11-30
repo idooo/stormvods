@@ -20,5 +20,19 @@ module.exports = {
 		USER: 1,
 		MODERATOR: 5,
 		ADMIN: 10
-	}
+	},
+	
+	// stages
+	STAGES: [
+		'FINAL',
+		'SEMIFINAL',
+		'QUARTERFINAL',
+		'RO16',
+		'RO32',
+		'RO64',
+		'GROUPA',
+		'GROUPB',
+		'GROUPC',
+		'GROUPD'
+	]
 };

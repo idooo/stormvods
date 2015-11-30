@@ -1,11 +1,7 @@
 'use strict';
 
-var logger = require('winston'),
-	_omit = require('lodash/object/omit'),
-	_pick = require('lodash/object/pick'),
-	Router = require('./abstract.router'),
+var Router = require('./abstract.router'),
 	Constants = require('../constants'),
-	Team = require('../models/team.model'),
 	RouteFactory = require('../core/route.factory');
 
 class TeamRouter extends Router {

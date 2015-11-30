@@ -3,6 +3,7 @@
 var mongoose = require('mongoose'),
 	uniqueValidator = require('mongoose-unique-validator'),
 	SchemaDefinition = require('./schema.definition'),
+	logger = require('winston'),
 	Constants = require('../constants');
 
 class BasicModel extends SchemaDefinition {
@@ -19,6 +20,10 @@ class BasicModel extends SchemaDefinition {
 				required: true,
 				minlength: BasicModel.constants().MIN_LENGTH
 			},
+			creationDate: {
+				type: Date,
+				default: Date.now	
+			},
 			isRemoved: {
 				type: Boolean,
 				default: false
@@ -30,10 +35,40 @@ class BasicModel extends SchemaDefinition {
 		});
 
 		this.schema.plugin(uniqueValidator, {message: Constants.ERROR_UNIQUE});
+		this.schema.statics.getOrCreate = this.getOrCreate;
 	}
-
+	
 	static constants () {
 		return {MIN_LENGTH: 5};
+	}
+	
+	getOrCreate (entityName, auth) {
+		var self = this;
+		return new Promise(function (resolve, reject) {
+			
+			if (!entityName) return resolve({value: null, type: self.modelName});
+
+			self.findOne({name: entityName})
+				.then(function (entity) {
+					if (entity) return resolve({value: entity, type: self.modelName});
+					
+					try {
+						entity = new self({
+							name: entityName,
+							author: auth.id
+						});
+					}
+					catch (e) {
+						logger.error(`getOrCreate failed for '${self.modelName}': ${e}`);
+						return reject(Constants.ERROR_INTERNAL);
+					}
+					entity.save(function (err, entityFromDB) {
+						if (err) return reject(err);
+						resolve({value: entityFromDB, type: self.modelName});
+					});
+
+				});
+		});
 	}
 }
 

@@ -40,7 +40,7 @@ class Video extends SchemaDefinition {
 			},
 
 			// TODO: Multiple casters?
-			caster: {
+			casters: {
 				type: Array,
 				default: Array
 			},
@@ -50,7 +50,7 @@ class Video extends SchemaDefinition {
 				default: Array
 			},
 
-			team: {
+			teams: {
 				type: Array,
 				default: Array
 			},
