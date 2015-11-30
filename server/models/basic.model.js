@@ -39,7 +39,7 @@ class BasicModel extends SchemaDefinition {
 	}
 	
 	static constants () {
-		return {MIN_LENGTH: 5};
+		return {MIN_LENGTH: 3};
 	}
 	
 	getOrCreate (entityName, auth) {

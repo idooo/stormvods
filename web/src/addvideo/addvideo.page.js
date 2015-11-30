@@ -26,7 +26,7 @@ const TEMPLATE = `
 				
 				<label>Stage</label>	
 				<select 
-					ng-options="stage as stage.name for stage in ctrl.stages track by stage.value"
+					ng-options="stage as stage.name for stage in ctrl.stages track by stage.code"
 					ng-model="ctrl.stage"></select>
 					
 				<label>Teams</label>
@@ -93,11 +93,13 @@ function addVideoPage () {
 		});
 
 		function submit () {
+			console.log(self.stage, self.stage.code)
+			return
 			if (!self.form.$valid && !self.youtubeId) return;
 			$http.post(Constants.Api.VIDEO, {
 				youtubeId: self.youtubeId,
 				tournament: self.tournament,
-				stage: self.stage.code,
+				stage: self.stage ? self.stage.code : null,
 				teams: [self.team1, self.team2],
 				casters: [self.caster]
 			});

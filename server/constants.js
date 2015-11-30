@@ -33,6 +33,7 @@ module.exports = {
 		'GROUPA',
 		'GROUPB',
 		'GROUPC',
-		'GROUPD'
+		'GROUPD',
+		'QUALIFIER'
 	]
 };

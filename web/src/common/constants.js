@@ -8,7 +8,8 @@ const Stages = [
 	{name: 'Group A', code: 'GROUPA'},
 	{name: 'Group B', code: 'GROUPB'},
 	{name: 'Group C', code: 'GROUPC'},
-	{name: 'Group D', code: 'GROUPD'}
+	{name: 'Group D', code: 'GROUPD'},
+	{name: 'Qualifier', code: 'QUALIFIER'}
 ];
 
 angular
