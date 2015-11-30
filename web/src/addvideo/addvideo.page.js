@@ -97,7 +97,7 @@ function addVideoPage () {
 			$http.post(Constants.Api.VIDEO, {
 				youtubeId: self.youtubeId,
 				tournament: self.tournament,
-				stage: self.stage.value,
+				stage: self.stage.code,
 				teams: [self.team1, self.team2],
 				casters: [self.caster]
 			});

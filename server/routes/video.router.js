@@ -203,17 +203,17 @@ class VideoRouter extends Router {
 							break;
 							
 						case self.models.Caster.modelName:
-							video.casters = [{
+							video.casters = {
 								casters: data[i],
 								rating: video.casters[0] ? video.casters[0].rating : null
-							}];
+							};
 							break;
 							
 						case self.models.Team.modelName:
-							video.teams = [{
+							video.teams = {
 								teams: data[i],
 								rating: video.teams[0] ? video.teams[0].rating : null
-							}];
+							};
 							break;
 					}
 				});

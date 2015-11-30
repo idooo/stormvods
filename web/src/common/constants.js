@@ -1,4 +1,15 @@
-/* global angular */
+const Stages = [
+	{name: 'Final', code: 'FINAL'},
+	{name: 'Semi final', code: 'SEMIFINAL'},
+	{name: 'Quarter final', code: 'QUARTERFINAL'},
+	{name: 'Round of 16', code: 'RO16'},
+	{name: 'Round of 32', code: 'RO32'},
+	{name: 'Round of 64', code: 'RO64'},
+	{name: 'Group A', code: 'GROUPA'},
+	{name: 'Group B', code: 'GROUPB'},
+	{name: 'Group C', code: 'GROUPC'},
+	{name: 'Group D', code: 'GROUPD'}
+];
 
 angular
 	.module(`${window.APP_NAME}.common`)
@@ -15,20 +26,17 @@ angular
 			
 			LOOKUP: '/api/lookup'
 		},
+		
 		Roles: {
 			ADMIN: 10
 		},
-		Stages: [
-			{name: 'Final', value: 'FINAL'},
-			{name: 'Semi final', value: 'SEMIFINAL'},
-			{name: 'Quarter final', value: 'QUARTERFINAL'},
-			{name: 'Round of 16', value: 'RO16'},
-			{name: 'Round of 32', value: 'RO32'},
-			{name: 'Round of 64', value: 'RO64'},
-			{name: 'Group A', value: 'GROUPA'},
-			{name: 'Group B', value: 'GROUPB'},
-			{name: 'Group C', value: 'GROUPC'},
-			{name: 'Group D', value: 'GROUPD'}
-		]
+		
+		Stages: Stages,
+		
+		getStageByCode: code => {
+			for (let i = 0; i < Stages.length; i++) {
+				if (code === Stages[i].code) return Stages[i].name;
+			}
+		}
 		
 	});
