@@ -7,58 +7,101 @@ angular
 const TEMPLATE = `
 	<h1>Add new video link</h1>
 
+	https://www.youtube.com/watch?v=1AwlsNfxYok
+	<br>
+	https://www.youtube.com/watch?v=-LsENvjLMxM
+	
 	<section class="add-video-page__section-add-video">
-
+	
 		<form name="ctrl.form" novalidate>
 
 			<fieldset>
 				<label>Link to video</label>
-				<input type="text" name="url" ng-model="ctrl.url" required="">
-
-				<label>Tournament</label>
-				<input 
-					autocomplete="off" 
-					type="text" 
-					name="tournament" 
-					ng-model="ctrl.tournament" 
-					auto-complete
-					lookup="tournament">
 				
-				<label>Stage</label>	
-				<select 
-					ng-options="stage as stage.name for stage in ctrl.stages track by stage.code"
-					ng-model="ctrl.stage"></select>
-					
-				<label>Teams</label>
-				<div class="teams-selector">
-					<div class="teams-selector__team-container">
-						<input auto-complete autocomplete="off" type="text" name="team1" ng-model="ctrl.team1" lookup="teams">
-					</div>	
-					<div class="teams-selector__team-container">				
-						<input auto-complete autocomplete="off" type="text" name="team2" ng-model="ctrl.team2" lookup="tournament">
-					</div>
+				<div class="field-container">
+					<spinner ng-show="ctrl.isServerValidationInProgress"></spinner>
+					<input 
+						type="text" 
+						name="url" 
+						ng-model="ctrl.url" 
+						ng-model-options="{ debounce: 1000 }"
+						autocomplete="off" 
+						required>
+					<input type="hidden" name="youtubeId" ng-model="ctrl.youtubeId" required>
 				</div>
 				
-				<label>Caster</label>
-				<input auto-complete autocomplete="off" type="text" name="caster" ng-model="ctrl.caster" lookup="caster">
+				<div class="flash-alert" ng-show="ctrl.serverVideo.isFound">
+					 This video is <a href="#" ui-sref="video({id: ctrl.serverVideo.id})">already uploaded</a>.
+					 <br>
+					 You can help <a href="#" ui-sref="video({id: ctrl.serverVideo.id})">improve</a>
+					 its description or upload another one
+				</div>
+				
+				<div class="flash-error" ng-show="ctrl.youtubeId == null">
+					 Video URL looks wrong. Are you sure you are trying to add a correct link?
+					 <br>
+					 Please drop me a message if you think there is error in our side
+				</div>
+				
+				<div ng-show="ctrl.serverVideo && !ctrl.serverVideo.isFound">
+	
+					<label>Tournament</label>
+					<input 
+						type="text" 
+						name="tournament" 
+						autocomplete="off" 
+						ng-model="ctrl.tournament" 
+						auto-complete
+						lookup="tournament">
+					
+					<label>Stage</label>	
+					<select 
+						ng-options="stage as stage.name for stage in ctrl.stages track by stage.code"
+						ng-model="ctrl.stage"></select>
+						
+					<label>Teams</label>
+					<div class="teams-selector">
+						<div class="teams-selector__team-container">
+							<input 
+								type="text" 
+								name="team1" 
+								autocomplete="off"								
+								ng-model="ctrl.team1" 
+								auto-complete 
+								lookup="team">
+						</div>	
+						<div class="teams-selector__team-container">				
+							<input 
+								type="text" 
+								name="team2" 
+								autocomplete="off" 
+								ng-model="ctrl.team2" 
+								auto-complete 
+								lookup="team">
+						</div>
+					</div>
+					
+					<label>Caster</label>
+					<input 
+						type="text" 
+						name="caster" 
+						autocomplete="off" 
+						ng-model="ctrl.caster" 
+						auto-complete 
+						lookup="caster">
 
-			</fieldset>
-
-			<div>isUnique: {{ctrl.isYoutubeIdUnique}}</div>
-
-			<span ng-show="ctrl.form.$submitted">
-				<div ng-show="ctrl.form.url.$error.required">URL is required</div>
-			</span>
-
-			{{ctrl.form.$valid}}
-
-			<br>
-
-			<input type="submit" value="Submit" ng-click="ctrl.submit()" >
+				</div>
+				
+			</fields>
+			
+			<button type="button" ng-disabled="!ctrl.form.$valid" ng-click="ctrl.submit()" >
+				Submit
+			</button>
 
 		</form>
-
+	
 	</section>
+	
 `;
 
 function addVideoPage () {
@@ -67,34 +110,28 @@ function addVideoPage () {
 		restrict: 'E',
 		scope: true,
 		template: TEMPLATE,
-		link: link,
 		controller: controller,
 		controllerAs: 'ctrl'
 	};
 
-	function link () {
-
-	}
-
 	function controller ($scope, $http, $interval, Constants) {
 		var self = this,
-			isServerValidationInProgress = false,
 			serverValidationInterval;
-
+		
 		self.youtubeId = '';
-		self.isYoutubeIdUnique = false;
+		self.serverVideo = null;
+		self.isServerValidationInProgress = false;
 
 		self.submit = submit;
 		self.stages = Constants.Stages;
 
 		$scope.$watch('ctrl.url', function (newValue) {
+			self.serverVideo = null;
 			self.youtubeId = youtubeUrlParser(newValue);
 			if (self.youtubeId) serverValidation();
 		});
 
 		function submit () {
-			console.log(self.stage, self.stage.code)
-			return
 			if (!self.form.$valid && !self.youtubeId) return;
 			$http.post(Constants.Api.VIDEO, {
 				youtubeId: self.youtubeId,
@@ -109,14 +146,14 @@ function addVideoPage () {
 			if (!url) return false;
 			var regExp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
 			var match = url.match(regExp);
-			return (match && match[1].length === 11) ? match[1] : false;
+			return (match && match[1].length === 11) ? match[1] : null;
 		}
 
 		/**
 		 * Validate youtube ID on the server side to prevent duplicates
 		 */
 		function serverValidation () {
-			if (isServerValidationInProgress) {
+			if (self.isServerValidationInProgress) {
 				if (!serverValidationInterval) serverValidationInterval = $interval(serverValidation, 1000);
 				return;
 			}
@@ -125,13 +162,13 @@ function addVideoPage () {
 				$interval.cancel(serverValidationInterval);
 				serverValidationInterval = null;
 			}
-			isServerValidationInProgress = true;
+			self.isServerValidationInProgress = true;
 
 			$http.get(`${Constants.Api.VALIDATE_VIDEO}?id=${self.youtubeId}`)
 				.then((response) => {
-					self.isYoutubeIdUnique = response.data;
+					self.serverVideo = response.data;
 				})
-				.finally(() => isServerValidationInProgress = false);
+				.finally(() => self.isServerValidationInProgress = false);
 
 		}
 

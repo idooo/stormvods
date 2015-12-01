@@ -4,12 +4,16 @@
 @import "./reset";
 @import "./variables";
 
+@import "./common/spinner";
 @import "./common/container";
 @import "./common/header";
 @import "./common/section";
 @import "./common/form";
 @import "./common/buttons";
 @import "./common/checkbox";
+@import "./common/flashes";
+@import "./common/autocomplete";
+
 @import "./common/video";
 @import "./common/sidebar";
 

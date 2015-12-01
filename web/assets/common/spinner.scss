@@ -1,0 +1,42 @@
+$loader-color: $action-color !default;
+
+@include keyframes(hexagon) {
+	0% {
+		opacity: 1
+	}
+	50% {
+		opacity: 0
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.spinner {
+	@include animation(hexagon 1250ms infinite linear);
+	position: relative;
+	background-color: $loader-color;
+	width: 16px; 
+	height: 9.24px;
+	margin: 4.62px 0;
+	
+	&:before,
+	&:after {
+		content: "";
+		position: absolute;
+		width: 0;
+		border-left: 8px solid transparent;
+		border-right: 8px solid transparent;
+	}
+	
+	&:before {
+		bottom: 100%;
+		border-bottom: 4.62px solid $loader-color;
+	}
+	
+	&:after {
+		top: 100%;
+		width: 0;
+		border-top: 4.62px solid $loader-color;
+	}
+}

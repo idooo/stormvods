@@ -1,5 +1,6 @@
 // Project third-party dependencies
 var modules = [
+	'ngAnimate',
 	'ui.router',
 	'LocalStorageModule'
 ];
@@ -20,7 +21,8 @@ require('./common/auth.service.js');
 require('./common/header.directive.js');
 require('./common/checkbox.directive.js');
 require('./common/video.directive.js');
-require('./common/autocomplete.directive');
+require('./common/autocomplete.directive.js');
+require('./common/spinner.directive.js');
 require('./index/index.page.js');
 require('./callback/callback.page.js');
 require('./addvideo/addvideo.page.js');

@@ -90,3 +90,14 @@ select {
   max-width: 100%;
   width: auto;
 }
+
+.field-container {
+	position: relative;
+	
+	.spinner {
+		left: 100%;
+		margin-left: -31px;
+		margin-top: 14px;
+		position: absolute;
+	}
+}

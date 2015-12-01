@@ -42,7 +42,8 @@
     "node": ">4.0.0"
   },
   "dependencies": {
-    "angular": "^1.4.7",
+    "angular": "^1.4.8",
+    "angular-animate": "^1.4.8",
     "angular-local-storage": "^0.2.2",
     "angular-ui-router": "^0.2.15",
     "base64url": "^1.0.5",
