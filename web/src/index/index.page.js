@@ -12,10 +12,8 @@ const TEMPLATE = `
 		<video object="ctrl.videos[ctrl.videos.length - 1]"></video>
 		
 	</section>
-		
-	<div ng-repeat="video in ctrl.videos">
-		<a href="#" ui-sref="video({id: video._id})">{{video.youtubeId || 'broken'}}</a>	
-	</div>
+	
+	<video-list videos="ctrl.videos" skip-first="true"></video-list>
 	
 `;
 

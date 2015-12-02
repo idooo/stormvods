@@ -66,12 +66,16 @@ class Database {
 	}
 
 	static ObjectId (id) {
+		var value = null;
+		if (!mongoose.Types.ObjectId.isValid(id)) return value;
+		
 		try {
-			return mongoose.Types.ObjectId(id);
+			value = mongoose.Types.ObjectId(id);
 		}
 		catch (e) {
-			return null;
+			// nothing
 		}
+		return value;
 	}
 }
 

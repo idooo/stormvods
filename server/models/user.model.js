@@ -52,12 +52,17 @@ class User extends SchemaDefinition {
 					default: Array
 				}
 			}
+			
+			// TODO: watched
 		});
 
 		this.schema.methods.vote = this.vote;
 	}
 
 	vote (video, entityType, entityId) {
+		
+		// TODO: sort entities after vote
+		
 		var self = this;
 
 		if (entityType === 'video') {

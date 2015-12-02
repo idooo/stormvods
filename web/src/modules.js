@@ -16,18 +16,21 @@ var appModules = [
 appModules.forEach((moduleName) => angular.module(moduleName, []));
 
 // App modules
-require('./common/constants.js');
-require('./common/auth.service.js');
-require('./common/header.directive.js');
-require('./common/checkbox.directive.js');
-require('./common/video.directive.js');
-require('./common/autocomplete.directive.js');
-require('./common/spinner.directive.js');
-require('./index/index.page.js');
-require('./callback/callback.page.js');
-require('./addvideo/addvideo.page.js');
-require('./video/video.page.js');
+require('./common/constants');
+require('./common/auth.service');
+require('./common/header.directive');
+require('./common/checkbox.directive');
+require('./common/video.directive');
+require('./common/videolist.directive');
+require('./common/autocomplete.directive');
+require('./common/spinner.directive');
+require('./index/index.page');
+require('./callback/callback.page');
+require('./addvideo/addvideo.page');
+require('./video/video.page');
 require('./admin/zone.page');
 require('./sidebar/sidebar.directive');
+require('./tournament/tournament.page');
+require('./team/team.page');
 
 module.exports = modules.concat(appModules);

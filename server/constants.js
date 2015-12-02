@@ -22,6 +22,12 @@ module.exports = {
 		ADMIN: 10
 	},
 	
+	VIEW_MODES: {
+		DEFAULT: 'DEFAULT',
+		ONLY_REMOVED: 'ONLY_REMOVED',
+		ALL: 'ALL'
+	},
+	
 	// stages
 	STAGES: [
 		'FINAL',
