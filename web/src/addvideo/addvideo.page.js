@@ -42,8 +42,8 @@ const TEMPLATE = `
 					 <br>
 					 Please drop me a message if you think there is error in our side
 				</div>
-				
-				<div ng-show="true || ctrl.serverVideo && !ctrl.serverVideo.isFound">
+		
+				<div ng-show="ctrl.serverVideo && !ctrl.serverVideo.isFound">
 	
 					<label>Tournament</label>
 					
@@ -87,7 +87,6 @@ function addVideoPage () {
 		controller: controller,
 		controllerAs: 'ctrl'
 	};
-	
 	
 	function controller ($scope, $http, $interval, Constants) {
 		var self = this,

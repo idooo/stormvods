@@ -59,9 +59,9 @@ class VideoListRoute {
 					videos = _videos.map(function (video) {
 						video = video.toObject(); // Convert because tournament is Array in scheme
 						
-						video.tournament = _max(video.tournament, 'rating');
-						video.teams = _max(video.teams, 'rating');
-						video.casters = _max(video.casters, 'rating');
+						video.tournament = VideoListRoute.maxByRating(video.tournament);
+						video.teams = VideoListRoute.maxByRating(video.teams);
+						video.casters = VideoListRoute.maxByRating(video.casters);
 						
 						if (video.tournament) tournamentIds.push(video.tournament._id);
 						if (video.teams) teamIds = teamIds.concat(video.teams.teams);
@@ -94,6 +94,12 @@ class VideoListRoute {
 					return next();
 				});
 		};
+	}
+	
+	static maxByRating (items) {
+		var max = _max(items, 'rating');
+		if (typeof max === 'number') return undefined;
+		return max;
 	}
 }
 
