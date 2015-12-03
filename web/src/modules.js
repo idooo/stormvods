@@ -1,7 +1,9 @@
 // Project third-party dependencies
 var modules = [
 	'ngAnimate',
+	'ngSanitize',
 	'ui.router',
+	'ui.select', 
 	'LocalStorageModule'
 ];
 

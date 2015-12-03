@@ -2,71 +2,54 @@ angular
 	.module(`${window.APP_NAME}.common`)
 	.directive('autoComplete', autoCompleteDirective);
 
-const TEMPLATE = `
-	<div class="autocomplete" ng-show="ctrl.items && ctrl.items.length">
-		<ul class="autocomplete__list">
-			<li class="autocomplete__item" ng-repeat="item in ctrl.items" ng-click="ctrl.select(item)">{{item.name}}</li>
-		</ul>
-	</div>
-`;
-
 const DEBOUNCE_LOOKUP = 1000;
 const MIN_LENGTH = 3;
+
+const TEMPLATE = `
+	<div>
+		<ui-select 
+			tagging 
+			tagging-label="(add)" 
+			multiple 
+			limit="{{limit}}"
+			ng-model="$parent.model" 
+			theme="select2">
+			
+			<ui-select-match>{{$item}}</ui-select-match>
+			<ui-select-choices 
+				refresh="getValues($select.search)"
+				refresh-delay="${DEBOUNCE_LOOKUP}"
+				repeat="item in items">
+				{{item}}
+			</ui-select-choices>
+		</ui-select>
+	</div>
+`;
 
 function autoCompleteDirective () {
 
 	return {
-		require: 'ngModel',
-		restrict: 'A',
+		restrict: 'E',
 		replace: true,
 		scope: {
 			lookup: '@',
-			model: '=ngModel'
+			limit: '@',
+			model: '='
 		},
-		link: link,
-		controller: controller,
-		controllerAs: 'ctrl'
+		template: TEMPLATE,
+		controller: controller
 	};
 	
-	function link (scope, element, attrs, controller) {
-		controller.$options = {
-			updateOnDefault: true,
-			debounce: {
-				'default': DEBOUNCE_LOOKUP
-			}
-		};
-	}
-	
-	function controller ($scope, $element, $compile, $timeout, $http, Constants) {
-		var self = this,
-			justClicked = false,
-			template = angular.element(TEMPLATE),
-			endpoint = `${Constants.Api.LOOKUP}/${$scope.lookup}`;
+	function controller ($scope, $http, Constants) {
+		var endpoint = `${Constants.Api.LOOKUP}/${$scope.lookup}`;
 			
-		self.items = [];
-		self.select = select;
-		
-		$scope.$watch('model', function (newValue, oldValue) {
-			if (!newValue || newValue === oldValue || justClicked || newValue.length < MIN_LENGTH) return;
-			
+		$scope.items = [];
+		$scope.getValues = function (newValue) {
+			if (!newValue || newValue.length < MIN_LENGTH) return; 
 			$http.get(`${endpoint}?query=${newValue}`)
-				.then(response => self.items = response.data.values.filter(item => item.name !== newValue));
-			
-		});
-		
-		$element.after(template);
-		$compile(template)($scope);
-		
-		$element.on('blur', function () {
-			justClicked = true;
-			$timeout(function () {
-				self.items = [];
-				justClicked = false;
-			}, 150);
-		});
-		
-		function select (item) {
-			$scope.model = item.name;	
-		}
+				.then(response => {
+					$scope.items = response.data.values.map(i => i.name);
+				});
+		};
 	}
 }

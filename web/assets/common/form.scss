@@ -29,7 +29,8 @@ label {
 }
 
 #{$all-text-inputs},
-select[multiple=multiple] {
+select[multiple=multiple],
+.select2-container-multi .select2-choices {
   background-color: $base-background-color;
   border: $base-border;
   border-radius: $base-border-radius;

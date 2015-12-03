@@ -43,65 +43,39 @@ const TEMPLATE = `
 					 Please drop me a message if you think there is error in our side
 				</div>
 				
-				<div ng-show="ctrl.serverVideo && !ctrl.serverVideo.isFound">
+				<div ng-show="true || ctrl.serverVideo && !ctrl.serverVideo.isFound">
 	
 					<label>Tournament</label>
-					<input 
-						type="text" 
-						name="tournament" 
-						autocomplete="off" 
-						ng-model="ctrl.tournament" 
-						auto-complete
-						lookup="tournament">
 					
+					<auto-complete model="ctrl.tournament" lookup="tournament" limit="1"></auto-complete>
+		
 					<label>Stage</label>	
 					<select 
 						ng-options="stage as stage.name for stage in ctrl.stages track by stage.code"
 						ng-model="ctrl.stage"></select>
 						
 					<label>Teams</label>
-					<div class="teams-selector">
-						<div class="teams-selector__team-container">
-							<input 
-								type="text" 
-								name="team1" 
-								autocomplete="off"								
-								ng-model="ctrl.team1" 
-								auto-complete 
-								lookup="team">
-						</div>	
-						<div class="teams-selector__team-container">				
-							<input 
-								type="text" 
-								name="team2" 
-								autocomplete="off" 
-								ng-model="ctrl.team2" 
-								auto-complete 
-								lookup="team">
-						</div>
-					</div>
-					
+					<auto-complete model="ctrl.teams" lookup="team" limit="2"></auto-complete>
+		
 					<label>Caster</label>
-					<input 
-						type="text" 
-						name="caster" 
-						autocomplete="off" 
-						ng-model="ctrl.caster" 
-						auto-complete 
-						lookup="caster">
+					<auto-complete model="ctrl.casters" lookup="caster" limit="5"></auto-complete>
 
 				</div>
 				
 			</fields>
 			
-			<button type="button" ng-disabled="!ctrl.form.$valid" ng-click="ctrl.submit()" >
+			<button 
+				type="button" 
+				ng-disabled="!ctrl.form.$valid || ctrl.serverVideo.isFound || ctrl.isServerValidationInProgress" 
+				ng-click="ctrl.submit()" >
+				
 				Submit
 			</button>
 
 		</form>
 	
-	</section>
-	
+	</section> 
+		
 `;
 
 function addVideoPage () {
@@ -113,7 +87,8 @@ function addVideoPage () {
 		controller: controller,
 		controllerAs: 'ctrl'
 	};
-
+	
+	
 	function controller ($scope, $http, $interval, Constants) {
 		var self = this,
 			serverValidationInterval;
@@ -135,10 +110,10 @@ function addVideoPage () {
 			if (!self.form.$valid && !self.youtubeId) return;
 			$http.post(Constants.Api.VIDEO, {
 				youtubeId: self.youtubeId,
-				tournament: self.tournament,
+				tournament: self.tournament ? self.tournament[0] : null,
 				stage: self.stage ? self.stage.code : null,
-				teams: [self.team1, self.team2],
-				casters: [self.caster]
+				teams: self.teams,
+				casters: self.casters
 			});
 		}
 

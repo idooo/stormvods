@@ -1,7 +1,0 @@
-.teams-selector {
-	@include outer-container;
-	
-	&__team-container {
-		@include span-columns(6);
-	}
-}
