@@ -127,7 +127,7 @@ class Router {
 	}
 
 	static filter (str) {
-		if (str === null) return null;
+		if (str === null || str === undefined) return null;
 		return (str.toString() || '').trim().replace(RE_FILTER, '').replace(/(\s+|\t+)/g, ' ');
 	}
 

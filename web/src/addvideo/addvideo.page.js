@@ -43,7 +43,7 @@ const TEMPLATE = `
 					 Please drop me a message if you think there is error in our side
 				</div>
 		
-				<div ng-show="ctrl.serverVideo && !ctrl.serverVideo.isFound">
+				<div ng-show="true || ctrl.serverVideo && !ctrl.serverVideo.isFound">
 	
 					<label>Tournament</label>
 					
@@ -115,11 +115,11 @@ function addVideoPage () {
 			$http.post(Constants.Api.VIDEO, {
 				youtubeId: self.youtubeId,
 				tournament: self.tournament ? self.tournament[0] : null,
-				stage: self.stage ? self.stage.code : null,
+				stage: self.stage,
 				teams: self.teams,
 				casters: self.casters
-			}).then(function (video) {
-				$state.go('video', {id: video._id});
+			}).then(function (response) {
+				$state.go('video', {id: response.data._id});
 			});
 		}
 

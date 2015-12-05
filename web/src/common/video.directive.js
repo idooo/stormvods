@@ -39,8 +39,7 @@ const TEMPLATE = `
 				<span class="video__casters" ng-if="object.casters.casters.length">
 					Casted by:
 					<span ng-repeat="caster in object.casters.casters">
-						<a href="#" ui-sref="caster({id: caster._id})">{{caster.name}}</a>
-						<span ng-if="!$last">,<span>
+						<a href="#" ui-sref="caster({id: caster._id})">{{caster.name}}</a><span ng-if="!$last">,<span>
 					</span>
 				</span>
 			</div>
