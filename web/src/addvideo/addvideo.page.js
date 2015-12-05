@@ -13,7 +13,7 @@ const TEMPLATE = `
 	
 	<section class="add-video-page__section-add-video">
 	
-		<form name="ctrl.form" novalidate>
+		<form name="ctrl.form" novalidate ng-hide="ctrl.isVideoUploading">
 
 			<fieldset>
 				<label>Link to video</label>
@@ -51,8 +51,10 @@ const TEMPLATE = `
 		
 					<label>Stage</label>	
 					<select 
-						ng-options="stage as stage.name for stage in ctrl.stages track by stage.code"
-						ng-model="ctrl.stage"></select>
+						ng-options="k as v for (k, v) in ctrl.stages"
+						ng-model="ctrl.stage">
+						<option value="{{k}}">{{v}}</option>
+					</select>
 						
 					<label>Teams</label>
 					<auto-complete model="ctrl.teams" lookup="team" limit="2"></auto-complete>
@@ -88,13 +90,14 @@ function addVideoPage () {
 		controllerAs: 'ctrl'
 	};
 	
-	function controller ($scope, $http, $interval, Constants) {
+	function controller ($scope, $http, $interval, $state, Constants) {
 		var self = this,
 			serverValidationInterval;
 		
 		self.youtubeId = '';
 		self.serverVideo = null;
 		self.isServerValidationInProgress = false;
+		self.isVideoUploading = false;
 
 		self.submit = submit;
 		self.stages = Constants.Stages;
@@ -107,12 +110,16 @@ function addVideoPage () {
 
 		function submit () {
 			if (!self.form.$valid && !self.youtubeId) return;
+			self.isVideoUploading = true;
+			
 			$http.post(Constants.Api.VIDEO, {
 				youtubeId: self.youtubeId,
 				tournament: self.tournament ? self.tournament[0] : null,
 				stage: self.stage ? self.stage.code : null,
 				teams: self.teams,
 				casters: self.casters
+			}).then(function (video) {
+				$state.go('video', {id: video._id});
 			});
 		}
 

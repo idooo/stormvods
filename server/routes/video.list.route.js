@@ -84,6 +84,7 @@ class VideoListRoute {
 						if (videos[i].tournament) videos[i].tournament = lookup[videos[i].tournament._id];
 						if (videos[i].teams) videos[i].teams.teams = videos[i].teams.teams.map(item => lookup[item]);
 						if (videos[i].casters) videos[i].casters.casters = videos[i].casters.casters.map(item => lookup[item]);
+						if (videos[i].stage) videos[i].stage = videos[i].stage[0];
 					}
 					
 					Router.success(res, {videos, pageCount, itemCount});

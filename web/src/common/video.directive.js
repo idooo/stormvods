@@ -20,8 +20,8 @@ const TEMPLATE = `
 				<span class="video__tournament">
 					<a href="#" ui-sref="tournament({id: object.tournament._id})">{{object.tournament.name}}</a>
 				</span>
-				<span class="video__type">Best of 3</span>
-				<span class="video__teams">
+				<span class="video__format">Best of 3</span>
+				<span class="video__teams" ng-if="object.teams.teams.length">
 					<span ng-hide="showTeams">
 						<a ng-click="toggleTeams()">Show teams</a>
 					</span>
@@ -33,6 +33,14 @@ const TEMPLATE = `
 						<a href="#" ui-sref="team({id: object.teams.teams[1]._id})">
 							{{object.teams.teams[1].name}}
 						</a>
+					</span>
+				</span>
+				
+				<span class="video__casters" ng-if="object.casters.casters.length">
+					Casted by:
+					<span ng-repeat="caster in object.casters.casters">
+						<a href="#" ui-sref="caster({id: caster._id})">{{caster.name}}</a>
+						<span ng-if="!$last">,<span>
 					</span>
 				</span>
 			</div>
@@ -49,8 +57,6 @@ const TEMPLATE = `
 			
 		</div>
 		
-		Casted by:
-		<div ng-repeat="caster in object.casters.casters">{{caster.name}}</div>
 	</div>
 `;
 
@@ -78,7 +84,7 @@ function videoDirective ($sce, Constants) {
 		
 		scope.$watch('object', function (newValue) {
 			if (!newValue || !newValue.stage) return;
-			scope.object.stage.name = Constants.getStageByCode(newValue.stage.code);
+			scope.object.stage.name = Constants.Stages[newValue.stage.code];
 		});
 		
 		function getIframeSrc () {

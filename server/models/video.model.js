@@ -38,6 +38,10 @@ class Video extends SchemaDefinition {
 				type: mongoose.Schema.Types.ObjectId,
 				required: true
 			},
+			creationDate: {
+				type: Date,
+				default: Date.now
+			},
 
 			// TODO: Multiple casters?
 			casters: {

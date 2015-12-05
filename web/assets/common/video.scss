@@ -18,7 +18,7 @@ $video-container-bottom-color: #2c0448;
 	&__play {
 		width: 91px;
 		height: 105px;
-		margin: 35px auto 20px;
+		margin: 11px auto 20px;
 		cursor: pointer;
 		@include background-image(url("/dist/images/play.png") center no-repeat);
 	}
@@ -31,12 +31,12 @@ $video-container-bottom-color: #2c0448;
 		a {
 			color: $light-text-color;
 			text-decoration: none;
-			border-bottom: 1px dotted $light-text-color-blend;
+			border-bottom: 1px solid $light-text-color-blend;
 			@include transition(all 0.3s ease-in-out);
 			
 			&:hover {
 				color: $light-text-color-bright;
-				border-bottom-color: $light-text-color-blend;
+				border-bottom-color: $light-text-color-bright;
 			}
 		}
 		
@@ -48,26 +48,40 @@ $video-container-bottom-color: #2c0448;
 	
 		&__stage {
 			font-size: 16px;
-			margin-bottom: 8px;
+			margin-bottom: 6px;
+			color: $light-text-color-blend;
 		}
 		
 		&__tournament {
 			font-size: 22px;
 			letter-spacing: 1px;
-			margin-bottom: 15px;
+			margin-bottom: 10px;
 		}
 		
-		&__type {
+		&__format {
 			font-size: 14px;
 			color: $light-text-color-blend;
-			margin-bottom: 15px;
+			margin-bottom: 16px;
 		}
 		
 		&__teams {
 			color: $light-text-color-blend;
+			margin-bottom: 38px;
 			
 			a {
 				text-transform: none;
+			}
+		}
+		
+		&__casters {
+			font-size: 14px;
+			text-transform: none !important;
+			color: $light-text-color-blend;
+			
+			span, a {
+				color: $light-text-color-blend;
+				text-transform: none;
+				display: inline;
 			}
 		}
 		

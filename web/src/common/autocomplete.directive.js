@@ -2,7 +2,7 @@ angular
 	.module(`${window.APP_NAME}.common`)
 	.directive('autoComplete', autoCompleteDirective);
 
-const DEBOUNCE_LOOKUP = 1000;
+const DEBOUNCE_LOOKUP = 500;
 const MIN_LENGTH = 3;
 
 const TEMPLATE = `

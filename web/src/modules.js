@@ -4,7 +4,8 @@ var modules = [
 	'ngSanitize',
 	'ui.router',
 	'ui.select', 
-	'LocalStorageModule'
+	'LocalStorageModule',
+	'angularMoment'
 ];
 
 // Application modules list
@@ -26,6 +27,7 @@ require('./common/video.directive');
 require('./common/videolist.directive');
 require('./common/autocomplete.directive');
 require('./common/spinner.directive');
+
 require('./index/index.page');
 require('./callback/callback.page');
 require('./addvideo/addvideo.page');
@@ -34,5 +36,6 @@ require('./admin/zone.page');
 require('./sidebar/sidebar.directive');
 require('./tournament/tournament.page');
 require('./team/team.page');
+require('./caster/caster.page');
 
 module.exports = modules.concat(appModules);

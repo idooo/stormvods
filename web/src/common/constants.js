@@ -1,17 +1,3 @@
-const Stages = [
-	{name: 'Final', code: 'FINAL'},
-	{name: 'Semi final', code: 'SEMIFINAL'},
-	{name: 'Quarter final', code: 'QUARTERFINAL'},
-	{name: 'Round of 16', code: 'RO16'},
-	{name: 'Round of 32', code: 'RO32'},
-	{name: 'Round of 64', code: 'RO64'},
-	{name: 'Group A', code: 'GROUPA'},
-	{name: 'Group B', code: 'GROUPB'},
-	{name: 'Group C', code: 'GROUPC'},
-	{name: 'Group D', code: 'GROUPD'},
-	{name: 'Qualifier', code: 'QUALIFIER'}
-];
-
 angular
 	.module(`${window.APP_NAME}.common`)
 	.constant('Constants', {
@@ -32,12 +18,25 @@ angular
 			ADMIN: 10
 		},
 		
-		Stages: Stages,
+		Stages: {
+			FINAL: 'Final',
+			SEMIFINAL: 'Semi final',
+			QUARTERFINAL: 'Quarter final',
+			RO16: 'Round of 16',
+			RO32: 'Round of 32',
+			RO64: 'Round of 64',
+			GROUPA: 'Group A',
+			GROUPB: 'Group B',
+			GROUPC: 'Group C',
+			GROUPD: 'Group D',
+			QUALIFIER: 'Qualifier'
+		},
 		
-		getStageByCode: code => {
-			for (let i = 0; i < Stages.length; i++) {
-				if (code === Stages[i].code) return Stages[i].name;
-			}
-		}
-		
+		Format: {
+			BO1: 'Best of 1',
+			BO2: 'Best of 2',
+			BO3: 'Best of 3',
+			BO5: 'Best of 5',
+			BO7: 'Best of 7'
+		} 
 	});

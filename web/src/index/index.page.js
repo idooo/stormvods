@@ -13,8 +13,24 @@ const TEMPLATE = `
 		
 	</section>
 	
-	<video-list videos="ctrl.videos" skip-first="true"></video-list>
-	
+	<section>
+		
+		<h1>Recently added</h1>
+		
+		<video-list videos="ctrl.videos" skip-first="true"></video-list>
+		
+		<div class="pagination">
+			<ul>
+				<li class="page-prev">
+					<a href="javascript:void(0)" ng-if="ctrl.currentPage != 1">Prev</a>
+				</li>
+				<li class="page-next" ng-if="ctrl.pageCount > ctrl.currentPage">
+					<a href="javascript:void(0)">Next</a>
+				</li>
+			</ul>
+		</div>
+		
+	</section>
 `;
 
 function indexPage () {
@@ -31,9 +47,14 @@ function indexPage () {
 		var self = this;
 		
 		self.videos = [];
+		self.currentPage = 1;
+		self.pageCount = 1;
 		
 		$http.get(Constants.Api.GET_VIDEO_LIST)
-			.then(response => self.videos = response.data.videos);
+			.then(response => {
+				self.videos = response.data.videos;
+				self.pageCount = response.data.pageCount;
+			});
 	}
 		
 }
