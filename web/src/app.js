@@ -1,5 +1,3 @@
-/* global angular */
-
 window.APP_NAME = 'hotsVideos';
 
 var modules = require('./modules');
@@ -50,5 +48,5 @@ function configuration ($stateProvider, $urlRouterProvider) {
 }
 
 function init (Auth) {
-	Auth.authorize();
+	Auth.authorise();
 }

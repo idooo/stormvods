@@ -22,9 +22,9 @@ const TEMPLATE = `
 				At least for now it will require Reddit account
 			</p>
 			
-			<button ng-if="!ctrl.user.name" ng-click="ctrl.openAuthUrl()">Login/Register</button>
+			<button ng-if="!$root.isAuthorised" ng-click="ctrl.openAuthUrl()">Login/Register</button>
 			
-			<button ng-if="ctrl.user.name" ui-sref="addvideo">Add Video</button>
+			<button ng-if="$root.isAuthorised" ui-sref="addvideo">Add Video</button>
 		
 		</div>
 	
@@ -46,8 +46,5 @@ function sidebarDirective () {
 		var self = this;
 		
 		self.openAuthUrl = Auth.openAuthUrl;
-		
-		Auth.get().then(user => self.user = user);
 	}
-		
 }

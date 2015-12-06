@@ -24,14 +24,21 @@ class StaticRouter extends Router {
 	}
 
 	compileIndexTemplate () {
-		this.template = Handlebars.compile(fs.readFileSync(`${TEMPLATES_PATH}/index.html`).toString());
+		this.template = Handlebars.compile(fs.readFileSync(`${TEMPLATES_PATH}/index.html`).toString(), {noEscape: true});
 		logger.debug('index.html template compiled');
 	}
 
 	indexRender (req, res) {
+		var data = {},
+			cookies = req.cookies;
+			
+		if (cookies.token && cookies.username) {
+			data.configurationString = `window.Auth = {username: '${cookies.username}', token: '${cookies.token}'};`;
+		}
+		
 		if (this.config.debug.disableTemplateCaching) this.compileIndexTemplate();
 
-		var body = this.template(this.config);
+		var body = this.template(data);
 		res.writeHead(200, {
 			'Content-Length': Buffer.byteLength(body),
 			'Content-Type': 'text/html'

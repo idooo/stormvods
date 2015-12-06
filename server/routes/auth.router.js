@@ -97,7 +97,12 @@ class AuthRouter extends Router {
 
 			// Authorise user
 			.then(function (userDataFromDB) {
-				Router.success(res, Auth.authorize(userDataFromDB._id, userDataFromDB.name, userDataFromDB.role));
+				var auth = Auth.authorize(userDataFromDB._id, userDataFromDB.name, userDataFromDB.role);
+				
+				res.setCookie('username', auth.username, {path: '/'});
+				res.setCookie('token', auth.token, {path: '/'});
+				
+				Router.success(res, auth);
 				return next();
 			})
 

@@ -25,10 +25,10 @@ const TEMPLATE = `
 			
 			<div class="navigation-tools">
 				
-				<div style="color: white" ng-if="ctrl.user.name">
-					Welcome, {{ctrl.user.name}}
+				<div style="color: white" ng-if="$root.isAuthorised">
+					Welcome, {{$root.username}}
 				</div>
-				<a style="color: white" href="#" ng-if="!ctrl.user.name" ng-click="ctrl.openAuthUrl()">Login</a>
+				<a style="color: white" href="#" ng-if="!$root.isAuthorised" ng-click="ctrl.openAuthUrl()">Login</a>
 				
 			</div>
 		
@@ -51,11 +51,8 @@ function headerDirective () {
 	function controller (Auth) {
 		var self = this;
 		
-		self.user;
 		self.isMenuHidden = true;
 		self.openAuthUrl = Auth.openAuthUrl;
-		
-		Auth.get().then(user => self.user = user);
 	}
 		
 }

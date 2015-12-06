@@ -22,7 +22,7 @@ function callbackPage () {
 		controller: controller
 	};
 	
-	function controller ($http, $window, $timeout, Auth) {
+	function controller ($http, $window) {
 		var params = {};
 		$window.location.search
 			.replace('?', '')
@@ -33,12 +33,7 @@ function callbackPage () {
 			});
 			
 		// TODO: handle errors
-		$http.get(ENDPOINT_CALLBACK, {params}).then((response) => {
-			Auth.updateSessionInfo(response.data.username, response.data.token);
-			
-			// 100 ms should be enough to update local storage (lol what?)
-			$timeout(() => $window.location.assign('/'), 100);
-		});
+		$http.get(ENDPOINT_CALLBACK, {params}).then(() => $window.location.assign('/'));
 	}
 		
 }
