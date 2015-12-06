@@ -20,7 +20,7 @@ class VideoAddRoute {
 			format = Router.filter(req.params.format),
 			stage = Router.filter(req.params.stage);
 			
-		if (!youtubeId || !youtubeId.length !== Video.constants().YOUTUBE_ID_LENGTH) {
+		if (!youtubeId || youtubeId.length !== Video.constants().YOUTUBE_ID_LENGTH) {
 			Router.fail(res, {message: {youtubeId: Constants.ERROR_INVALID}});
 			return next();
 		}	

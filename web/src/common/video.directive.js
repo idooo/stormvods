@@ -20,7 +20,7 @@ const TEMPLATE = `
 				<span class="video__tournament">
 					<a href="#" ui-sref="tournament({id: object.tournament._id})">{{object.tournament.name}}</a>
 				</span>
-				<span class="video__format">Best of 3</span>
+				<span class="video__format">{{object.format.name}}</span>
 				<span class="video__teams" ng-if="object.teams.teams.length">
 					<span ng-hide="showTeams">
 						<a ng-click="toggleTeams()">Show teams</a>
@@ -84,6 +84,7 @@ function videoDirective ($sce, Constants) {
 		scope.$watch('object', function (newValue) {
 			if (!newValue || !newValue.stage) return;
 			scope.object.stage.name = Constants.Stages[newValue.stage.code];
+			scope.object.format.name = Constants.Formats[newValue.format.code];
 		});
 		
 		function getIframeSrc () {

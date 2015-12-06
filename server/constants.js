@@ -45,7 +45,6 @@ module.exports = {
 	
 	FORMAT: [
 		'BO1',
-		'BO2', 
 		'BO3', 
 		'BO5', 
 		'BO7'

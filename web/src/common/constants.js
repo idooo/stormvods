@@ -34,7 +34,6 @@ angular
 		
 		Formats: {
 			BO1: 'Best of 1',
-			BO2: 'Best of 2',
 			BO3: 'Best of 3',
 			BO5: 'Best of 5',
 			BO7: 'Best of 7'

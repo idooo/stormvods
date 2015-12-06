@@ -30,20 +30,29 @@ const TEMPLATE = `
 					<input type="hidden" name="youtubeId" ng-model="ctrl.youtubeId" required>
 				</div>
 				
-				<div class="flash-alert" ng-show="ctrl.serverVideo.isFound">
-					 This video is <a href="#" ui-sref="video({id: ctrl.serverVideo.id})">already uploaded</a>.
-					 <br>
-					 You can help <a href="#" ui-sref="video({id: ctrl.serverVideo.id})">improve</a>
-					 its description or upload another one
+				<div 
+					ng-class="{
+						'flash-alert': ctrl.serverVideo.isFound,
+						'flash-error': ctrl.youtubeId == null
+					}"
+					ng-show="ctrl.serverVideo.isFound || ctrl.youtubeId == null">
+					
+					<span ng-show="ctrl.serverVideo.isFound">					
+						This video is <a href="#" ui-sref="video({id: ctrl.serverVideo.id})">already uploaded</a>.
+						<br>
+						You can help <a href="#" ui-sref="video({id: ctrl.serverVideo.id})">improve</a>
+						its description or upload another one
+					</span>
+					
+					<span ng-show="ctrl.youtubeId == null">
+						Video URL looks wrong. Are you sure you are trying to add a correct link?
+						<br>
+						Please drop me a message if you think there is error in our side
+					</span>
 				</div>
 				
-				<div class="flash-error" ng-show="ctrl.youtubeId == null">
-					 Video URL looks wrong. Are you sure you are trying to add a correct link?
-					 <br>
-					 Please drop me a message if you think there is error in our side
-				</div>
 		
-				<div ng-show="true || ctrl.serverVideo && !ctrl.serverVideo.isFound">
+				<div ng-show="ctrl.serverVideo && !ctrl.serverVideo.isFound">
 	
 					<label>Tournament</label>
 					
