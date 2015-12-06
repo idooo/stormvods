@@ -3,6 +3,7 @@
 var logger = require('winston'),
 	_omit = require('lodash/object/omit'),
 	Router = require('./abstract.router'),
+	Video = require('../models/video.model'),
 	Constants = require('../constants');
 
 class VideoAddRoute {
@@ -10,17 +11,22 @@ class VideoAddRoute {
 	static routeAddVideo (req, res, next, auth) {
 		var self = this;
 
-		// TODO: add author id to the details
-		// TODO: check required params
-
 		// Check params and sanitise them
 		var promises = [],
 			tournament = Router.filter(req.params.tournament),
+			youtubeId = Router.filter(req.params.youtubeId),
 			teams = [],
 			casters = [],
+			format = Router.filter(req.params.format),
 			stage = Router.filter(req.params.stage);
 			
+		if (!youtubeId || !youtubeId.length !== Video.constants().YOUTUBE_ID_LENGTH) {
+			Router.fail(res, {message: {youtubeId: Constants.ERROR_INVALID}});
+			return next();
+		}	
+			
 		if (Constants.STAGES.indexOf(stage) === -1) stage = null;
+		if (Constants.FORMAT.indexOf(format) === -1) format = null;
 			
 		if (Array.isArray(req.params.teams)) {
 			teams = req.params.teams.map(teamName => Router.filter(teamName));
@@ -38,8 +44,9 @@ class VideoAddRoute {
 			.then(function (data) {
 				
 				var videoData = {
-						youtubeId: Router.filter(req.params.youtubeId),
-						author: auth.id
+						youtubeId: youtubeId,
+						author: auth.id,
+						rating: 1
 					},
 					createdTeams = [],
 					createdCasters = [];
@@ -78,12 +85,8 @@ class VideoAddRoute {
 					}];
 				}
 				
-				if (stage) {
-					videoData.stage = [{
-						rating: 1,
-						code: stage
-					}];
-				}
+				if (stage) videoData.stage = [{rating: 1, code: stage}];
+				if (format) videoData.format = [{rating: 1, code: format}];
 				
 				var video = new self.models.Video(videoData);
 

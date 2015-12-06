@@ -32,7 +32,7 @@ angular
 			QUALIFIER: 'Qualifier'
 		},
 		
-		Format: {
+		Formats: {
 			BO1: 'Best of 1',
 			BO2: 'Best of 2',
 			BO3: 'Best of 3',

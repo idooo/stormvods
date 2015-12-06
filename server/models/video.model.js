@@ -42,24 +42,23 @@ class Video extends SchemaDefinition {
 				type: Date,
 				default: Date.now
 			},
-
-			// TODO: Multiple casters?
 			casters: {
 				type: Array,
 				default: Array
 			},
-
 			tournament: {
 				type: Array,
 				default: Array
 			},
-
 			teams: {
 				type: Array,
 				default: Array
 			},
-
 			stage: {
+				type: Array,
+				default: Array
+			},
+			format: {
 				type: Array,
 				default: Array
 			}

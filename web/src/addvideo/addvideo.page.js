@@ -55,6 +55,13 @@ const TEMPLATE = `
 						ng-model="ctrl.stage">
 						<option value="{{k}}">{{v}}</option>
 					</select>
+					
+					<label>Format</label>	
+					<select 
+						ng-options="k as v for (k, v) in ctrl.formats"
+						ng-model="ctrl.format">
+						<option value="{{k}}">{{v}}</option>
+					</select>
 						
 					<label>Teams</label>
 					<auto-complete model="ctrl.teams" lookup="team" limit="2"></auto-complete>
@@ -101,6 +108,7 @@ function addVideoPage () {
 
 		self.submit = submit;
 		self.stages = Constants.Stages;
+		self.formats = Constants.Formats;
 
 		$scope.$watch('ctrl.url', function (newValue) {
 			self.serverVideo = null;
@@ -116,6 +124,7 @@ function addVideoPage () {
 				youtubeId: self.youtubeId,
 				tournament: self.tournament ? self.tournament[0] : null,
 				stage: self.stage,
+				format: self.format,
 				teams: self.teams,
 				casters: self.casters
 			}).then(function (response) {

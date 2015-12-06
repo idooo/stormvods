@@ -24,9 +24,9 @@ class VideoGetRoute {
 			.then(function (_video) {
 				video = _video;
 				if (video) {
-					var topTournament = _max(video.tournament, 'rating'),
-						topTeams = _max(video.teams, 'rating'),
-						topCasters = _max(video.casters, 'rating'),
+					var topTournament = VideoGetRoute.maxByRating(video.tournament),
+						topTeams = VideoGetRoute.maxByRating(video.teams),
+						topCasters = VideoGetRoute.maxByRating(video.casters),
 						promises = [];
 					
 					if (topTournament) {
@@ -48,7 +48,8 @@ class VideoGetRoute {
 				return next();
 			})
 			.then(function (data) {
-				var topStage = _max(video.stage, 'rating');
+				var topStage = VideoGetRoute.maxByRating(video.stage),
+					topFormat = VideoGetRoute.maxByRating(video.format);
 				
 				video = video.toObject(); // Convert because tournament is Array in scheme
 				
@@ -81,6 +82,7 @@ class VideoGetRoute {
 				});
 				
 				if (topStage) video.stage = topStage;
+				if (topFormat) video.format = topFormat;
 				
 				Router.success(res, video);
 				return next();
@@ -89,6 +91,12 @@ class VideoGetRoute {
 				Router.fail(res, err);
 				return next();
 			});
+	}
+	
+	static maxByRating (items) {
+		var max = _max(items, 'rating');
+		if (typeof max === 'number') return undefined;
+		return max;
 	}
 }
 
