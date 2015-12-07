@@ -36,4 +36,8 @@ module.exports = function (grunt) {
 		// tests
 	]);
 
+	grunt.registerTask('docs', [
+		'apidoc'
+	]);
+
 };

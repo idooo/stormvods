@@ -1,3 +1,11 @@
+/**
+ * @api {get} /video/:id Request video information
+ * @apiName GetVideo
+ * @apiGroup Video
+ *
+ * @apiParam {ObjectId} id video id
+ */
+
 'use strict';
 
 var _max = require('lodash/math/max'),
@@ -5,7 +13,7 @@ var _max = require('lodash/math/max'),
 	Constants = require('../constants');
 
 class VideoGetRoute {
-	
+
 	/**
 	 * Get video by {id}
 	 */
@@ -28,7 +36,7 @@ class VideoGetRoute {
 						topTeams = VideoGetRoute.maxByRating(video.teams),
 						topCasters = VideoGetRoute.maxByRating(video.casters),
 						promises = [];
-					
+
 					if (topTournament) {
 						promises.push(self.models.Tournament.findOne({_id: topTournament._id}, 'name _id'));
 						promisesNames.push(self.models.Tournament.modelName);
@@ -41,8 +49,8 @@ class VideoGetRoute {
 						promises.push(self.models.Caster.getList({_id: {'$in': topCasters.casters}}, 'name _id'));
 						promisesNames.push(self.models.Caster.modelName);
 					}
-					
-					return Promise.all(promises); 
+
+					return Promise.all(promises);
 				}
 				else Router.fail(res, {message: Constants.ERROR_NOT_FOUND}, 404);
 				return next();
@@ -50,12 +58,12 @@ class VideoGetRoute {
 			.then(function (data) {
 				var topStage = VideoGetRoute.maxByRating(video.stage),
 					topFormat = VideoGetRoute.maxByRating(video.format);
-				
+
 				video = video.toObject(); // Convert because tournament is Array in scheme
-				
+
 				promisesNames.forEach(function (modelName, i) {
 					if (!data[i] || Array.isArray(data[i] && !data[i].length)) return;
-					
+
 					switch (modelName) {
 						case self.models.Tournament.modelName:
 							video.tournament = {
@@ -64,14 +72,14 @@ class VideoGetRoute {
 								rating: video.tournament[0] ? video.tournament[0].rating : null
 							};
 							break;
-							
+
 						case self.models.Caster.modelName:
 							video.casters = {
 								casters: data[i],
 								rating: video.casters[0] ? video.casters[0].rating : null
 							};
 							break;
-							
+
 						case self.models.Team.modelName:
 							video.teams = {
 								teams: data[i],
@@ -80,10 +88,10 @@ class VideoGetRoute {
 							break;
 					}
 				});
-				
+
 				if (topStage) video.stage = topStage;
 				if (topFormat) video.format = topFormat;
-				
+
 				Router.success(res, video);
 				return next();
 			})
@@ -92,7 +100,7 @@ class VideoGetRoute {
 				return next();
 			});
 	}
-	
+
 	static maxByRating (items) {
 		var max = _max(items, 'rating');
 		if (typeof max === 'number') return undefined;

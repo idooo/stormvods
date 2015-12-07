@@ -1,3 +1,32 @@
+/**
+ * @api {get} /users Request User information
+ * @apiName GetUser
+ * @apiGroup User
+ *
+ * @apiParam {Number} id Users unique ID.
+ *
+ * @apiSuccess {String} firstname Firstname of the User.
+ * @apiSuccess {String} lastname  Lastname of the User.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "firstname": "John",
+ *       "lastname": "Doe"
+ *     }
+ *
+ * @apiError UserNotFound The id of the User was not found.
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "error": "UserNotFound"
+ *     }
+ */
+const API_USERS_LIST = '/api/users';
+
+const API_USERS_ME = '/api/users/me';
+
 'use strict';
 
 var Router = require('./abstract.router'),
@@ -6,8 +35,8 @@ var Router = require('./abstract.router'),
 class UsersRouter extends Router {
 
 	configure () {
-		this.bindGET('/api/users/me', this.routeMe, {auth: true});
-		this.bindGET('/api/users', this.routeUsers, {auth: true, restrict: Constants.ROLES.ADMIN});
+		this.bindGET(API_USERS_ME, this.routeMe, {auth: true});
+		this.bindGET(API_USERS_LIST, this.routeUsers, {auth: true, restrict: Constants.ROLES.ADMIN});
 	}
 
 	routeMe (req, res, next, auth) {

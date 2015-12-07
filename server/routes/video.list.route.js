@@ -1,3 +1,30 @@
+/**
+ * @api {get} /video/list Get the list of videos
+ * @apiName GetVideoList
+ * @apiGroup Video
+ *
+ * @apiDescription
+ * Only one of filter params can be active at time
+ *
+ * @apiParam {ObjectId} [tournament] tournament Id
+ * @apiParam {ObjectId} [team] team Id
+ * @apiParam {ObjectId} [caster] caster Id
+ */
+
+/**
+ * @api {get} /video/removed Get the list of removed videos
+ * @apiName GetRemovedVideoList
+ * @apiGroup Video
+ * @apiPermission ADMIN
+ *
+ * @apiDescription
+ * The same as /video/list but will return list of removed videos
+ *
+ * @apiParam {ObjectId} [tournament] tournament Id
+ * @apiParam {ObjectId} [team] team Id
+ * @apiParam {ObjectId} [caster] caster Id
+ */
+
 'use strict';
 
 var _max = require('lodash/math/max'),
@@ -8,20 +35,13 @@ var _max = require('lodash/math/max'),
 const LIST_PAGE_SIZE = 10;
 
 class VideoListRoute {
-	
-	/**
-	 * 
-	 * body:
-	 * - tournament (optional) OR
-	 * - caster (optional) OR
-	 * - team (optional)
-	 * 
-	 */
+
 	static generateVideoListRoute (viewMode) {
-		
+
 		// TODO: add users' votes
 		// TODO: add usernames
-		
+		// TODO: pages
+
 		return function (req, res, next) {
 
 			var self = this,
@@ -34,14 +54,14 @@ class VideoListRoute {
 				videos,
 				pageCount,
 				itemCount;
-				
+
 			if (tournamentId) query = {'tournament.0._id': tournamentId};
 			else if (teamId) query = {'teams.0.teams': teamId};
 			else if (casterId) query = {'casters.0.casters': casterId};
-				
+
 			if (viewMode === Constants.VIEW_MODES.DEFAULT) query.isRemoved = {'$ne': true};
 			else if (viewMode === Constants.VIEW_MODES.ONLY_REMOVED) query.isRemoved = {'$ne': false};
-	
+
 			self.models.Video.paginate(query, {
 				page: page,
 				limit: LIST_PAGE_SIZE,
@@ -52,34 +72,34 @@ class VideoListRoute {
 						teamIds = [],
 						casterIds = [],
 						promises = [];
-	
+
 					pageCount = _pageCount;
 					itemCount = _itemCount;
-	
+
 					videos = _videos.map(function (video) {
 						video = video.toObject(); // Convert because tournament is Array in scheme
-						
+
 						video.tournament = VideoListRoute.maxByRating(video.tournament);
 						video.teams = VideoListRoute.maxByRating(video.teams);
 						video.casters = VideoListRoute.maxByRating(video.casters);
-						
+
 						if (video.tournament) tournamentIds.push(video.tournament._id);
 						if (video.teams) teamIds = teamIds.concat(video.teams.teams);
 						if (video.casters) casterIds = casterIds.concat(video.casters.casters);
-					
+
 						return video;
 					});
-					
+
 					promises.push(self.models.Tournament.getList({_id: {'$in': tournamentIds}}, 'name _id'));
 					promises.push(self.models.Team.getList({_id: {'$in': teamIds}}, 'name _id'));
 					promises.push(self.models.Caster.getList({_id: {'$in': casterIds}}, 'name _id'));
-					
+
 					return Promise.all(promises);
 				})
 				.then(function (data) {
 					var lookup = {};
 					_flatten(data).forEach(i => lookup[i._id] = i);
-					
+
 					for (let i = 0; i < videos.length; i++) {
 						if (videos[i].tournament) videos[i].tournament = lookup[videos[i].tournament._id];
 						if (videos[i].teams) videos[i].teams.teams = videos[i].teams.teams.map(item => lookup[item]);
@@ -87,7 +107,7 @@ class VideoListRoute {
 						if (videos[i].stage) videos[i].stage = videos[i].stage[0];
 						if (videos[i].format) videos[i].format = videos[i].format[0];
 					}
-					
+
 					Router.success(res, {videos, pageCount, itemCount});
 					return next();
 				})
@@ -97,7 +117,7 @@ class VideoListRoute {
 				});
 		};
 	}
-	
+
 	static maxByRating (items) {
 		var max = _max(items, 'rating');
 		if (typeof max === 'number') return undefined;
