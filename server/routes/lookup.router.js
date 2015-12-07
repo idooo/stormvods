@@ -16,18 +16,26 @@ const LOOKUP = {
 class LookupRouter extends Router {
 
 	configure () {
+		
+		/**
+		* @api {get} /api/lookup/:type Search for enity 
+		* @apiName Lookup
+		* @apiGroup Lookup
+		* @apiPermission USER
+		* @apiVersion 1.0.0
+		* 
+		* @apiDescription
+		* Lookup entity by type and query
+		* if query is valid objectId - lookup by _id full match, returns entity or 404
+		* otherwise - lookup by name partial match, returns array (empty if not found)
+		* 
+		* params:
+		* - type
+		* - query
+		*/
 		this.bindGET('/api/lookup/:type', this.routeLookup, {auth: true});
 	}
-
-	/**
-	 * Lookup entity by type and query
-	 * if query is valid objectId - lookup by _id full match, returns entity or 404
-	 * otherwise - lookup by name partial match, returns array (empty if not found)
-	 * 
-	 * params:
-	 * - type
-	 * - query
-	 */
+	
 	routeLookup (req, res, next) {
 		var self = this,
 			query, 

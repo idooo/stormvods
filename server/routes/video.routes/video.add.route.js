@@ -1,7 +1,11 @@
+'use strict';
+
 /**
  * @api {post} /video Add video
  * @apiName AddVideo
  * @apiGroup Video
+ * @apiPermission USER
+ * @apiVersion 1.0.0
  *
  * @apiParam {String} youtubeId youtube Id
  * @apiParam {String} tournament tournament name
@@ -11,17 +15,15 @@
  * @apiParam {String[]} casters
  */
 
-'use strict';
-
 var logger = require('winston'),
 	_omit = require('lodash/object/omit'),
-	Router = require('./abstract.router'),
-	Video = require('../models/video.model'),
-	Constants = require('../constants');
+	Router = require('./../abstract.router'),
+	Video = require('../../models/video.model'),
+	Constants = require('../../constants');
 
 class VideoAddRoute {
 
-	static routeAddVideo (req, res, next, auth) {
+	static route (req, res, next, auth) {
 		var self = this;
 
 		// Check params and sanitise them

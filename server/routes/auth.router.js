@@ -25,8 +25,20 @@ class AuthRouter extends Router {
 	configure () {
 		this.reddit = new RedditAPIClient(this.config.reddit);
 
-		// routes
+		/**
+		* @api {get} /api/auth/callback Callback endpoint for Reddit Auth
+		* @apiName AuthCallback
+		* @apiGroup Auth
+		* @apiVersion 1.0.0
+		*/
 		this.bindGET(API_CALLBACK_PATH, this.routeCallback);
+		
+		/**
+		* @api {get} /api/auth/url Create Auth URL
+		* @apiName AuthUrl
+		* @apiGroup Auth
+		* @apiVersion 1.0.0
+		*/
 		this.bindGET(API_URL_PATH, this.routeAuthUrl);
 	}
 

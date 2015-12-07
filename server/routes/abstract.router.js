@@ -134,3 +134,18 @@ class Router {
 }
 
 module.exports = Router;
+
+// Define some docs abstractions
+
+/**
+ * @apiDefine NOT_FOUND
+ * @apiError NOT_FOUND The id of the Entity was not found.
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 404 Not Found
+ * {
+ *     "message": "NOT_FOUND",
+ *     "status": "error",
+ *     "code": 404
+ * }
+ */

@@ -35,7 +35,7 @@ class User extends SchemaDefinition {
 					type: Array,
 					default: Array
 				},
-				caster: {
+				casters: {
 					type: Array,
 					default: Array
 				},
@@ -43,7 +43,7 @@ class User extends SchemaDefinition {
 					type: Array,
 					default: Array
 				},
-				team: {
+				teams: {
 					type: Array,
 					default: Array
 				},
@@ -52,17 +52,15 @@ class User extends SchemaDefinition {
 					default: Array
 				}
 			}
-			
-			// TODO: watched
 		});
 
 		this.schema.methods.vote = this.vote;
 	}
 
+	/**
+	 * Schema method to vote for video or one of the entities
+	 */ 
 	vote (video, entityType, entityId) {
-		
-		// TODO: sort entities after vote
-		
 		var self = this;
 
 		if (entityType === 'video') {
@@ -70,9 +68,25 @@ class User extends SchemaDefinition {
 			entityId = video._id;
 		}
 		else {
-			for (var i = 0; i < video[entityType].length; i++) {
-				if (video[entityType][i]._id.equals(entityId)) video[entityType][i].rating++;
+			// Search for entity by _id in the array of entities and increase its rating
+			for (let i = 0; i < video[entityType].length; i++) {
+				
+				// If entity is array of _ids (casters, teams)
+				// then go deeper and search inside that array
+				if (Array.isArray(video[entityType][i][entityType])) {
+					for (let j = 0; j < video[entityType][i][entityType].length; j++) {
+						if (video[entityType][i][entityType][j].equals(entityId)) {
+							video[entityType][i].rating++;
+						}
+					}
+				}
+				else if (video[entityType][i]._id.equals(entityId)) video[entityType][i].rating++;
 			}
+			
+			// sort entities after vote, top rated will be always first
+			video[entityType] = video[entityType].sort((a, b) => a.rating < b.rating);
+			
+			// mark model mongoose model as modified to save it
 			video.markModified(entityType);
 		}
 
@@ -88,7 +102,11 @@ class User extends SchemaDefinition {
 				if (entityId.equals(self.votes[entityType][i])) reject({message: Constants.ERROR_VOTE_TWICE});
 			}
 
-			self.votes[entityType].push(entityId);
+			// Save only video Id
+			if (entityType === 'video') self.votes[entityType].push(entityId);
+			
+			// or combined id
+			else self.votes[entityType].push(video._id + entityId);
 
 			self.save(function (err) {
 				if (err) reject(err);
