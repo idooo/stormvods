@@ -9,6 +9,7 @@
  * @apiDescription
  * Only one of filter params can be active at time
  *
+ * @apiParam {Number} [p] page number
  * @apiParam {ObjectId} [tournament] tournament Id
  * @apiParam {ObjectId} [team] team Id
  * @apiParam {ObjectId} [caster] caster Id
@@ -41,12 +42,10 @@ class VideoListRoute {
 	constructor (viewMode) {
 		this.viewMode = viewMode;
 	}
-	
+
 	route (req, res, next) {
 
 		// TODO: add users' votes
-		// TODO: add usernames
-		// TODO: pages
 
 		var self = this,
 			query = {},
@@ -75,6 +74,7 @@ class VideoListRoute {
 				var tournamentIds = [],
 					teamIds = [],
 					casterIds = [],
+					userIds = [],
 					promises = [];
 
 				pageCount = _pageCount;
@@ -90,6 +90,7 @@ class VideoListRoute {
 					if (video.tournament) tournamentIds.push(video.tournament._id);
 					if (video.teams) teamIds = teamIds.concat(video.teams.teams);
 					if (video.casters) casterIds = casterIds.concat(video.casters.casters);
+					userIds.push(video.author);
 
 					return video;
 				});
@@ -97,6 +98,7 @@ class VideoListRoute {
 				promises.push(self.models.Tournament.getList({_id: {'$in': tournamentIds}}, 'name _id'));
 				promises.push(self.models.Team.getList({_id: {'$in': teamIds}}, 'name _id'));
 				promises.push(self.models.Caster.getList({_id: {'$in': casterIds}}, 'name _id'));
+				promises.push(self.models.User.getList({_id: {'$in': userIds}}, 'name _id'));
 
 				return Promise.all(promises);
 			})
@@ -110,6 +112,7 @@ class VideoListRoute {
 					if (videos[i].casters) videos[i].casters.casters = videos[i].casters.casters.map(item => lookup[item]);
 					if (videos[i].stage) videos[i].stage = videos[i].stage[0];
 					if (videos[i].format) videos[i].format = videos[i].format[0];
+					videos[i].author = lookup[videos[i].author];
 				}
 
 				Router.success(res, {videos, pageCount, itemCount});
@@ -119,7 +122,7 @@ class VideoListRoute {
 				Router.fail(res, err);
 				return next();
 			});
-	
+
 	}
 
 	static maxByRating (items) {

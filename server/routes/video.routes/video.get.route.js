@@ -8,12 +8,12 @@
  * @apiVersion 1.0.0
  *
  * @apiDescription
- * Get the video entity 
- * 
+ * Get the video entity
+ *
  * @apiParam {ObjectId} id video id
- * 
- * @apiSuccess {...} ... Many of them 
- * 
+ *
+ * @apiSuccess {...} ... Many of them
+ *
  * @apiSuccessExample Success-Response:
  * HTTP/1.1 200 OK
  * {
@@ -59,7 +59,7 @@
  *     "rating": 2,
  *     "status": "ok"
  * }
- * 
+ *
  * @apiUse NOT_FOUND
  */
 
@@ -104,6 +104,8 @@ class VideoGetRoute {
 						promises.push(self.models.Caster.getList({_id: {'$in': topCasters.casters}}, 'name _id'));
 						promisesNames.push(self.models.Caster.modelName);
 					}
+					promises.push(self.models.User.findOne({_id: video.author}, 'name _id'));
+					promisesNames.push(self.models.User.modelName);
 
 					return Promise.all(promises);
 				}
@@ -140,6 +142,10 @@ class VideoGetRoute {
 								teams: data[i],
 								rating: video.teams[0] ? video.teams[0].rating : null
 							};
+							break;
+
+						case self.models.User.modelName:
+							video.author = data[i];
 							break;
 					}
 				});

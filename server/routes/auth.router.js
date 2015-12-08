@@ -1,13 +1,3 @@
-/**
- * Routes
- *
- * GET /api/auth/url
- * Returns auth link for reddit
- *
- * GET /api/auth/callback
- *
- */
-
 'use strict';
 
 const API_CALLBACK_PATH = '/api/auth/callback';
