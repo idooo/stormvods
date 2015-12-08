@@ -5,7 +5,8 @@ var	restify = require('restify'),
 	CookieParser = require('restify-cookies'),
 	Database = require('./core/database'),
 	RouterLoader = require('./core/routing'),
-	Cache = require('./core/cache');
+	Cache = require('./core/cache'),
+	Constants = require('./constants');
 
 class Server {
 	constructor (configName) {
@@ -28,6 +29,15 @@ class Server {
 		this.server.use(restify.bodyParser({mapParams: true}));
 		this.server.use(restify.queryParser());
 		this.server.use(CookieParser.parse);
+
+		// Global uncaughtException Error Handler
+		this.server.on('uncaughtException', (req, res, route, error) => {
+			this.logger.warn('uncaughtException', route, error.stack.toString());
+			res.send(500, {
+				error: Constants.ERROR_INTERNAL,
+				status: 'error'
+			});
+		});
 
 		// Load routing
 		new RouterLoader(this.server, this.config).loadRouters();

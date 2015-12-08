@@ -4,6 +4,7 @@ module.exports = {
 
 	// Errors
 	ERROR_INVALID: 'INVALID_VALUE',
+	ERROR_REDDIT_AUTH: 'REDDIT_AUTH_ERROR',
 	ERROR_UNIQUE: 'EXPECTED_UNIQUE_VALUE',
 	ERROR_NOT_FOUND: 'NOT_FOUND',
 	ERROR_REQUIRED: 'REQUIRED',
@@ -21,13 +22,13 @@ module.exports = {
 		MODERATOR: 5,
 		ADMIN: 10
 	},
-	
+
 	VIEW_MODES: {
 		DEFAULT: 'DEFAULT',
 		ONLY_REMOVED: 'ONLY_REMOVED',
 		ALL: 'ALL'
 	},
-	
+
 	// stages
 	STAGES: [
 		'FINAL',
@@ -42,11 +43,11 @@ module.exports = {
 		'GROUPD',
 		'QUALIFIER'
 	],
-	
+
 	FORMAT: [
 		'BO1',
-		'BO3', 
-		'BO5', 
+		'BO3',
+		'BO5',
 		'BO7'
-	] 
+	]
 };

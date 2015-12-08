@@ -18,7 +18,8 @@ var uuid = require('node-uuid'),
 	_omit = require('lodash/object/omit'),
 	Auth = require('../core/auth'),
 	RedditAPIClient = require('../core/reddit'),
-	Router = require('./abstract.router');
+	Router = require('./abstract.router'),
+	Constants = require('../constants');
 
 class AuthRouter extends Router {
 
@@ -32,7 +33,7 @@ class AuthRouter extends Router {
 		* @apiVersion 1.0.0
 		*/
 		this.bindGET(API_CALLBACK_PATH, this.routeCallback);
-		
+
 		/**
 		* @api {get} /api/auth/url Create Auth URL
 		* @apiName AuthUrl
@@ -58,12 +59,8 @@ class AuthRouter extends Router {
 		var self = this,
 			userData;
 
-		// TODO: check everything for errors
-
 		if (req.params.error) {
-			Router.fail(res, {
-				message: 'Reddit auth error'
-			});
+			Router.fail(res, {message: Constants.ERROR_REDDIT_AUTH});
 			return next();
 		}
 
@@ -99,7 +96,7 @@ class AuthRouter extends Router {
 					if (err) {
 						logger.error(_omit(err, 'stack'));
 						logger.error(err);
-						throw {message: 'Internal error'};
+						throw {message: Constants.ERROR_INTERNAL};
 					}
 					else {
 						Promise.resolve(createdUser);
@@ -110,24 +107,15 @@ class AuthRouter extends Router {
 			// Authorise user
 			.then(function (userDataFromDB) {
 				var auth = Auth.authorize(userDataFromDB._id, userDataFromDB.name, userDataFromDB.role);
-				
+
 				res.setCookie('username', auth.username, {path: '/'});
 				res.setCookie('token', auth.token, {path: '/'});
-				
+
 				Router.success(res, auth);
 				return next();
 			})
 
 			.catch(function (err) {
-				
-				// TODO: Do this globally 
-				if (err.stack) {
-					logger.warn(err.stack);
-					if (self.config.debug && self.config.debug.showStackTrace) {
-						err = {message: err.stack.toString()};
-					}
-				}
-
 				Router.fail(res, err);
 				return next();
 			});
