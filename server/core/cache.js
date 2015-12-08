@@ -38,6 +38,12 @@ class Cache {
 
 		self.config = config;
 
+		if (typeof self.config === 'undefined') {
+			logger.warn('No Redis params found in config. Local fallback is coming');
+			self.type = TYPE_MEMORY;
+			return self.localFallback();
+		}
+
 		self.redisClient = redis.createClient({
 			host: self.config.host,
 			port: self.config.port,

@@ -18,11 +18,11 @@ class Server {
 		}
 
 		this.logger = require('./core/logging')(this.config);
-		
+
 		// Connect to DB and load model
 		var db = new Database(this.config.database);
 		this.model = db.loadModel();
-		
+
 		// Setup server
 		this.server = restify.createServer({});
 		this.server.use(restify.bodyParser({mapParams: true}));
@@ -31,14 +31,17 @@ class Server {
 
 		// Load routing
 		new RouterLoader(this.server, this.config).loadRouters();
-		
+
 		// Check debug settings
 		if (this.config.debug) {
 			Object.keys(this.config.debug).forEach((key) => {
 				if (this.config.debug[key]) this.logger.warn(`Server: debug setting "${key}" enabled`);
 			});
 		}
-		
+
+		// Clean database if debug flag exist
+		if (this.config.debug.cleanDatabase) db.clean();
+
 		// Init other things
 		new Cache().start(this.config.redis);
 	}

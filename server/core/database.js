@@ -65,10 +65,20 @@ class Database {
 		});
 	}
 
+	clean () {
+		var self = this;
+		Object.keys(self.models).forEach(function (modelName) {
+			if (typeof self.models[modelName].remove === 'undefined') return;
+			self.models[modelName].remove({}, function () {
+				logger.warn(modelName + ' collection was removed');
+			});
+		});
+	}
+
 	static ObjectId (id) {
 		var value = null;
 		if (!mongoose.Types.ObjectId.isValid(id)) return value;
-		
+
 		try {
 			value = mongoose.Types.ObjectId(id);
 		}

@@ -24,6 +24,7 @@
     "grunt-browserify": "^4.0.1",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-copy": "^0.8.2",
+    "grunt-contrib-nodeunit": "^0.4.1",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-develop": "^0.4.0",
     "grunt-eslint": "^17.3.1",
@@ -32,6 +33,7 @@
     "load-grunt-tasks": "^3.3.0",
     "node-bourbon": "^4.2.3",
     "node-neat": "^1.7.2",
+    "sync-request": "^2.1.0",
     "time-grunt": "^1.2.2"
   },
   "babel": {
