@@ -48,7 +48,7 @@ class VideoListRoute {
 		// TODO: add users' votes
 
 		var self = this,
-			query = {},
+			query = {}, 
 			page = parseInt(req.params.p, 10) || 1,
 			fields = '-isRemoved -__v',
 			tournamentId = self.models.ObjectId(req.params.tournament),
@@ -58,29 +58,30 @@ class VideoListRoute {
 			pageCount,
 			itemCount;
 
-		if (tournamentId) query = {'tournament.0._id': tournamentId};
-		else if (teamId) query = {'teams.0.teams': teamId};
-		else if (casterId) query = {'casters.0.casters': casterId};
+		if (tournamentId) query['tournament.0._id'] = tournamentId;
+		else if (teamId) query['teams.0.teams'] = teamId;
+		else if (casterId) query['casters.0.casters'] = casterId;
 
 		if (self.viewMode === Constants.VIEW_MODES.DEFAULT) query.isRemoved = {'$ne': true};
 		else if (self.viewMode === Constants.VIEW_MODES.ONLY_REMOVED) query.isRemoved = {'$ne': false};
 
 		self.models.Video.paginate(query, {
 			page: page,
+			sort: {'_id': -1}, // sort by date, latest first
 			limit: LIST_PAGE_SIZE,
-			columns: fields
+			select: fields
 		})
-			.spread(function (_videos, _pageCount, _itemCount) {
+			.then(function (result) {
 				var tournamentIds = [],
 					teamIds = [],
 					casterIds = [],
 					userIds = [],
 					promises = [];
 
-				pageCount = _pageCount;
-				itemCount = _itemCount;
+				pageCount = result.pages;
+				itemCount = result.total;
 
-				videos = _videos.map(function (video) {
+				videos = result.docs.map(function (video) {
 					video = video.toObject(); // Convert because tournament is Array in scheme
 
 					video.tournament = VideoListRoute.maxByRating(video.tournament);
