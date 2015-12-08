@@ -6,10 +6,10 @@ angular
 
 const TEMPLATE = `
 	<div class="video-list">
+	
 		<div 
 			class="video-list-item"
-			ng-repeat="video in videos" 
-			ng-if="!skipFirst || skipFirst && !$first">
+			ng-repeat="video in ctrl.videos">
 		
 			<svg 
 				class="video-list-item__rating"
@@ -30,7 +30,7 @@ const TEMPLATE = `
 			
 				<div class="video-list-item__secondary">
 					Added <span am-time-ago="video.creationDate"></span>
-					by {{video.author}}
+					by {{video.author.name}}
 				</div>
 				
 				<div class="video-list-item__info">
@@ -53,6 +53,27 @@ const TEMPLATE = `
 				</div>
 			</div>		
 		</div>
+		
+		<div class="pagination">
+		
+			<button 
+				class="secondary" 
+				ng-disabled="ctrl.currentPage <= 1"
+				ng-click="ctrl.getVideos(ctrl.currentPage-1)">
+				
+				&larr; Prev
+			</button>
+			
+			<button 
+				class="secondary" 
+				ng-disabled="ctrl.pageCount == ctrl.currentPage"
+				ng-click="ctrl.getVideos(ctrl.currentPage+1)">
+				
+				Next &rarr;
+			</button>
+		
+		</div>
+		
 	</div>
 `;
 
@@ -62,23 +83,35 @@ function videoListDirective () {
 		restrict: 'E',
 		replace: true,
 		scope: {
-			videos: '=',
-			skipFirst: '@'
+			params: '=?'
 		},
 		template: TEMPLATE,
 		controller: controller,
 		controllerAs: 'ctrl'
 	};
 	
-	function controller ($scope, Constants) {
-		this.toggle = () => $scope.value = !$scope.value;
-		$scope.$watch('videos', function (videos) {
-			if (!videos || !videos.length) return;
-			
-			videos = videos.map(function (video) {
-				if (video.stage) video.stage = Constants.Stages[video.stage.code];
-				return video;
-			});
-		})
+	function controller ($scope, $http, Constants) {
+		var self = this;
+		
+		self.videos = [];
+		self.currentPage = 1;
+		self.pageCount = 0;
+		
+		self.getVideos = getVideos;
+		
+		getVideos(self.currentPage);
+		
+		function getVideos (page) {
+			self.videos = [];
+			$http.get(`${Constants.Api.GET_VIDEO_LIST}?p=${page}&${$scope.params}`)
+				.then(response => {
+					self.currentPage = page;
+					self.pageCount = response.data.pageCount;
+					self.videos = response.data.videos.map(video => {
+						if (video.stage) video.stage = Constants.Stages[video.stage.code];
+						return video;
+					});
+				});
+		}
 	}
 }

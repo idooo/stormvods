@@ -17,18 +17,7 @@ const TEMPLATE = `
 		
 		<h1>Recently added</h1>
 		
-		<video-list videos="ctrl.videos" skip-first="true"></video-list>
-		
-		<div class="pagination">
-			<ul>
-				<li class="page-prev">
-					<a href="javascript:void(0)" ng-if="ctrl.currentPage != 1">Prev</a>
-				</li>
-				<li class="page-next" ng-if="ctrl.pageCount > ctrl.currentPage">
-					<a href="javascript:void(0)">Next</a>
-				</li>
-			</ul>
-		</div>
+		<video-list videos="ctrl.videos"></video-list>
 		
 	</section>
 `;

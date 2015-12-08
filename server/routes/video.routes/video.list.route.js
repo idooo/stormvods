@@ -55,6 +55,7 @@ class VideoListRoute {
 			teamId = self.models.ObjectId(req.params.team),
 			casterId = self.models.ObjectId(req.params.caster),
 			videos,
+			currentPage,
 			pageCount,
 			itemCount;
 
@@ -80,6 +81,7 @@ class VideoListRoute {
 
 				pageCount = result.pages;
 				itemCount = result.total;
+				currentPage = result.page;
 
 				videos = result.docs.map(function (video) {
 					video = video.toObject(); // Convert because tournament is Array in scheme
@@ -116,7 +118,7 @@ class VideoListRoute {
 					videos[i].author = lookup[videos[i].author];
 				}
 
-				Router.success(res, {videos, pageCount, itemCount});
+				Router.success(res, {videos, pageCount, itemCount, currentPage});
 				return next();
 			})
 			.catch(function (err) {

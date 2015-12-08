@@ -7,7 +7,7 @@ const TEMPLATE = `
 		
 		<h1>Team: {{ctrl.team.name}}</h1>
 			
-		<video-list videos="ctrl.videos"></video-list>
+		<video-list params="ctrl.searchParams"></video-list>
 		
 	</section>
 	
@@ -28,9 +28,7 @@ function teamPage () {
 		
 		self.videos = [];
 		self.team;
-		
-		$http.get(`${Constants.Api.GET_VIDEO_LIST}?team=${$state.params.id}`)
-			.then(response => self.videos = response.data.videos);
+		self.searchParams = `team=${$state.params.id}`;
 			
 		$http.get(`${Constants.Api.LOOKUP}/team?query=${$state.params.id}`)
 			.then(response => self.team = response.data);

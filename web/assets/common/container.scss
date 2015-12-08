@@ -16,3 +16,7 @@ html, body {
 	.sidebar-container {
 		@include span-columns(4);
 	}
+	
+section {
+	margin-bottom: 20px;
+}

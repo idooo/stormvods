@@ -21,6 +21,7 @@ appModules.forEach((moduleName) => angular.module(moduleName, []));
 require('./common/constants');
 require('./common/auth.service');
 require('./common/header.directive');
+require('./common/footer.directive');
 require('./common/checkbox.directive');
 require('./common/video.directive');
 require('./common/videolist.directive');

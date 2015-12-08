@@ -7,7 +7,7 @@ const TEMPLATE = `
 		
 		<h1>Tournament: {{ctrl.tournament.name}}</h1>
 			
-		<video-list videos="ctrl.videos"></video-list>
+		<video-list params="ctrl.searchParams"></video-list>
 		
 	</section>
 	
@@ -28,10 +28,8 @@ function tournamentPage () {
 		
 		self.videos = [];
 		self.tournament;
+		self.searchParams = `tournament=${$state.params.id}`;
 		
-		$http.get(`${Constants.Api.GET_VIDEO_LIST}?tournament=${$state.params.id}`)
-			.then(response => self.videos = response.data.videos);
-			
 		$http.get(`${Constants.Api.LOOKUP}/tournament?query=${$state.params.id}`)
 			.then(response => self.tournament = response.data);
 	}

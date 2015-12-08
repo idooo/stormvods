@@ -7,7 +7,7 @@ const TEMPLATE = `
 		
 		<h1>Caster: {{ctrl.caster.name}}</h1>
 			
-		<video-list videos="ctrl.videos"></video-list>
+		<video-list params="ctrl.searchParams"></video-list>
 		
 	</section>
 	
@@ -28,9 +28,7 @@ function casterPage () {
 		
 		self.videos = [];
 		self.caster;
-		
-		$http.get(`${Constants.Api.GET_VIDEO_LIST}?caster=${$state.params.id}`)
-			.then(response => self.videos = response.data.videos);
+		self.searchParams = `caster=${$state.params.id}`;
 			
 		$http.get(`${Constants.Api.LOOKUP}/caster?query=${$state.params.id}`)
 			.then(response => self.caster = response.data);

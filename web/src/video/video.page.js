@@ -3,11 +3,13 @@ angular
 	.directive('videoPage', videoPage);
 
 const TEMPLATE = `
+	<section>
+			
+		<h1>Video</h1>
+	
+		<video object="ctrl.video"></video>
 		
-	<h1>Video</h1>
-	
-	<video object="ctrl.video"></video>
-	
+	</section>
 `;
 
 function videoPage () {
