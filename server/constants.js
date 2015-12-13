@@ -37,11 +37,14 @@ module.exports = {
 		'RO16',
 		'RO32',
 		'RO64',
+		'GROUP',
 		'GROUPA',
 		'GROUPB',
 		'GROUPC',
 		'GROUPD',
-		'QUALIFIER'
+		'QUALIFIER',
+		'WB',
+		'LB'
 	],
 
 	FORMAT: [

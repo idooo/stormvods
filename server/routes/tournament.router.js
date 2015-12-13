@@ -28,6 +28,14 @@ class TournamentRouter extends Router {
 			auth: true,
 			restrict: Constants.ROLES.ADMIN
 		});
+		
+		/**
+		* @api {get} /api/tournaments Get list of tournaments
+		* @apiName GetTournaments
+		* @apiGroup Tournament
+		* @apiVersion 1.0.0
+		*/
+		this.bindGET('/api/tournaments', RouteFactory.generateGetListRoute(this.models.Tournament));
 	}
 }
 

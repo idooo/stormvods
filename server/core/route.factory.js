@@ -6,6 +6,8 @@ var logger = require('winston'),
 	Constants = require('../constants'),
 	Router = require('../routes/abstract.router');
 
+const LIST_PAGE_SIZE = 100;
+
 class RouteFactory {
 
 	constructor () {
@@ -87,6 +89,33 @@ class RouteFactory {
 					return next();
 				}
 			});
+		};
+	}
+	
+	static generateGetListRoute (model) {
+		return function (req, res, next, auth) {
+			var fields = '-isRemoved -__v',
+				page = parseInt(req.params.p, 10) || 1;
+			
+			model.paginate({}, {
+				page: page,
+				sort: {'_id': -1}, // sort by date, latest first
+				limit: LIST_PAGE_SIZE,
+				select: fields
+			})
+				.then(function (result) {
+					var pageCount = result.pages,
+						itemCount = result.total,
+						currentPage = result.page,
+						items = result.docs;
+						
+					Router.success(res, {items, pageCount, itemCount, currentPage});
+					return next();
+				})
+				.catch(function (err) {
+					Router.fail(res, err);
+					return next();
+				});
 		};
 	}
 

@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose'),
 	uniqueValidator = require('mongoose-unique-validator'),
+	mongoosePaginate = require('mongoose-paginate'),
 	SchemaDefinition = require('./schema.definition'),
 	logger = require('winston'),
 	Constants = require('../constants');
@@ -35,6 +36,7 @@ class BasicModel extends SchemaDefinition {
 		});
 
 		this.schema.plugin(uniqueValidator, {message: Constants.ERROR_UNIQUE});
+		this.schema.plugin(mongoosePaginate);
 		this.schema.statics.getOrCreate = this.getOrCreate;
 	}
 	

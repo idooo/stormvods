@@ -115,9 +115,12 @@ header.navigation {
 		}
 	
 		a {
-			color: $navigation-background-color;
+			color: $light-text-color;
 			display: inline-block;
 			text-decoration: none;
+			text-transform: uppercase;
+			font-weight: 600;
+			letter-spacing: 1px;
 		
 			@include media ($horizontal-bar-mode) {
 				padding-right: 1em;

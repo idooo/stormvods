@@ -27,6 +27,14 @@ class TeamRouter extends Router {
 			auth: true,
 			restrict: Constants.ROLES.ADMIN
 		});
+		
+		/**
+		* @api {get} /api/teams Get list of teams
+		* @apiName GetTeams
+		* @apiGroup Team
+		* @apiVersion 1.0.0
+		*/
+		this.bindGET('/api/teams', RouteFactory.generateGetListRoute(this.models.Team));
 	}
 }
 

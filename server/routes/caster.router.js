@@ -28,6 +28,14 @@ class CasterRouter extends Router {
 			auth: true,
 			restrict: Constants.ROLES.ADMIN
 		});
+		
+		/**
+		* @api {get} /api/casters Get list of casters
+		* @apiName GetCasters
+		* @apiGroup Caster
+		* @apiVersion 1.0.0
+		*/
+		this.bindGET('/api/casters', RouteFactory.generateGetListRoute(this.models.Caster));
 	}
 }
 

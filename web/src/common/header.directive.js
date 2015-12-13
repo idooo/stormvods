@@ -20,6 +20,15 @@ const TEMPLATE = `
 					<li class="nav-link" ng-if="ctrl.user.role == 10">
 						<a href="#" ui-sref="zone">Secret Zone</a>
 					</li>
+					<li class="nav-link">
+						<a href="#" ui-sref="tournaments">Tournaments</a>
+					</li>
+					<li class="nav-link">
+						<a href="#" ui-sref="teams">Teams</a>
+					</li>
+					<li class="nav-link">
+						<a href="#" ui-sref="casters">Casters</a>
+					</li>
 				</ul>
 			</nav>
 			

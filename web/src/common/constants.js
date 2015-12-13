@@ -11,7 +11,11 @@ angular
 			GET_REMOVED_VIDEO_LIST: '/api/video/removed',
 			VALIDATE_VIDEO: '/api/video/validate',
 			
-			LOOKUP: '/api/lookup'
+			LOOKUP: '/api/lookup',
+			
+			GET_TEAMS: '/api/teams',
+			GET_TOURNAMENTS: '/api/tournaments',
+			GET_CASTERS: '/api/casters'
 		},
 		
 		Roles: {
@@ -19,17 +23,20 @@ angular
 		},
 		
 		Stages: {
-			FINAL: 'Final',
-			SEMIFINAL: 'Semi final',
-			QUARTERFINAL: 'Quarter final',
-			RO16: 'Round of 16',
-			RO32: 'Round of 32',
-			RO64: 'Round of 64',
+			QUALIFIER: 'Qualifier',
+			LB: 'Losers Bracket',
+			WB: 'Winners Bracket',
+			GROUP: 'Group Stage',
 			GROUPA: 'Group A',
 			GROUPB: 'Group B',
 			GROUPC: 'Group C',
 			GROUPD: 'Group D',
-			QUALIFIER: 'Qualifier'
+			RO64: 'Round of 64',
+			RO32: 'Round of 32',
+			RO16: 'Round of 16',
+			QUARTERFINAL: 'Quarter final',
+			SEMIFINAL: 'Semi final',
+			FINAL: 'Final'
 		},
 		
 		Formats: {

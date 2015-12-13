@@ -33,13 +33,25 @@ function configuration ($stateProvider, $urlRouterProvider) {
 			url: '/tournament/:id',
 			template: '<tournament-page/>'
 		})
+		.state('tournaments', {
+			url: '/tournaments',
+			template: '<tournaments-page/>'
+		})
 		.state('team', {
 			url: '/team/:id',
 			template: '<team-page/>'
 		})
+		.state('teams', {
+			url: '/teams',
+			template: '<teams-page/>'
+		})
 		.state('caster', {
 			url: '/caster/:id',
 			template: '<caster-page/>'
+		})
+		.state('casters', {
+			url: '/casters',
+			template: '<casters-page/>'
 		})
 		.state('zone', {
 			url: '/zone',

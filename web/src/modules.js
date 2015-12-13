@@ -35,7 +35,10 @@ require('./video/video.page');
 require('./admin/zone.page');
 require('./sidebar/sidebar.directive');
 require('./tournament/tournament.page');
+require('./tournament/tournaments.page');
 require('./team/team.page');
+require('./team/teams.page');
 require('./caster/caster.page');
+require('./caster/casters.page');
 
 module.exports = modules.concat(appModules);
