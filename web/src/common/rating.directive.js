@@ -36,9 +36,17 @@ function ratingDirective () {
 	
 	function controller ($scope, $http, Constants) {
 		$scope.vote = function (_id) {
-			$http.post(Constants.Api.VOTE, {
-				videoId: _id
-			});
+			if ($scope.video.isVoted) return;
+			$http
+				.post(Constants.Api.VOTE, {
+					videoId: _id
+				})
+				.catch(function (response) {
+					// TODO: show error
+					$scope.video.isVoted = false;
+					$scope.video.rating -= 1;
+				});
+				
 			$scope.video.isVoted = true;
 			$scope.video.rating += 1;
 		};

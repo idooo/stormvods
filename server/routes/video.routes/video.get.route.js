@@ -57,6 +57,7 @@
  *     },
  *     "creationDate": "2015-11-17T10:27:10.319Z",
  *     "rating": 2,
+ *     "isVoted": false,
  *     "status": "ok"
  * }
  *
@@ -72,7 +73,7 @@ class VideoGetRoute {
 	/**
 	 * Get video by {id}
 	 */
-	static route (req, res, next) {
+	static route (req, res, next, auth) {
 
 		// TODO: add users' votes
 
@@ -106,6 +107,11 @@ class VideoGetRoute {
 					}
 					promises.push(self.models.User.findOne({_id: video.author}, 'name _id'));
 					promisesNames.push(self.models.User.modelName);
+					
+					if (auth && auth.id) {
+						promises.push(self.models.User.findOne({_id: auth.id}, 'votes'));
+						promisesNames.push('votes');
+					}
 
 					return Promise.all(promises);
 				}
@@ -146,6 +152,10 @@ class VideoGetRoute {
 
 						case self.models.User.modelName:
 							video.author = data[i];
+							break;
+							
+						case 'votes':
+							video.isVoted = data[i].votes.video.indexOf(video._id) !== -1;
 							break;
 					}
 				});

@@ -9,6 +9,8 @@ const TEMPLATE = `
 	
 		<video object="ctrl.video"></video>
 		
+		<rating video="ctrl.video"></rating>
+		
 	</section>
 `;
 

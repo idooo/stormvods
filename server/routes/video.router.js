@@ -36,7 +36,10 @@ class VideoRouter extends Router {
 		});
 
 		// Must be the latest
-		this.bindGET(API_VIDEO_ID, VideoGetRoute.route);
+		this.bindGET(API_VIDEO_ID, VideoGetRoute.route, {
+			auth: true,
+			restrict: Constants.ROLES.OPTIONAL
+		});
 		
 		/**
 		* @api {delete} /api/video/:id Deletes video

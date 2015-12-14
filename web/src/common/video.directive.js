@@ -23,7 +23,7 @@ const TEMPLATE = `
 				<span class="video__format">{{object.format.name}}</span>
 				<span class="video__teams" ng-if="object.teams.teams.length">
 					<span ng-hide="showTeams">
-						<a ng-click="toggleTeams()">Show teams</a>
+						<a href="#" ng-click="toggleTeams()">Show teams</a>
 					</span>
 					<span ng-show="showTeams">
 						<a href="#" ui-sref="team({id: object.teams.teams[0]._id})">

@@ -123,7 +123,7 @@ header.navigation {
 			letter-spacing: 1px;
 		
 			@include media ($horizontal-bar-mode) {
-				padding-right: 1em;
+				padding: 0 0.5em;
 			}
 		
 			&:focus,
