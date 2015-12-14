@@ -25,7 +25,11 @@ class VideoRouter extends Router {
 		
 		this.bindGET(API_VIDEO_VALIDATE, ValidateVideoRoute.route, {auth: true});
 		
-		this.bindGET(API_VIDEO_LIST, new VideoListRoute(Constants.VIEW_MODES.DEFAULT).route);
+		this.bindGET(API_VIDEO_LIST, new VideoListRoute(Constants.VIEW_MODES.DEFAULT).route, {
+			auth: true,
+			restrict: Constants.ROLES.OPTIONAL
+		});
+		
 		this.bindGET(API_VIDEO_REMOVED, new VideoListRoute(Constants.VIEW_MODES.ONLY_REMOVED).route, {
 			auth: true,
 			restrict: Constants.ROLES.ADMIN

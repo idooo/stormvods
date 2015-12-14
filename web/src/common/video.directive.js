@@ -83,8 +83,8 @@ function videoDirective ($sce, Constants) {
 		
 		scope.$watch('object', function (newValue) {
 			if (!newValue || !newValue.stage) return;
-			scope.object.stage.name = Constants.Stages[newValue.stage.code];
-			scope.object.format.name = Constants.Formats[newValue.format.code];
+			if (newValue.stage) scope.object.stage.name = Constants.Stages[newValue.stage.code];
+			if (newValue.format) scope.object.format.name = Constants.Formats[newValue.format.code];
 		});
 		
 		function getIframeSrc () {

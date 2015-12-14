@@ -15,7 +15,9 @@ angular
 			
 			GET_TEAMS: '/api/teams',
 			GET_TOURNAMENTS: '/api/tournaments',
-			GET_CASTERS: '/api/casters'
+			GET_CASTERS: '/api/casters',
+			
+			VOTE: '/api/vote'
 		},
 		
 		Roles: {

@@ -55,7 +55,8 @@ class Router {
 
 			Auth.findUserByToken(token)
 				.then(function (authData) {
-
+					var error;
+					
 					// Debug
 					if (self.config.debug && self.config.debug.alwaysLogin) {
 						authData.name = self.config.debug.alwaysLoginDetails.name;
@@ -63,12 +64,12 @@ class Router {
 						authData.role = self.config.debug.alwaysLoginDetails.role;
 					}
 
-					if (!authData.id) {
-						Router.fail(res, {message: Constants.ERROR_AUTH_REQUIRED}, 403);
+					if (restrictLevel !== Constants.ROLES.OPTIONAL) {
+						if (!authData.id) error = Constants.ERROR_AUTH_REQUIRED;
+						else if (authData.role < restrictLevel) error = Constants.ERROR_ACCESS_DENIED;
 					}
-					else if (authData.role < restrictLevel) {
-						Router.fail(res, {message: Constants.ERROR_ACCESS_DENIED}, 403);
-					}
+					
+					if (error) Router.fail(res, {message: error}, 403);
 					else {
 						authData.id = self.models.ObjectId(authData.id);
 						route.call(self, req, res, next, authData);

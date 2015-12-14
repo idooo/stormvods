@@ -15,6 +15,7 @@ class SchemaDefinition {
 		this.schema.statics.getList = this.getList;
 		this.schema.statics.findOne = this.findOne;
 		this.schema.statics.removeOne = this.removeOne;
+		this.schema.statics.updateOne = this.updateOne;
 
 		this.schema.methods.markAsRemoved = this.markAsRemoved;
 	}
@@ -79,7 +80,25 @@ class SchemaDefinition {
 			});
 		});
 	}
+	
+	/**
+	 * Promise-based function to update object in collection
+	 * @param {Object} query
+	 * @return {Promise}
+	 */
+	updateOne (query, update) {
+		var self = this;
 
+		query = query || {};
+
+		return new Promise(function (resolve, reject) {
+			self.findOneAndUpdate(query, update, function (err) {
+				if (err) reject(err);
+				else resolve();
+			});
+		});
+	}
+	
 	/**
 	 * Promise-based function mark object as removed
 	 * Note: applied to model but not for schema
@@ -96,6 +115,8 @@ class SchemaDefinition {
 			});
 		});
 	}
+	
+	
 }
 
 module.exports = SchemaDefinition;

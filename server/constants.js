@@ -18,7 +18,8 @@ module.exports = {
 
 	// things
 	ROLES: {
-		USER: 1,
+		OPTIONAL: 1,
+		USER: 2,
 		MODERATOR: 5,
 		ADMIN: 10
 	},

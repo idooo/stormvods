@@ -1,5 +1,3 @@
-/* global angular */
-
 angular
 	.module(`${window.APP_NAME}.common`)
 	.directive('checkbox', checkboxDirective);

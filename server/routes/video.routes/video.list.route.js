@@ -13,6 +13,63 @@
  * @apiParam {ObjectId} [tournament] tournament Id
  * @apiParam {ObjectId} [team] team Id
  * @apiParam {ObjectId} [caster] caster Id
+ *
+ * @apiSuccessExample Success-Response:
+ * HTTP/1.1 200 OK
+ * {
+  "videos": [
+    {
+      "_id": "566e8e811f35829d4c78778e",
+      "youtubeId": "ooDCHGPKvoo",
+      "author": {
+        "name": "idonreddit",
+        "_id": "564b00fe5d63f20f4444e4b6"
+      },
+      "format": {
+        "rating": 1,
+        "code": "BO3"
+      },
+      "stage": {
+        "rating": 1,
+        "code": "GROUP"
+      },
+      "teams": {
+        "rating": 1,
+        "teams": [
+          {
+            "_id": "566e8e801f35829d4c78778c",
+            "name": "Natus Vincere"
+          },
+          {
+            "_id": "566e8e801f35829d4c78778d",
+            "name": "G2 Esports"
+          }
+        ]
+      },
+      "tournament": {
+        "_id": "56639b2782f4f8973eef2b3a",
+        "name": "Heroes Battle Arena"
+      },
+      "casters": {
+        "rating": 1,
+        "casters": [
+          {
+            "_id": "56565f44c34514194cd1a2bd",
+            "name": "Khaldor"
+          }
+        ]
+      },
+      "creationDate": "2015-12-14T09:40:17.135Z",
+      "rating": 1,
+      "isVoted": true
+    },
+    ...
+  ],
+  "pageCount": 1,
+  "itemCount": 15,
+  "currentPage": 1,
+  "status": "ok"
+}
  */
 
 /**
@@ -43,7 +100,7 @@ class VideoListRoute {
 		this.viewMode = viewMode;
 	}
 
-	route (req, res, next) {
+	route (req, res, next, auth) {
 
 		// TODO: add users' votes
 
@@ -102,6 +159,8 @@ class VideoListRoute {
 				promises.push(self.models.Team.getList({_id: {'$in': teamIds}}, 'name _id'));
 				promises.push(self.models.Caster.getList({_id: {'$in': casterIds}}, 'name _id'));
 				promises.push(self.models.User.getList({_id: {'$in': userIds}}, 'name _id'));
+				
+				if (auth && auth.id) promises.push(self.models.User.findOne({_id: auth.id}, 'name _id votes'));
 
 				return Promise.all(promises);
 			})
@@ -115,7 +174,16 @@ class VideoListRoute {
 					if (videos[i].casters) videos[i].casters.casters = videos[i].casters.casters.map(item => lookup[item]);
 					if (videos[i].stage) videos[i].stage = videos[i].stage[0];
 					if (videos[i].format) videos[i].format = videos[i].format[0];
-					videos[i].author = lookup[videos[i].author];
+					videos[i].author = {
+						name: lookup[videos[i].author].name,
+						_id: lookup[videos[i].author]._id
+					};
+				}
+				
+				if (auth && auth.id) { 
+					for (let i = 0; i < videos.length; i++) {
+						videos[i].isVoted = lookup[auth.id].votes.video.indexOf(videos[i]._id.toString()) !== -1;
+					}
 				}
 
 				Router.success(res, {videos, pageCount, itemCount, currentPage});
@@ -127,7 +195,7 @@ class VideoListRoute {
 			});
 
 	}
-
+	
 	static maxByRating (items) {
 		var max = _max(items, 'rating');
 		if (typeof max === 'number') return undefined;

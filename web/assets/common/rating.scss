@@ -1,0 +1,28 @@
+.rating {
+	margin-top: 3px;
+	font-weight: 600;
+	
+	text:last-child {
+		display: none;
+	}
+	
+	path {
+		@include transition(all 0.25s);
+	}
+	
+	&--not-voted {
+		cursor: pointer;
+		
+		&:hover {
+			
+			text:last-child {
+				display: block;
+			}
+			
+			path {
+				stroke: #62835c;
+				fill: #62835c;
+			}
+		}
+	}
+}

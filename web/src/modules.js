@@ -27,7 +27,9 @@ require('./common/video.directive');
 require('./common/videolist.directive');
 require('./common/autocomplete.directive');
 require('./common/spinner.directive');
+require('./common/rating.directive');
 
+// Pages
 require('./index/index.page');
 require('./callback/callback.page');
 require('./addvideo/addvideo.page');

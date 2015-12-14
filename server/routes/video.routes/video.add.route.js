@@ -105,6 +105,8 @@ class VideoAddRoute {
 
 				var video = new self.models.Video(videoData);
 
+				// TODO: add votes for entities
+
 				video.save(function (err, videoFromDB) {
 					if (err) {
 						logger.error(_omit(err, 'stack'));
@@ -113,6 +115,10 @@ class VideoAddRoute {
 					}
 					else {
 						Router.success(res, videoFromDB);
+						
+						// Add user vote for video
+						self.models.User.updateOne({_id: auth.id}, {$push: {'votes.video': videoFromDB._id}})
+						
 						return next();
 					}
 				});
