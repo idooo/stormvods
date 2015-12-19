@@ -17,8 +17,11 @@ var path = require('path'),
 var tops = {
 	DAY1: moment().subtract(1, 'days').toDate(),
 	DAY7: moment().subtract(7, 'days').toDate(),
-	DAY30: moment().subtract(30, 'days').toDate()
+	DAY30: moment().subtract(30, 'days').toDate(),
+	ALLTIME: 0
 }
+
+const LIMIT = 20;
 
 if (!argv.c) {
 	return console.error('-c argument must be specified');
@@ -41,10 +44,9 @@ console.log('Timeframes:');
 console.log(tops);
 
 Object.keys(tops).forEach(function (key) {
-	promises.push(models.Video.getList({
-		creationDate: {'$gt': tops[key]},
-		isRemoved: false,
-	}, '_id', {'rating': -1}, 10))
+	var query = {isRemoved: false};
+	if (tops[key] !== 0) query.creationDate = {'$gt': tops[key]}
+	promises.push(models.Video.getList(query, '_id', {'rating': -1}, 20))
 })
 
 Promise.all(promises)

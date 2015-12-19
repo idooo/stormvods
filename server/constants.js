@@ -33,7 +33,8 @@ module.exports = {
 	TOP_MODES: {
 		today: 'DAY1',
 		week: 'DAY7',
-		month: 'DAY30'
+		month: 'DAY30',
+		alltime: 'ALLTIME'
 	},
 
 	// stages

@@ -31,6 +31,7 @@ require('./common/rating.directive');
 
 // Pages
 require('./index/index.page');
+require('./top/top.page');
 require('./callback/callback.page');
 require('./addvideo/addvideo.page');
 require('./video/video.page');

@@ -19,6 +19,10 @@ class Tops extends SchemaDefinition {
 			DAY30: {
 				type: Array,
 				default: Array
+			},
+			ALLTIME: {
+				type: Array,
+				default: Array
 			}
 		});
 

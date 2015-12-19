@@ -6,9 +6,8 @@
  * @apiGroup Video
  * @apiVersion 1.0.0
  *
- * @apiDescription
- * Only one of filter params can be active at time
- *
+ * @apiParam {String} [mode] Top mode (today, week (default), month, alltime)
+ * 
  * @apiSuccessExample Success-Response:
  * HTTP/1.1 200 OK
  * Identical to /video/list
@@ -36,7 +35,7 @@ class VideoTopListRoute extends VideoListRoute {
 		self.models.Tops.findOne({}, mode)
 			.then(function (data) {
 				query._id = {'$in': data[mode]};
-				return self.models.Video.getList(query, fields);
+				return self.models.Video.getList(query, fields, {rating: -1});
 			})
 			.then(function (data) {
 				return VideoTopListRoute.mapReduce.call(self, data, auth);

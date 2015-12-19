@@ -8,6 +8,7 @@ angular
 		
 			VIDEO: '/api/video',
 			GET_VIDEO_LIST: '/api/video/list',
+			GET_VIDEO_TOPLIST: '/api/video/list/top',
 			GET_REMOVED_VIDEO_LIST: '/api/video/removed',
 			VALIDATE_VIDEO: '/api/video/validate',
 			
@@ -23,6 +24,13 @@ angular
 		Roles: {
 			ADMIN: 10
 		},
+		
+		Top: [
+			{name: 'Today', code: 'today'},
+			{name: 'Week', code: 'week'},
+			{name: 'Month', code: 'month'},
+			{name: 'All Time', code: 'alltime'}
+		],
 		
 		Stages: {
 			QUALIFIER: 'Qualifier',

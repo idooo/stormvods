@@ -7,9 +7,16 @@ angular
 const TEMPLATE = `
 	<section>
 		
-		<h1>Most popular today</h1>
+		<h1>Top rated today</h1>
+		
+		Top: 
+			<a href="#" ui-sref="top({mode: 'week'})">week</a>
+			<a href="#" ui-sref="top({mode: 'month'})">month</a>
+			<a href="#" ui-sref="top({mode: 'alltime'})">all time</a>
 			
-		<video object="ctrl.videos[ctrl.videos.length - 1]"></video>
+			<br><br>
+			
+		<video object="ctrl.today"></video>
 		
 	</section>
 	
@@ -41,8 +48,16 @@ function indexPage () {
 		
 		$http.get(Constants.Api.GET_VIDEO_LIST)
 			.then(response => {
-				self.videos = response.data.videos;
+				self.videos = response.data.videos.map(video => {
+					if (video.stage) video.stage = Constants.Stages[video.stage.code];
+					return video;
+				});
 				self.pageCount = response.data.pageCount;
+			});
+		
+		$http.get(`${Constants.Api.GET_VIDEO_TOPLIST}?mode=today`)
+			.then(response => {
+				self.today = response.data.videos[0];
 			});
 	}
 		

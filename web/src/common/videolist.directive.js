@@ -40,8 +40,8 @@ const TEMPLATE = `
 				</div>
 			</div>		
 		</div>
-		
-		<div class="pagination">
+
+		<div class="pagination" ng-if="ctrl.showPagination">
 		
 			<button 
 				class="secondary" 
@@ -69,8 +69,11 @@ function videoListDirective () {
 	return {
 		restrict: 'E',
 		replace: true,
-		scope: {
-			params: '=?'
+		scope: {},
+		bindToController: {
+			params: '=?',
+			showPagination: '=?',
+			videos: '=?'
 		},
 		template: TEMPLATE,
 		controller: controller,
@@ -80,13 +83,14 @@ function videoListDirective () {
 	function controller ($scope, $http, Constants) {
 		var self = this;
 		
-		self.videos = [];
 		self.currentPage = 1;
 		self.pageCount = 0;
 		
 		self.getVideos = getVideos;
 		
-		getVideos(self.currentPage);
+		if (!self.videos) getVideos(self.currentPage);
+		
+		if (typeof self.showPagination === 'undefined') self.showPagination = true;
 		
 		function getVideos (page) {
 			let url = `${Constants.Api.GET_VIDEO_LIST}?p=${page}`;

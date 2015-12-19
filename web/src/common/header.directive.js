@@ -30,10 +30,13 @@ const TEMPLATE = `
 						<a href="#" ui-sref="casters">Casters</a>
 					</li>
 					<li class="nav-link mobile-only">
+					
 						<span style="color: white" ng-if="$root.isAuthorised">
 							Welcome, {{$root.username}}
+							<a href="#" ng-click="ctrl.logout()">Log out</a>
 						</span>
 						<a style="color: white" href="#" ng-if="!$root.isAuthorised" ng-click="ctrl.openAuthUrl()">Login</a>
+						
 					</li>
 				</ul>
 			</nav>
@@ -42,6 +45,7 @@ const TEMPLATE = `
 				
 				<div style="color: white" ng-if="$root.isAuthorised">
 					Welcome, {{$root.username}}
+					<a href="#" ng-click="ctrl.logout()">Log out</a>
 				</div>
 				<a style="color: white" href="#" ng-if="!$root.isAuthorised" ng-click="ctrl.openAuthUrl()">Login</a>
 				
@@ -51,6 +55,8 @@ const TEMPLATE = `
 			
 	</header>
 `;
+
+// TODO: add top rated item to the header menu
 
 function headerDirective () {
 
@@ -68,6 +74,6 @@ function headerDirective () {
 		
 		self.isMenuHidden = true;
 		self.openAuthUrl = Auth.openAuthUrl;
+		self.logout = Auth.logout;
 	}
-		
 }

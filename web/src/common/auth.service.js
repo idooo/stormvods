@@ -11,6 +11,7 @@ function authService ($rootScope, $window, $http, Constants) {
 
 	self.authorise = authorise;
 	self.openAuthUrl = openAuthUrl;
+	self.logout = logout;
 	
 	function authorise () {
 		var auth = $window.Auth;
@@ -31,5 +32,21 @@ function authService ($rootScope, $window, $http, Constants) {
 	function openAuthUrl () {
 		if (!authUrl) authPromise.then(openAuthUrl);
 		else $window.location.href = authUrl;
+	}
+	
+	function logout () {
+		deleteAllCookies();
+		$window.location.assign('/');
+	}
+	
+	function deleteAllCookies () {
+		var cookies = document.cookie.split(';');
+
+		for (var i = 0; i < cookies.length; i++) {
+			var cookie = cookies[i];
+			var eqPos = cookie.indexOf('=');
+			var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+			document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
+		}
 	}
 }

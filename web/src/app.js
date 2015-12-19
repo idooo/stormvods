@@ -53,6 +53,10 @@ function configuration ($stateProvider, $urlRouterProvider) {
 			url: '/casters',
 			template: '<casters-page/>'
 		})
+		.state('top', {
+			url: '/top/:mode',
+			template: '<top-page/>'
+		})
 		.state('zone', {
 			url: '/zone',
 			template: '<zone-page/>'
