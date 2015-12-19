@@ -1,0 +1,29 @@
+$medium-screen: 600px;
+$large-screen: 900px;
+
+$medium-screen-up: new-breakpoint(min-width $medium-screen);
+$large-screen-up: new-breakpoint(min-width $large-screen);
+
+// Helpers
+
+@mixin mobile-only () {
+	@include media($medium-screen-up) {
+		display: none !important;
+	}
+}
+
+@mixin mobile-hidden () {
+	display: none;
+	
+	@include media($medium-screen-up) {
+		display: block;
+	}
+}
+
+.mobile-only {
+	@include mobile-only();
+}
+
+.mobile-hidden {
+	@include mobile-hidden();
+}

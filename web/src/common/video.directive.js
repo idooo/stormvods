@@ -6,12 +6,12 @@ angular
 
 const TEMPLATE = `
 	<div class="video">
+	
+		<div class="video__hide-duration-container" ng-hide="isPlaying">
+			<checkbox label="Hide Duration" value="hideDuration"></checkbox>
+		</div>
 		
 		<div class="video__cover" ng-hide="isPlaying">
-			
-			<div class="video__hide-duration-container">
-				<checkbox label="Hide Duration" value="hideDuration"></checkbox>
-			</div>
 			
 			<div class="video__play" ng-click="play()"></div>
 			
@@ -23,7 +23,7 @@ const TEMPLATE = `
 				<span class="video__format">{{object.format.name}}</span>
 				<span class="video__teams" ng-if="object.teams.teams.length">
 					<span ng-hide="showTeams">
-						<a href="#" ng-click="toggleTeams()">Show teams</a>
+						<a ng-click="toggleTeams()">Show teams</a>
 					</span>
 					<span ng-show="showTeams">
 						<a href="#" ui-sref="team({id: object.teams.teams[0]._id})">
@@ -46,7 +46,7 @@ const TEMPLATE = `
 			
 		</div>
 	
-		<div ng-if="isPlaying">
+		<div ng-if="isPlaying" class="video__wrapper">
 		
 			<iframe 
 				ng-src="{{getIframeSrc()}}"

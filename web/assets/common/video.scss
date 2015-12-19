@@ -6,21 +6,28 @@ $video-container-bottom-color: #2c0448;
 .video {
 	
 	&__cover {
+		@include display(flex);
+		@include justify-content(center);
+		@include flex-direction(column);
+		@include linear-gradient($video-container-top-color, $video-container-bottom-color);
 		max-width: $video-width;
 		height: $video-height;
-		@include linear-gradient($video-container-top-color, $video-container-bottom-color);
+		text-align: center;
 	}
+	
 	
 	&__hide-duration-container {
 		padding: 16px 0 0 20px;
+		position: absolute;
+		@include mobile-hidden();
 	}
 	
 	&__play {
+		@include background-image(url("/dist/images/play.png") center no-repeat);
 		width: 91px;
 		height: 105px;
-		margin: 11px auto 20px;
+		margin: 0 auto 20px;
 		cursor: pointer;
-		@include background-image(url("/dist/images/play.png") center no-repeat);
 	}
 	
 	&__description {
@@ -53,7 +60,8 @@ $video-container-bottom-color: #2c0448;
 		}
 		
 		&__tournament {
-			font-size: 22px;
+			font-size: em(22);
+    		line-height: em(22px);
 			letter-spacing: 1px;
 			margin-bottom: 10px;
 		}
@@ -85,8 +93,17 @@ $video-container-bottom-color: #2c0448;
 			}
 		}
 		
-	iframe {
-		width: $video-width;
-		height: $video-height;
+	&__wrapper {
+		height: 0;
+		overflow: hidden;
+		padding-bottom: 56.25%; // For ratio 16:9. 75% if ratio is 4:3
+		position: relative;
+		
+		embed,
+		object,
+		iframe {
+			@include position(absolute, 0px null null 0px);
+			@include size(100%);
+		}
 	}
 }

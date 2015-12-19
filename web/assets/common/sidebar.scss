@@ -1,9 +1,12 @@
 .sidebar {
 	
 	&__add-video {
-		font-size: 14px;
-		border: 2px solid #6b62dc;
+		font-size: em(14);
 		padding: 15px;
+		
+		@include media($medium-screen-up) {
+			border: 2px solid #6b62dc;
+		}
 		
 		p {
 			margin-bottom: 10px;

@@ -7,10 +7,6 @@ angular
 const TEMPLATE = `
 	<h1>Add new video link</h1>
 
-	https://www.youtube.com/watch?v=1AwlsNfxYok
-	<br>
-	https://www.youtube.com/watch?v=-LsENvjLMxM
-	
 	<section class="add-video-page__section-add-video">
 	
 		<form name="ctrl.form" novalidate ng-hide="ctrl.isVideoUploading">

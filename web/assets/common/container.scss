@@ -5,16 +5,23 @@ html, body {
 }
 
 .content {
-	@include outer-container;
 	margin-top: 1em;
+	
+	@include media($medium-screen-up) {
+		@include outer-container;
+	}
 }
 
 	.page-container {
-		@include span-columns(8);
+		@include media($medium-screen-up) {
+			@include span-columns(8);
+		}
 	}
 	
 	.sidebar-container {
-		@include span-columns(4);
+		@include media($medium-screen-up) {
+			@include span-columns(4);
+		}
 	}
 	
 section {

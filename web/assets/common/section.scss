@@ -4,4 +4,9 @@ h1 {
 	font-weight: 700;
 	padding: ($small-spacing) 0;
 	text-transform: uppercase;
+	text-align: center;
+	
+	@include media($medium-screen-up) {
+		text-align: left;
+	}
 }

@@ -16,7 +16,7 @@ const TEMPLATE = `
 			<a href="#" class="navigation-menu-button" ng-click="ctrl.isMenuHidden = !ctrl.isMenuHidden">MENU</a>
 			
 			<nav role="navigation">
-				<ul class="navigation-menu" ng-class="{show: !ctrl.isMenuHidden}">
+				<ul class="navigation-menu" ng-class="{show: !ctrl.isMenuHidden}" ng-click="ctrl.isMenuHidden = true">
 					<li class="nav-link" ng-if="ctrl.user.role == 10">
 						<a href="#" ui-sref="zone">Secret Zone</a>
 					</li>
@@ -28,6 +28,12 @@ const TEMPLATE = `
 					</li>
 					<li class="nav-link">
 						<a href="#" ui-sref="casters">Casters</a>
+					</li>
+					<li class="nav-link mobile-only">
+						<span style="color: white" ng-if="$root.isAuthorised">
+							Welcome, {{$root.username}}
+						</span>
+						<a style="color: white" href="#" ng-if="!$root.isAuthorised" ng-click="ctrl.openAuthUrl()">Login</a>
 					</li>
 				</ul>
 			</nav>

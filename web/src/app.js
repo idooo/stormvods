@@ -59,6 +59,8 @@ function configuration ($stateProvider, $urlRouterProvider) {
 		});
 }
 
-function init (Auth) {
+function init ($rootScope, Auth) {
 	Auth.authorise();
+	
+	$rootScope.$on('$stateChangeStart', () => window.scrollTo(0, 0));
 }
