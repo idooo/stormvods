@@ -7,12 +7,14 @@ const API_VIDEO = '/api/video';
 const API_VIDEO_ID = '/api/video/:id';
 const API_VIDEO_VALIDATE = '/api/video/validate';
 const API_VIDEO_LIST = '/api/video/list';
+const API_VIDEO_TOPLIST = '/api/video/list/top';
 const API_VIDEO_REMOVED = '/api/video/removed';
 
 var Router = require('./abstract.router'),
 	Constants = require('../constants'),
 	RouteFactory = require('../core/route.factory'),
 	VideoListRoute = require('./video.routes/video.list.route'),
+	VideoTopListRoute = require('./video.routes/video.toplist.route'),
 	VideoGetRoute = require('./video.routes/video.get.route'),
 	VideoAddRoute = require('./video.routes/video.add.route'),
 	ValidateVideoRoute = require('./video.routes/video.validate.route');
@@ -26,6 +28,11 @@ class VideoRouter extends Router {
 		this.bindGET(API_VIDEO_VALIDATE, ValidateVideoRoute.route, {auth: true});
 		
 		this.bindGET(API_VIDEO_LIST, new VideoListRoute(Constants.VIEW_MODES.DEFAULT).route, {
+			auth: true,
+			restrict: Constants.ROLES.OPTIONAL
+		});
+		
+		this.bindGET(API_VIDEO_TOPLIST, new VideoTopListRoute(Constants.VIEW_MODES.DEFAULT).route, {
 			auth: true,
 			restrict: Constants.ROLES.OPTIONAL
 		});

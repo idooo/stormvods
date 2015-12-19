@@ -29,6 +29,12 @@ module.exports = {
 		ONLY_REMOVED: 'ONLY_REMOVED',
 		ALL: 'ALL'
 	},
+	
+	TOP_MODES: {
+		today: 'DAY1',
+		week: 'DAY7',
+		month: 'DAY30'
+	},
 
 	// stages
 	STAGES: [

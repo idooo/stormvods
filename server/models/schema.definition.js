@@ -26,7 +26,7 @@ class SchemaDefinition {
 	 * @param {String} fields
 	 * @return {Promise}
 	 */
-	getList (query, fields) {
+	getList (query, fields, sort, limit) {
 		var self = this;
 
 		fields = fields || DEFAULT_FIELDS;
@@ -34,6 +34,10 @@ class SchemaDefinition {
 
 		return new Promise(function (resolve, reject) {
 			query = self.where(query).select(fields);
+			
+			if (sort) query.sort(sort);
+			if (limit) query.limit(limit);
+			
 			query.find(function (err, objects) {
 				if (objects) resolve(objects);
 				else if (err) reject(err);
@@ -86,13 +90,14 @@ class SchemaDefinition {
 	 * @param {Object} query
 	 * @return {Promise}
 	 */
-	updateOne (query, update) {
+	updateOne (query, update, options) {
 		var self = this;
 
 		query = query || {};
+		options = options || {};
 
 		return new Promise(function (resolve, reject) {
-			self.findOneAndUpdate(query, update, function (err) {
+			self.findOneAndUpdate(query, update, options, function (err, a) {
 				if (err) reject(err);
 				else resolve();
 			});

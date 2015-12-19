@@ -102,19 +102,13 @@ class VideoListRoute {
 
 	route (req, res, next, auth) {
 
-		// TODO: add users' votes
-
 		var self = this,
 			query = {}, 
 			page = parseInt(req.params.p, 10) || 1,
 			fields = '-isRemoved -__v',
 			tournamentId = self.models.ObjectId(req.params.tournament),
 			teamId = self.models.ObjectId(req.params.team),
-			casterId = self.models.ObjectId(req.params.caster),
-			videos,
-			currentPage,
-			pageCount,
-			itemCount;
+			casterId = self.models.ObjectId(req.params.caster);
 
 		if (tournamentId) query['tournament.0._id'] = tournamentId;
 		else if (teamId) query['teams.0.teams'] = teamId;
@@ -129,42 +123,95 @@ class VideoListRoute {
 			limit: LIST_PAGE_SIZE,
 			select: fields
 		})
-			.then(function (result) {
-				var tournamentIds = [],
-					teamIds = [],
-					casterIds = [],
-					userIds = [],
-					promises = [];
-
-				pageCount = result.pages;
-				itemCount = result.total;
-				currentPage = result.page;
-
-				videos = result.docs.map(function (video) {
-					video = video.toObject(); // Convert because tournament is Array in scheme
-
-					video.tournament = VideoListRoute.maxByRating(video.tournament);
-					video.teams = VideoListRoute.maxByRating(video.teams);
-					video.casters = VideoListRoute.maxByRating(video.casters);
-
-					if (video.tournament) tournamentIds.push(video.tournament._id);
-					if (video.teams) teamIds = teamIds.concat(video.teams.teams);
-					if (video.casters) casterIds = casterIds.concat(video.casters.casters);
-					userIds.push(video.author);
-
-					return video;
-				});
-
-				promises.push(self.models.Tournament.getList({_id: {'$in': tournamentIds}}, 'name _id'));
-				promises.push(self.models.Team.getList({_id: {'$in': teamIds}}, 'name _id'));
-				promises.push(self.models.Caster.getList({_id: {'$in': casterIds}}, 'name _id'));
-				promises.push(self.models.User.getList({_id: {'$in': userIds}}, 'name _id'));
-				
-				if (auth && auth.id) promises.push(self.models.User.findOne({_id: auth.id}, 'name _id votes'));
-
-				return Promise.all(promises);
+			.then(function (data) {
+				return VideoListRoute.mapReduce.call(self, data, auth);
 			})
 			.then(function (data) {
+				Router.success(res, data);
+				return next();
+			})
+			.catch(function (err) {
+				Router.fail(res, err);
+				return next();
+			});
+
+	}
+	
+	static maxByRating (items) {
+		var max = _max(items, 'rating');
+		if (typeof max === 'number') return undefined;
+		return max;
+	}
+	
+	/**
+	 * 
+	 * Big function that gets list of videos from the database,
+	 * and then creates multiple requests to DB to retrieve all info about
+	 * tournaments, teams and etc based on ids stored in video records (map).
+	 * 
+	 * After getting response, it formats all the data it received 
+	 * and returns as a promise (reduce)
+	 * 
+	 * @param {Object} result
+	 * @param {Object} auth
+	 * @returns {Promise}
+	 */
+	static mapReduce (result, auth) {
+		var self = this,
+			videos = [],
+			currentPage,
+			pageCount,
+			itemCount;
+		
+		return new Promise(function (resolve) {
+			mapPromise(result)
+				.then(reducePromise)
+				.then(function (data) {
+					resolve({videos: data, pageCount, itemCount, currentPage})
+				});
+		});
+		
+		function mapPromise (data) {
+			var tournamentIds = [],
+				teamIds = [],
+				casterIds = [],
+				userIds = [],
+				promises = [],
+				_tmp = data.docs ? data.docs : data; // support for paginate and findOne
+
+			pageCount = data.pages;
+			itemCount = data.total;
+			currentPage = data.page;
+			
+			videos = _tmp.map(function (video) {
+				video = video.toObject(); // Convert because tournament is Array in scheme
+
+				video.tournament = VideoListRoute.maxByRating(video.tournament);
+				video.teams = VideoListRoute.maxByRating(video.teams);
+				video.casters = VideoListRoute.maxByRating(video.casters);
+
+				if (video.tournament) tournamentIds.push(video.tournament._id);
+				if (video.teams) teamIds = teamIds.concat(video.teams.teams);
+				if (video.casters) casterIds = casterIds.concat(video.casters.casters);
+				userIds.push(video.author);
+
+				return video;
+			});
+
+			promises.push(self.models.Tournament.getList({_id: {'$in': tournamentIds}}, 'name _id'));
+			promises.push(self.models.Team.getList({_id: {'$in': teamIds}}, 'name _id'));
+			promises.push(self.models.Caster.getList({_id: {'$in': casterIds}}, 'name _id'));
+			promises.push(self.models.User.getList({_id: {'$in': userIds}}, 'name _id'));
+			
+			if (auth && auth.id) promises.push(self.models.User.findOne({_id: auth.id}, 'name _id votes'));
+
+			return Promise.all(promises);
+		}
+		
+		function reducePromise (data) {
+			
+			return new Promise(function (resolve) {
+				
 				var lookup = {};
 				_flatten(data).forEach(i => lookup[i._id] = i);
 
@@ -186,20 +233,9 @@ class VideoListRoute {
 					}
 				}
 
-				Router.success(res, {videos, pageCount, itemCount, currentPage});
-				return next();
-			})
-			.catch(function (err) {
-				Router.fail(res, err);
-				return next();
+				resolve(videos);
 			});
-
-	}
-	
-	static maxByRating (items) {
-		var max = _max(items, 'rating');
-		if (typeof max === 'number') return undefined;
-		return max;
+		}
 	}
 }
 
