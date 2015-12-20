@@ -47,7 +47,7 @@ function footerDirective () {
 	};
 	
 	function controller () {
-		
+		// TODO: footer links
 	}
 		
 }

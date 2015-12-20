@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * @api {get} /video/:id Request video information
+ * @api {get} /video/:id Get video 
  * @apiName GetVideo
  * @apiGroup Video
  * @apiPermission USER
@@ -87,36 +87,38 @@ class VideoGetRoute {
 		self.models.Video.findOne({_id: id})
 			.then(function (_video) {
 				video = _video;
-				if (video) {
-					var topTournament = VideoGetRoute.maxByRating(video.tournament),
-						topTeams = VideoGetRoute.maxByRating(video.teams),
-						topCasters = VideoGetRoute.maxByRating(video.casters),
-						promises = [];
-
-					if (topTournament) {
-						promises.push(self.models.Tournament.findOne({_id: topTournament._id}, 'name _id'));
-						promisesNames.push(self.models.Tournament.modelName);
-					}
-					if (topTeams) {
-						promises.push(self.models.Team.getList({_id: {'$in': topTeams.teams}}, 'name _id'));
-						promisesNames.push(self.models.Team.modelName);
-					}
-					if (topCasters) {
-						promises.push(self.models.Caster.getList({_id: {'$in': topCasters.casters}}, 'name _id'));
-						promisesNames.push(self.models.Caster.modelName);
-					}
-					promises.push(self.models.User.findOne({_id: video.author}, 'name _id'));
-					promisesNames.push(self.models.User.modelName);
-					
-					if (auth && auth.id) {
-						promises.push(self.models.User.findOne({_id: auth.id}, 'votes'));
-						promisesNames.push('votes');
-					}
-
-					return Promise.all(promises);
+				
+				if (!video) {
+					Router.fail(res, {message: Constants.ERROR_NOT_FOUND}, 404);
+					return next();
 				}
-				else Router.fail(res, {message: Constants.ERROR_NOT_FOUND}, 404);
-				return next();
+			
+				var topTournament = VideoGetRoute.maxByRating(video.tournament),
+					topTeams = VideoGetRoute.maxByRating(video.teams),
+					topCasters = VideoGetRoute.maxByRating(video.casters),
+					promises = [];
+
+				if (topTournament) {
+					promises.push(self.models.Tournament.findOne({_id: topTournament._id}, 'name _id'));
+					promisesNames.push(self.models.Tournament.modelName);
+				}
+				if (topTeams) {
+					promises.push(self.models.Team.getList({_id: {'$in': topTeams.teams}}, 'name _id'));
+					promisesNames.push(self.models.Team.modelName);
+				}
+				if (topCasters) {
+					promises.push(self.models.Caster.getList({_id: {'$in': topCasters.casters}}, 'name _id'));
+					promisesNames.push(self.models.Caster.modelName);
+				}
+				promises.push(self.models.User.findOne({_id: video.author}, 'name _id'));
+				promisesNames.push(self.models.User.modelName);
+				
+				if (auth && auth.id) {
+					promises.push(self.models.User.findOne({_id: auth.id}, 'votes'));
+					promisesNames.push('votes');
+				}
+
+				return Promise.all(promises);
 			})
 			.then(function (data) {
 				var topStage = VideoGetRoute.maxByRating(video.stage),

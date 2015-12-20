@@ -9,7 +9,7 @@ const TEMPLATE = `
 	
 		<video object="ctrl.video"></video>
 		
-		<rating video="ctrl.video"></rating>
+		<improve-video video="ctrl.video" type="tournament"></improve-video>
 		
 	</section>
 `;

@@ -14,10 +14,10 @@ var appModules = [
 	`${window.APP_NAME}.common`
 ];
 
-// Init modules
+// Create modules
 appModules.forEach((moduleName) => angular.module(moduleName, []));
 
-// App modules
+// Common modules
 require('./common/constants');
 require('./common/auth.service');
 require('./common/header.directive');
@@ -29,12 +29,13 @@ require('./common/autocomplete.directive');
 require('./common/spinner.directive');
 require('./common/rating.directive');
 
-// Pages
+// Page specific 
 require('./index/index.page');
 require('./top/top.page');
 require('./callback/callback.page');
 require('./addvideo/addvideo.page');
 require('./video/video.page');
+require('./video/improve.directive');
 require('./admin/zone.page');
 require('./sidebar/sidebar.directive');
 require('./tournament/tournament.page');

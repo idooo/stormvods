@@ -1,8 +1,8 @@
 'use strict';
 
 /**
- * @api {post} /video Add video
- * @apiName AddVideo
+ * @api {post} /video Create video
+ * @apiName CreateVideo
  * @apiGroup Video
  * @apiPermission USER
  * @apiVersion 1.0.0

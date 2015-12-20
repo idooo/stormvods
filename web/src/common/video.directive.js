@@ -56,6 +56,8 @@ const TEMPLATE = `
 			
 		</div>
 		
+		<rating video="object"></rating>
+		
 	</div>
 `;
 

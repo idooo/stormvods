@@ -215,6 +215,8 @@ class VideoListRoute {
 				var lookup = {};
 				_flatten(data).forEach(i => lookup[i._id] = i);
 
+				// TODO: get ratings for teams and casters in response
+
 				for (let i = 0; i < videos.length; i++) {
 					if (videos[i].tournament) videos[i].tournament = lookup[videos[i].tournament._id];
 					if (videos[i].teams) videos[i].teams.teams = videos[i].teams.teams.map(item => lookup[item]);
