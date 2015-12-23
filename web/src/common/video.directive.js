@@ -91,7 +91,7 @@ function videoDirective ($sce, Constants) {
 		
 		function getIframeSrc () {
 			var controls = scope.hideDuration ? 'controls=0&amp;' : '',
-				url = `https://www.youtube-nocookie.com/embed/${scope.object.youtubeId}?autoplay=1&rel=0&amp;${controls}showinfo=0"`;
+				url = `https://www.youtube.com/embed/${scope.object.youtubeId}?autoplay=1&rel=0&amp;${controls}showinfo=0"`;
 				
 			return $sce.trustAsResourceUrl(url);
 		}
