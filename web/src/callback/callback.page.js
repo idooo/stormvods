@@ -22,8 +22,9 @@ function callbackPage () {
 		controller: controller
 	};
 	
-	function controller ($http, $window) {
+	function controller ($http, $window, Page) {
 		var params = {};
+		
 		$window.location.search
 			.replace('?', '')
 			.split('&')
@@ -31,6 +32,8 @@ function callbackPage () {
 				var i = item.split('=');
 				params[i[0]] = i[1];
 			});
+			
+		Page.loaded();
 			
 		// TODO: handle errors
 		$http.get(ENDPOINT_CALLBACK, {params}).then(() => $window.location.assign('/'));

@@ -23,7 +23,7 @@ function teamPage () {
 		controller: controller
 	};
 	
-	function controller ($http, $state, Constants) {
+	function controller ($http, $state, Page, Constants) {
 		var self = this;
 		
 		self.videos = [];
@@ -31,7 +31,10 @@ function teamPage () {
 		self.searchParams = `team=${$state.params.id}`;
 			
 		$http.get(`${Constants.Api.LOOKUP}/team?query=${$state.params.id}`)
-			.then(response => self.team = response.data);
+			.then(response => {
+				self.team = response.data;
+				Page.loaded();
+			});
 	}
 		
 }

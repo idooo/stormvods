@@ -102,7 +102,7 @@ function addVideoPage () {
 		controllerAs: 'ctrl'
 	};
 	
-	function controller ($scope, $http, $interval, $state, Constants) {
+	function controller ($scope, $http, $interval, $state, Page, Constants) {
 		var self = this,
 			serverValidationInterval;
 		
@@ -114,6 +114,8 @@ function addVideoPage () {
 		self.submit = submit;
 		self.stages = Constants.Stages;
 		self.formats = Constants.Formats;
+
+		Page.loaded();
 
 		$scope.$watch('ctrl.url', function (newValue) {
 			self.serverVideo = null;
@@ -166,7 +168,5 @@ function addVideoPage () {
 				.finally(() => self.isServerValidationInProgress = false);
 
 		}
-
 	}
-
 }

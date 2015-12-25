@@ -40,7 +40,7 @@ function videoPage () {
 		controllerAs: 'ctrl'
 	};
 	
-	function controller ($http, $state, $sce, Constants) {
+	function controller ($http, $state, $sce, Page, Constants) {
 		var self = this;
 		
 		// TODO: if !$state.params.id -> not found page
@@ -53,6 +53,7 @@ function videoPage () {
 		$http.get(`${Constants.Api.VIDEO}/${$state.params.id}`)
 			.then(response => {
 				self.video = response.data;
+				Page.loaded();
 			});
 			
 		$http.get(`${Constants.Api.VIDEO}/${$state.params.id}/info`)

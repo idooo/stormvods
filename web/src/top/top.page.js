@@ -23,7 +23,7 @@ function topPage () {
 		controller: controller
 	};
 	
-	function controller ($http, $state, Constants) {
+	function controller ($http, $state, Page, Constants) {
 		var self = this;
 		
 		self.videos = [];
@@ -39,6 +39,7 @@ function topPage () {
 					if (video.stage) video.stage = Constants.Stages[video.stage.code];
 					return video;
 				});
+				Page.loaded();
 			});
 	}
 		

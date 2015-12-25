@@ -29,8 +29,13 @@
 		<div class="viewport">
 		
 			<app-header></app-header>
-		
-			<div class="content">
+			
+			<div class="content-spinner" ng-show="$root.loading">
+				<div class="spinner"></div>
+				Loading ...
+			</div>
+			
+			<div class="content" ng-class="{'content--loading': $root.loading}">
 				
 				<div class="page-container" ui-view></div>
 				

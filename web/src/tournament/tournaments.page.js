@@ -26,7 +26,7 @@ function tournamentsPage () {
 		controller: controller
 	};
 	
-	function controller ($http, Constants) {
+	function controller ($http, Page, Constants) {
 		var self = this;
 		
 		self.items = [];
@@ -37,6 +37,7 @@ function tournamentsPage () {
 			.then(response => {
 				self.items = response.data.items;
 				self.pageCount = response.data.pageCount;
+				Page.loaded();
 			});
 	}
 		

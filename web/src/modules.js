@@ -20,6 +20,7 @@ appModules.forEach((moduleName) => angular.module(moduleName, []));
 // Common modules
 require('./common/constants');
 require('./common/auth.service');
+require('./common/page.service');
 require('./common/header.directive');
 require('./common/footer.directive');
 require('./common/checkbox.directive');

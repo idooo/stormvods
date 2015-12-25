@@ -39,14 +39,14 @@ function indexPage () {
 		controller: controller
 	};
 	
-	function controller ($http, Constants) {
+	function controller ($http, Constants, Page) {
 		var self = this;
 		
 		self.videos = [];
 		self.currentPage = 1;
 		self.pageCount = 1;
 		
-		$http.get(Constants.Api.GET_VIDEO_LIST)
+		var getList = $http.get(Constants.Api.GET_VIDEO_LIST)
 			.then(response => {
 				self.videos = response.data.videos.map(video => {
 					if (video.stage) video.stage = Constants.Stages[video.stage.code];
@@ -55,10 +55,12 @@ function indexPage () {
 				self.pageCount = response.data.pageCount;
 			});
 		
-		$http.get(`${Constants.Api.GET_VIDEO_TOPLIST}?mode=today`)
+		var getTop = $http.get(`${Constants.Api.GET_VIDEO_TOPLIST}?mode=today`)
 			.then(response => {
 				self.today = response.data.videos[0];
 			});
+			
+		Promise.all([getList, getTop]).then(() => Page.loaded());
 	}
 		
 }
