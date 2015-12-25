@@ -10,22 +10,35 @@ const TEMPLATE = `
 		<video object="ctrl.video"></video>
 		
 		<improve-video 
-			video="ctrl.video" 
 			type="tournament"
+			video="ctrl.video" 
 			info="ctrl.additionalInfo">
 		</improve-video>
 		
 		<improve-video 
+			type="stage"
 			video="ctrl.video" 
+			info="ctrl.additionalInfo">
+		</improve-video>
+		
+		<improve-video 
+			type="format"		
+			video="ctrl.video" 
+			info="ctrl.additionalInfo">
+		</improve-video>
+		
+		<improve-video 
 			type="teams"
+			video="ctrl.video" 
 			info="ctrl.additionalInfo">
 		</improve-video>
 		
 		<improve-video 
-			video="ctrl.video" 
 			type="casters"
+			video="ctrl.video" 
 			info="ctrl.additionalInfo">
 		</improve-video>
+		
 		
 	</section>
 `;

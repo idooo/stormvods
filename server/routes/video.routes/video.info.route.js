@@ -98,6 +98,8 @@ class VideoInfoRoute {
 				video.tournament.splice(0, 1);
 				video.casters.splice(0, 1);
 				video.teams.splice(0, 1);
+				video.stage.splice(0, 1);
+				video.format.splice(0, 1);
 					
 				if (video.tournament.length) {
 					for (let i = 0; i < video.tournament.length; i++) tournamentIds.push(video.tournament[i]._id);

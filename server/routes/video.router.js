@@ -19,6 +19,7 @@ var Constants = require('../constants'),
 	VideoGetRoute = require('./video.routes/video.get.route'),
 	VideoInfoRoute = require('./video.routes/video.info.route'),
 	VideoAddRoute = require('./video.routes/video.add.route'),
+	VideoUpdateRoute = require('./video.routes/video.update.route'),
 	ValidateVideoRoute = require('./video.routes/video.validate.route');
 
 
@@ -44,13 +45,15 @@ class VideoRouter extends Router {
 			restrict: Constants.ROLES.ADMIN
 		});
 
-		// Must be the latest
 		this.bindGET(API_VIDEO_ID, VideoGetRoute.route, {
 			auth: true,
 			restrict: Constants.ROLES.OPTIONAL
 		});
 		
-		this.bindGET(API_VIDEO_INFO, VideoInfoRoute.route, {auth: true});
+		this.bindPUT(API_VIDEO_ID, VideoUpdateRoute.route, {
+			auth: true,
+			restrict: Constants.ROLES.USER
+		});
 		
 		/**
 		* @api {delete} /api/video/:id Delete video
@@ -66,6 +69,8 @@ class VideoRouter extends Router {
 			auth: true,
 			restrict: Constants.ROLES.ADMIN
 		});
+		
+		this.bindGET(API_VIDEO_INFO, VideoInfoRoute.route, {auth: true});
 	}
 }
 

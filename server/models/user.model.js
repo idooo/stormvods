@@ -57,6 +57,7 @@ class User extends SchemaDefinition {
 		this.schema.methods.vote = this.vote;
 	}
 
+	// TODO: allow only vote for video here
 	/**
 	 * Schema method to vote for video or one of the entities
 	 */ 

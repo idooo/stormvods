@@ -29,6 +29,10 @@ class Router {
 	bindPOST (url, route, options) {
 		this.bind(url, 'post', route, options);
 	}
+	
+	bindPUT (url, route, options) {
+		this.bind(url, 'put', route, options);
+	}
 
 	bindDELETE (url, route, options) {
 		this.bind(url, 'del', route, options);

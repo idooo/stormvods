@@ -24,18 +24,25 @@ const TEMPLATE = `
 			<div ng-if="!info[type].length || isSuggestionCorrect === false">
 				{{TYPES[type].questionLookup.message}}?
 				
-				<auto-complete 
+				<select 
+					ng-show="TYPES[type].questionLookup.isSelect"
+					ng-options="k as v for (k, v) in TYPES[type].questionLookup.options"
+					ng-model="entity">
+					<option value="{{k}}">{{v}}</option>
+				</select>
+				
+				<auto-complete
+					ng-if="!TYPES[type].questionLookup.isSelect" 
 					model="entity" 
 					lookup="{{TYPES[type].questionLookup.lookup}}" 
 					limit="{{TYPES[type].questionLookup.limit}}">
 				</auto-complete>
 					
-				<button ng-show="entity.length" ng-click="update(2, entity)">Yep</button>
+				<button ng-show="entity.length || entity" ng-click="update(2, entity)">Yep</button>
 			</div>
 			
 		</div>
 		
-		<br><br>
 	</div>
 `;
 
@@ -43,55 +50,10 @@ const UPDATE_BY_TYPE = 0;
 const UPDATE_BY_ID = 1;
 const UPDATE_BY_VALUES = 2;
 
-const LAST_COMMA = /,(?!.*?,)/;
-
-const TYPES = {
-	tournament: {
-		questionCorrectness: {
-			message: 'Is this vod from',
-			func: (video) => video.tournament.name
-		},
-		suggestion: {
-			message: 'Is it from',
-			func: (info) => info.tournament[0].name
-		},
-		questionLookup: {
-			lookup: 'tournament',
-			message: 'From what tournament',
-			limit: 1
-		}
-	},
-	teams: {
-		questionCorrectness: {
-			message: 'Is this a game between',
-			func: (video) => video.teams.teams[0].name + ' and ' + video.teams.teams[1].name
-		},
-		suggestion: {
-			message: 'Is it between',
-			func: (info) => info.teams[0].teams[0].name + ' and ' + info.teams[0].teams[1].name
-		},
-		questionLookup: {
-			message: 'What teams are fighting there',
-			lookup: 'team',
-			limit: 2
-		}
-	},
-	casters: {
-		questionCorrectness: {
-			message: 'Is this a game casted by',
-			func: (video) => video.casters.casters.map(i => i.name).join(', ').replace(LAST_COMMA, ' and')
-		},
-		suggestion: {
-			message: 'Is it casted by',
-			func: (info) => info.casters[0].casters.map(i => i.name).join(', ').replace(LAST_COMMA, ' and')
-		},
-		questionLookup: {
-			message: 'Who casted this game',
-			lookup: 'caster',
-			limit: 5
-		}
-	}
-};
+/**
+ * We have to adjust logic depending on the type of improve field 
+ */
+const TYPES = require('./improve.directive.types');
 
 function improveVideoDirective () {
 
@@ -126,6 +88,10 @@ function improveVideoDirective () {
 					var data = $scope.TYPES[$scope.type];
 					data.questionCorrectness.message += ' ' + data.questionCorrectness.func($scope.video);
 					data.suggestion.message += ' ' + data.suggestion.func($scope.info);
+					
+					if (data.questionLookup.isSelect) {
+						data.questionLookup.options = data.questionLookup.options(Constants);
+					}
 				}, 250);
 				listener();
 			}
@@ -151,7 +117,7 @@ function improveVideoDirective () {
 		
 		function update (type, entity) {
 			var data = {
-				type: $scope.type
+				field: $scope.type
 			};
 			
 			if (type === UPDATE_BY_ID) data.id = entity;
