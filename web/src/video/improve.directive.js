@@ -99,7 +99,7 @@ function improveVideoDirective () {
 		
 		function answerCorrectness (isCorrect) {
 			$scope.isInformationCorrect = isCorrect;
-			if (isCorrect) update(UPDATE_BY_TYPE, $scope.type);
+			if (isCorrect) update(UPDATE_BY_ID, $scope.video[$scope.type]._id);
 		}
 		
 		function answerSuggestion (isCorrect) {
@@ -117,10 +117,16 @@ function improveVideoDirective () {
 		
 		function update (type, entity) {
 			var data = {
-				field: $scope.type
+				videoId: $scope.video._id,
+				entityType: $scope.type
 			};
 			
-			if (type === UPDATE_BY_ID) data.id = entity;
+			if (type === UPDATE_BY_ID) {
+				data.entityId = entity;
+				$http.post(Constants.Api.VOTE, data);
+			}
+			
+			// TODO: Implement
 			else if (type === UPDATE_BY_VALUES) data.values = entity; 
 			
 			$http.put(`${Constants.Api.VIDEO}/${$scope.video._id}`, data)

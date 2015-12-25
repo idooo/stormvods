@@ -9,8 +9,8 @@
  * @apiParam {String} field Field that we will update. 
  * One of the values (tournament, stage, team, format, caster)
  *  
- * @apiParam {ObjectId|ObjectId[]} [id]  
- * @apiParam {String|String[]} [values] 
+ * @apiParam {ObjectId} [id] id or list of ids
+ * @apiParam {String} [values] values 
  * 
  * @apiSuccessExample Success-Response:
  * HTTP/1.1 200 OK

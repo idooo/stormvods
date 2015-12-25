@@ -57,7 +57,6 @@ class User extends SchemaDefinition {
 		this.schema.methods.vote = this.vote;
 	}
 
-	// TODO: allow only vote for video here
 	/**
 	 * Schema method to vote for video or one of the entities
 	 */ 
@@ -74,6 +73,8 @@ class User extends SchemaDefinition {
 				
 				// If entity is array of _ids (casters, teams)
 				// then go deeper and search inside that array
+				
+				// TODO: Check all IDS in arry, not the only one
 				if (Array.isArray(video[entityType][i][entityType])) {
 					for (let j = 0; j < video[entityType][i][entityType].length; j++) {
 						if (video[entityType][i][entityType][j].equals(entityId)) {
