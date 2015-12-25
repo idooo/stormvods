@@ -149,10 +149,10 @@ class VideoInfoRoute {
 				}
 				
 				if (video.casters.length) {
-					for (let i = 0; i < video.teams.length; i++) {
-						video.teams[i] = {
-							rating: video.teams[i].rating,
-							teams: video.teams[i].teams.map(_id => lookup[_id])
+					for (let i = 0; i < video.casters.length; i++) {
+						video.casters[i] = {
+							rating: video.casters[i].rating,
+							casters: video.casters[i].casters.map(_id => lookup[_id])
 						};
 					}
 				}

@@ -9,7 +9,23 @@ const TEMPLATE = `
 	
 		<video object="ctrl.video"></video>
 		
-		<improve-video video="ctrl.video" type="tournament"></improve-video>
+		<improve-video 
+			video="ctrl.video" 
+			type="tournament"
+			info="ctrl.additionalInfo">
+		</improve-video>
+		
+		<improve-video 
+			video="ctrl.video" 
+			type="teams"
+			info="ctrl.additionalInfo">
+		</improve-video>
+		
+		<improve-video 
+			video="ctrl.video" 
+			type="casters"
+			info="ctrl.additionalInfo">
+		</improve-video>
 		
 	</section>
 `;
@@ -18,10 +34,10 @@ function videoPage () {
 
 	return {
 		restrict: 'E',
-		controllerAs: 'ctrl',
 		scope: true,
 		template: TEMPLATE,
-		controller: controller
+		controller: controller,
+		controllerAs: 'ctrl'
 	};
 	
 	function controller ($http, $state, $sce, Constants) {
@@ -30,12 +46,18 @@ function videoPage () {
 		// TODO: if !$state.params.id -> not found page
 		
 		self.video = {};
+		self.additionalInfo = {};
 		
 		// TODO: handle 404
 		
 		$http.get(`${Constants.Api.VIDEO}/${$state.params.id}`)
 			.then(response => {
 				self.video = response.data;
+			});
+			
+		$http.get(`${Constants.Api.VIDEO}/${$state.params.id}/info`)
+			.then(response => {
+				self.additionalInfo = response.data;
 			});
 		
 	}
