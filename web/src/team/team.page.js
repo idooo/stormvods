@@ -7,7 +7,7 @@ const TEMPLATE = `
 		
 		<h1>Team: {{ctrl.team.name}}</h1>
 			
-		<video-list params="ctrl.searchParams"></video-list>
+		<video-list params="ctrl.searchParams" page-load="true"></video-list>
 		
 	</section>
 	
@@ -23,7 +23,7 @@ function teamPage () {
 		controller: controller
 	};
 	
-	function controller ($http, $state, Page, Constants) {
+	function controller ($http, $state, Constants) {
 		var self = this;
 		
 		self.videos = [];
@@ -31,10 +31,7 @@ function teamPage () {
 		self.searchParams = `team=${$state.params.id}`;
 			
 		$http.get(`${Constants.Api.LOOKUP}/team?query=${$state.params.id}`)
-			.then(response => {
-				self.team = response.data;
-				Page.loaded();
-			});
+			.then(response => self.team = response.data);
 	}
 		
 }

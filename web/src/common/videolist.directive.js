@@ -73,14 +73,15 @@ function videoListDirective () {
 		bindToController: {
 			params: '=?',
 			showPagination: '=?',
-			videos: '=?'
+			videos: '=?',
+			pageLoad: '@'
 		},
 		template: TEMPLATE,
 		controller: controller,
 		controllerAs: 'ctrl'
 	};
 	
-	function controller ($scope, $http, Constants) {
+	function controller ($scope, $http, Page, Constants) {
 		var self = this;
 		
 		self.currentPage = 1;
@@ -106,6 +107,7 @@ function videoListDirective () {
 						if (video.stage) video.stage = Constants.Stages[video.stage.code];
 						return video;
 					});
+					if (self.pageLoad) Page.loaded();
 				});
 		}
 	}
