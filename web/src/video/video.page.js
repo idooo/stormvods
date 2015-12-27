@@ -57,20 +57,19 @@ function videoPage () {
 		controllerAs: 'ctrl'
 	};
 	
-	function controller ($http, $state, $sce, Page, Constants) {
+	function controller ($http, $rootScope, $state, $sce, Page, Constants) {
 		var self = this;
-		
-		// TODO: if !$state.params.id -> not found page
 		
 		self.video = {};
 		self.additionalInfo = {};
 		
-		// TODO: handle 404
+		// TODO: handle 404 if !$state.params.id -> not found page
 		
 		$http.get(`${Constants.Api.VIDEO}/${$state.params.id}`)
 			.then(response => {
 				self.video = response.data;
 				Page.loaded();
+				setTitle(self.video);
 			});
 			
 		$http.get(`${Constants.Api.VIDEO}/${$state.params.id}/info`)
@@ -78,6 +77,10 @@ function videoPage () {
 				self.additionalInfo = response.data;
 			});
 		
+		function setTitle (video) {
+			if (!video.teams || !video.teams.teams.length) return; 
+			Page.setTitle(`${video.teams.teams[0].name} vs ${video.teams.teams[1].name}`);
+		}
 	}
 		
 }

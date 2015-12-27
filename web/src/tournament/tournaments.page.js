@@ -16,6 +16,8 @@ const TEMPLATE = `
 	</section>
 `;
 
+const TITLE = 'Tournaments';
+
 function tournamentsPage () {
 
 	return {
@@ -38,6 +40,7 @@ function tournamentsPage () {
 				self.items = response.data.items;
 				self.pageCount = response.data.pageCount;
 				Page.loaded();
+				Page.setTitle(TITLE);
 			});
 	}
 		

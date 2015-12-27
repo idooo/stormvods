@@ -16,6 +16,8 @@ const TEMPLATE = `
 	</section>
 `;
 
+const TITLE = 'Casters';
+
 function castersPage () {
 
 	return {
@@ -38,6 +40,7 @@ function castersPage () {
 				self.items = response.data.items;
 				self.pageCount = response.data.pageCount;
 				Page.loaded();
+				Page.setTitle(TITLE);
 			});
 	}
 		

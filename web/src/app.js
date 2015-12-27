@@ -66,11 +66,12 @@ function configuration ($stateProvider, $urlRouterProvider) {
 function init ($rootScope, Page, Auth) {
 	Auth.authorise();
 	
+	$rootScope.isDurationHidden = true;
+	$rootScope.isTeamVisible = false;
+	
 	$rootScope.$on('$stateChangeStart', () => {
 		window.scrollTo(0, 0);
 		Page.loading();
+		Page.setTitle();
 	});
-	
-	$rootScope.isDurationHidden = true;
-	$rootScope.isTeamVisible = false;
 }

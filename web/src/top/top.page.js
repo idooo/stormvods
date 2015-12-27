@@ -16,6 +16,8 @@ const TEMPLATE = `
 	
 `;
 
+const TITLE = 'Top';
+
 function topPage () {
 
 	return {
@@ -43,6 +45,7 @@ function topPage () {
 					return video;
 				});
 				Page.loaded();
+				Page.setTitle(TITLE);
 			});
 	}
 		

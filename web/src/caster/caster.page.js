@@ -23,7 +23,7 @@ function casterPage () {
 		controller: controller
 	};
 	
-	function controller ($http, $state, Constants) {
+	function controller ($http, $state, Page, Constants) {
 		var self = this;
 		
 		self.videos = [];
@@ -31,7 +31,10 @@ function casterPage () {
 		self.searchParams = `caster=${$state.params.id}`;
 			
 		$http.get(`${Constants.Api.LOOKUP}/caster?query=${$state.params.id}`)
-			.then(response => self.caster = response.data);
+			.then(response => {
+				self.caster = response.data;
+				Page.setTitle(self.caster.name);
+			});
 	}
 		
 }

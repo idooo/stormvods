@@ -16,6 +16,8 @@ const TEMPLATE = `
 	</section>
 `;
 
+const TITLE = 'Teams';
+
 function teamsPage () {
 
 	return {
@@ -38,6 +40,7 @@ function teamsPage () {
 				self.items = response.data.items;
 				self.pageCount = response.data.pageCount;
 				Page.loaded();
+				Page.setTitle(TITLE);
 			});
 	}
 		

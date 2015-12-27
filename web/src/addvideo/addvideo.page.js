@@ -89,8 +89,9 @@ const TEMPLATE = `
 		</form>
 	
 	</section> 
-		
 `;
+
+const TITLE = 'Add VOD';
 
 function addVideoPage () {
 
@@ -116,6 +117,7 @@ function addVideoPage () {
 		self.formats = Constants.Formats;
 
 		Page.loaded();
+		Page.setTitle(TITLE);
 
 		$scope.$watch('ctrl.url', function (newValue) {
 			self.serverVideo = null;

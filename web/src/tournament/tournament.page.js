@@ -23,15 +23,19 @@ function tournamentPage () {
 		controller: controller
 	};
 	
-	function controller ($http, $state, Constants) {
+	function controller ($http, $state, Page, Constants) {
 		var self = this;
 		
 		self.videos = [];
 		self.tournament;
 		self.searchParams = `tournament=${$state.params.id}`;
 		
+		
 		$http.get(`${Constants.Api.LOOKUP}/tournament?query=${$state.params.id}`)
-			.then(response => self.tournament = response.data);
+			.then(response => {
+				self.tournament = response.data;
+				Page.setTitle(self.tournament.name);
+			});
 		
 	}
 }
