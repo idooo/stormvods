@@ -32,7 +32,7 @@ const TEMPLATE = `
 				</select>
 				
 				<auto-complete
-					ng-if="!TYPES[type].questionLookup.isSelect" 
+					ng-show="!TYPES[type].questionLookup.isSelect" 
 					model="entity" 
 					lookup="{{TYPES[type].questionLookup.lookup}}" 
 					limit="{{TYPES[type].questionLookup.limit}}">
@@ -46,7 +46,6 @@ const TEMPLATE = `
 	</div>
 `;
 
-const UPDATE_BY_TYPE = 0;
 const UPDATE_BY_ID = 1;
 const UPDATE_BY_VALUES = 2;
 

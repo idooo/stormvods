@@ -23,7 +23,6 @@
     "angular-moment": "^0.10.3",
     "angular-sanitize": "^1.4.8",
     "angular-ui-router": "^0.2.15",
-    "angular-ui-select": "^0.12.100",
     "babel-preset-es2015": "^6.1.4",
     "babelify": "^7.2.0",
     "grunt": "^0.4.5",
@@ -41,7 +40,8 @@
     "node-bourbon": "^4.2.3",
     "node-neat": "^1.7.2",
     "sync-request": "^2.1.0",
-    "time-grunt": "^1.2.2"
+    "time-grunt": "^1.2.2",
+    "ui-select": "^0.13.2"
   },
   "babel": {
     "presets": [
