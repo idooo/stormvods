@@ -13,30 +13,27 @@ const TEMPLATE = `
 		
 			<rating video="video"></rating>
 			
-			<div class="video-list-item__main" ui-sref="video({id: video._id})">
+			<div class="video-list-item__info" ui-sref="video({id: video._id})">
 			
-				<div class="video-list-item__secondary">
-					Added <span am-time-ago="video.creationDate"></span>
-					by {{video.author.name}}
+				<div class="video-list-item__time" am-time-ago="video.creationDate"></div>
+				
+				<div class="video-list-item__main">
+					<span>{{video.tournament.name}}</span>
+					<div class="video-list-item__teams">
+						<span>{{video.teams.teams[0].name}}</span> vs <span>{{video.teams.teams[1].name}}</span>
+					</div>
+				</div>
+			
+				<div class="video-list-item__stage"> 
+					{{video.stage}}
 				</div>
 				
-				<div class="video-list-item__info">
-				
-					<div>
-						<a href="#" ui-sref="tournament({id: video.tournament.id})">{{video.tournament.name}}</a>
-						{{video.stage}}
-					</div>
-					 
-					<div> 
-						{{video.teams.teams[0].name}} vs {{video.teams.teams[1].name}}
-						<br>
-						Casted by 
-						<span ng-repeat="caster in video.casters.casters">
-							<a href="#">{{caster.name}}</a>
-							<span ng-if="!$last">,<span>
-						</span>
-					</div>
-					
+				<div class="video-list-item__casters">
+					Casted by 
+					<span ng-repeat="caster in video.casters.casters">
+						{{caster.name}}
+						<span ng-if="!$last">,<span>
+					</span>
 				</div>
 			</div>		
 		</div>

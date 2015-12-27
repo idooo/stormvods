@@ -23,12 +23,12 @@ require('./common/auth.service');
 require('./common/page.service');
 require('./common/header.directive');
 require('./common/footer.directive');
-require('./common/checkbox.directive');
 require('./common/video.directive');
 require('./common/videolist.directive');
 require('./common/autocomplete.directive');
 require('./common/spinner.directive');
 require('./common/rating.directive');
+require('./common/topselector.directive');
 
 // Page specific 
 require('./index/index.page');

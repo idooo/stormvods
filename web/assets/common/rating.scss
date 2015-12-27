@@ -3,8 +3,12 @@
 	margin-top: 3px;
 	font-weight: 600;
 	
-	text:last-child {
-		display: none;
+	text {
+		@include user-select(none);
+		
+		&:last-child {
+			display: none;
+		}
 	}
 	
 	path {
@@ -16,12 +20,15 @@
 		
 		&:hover {
 			
-			text:last-child {
-				display: block;
+			text {
+				display: none;
+				
+				&:last-child {
+					display: block;
+				}
 			}
 			
 			path {
-				stroke: #62835c;
 				fill: #62835c;
 			}
 		}

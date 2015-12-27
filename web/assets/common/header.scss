@@ -9,11 +9,11 @@ $navigation-nav-button-background-hover: lighten($navigation-background-color, 1
 $navigation-nav-button-border: 1px solid lighten($navigation-nav-button-background, 20%);
 $navigation-search-background: lighten($navigation-background-color, 5);
 $navigation-search-border: 1px solid darken($navigation-background-color, 5);
-$navigation-active-link-color: transparentize(white, 0.5);
+$navigation-secondary-link-color: rgba(white, 0.5);
 $navigation-submenu-padding: 1em;
 $navigation-submenu-width: 12em;
 
-header.navigation {
+.navigation {
 	background-color: $navigation-background-color;
 	min-height: $navigation-height;
 	width: 100%;
@@ -40,7 +40,6 @@ header.navigation {
 			padding-top: 17px;
 		}
 	}
-	
 	
 	// Mobile view
 	
@@ -75,7 +74,7 @@ header.navigation {
 		}
 	}
 	
-	ul.navigation-menu {
+	.navigation-menu {
 		clear: both;
 		display: none;
 		margin: 0 auto;
@@ -98,7 +97,7 @@ header.navigation {
 	
 	// The nav items
 	
-	ul li.nav-link {
+	.nav-link {
 		background: $navigation-background-color;
 		display: block;
 		line-height: $navigation-height;
@@ -115,44 +114,66 @@ header.navigation {
 			text-decoration: none;
 			width: auto;
 		}
-	
-		a {
-			color: $light-text-color;
+		
+		&--secondary > span {
+			@include user-select(none);
+			@include transition(all 0.25s);
+			line-height: 1;
+			padding-bottom: 3px;
 			display: inline-block;
-			text-decoration: none;
+			color: $navigation-secondary-link-color;
+			cursor: pointer;
 			text-transform: uppercase;
+			font-size: 14px;
 			font-weight: 600;
-			letter-spacing: 1px;
-		
-			@include media($medium-screen-up) {
-				padding: 0 0.5em;
-			}
-		
-			&:focus,
+			border-bottom: 1px dotted rgba($navigation-secondary-link-color, 0.4);
+			
 			&:hover {
-				color: $navigation-color-hover;
+				color: lighten($navigation-secondary-link-color, 20%);
 			}
 		}
 	}
 	
-	.active-nav-item a {
-		border-bottom: 1px solid $navigation-active-link-color;
-		padding-bottom: 3px;
+	.delimiter {
+		display: none;
+		
+		@include media($medium-screen-up) {
+			border-left: 1px solid rgba($navigation-secondary-link-color, 0.4);
+			padding-top: 6px;
+			padding-bottom: 8px;
+			margin-right: 12px;
+			display: inline;
+		}
 	}
 	
+	&__user-container {
+		@include mobile-hidden();
+		height: 60px;
+		position: absolute;
+		right: 0;
+		padding-top: 22px;
+	}
 	
-	// Elements on the far right
+		&__user {
+			font-size: em(14);
+			color: rgba($navigation-secondary-link-color, 0.4);
+		}
 	
-	.navigation-tools {
-		display: none;
-		height: $navigation-height;
+	a {
+		color: $light-text-color;
+		display: inline-block;
+		text-decoration: none;
+		text-transform: uppercase;
+		font-weight: 600;
+		letter-spacing: 1px;
 	
 		@include media($medium-screen-up) {
-			background: transparent;
-			clear: none;
-			float: right;
-			display: block;
+			padding: 0 0.4em;
+		}
+	
+		&:focus,
+		&:hover {
+			color: $navigation-color-hover;
 		}
 	}
-	
 }

@@ -7,15 +7,11 @@ angular
 const TEMPLATE = `
 	<section>
 		
-		<h1>Top rated today</h1>
+		<h1>
+			Top rated today
+			<top-selector></top-selector>
+		</h1>
 		
-		Top: 
-			<a href="#" ui-sref="top({mode: 'week'})">week</a>
-			<a href="#" ui-sref="top({mode: 'month'})">month</a>
-			<a href="#" ui-sref="top({mode: 'alltime'})">all time</a>
-			
-			<br><br>
-			
 		<video object="ctrl.today"></video>
 		
 	</section>

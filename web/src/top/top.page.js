@@ -5,7 +5,10 @@ angular
 const TEMPLATE = `
 	<section>
 		
-		<h1>Top rated: {{ctrl.mode.name}}</h1>
+		<h1>
+			Top rated: {{ctrl.mode.name}}
+			<top-selector></top-selector>
+		</h1>
 			
 		<video-list videos="ctrl.videos" show-pagination="false"></video-list>
 		

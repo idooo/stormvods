@@ -1,4 +1,6 @@
-$video-list-item-info-color: #b9b9b9 !default;
+$video-list-item-primary-color: #000000 !default;
+$video-list-item-time-color: #b9b9b9 !default;
+$video-list-item-secondary-color: #777777 !default;
 $video-list-item-info-border-color: #e1e1e1 !default;
 $video-list-item-hover-background-color: rgba(43, 6, 73, 0.07) !default;
 
@@ -8,37 +10,70 @@ $video-list-item-hover-background-color: rgba(43, 6, 73, 0.07) !default;
 
 .video-list-item {
 	@include display(flex);
-	@include transition(all 0.3s);
+	@include transition(background-color 0.15s);
 	cursor: pointer;
-	padding-top: 20px;
-	border-bottom: 1px solid $video-list-item-info-border-color;
+	padding: em(20) em(10);
+	border-bottom: 1px solid #D6D6D6;
+	
+	&:last-child {
+		border-bottom: none;
+	}
+	
+	@include media($medium-screen-up) {
+		padding: em(20);
+		margin: 0 -20px;
+	}
 	
 	&:hover {
 		background-color: $video-list-item-hover-background-color;
 	}
 	
-	&__secondary {
-		color: $video-list-item-info-color;
-		font-size: em(12);
-		margin-bottom: em(10);
+	&__info {
+		@include align-self(flex-start);
+		width: 100%;
+		margin-left: em(20);
 	}
+	
+		&__time {
+			color: $video-list-item-time-color;
+			font-size: em(12);
+			margin-bottom: em(5);
+		}
+		
 	
 	&__main {
-		@include align-self(flex-start);
-		min-height: 75px;
-		width: 100%;
-		margin-left: 10px;
+		
+		span {
+			font-weight: 600;
+			display: inline-block;
+			color: $video-list-item-primary-color;
+		}
 	}
 	
-	&__info {
-		display: table;
-		
-		div {
-    		display: table-cell;
+		&__teams {	
+			display: block;
+			color: $video-list-item-secondary-color;
+			
+			@include media($medium-screen-up) {
+				margin-left: em(20);
+				display: inline-block;
+			}
+			
+			span {
+				color: $video-list-item-primary-color;
+			}
 		}
 		
-		div:first-child {
-			width: 200px;
+		&__stage {
+			color: $video-list-item-secondary-color;
+			font-weight: 600;
+			margin-top: em(4);
+			font-size: em(14);
 		}
-	}
+		
+		&__casters {
+			color: $video-list-item-secondary-color;
+			font-size: em(14);
+			margin-top: em(12);
+		}
 }

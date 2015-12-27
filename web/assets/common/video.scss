@@ -10,7 +10,6 @@ $video-container-bottom-color: #2c0448;
 		@include justify-content(center);
 		@include flex-direction(column);
 		@include linear-gradient($video-container-top-color, $video-container-bottom-color);
-		max-width: $video-width;
 		height: $video-height;
 		text-align: center;
 	}

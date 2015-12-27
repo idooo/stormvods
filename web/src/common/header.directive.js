@@ -29,28 +29,34 @@ const TEMPLATE = `
 					<li class="nav-link">
 						<a href="#" ui-sref="casters">Casters</a>
 					</li>
-					<li class="nav-link mobile-only">
 					
-						<span style="color: white" ng-if="$root.isAuthorised">
-							Welcome, {{$root.username}}
-							<a href="#" ng-click="ctrl.logout()">Log out</a>
+					<li class="nav-link delimiter"></li>
+					
+					<li class="nav-link nav-link--secondary">
+						<span>Show Teams: Yes</span>
+					</li>
+					<li class="nav-link nav-link--secondary">
+						<span>Hide Duration: Yes</span>
+					</li>
+					
+					<li class="nav-link mobile-only">
+						<span class="navigation__user" ng-if="$root.isAuthorised">
+							{{$root.username}}
+							<a href="#" ng-click="ctrl.logout()">Logout</a>
 						</span>
 						<a style="color: white" href="#" ng-if="!$root.isAuthorised" ng-click="ctrl.openAuthUrl()">Login</a>
-						
 					</li>
 				</ul>
 			</nav>
 			
-			<div class="navigation-tools">
-				
-				<div style="color: white" ng-if="$root.isAuthorised">
-					Welcome, {{$root.username}}
-					<a href="#" ng-click="ctrl.logout()">Log out</a>
-				</div>
+			<div class="navigation__user-container">
+				<span class="navigation__user" ng-if="$root.isAuthorised">
+					{{$root.username}}
+					<a href="#" ng-click="ctrl.logout()">Logout</a>
+				</span>
 				<a style="color: white" href="#" ng-if="!$root.isAuthorised" ng-click="ctrl.openAuthUrl()">Login</a>
-				
 			</div>
-		
+			
 		</div>	
 			
 	</header>

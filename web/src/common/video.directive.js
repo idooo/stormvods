@@ -8,7 +8,11 @@ const TEMPLATE = `
 	<div class="video">
 	
 		<div class="video__hide-duration-container" ng-hide="isPlaying">
-			<checkbox label="Hide Duration" value="hideDuration"></checkbox>
+			<span 
+				class="secondary-link"
+				ng-click="hideDuration = !hideDuration">
+				Hide Duration: {{hideDuration ? 'yes' : 'no'}}
+			</span>
 		</div>
 		
 		<div class="video__cover" ng-hide="isPlaying">
