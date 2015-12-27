@@ -33,10 +33,10 @@ const TEMPLATE = `
 					<li class="nav-link delimiter"></li>
 					
 					<li class="nav-link nav-link--secondary">
-						<span>Show Teams: Yes</span>
+						<span ng-click="ctrl.toogleShowTeams()">Show Teams: {{$root.isTeamVisible ? 'Yes' : 'No'}}</span>
 					</li>
 					<li class="nav-link nav-link--secondary">
-						<span>Hide Duration: Yes</span>
+						<span ng-click="ctrl.toogleHideDuration()">Hide Duration: {{$root.isDurationHidden ? 'Yes': 'No'}}</span>
 					</li>
 					
 					<li class="nav-link mobile-only">
@@ -64,6 +64,9 @@ const TEMPLATE = `
 
 // TODO: add top rated item to the header menu
 
+const IS_TEAM_VISIBLE_KEY = 'isTeamVisible';
+const IS_DURATION_HIDDEN = 'isDurationHidden'; 
+
 function headerDirective () {
 
 	return {
@@ -75,11 +78,30 @@ function headerDirective () {
 		controllerAs: 'ctrl'
 	};
 	
-	function controller (Auth) {
+	function controller ($rootScope, $timeout, localStorageService, Auth) {
 		var self = this;
 		
 		self.isMenuHidden = true;
+		
 		self.openAuthUrl = Auth.openAuthUrl;
 		self.logout = Auth.logout;
+		self.toogleShowTeams = toogleShowTeams;
+		self.toogleHideDuration = toogleHideDuration;
+		
+		// Move to the next digest cycle
+		$timeout(() => {
+			$rootScope.isTeamVisible = localStorageService.get(IS_TEAM_VISIBLE_KEY);
+			$rootScope.isDurationHidden = localStorageService.get(IS_DURATION_HIDDEN);
+		});
+		
+		function toogleShowTeams () {
+			$rootScope.isTeamVisible = !$rootScope.isTeamVisible;
+			localStorageService.set(IS_TEAM_VISIBLE_KEY, $rootScope.isTeamVisible);
+		}
+		
+		function toogleHideDuration () {
+			$rootScope.isDurationHidden = !$rootScope.isDurationHidden;
+			localStorageService.set(IS_DURATION_HIDDEN, $rootScope.isDurationHidden);
+		}
 	}
 }

@@ -70,4 +70,7 @@ function init ($rootScope, Page, Auth) {
 		window.scrollTo(0, 0);
 		Page.loading();
 	});
+	
+	$rootScope.isDurationHidden = true;
+	$rootScope.isTeamVisible = false;
 }

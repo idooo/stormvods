@@ -19,12 +19,27 @@ const TEMPLATE = `
 				
 				<div class="video-list-item__main">
 					<span>{{video.tournament.name}}</span>
+						
+					<div class="video-list-item__stage mobile-only"> 
+						{{video.stage}}
+					</div>
+					
 					<div class="video-list-item__teams">
-						<span>{{video.teams.teams[0].name}}</span> vs <span>{{video.teams.teams[1].name}}</span>
+						<span ng-show="ctrl.isTeamVisible || video.isTeamVisible">
+							{{video.teams.teams[0].name}}
+							<small>vs</small> 
+							{{video.teams.teams[1].name}}
+						</span>
+						<div 
+							class="video-list-item__show-teams"
+							ng-hide="ctrl.isTeamVisible || video.isTeamVisible"
+							ng-click="video.isTeamVisible = true; $event.stopPropagation();">
+							Show teams
+						</div>
 					</div>
 				</div>
 			
-				<div class="video-list-item__stage"> 
+				<div class="video-list-item__stage mobile-hidden"> 
 					{{video.stage}}
 				</div>
 				
@@ -78,17 +93,23 @@ function videoListDirective () {
 		controllerAs: 'ctrl'
 	};
 	
-	function controller ($scope, $http, Page, Constants) {
+	function controller ($scope, $rootScope, $http, Page, Constants) {
 		var self = this;
 		
 		self.currentPage = 1;
 		self.pageCount = 0;
+		self.isTeamVisible = $rootScope.isTeamVisible;
 		
 		self.getVideos = getVideos;
+		self.showTeams = showTeams;
 		
 		if (!self.videos) getVideos(self.currentPage);
 		
 		if (typeof self.showPagination === 'undefined') self.showPagination = true;
+		
+		$rootScope.$watch('isTeamVisible', function (newValue, oldValue) {
+			if (typeof newValue === 'boolean' && newValue !== oldValue) self.isTeamVisible = newValue;
+		});
 		
 		function getVideos (page) {
 			let url = `${Constants.Api.GET_VIDEO_LIST}?p=${page}`;
@@ -106,6 +127,12 @@ function videoListDirective () {
 					});
 					if (self.pageLoad) Page.loaded();
 				});
+		}
+		
+		function showTeams (video, $event) {
+			video.isTeamVisible = true;
+			$event.stopPropagation();
+			return false;
 		}
 	}
 }

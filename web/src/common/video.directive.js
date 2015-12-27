@@ -9,7 +9,7 @@ const TEMPLATE = `
 	
 		<div class="video__hide-duration-container" ng-hide="isPlaying">
 			<span 
-				class="secondary-link"
+				class="video__hide-duration-link"
 				ng-click="hideDuration = !hideDuration">
 				Hide Duration: {{hideDuration ? 'yes' : 'no'}}
 			</span>
@@ -26,10 +26,10 @@ const TEMPLATE = `
 				</span>
 				<span class="video__format">{{object.format.name}}</span>
 				<span class="video__teams" ng-if="object.teams.teams.length">
-					<span ng-hide="showTeams">
-						<a ng-click="toggleTeams()">Show teams</a>
+					<span ng-hide="isTeamVisible">
+						<a ng-click="showTeams()">Show teams</a>
 					</span>
-					<span ng-show="showTeams">
+					<span ng-show="isTeamVisible">
 						<a href="#" ui-sref="team({id: object.teams.teams[0]._id})">
 							{{object.teams.teams[0].name}}
 						</a>
@@ -65,7 +65,7 @@ const TEMPLATE = `
 	</div>
 `;
 
-function videoDirective ($sce, Constants) {
+function videoDirective ($sce, $rootScope, Constants) {
 
 	return {
 		restrict: 'E',
@@ -80,17 +80,26 @@ function videoDirective ($sce, Constants) {
 	function link (scope) {
 			
 		scope.isPlaying = false;
-		scope.showTeams = false; 
+		scope.isTeamVisible = false; 
 		scope.hideDuration = true;
 		
 		scope.getIframeSrc = getIframeSrc;
-		scope.toggleTeams = toggleTeams;
+		scope.showTeams = showTeams;
 		scope.play = play;
 		
+		// Listen for the incoming object to apply some formatting
 		scope.$watch('object', function (newValue) {
 			if (!newValue || !newValue.stage) return;
 			if (newValue.stage) scope.object.stage.name = Constants.Stages[newValue.stage.code];
 			if (newValue.format) scope.object.format.name = Constants.Formats[newValue.format.code];
+		});
+		
+		// Listen for global changes to apply app level config to the video
+		$rootScope.$watch('isDurationHidden', function (newValue, oldValue) {
+			if (typeof newValue === 'boolean' && newValue !== oldValue) scope.hideDuration = newValue;
+		});
+		$rootScope.$watch('isTeamVisible', function (newValue, oldValue) {
+			if (typeof newValue === 'boolean' && newValue !== oldValue) scope.isTeamVisible = newValue;
 		});
 		
 		function getIframeSrc () {
@@ -104,11 +113,9 @@ function videoDirective ($sce, Constants) {
 			scope.isPlaying = true;	
 		}
 		
-		function toggleTeams () {
-			scope.showTeams = !scope.showTeams;
+		function showTeams () {
+			scope.isTeamVisible = true;
 			return false;
 		}
-
 	}
-		
 }

@@ -4,7 +4,8 @@ var modules = [
 	'ngSanitize',
 	'ui.router',
 	'ui.select', 
-	'angularMoment'
+	'angularMoment',
+	'LocalStorageModule'
 ];
 
 // Application modules list
