@@ -8,17 +8,6 @@
 	}
 	
 	a {
-		@include transition(all 0.25s);
-		color: $action-color;
-		text-decoration: none;
-		border-bottom: 1px solid rgba($action-color, 0.5);
-		display: inline-block;
 		margin-left: em(5);
-		padding-bottom: em(2);
-		
-		&:hover {
-			color: darken($action-color, 20%);
-			border-bottom: 1px solid $action-color;
-		}
 	}
 }

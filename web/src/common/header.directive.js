@@ -41,7 +41,7 @@ const TEMPLATE = `
 					
 					<li class="nav-link mobile-only">
 						<span class="navigation__user" ng-if="$root.isAuthorised">
-							{{$root.username}}
+							{{$root.username | limitTo:25}}
 							<a href="#" ng-click="ctrl.logout()">Logout</a>
 						</span>
 						<a style="color: white" href="#" ng-if="!$root.isAuthorised" ng-click="ctrl.openAuthUrl()">Login</a>
@@ -51,7 +51,7 @@ const TEMPLATE = `
 			
 			<div class="navigation__user-container">
 				<span class="navigation__user" ng-if="$root.isAuthorised">
-					{{$root.username}}
+					{{$root.username | limitTo:25}}
 					<a href="#" ng-click="ctrl.logout()">Logout</a>
 				</span>
 				<a style="color: white" href="#" ng-if="!$root.isAuthorised" ng-click="ctrl.openAuthUrl()">Login</a>

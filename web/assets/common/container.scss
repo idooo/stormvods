@@ -5,12 +5,12 @@ html, body {
 }
 
 .content {
-	margin-top: 1em;
 	opacity: 1;
 	@include transition(opacity 0.5s);
 	
 	@include media($medium-screen-up) {
 		@include outer-container;
+		margin-top: 1em;
 	}
 	
 	&--loading {

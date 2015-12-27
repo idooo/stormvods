@@ -29,6 +29,8 @@ function teamPage () {
 		self.videos = [];
 		self.team;
 		self.searchParams = `team=${$state.params.id}`;
+		
+		if (!$state.params.id) $state.go('teams');
 			
 		$http.get(`${Constants.Api.LOOKUP}/team?query=${$state.params.id}`)
 			.then(response => self.team = response.data);

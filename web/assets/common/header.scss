@@ -14,6 +14,7 @@ $navigation-submenu-padding: 1em;
 $navigation-submenu-width: 12em;
 
 .navigation {
+	@include user-select(none);
 	background-color: $navigation-background-color;
 	min-height: $navigation-height;
 	width: 100%;
@@ -38,6 +39,7 @@ $navigation-submenu-width: 12em;
 	
 		img {
 			padding-top: 17px;
+			width: 107px;
 		}
 	}
 	
@@ -116,8 +118,7 @@ $navigation-submenu-width: 12em;
 		}
 		
 		&--secondary > span {
-			@include user-select(none);
-			@include transition(all 0.25s);
+			@include transition(all 0.15s);
 			line-height: 1;
 			padding-bottom: 3px;
 			display: inline-block;
@@ -129,7 +130,8 @@ $navigation-submenu-width: 12em;
 			border-bottom: 1px dotted rgba($navigation-secondary-link-color, 0.4);
 			
 			&:hover {
-				color: lighten($navigation-secondary-link-color, 20%);
+				color: $light-text-color-bright;
+				border-bottom-color: $light-text-color-bright;
 			}
 		}
 	}
@@ -160,6 +162,7 @@ $navigation-submenu-width: 12em;
 		}
 	
 	a {
+		@include transition(all 0.15s);
 		color: $light-text-color;
 		display: inline-block;
 		text-decoration: none;

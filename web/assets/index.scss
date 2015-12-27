@@ -19,12 +19,10 @@
 @import "./common/rating";
 @import "./common/improve";
 @import "./common/top";
-
 @import "./common/video";
 @import "./common/sidebar";
 
-@import "./pages/addvideo.page";
-
+// Minor helpers
 a[ng-click]{
     cursor: pointer;
 }

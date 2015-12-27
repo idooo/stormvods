@@ -32,7 +32,8 @@ $video-container-bottom-color: #2c0448;
 			border-bottom: 1px dotted rgba($light-text-color, 0.5);
 			
 			&:hover {
-				color: darken($light-text-color, 20%);
+				color: $light-text-color-bright;
+				border-bottom-color: $light-text-color-bright;
 			}
 		}
 	

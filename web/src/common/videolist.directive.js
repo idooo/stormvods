@@ -18,18 +18,26 @@ const TEMPLATE = `
 				<div class="video-list-item__time" am-time-ago="video.creationDate"></div>
 				
 				<div class="video-list-item__main">
-					<span>{{video.tournament.name}}</span>
+					<span ng-if="video.tournament.name">{{video.tournament.name}}</span>
+					<i ng-if="!video.tournament || !video.tournament.name">
+						Unknown tournament
+					</i>
 						
 					<div class="video-list-item__stage mobile-only"> 
 						{{video.stage}}
 					</div>
 					
 					<div class="video-list-item__teams">
-						<span ng-show="ctrl.isTeamVisible || video.isTeamVisible">
+						<span
+							ng-if="video.teams.teams.length"
+							ng-show="ctrl.isTeamVisible || video.isTeamVisible">
 							{{video.teams.teams[0].name}}
 							<small>vs</small> 
 							{{video.teams.teams[1].name}}
 						</span>
+						<i ng-if="!video.teams || video.teams.teams.length == 0">
+							No teams info
+						</i>
 						<div 
 							class="video-list-item__show-teams"
 							ng-hide="ctrl.isTeamVisible || video.isTeamVisible"
@@ -43,7 +51,7 @@ const TEMPLATE = `
 					{{video.stage}}
 				</div>
 				
-				<div class="video-list-item__casters">
+				<div class="video-list-item__casters" ng-if="video.casters.casters.length">
 					Casted by 
 					<span ng-repeat="caster in video.casters.casters">
 						{{caster.name}}
@@ -113,7 +121,7 @@ function videoListDirective () {
 		
 		function getVideos (page) {
 			let url = `${Constants.Api.GET_VIDEO_LIST}?p=${page}`;
-			if ($scope.params) url += `&${$scope.params}`;
+			if (self.params) url += `&${self.params}`;
 			
 			self.videos = [];
 			

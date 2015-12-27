@@ -1,6 +1,6 @@
 <!doctype html>
 
-<html>
+<html ng-app="hotsVideos">
 	
 	<head>
 	
@@ -10,7 +10,7 @@
 	
 		<base href="/">
 	
-		<title>App</title>
+		<title>\{{$root.title || 'Storm Vods'}}</title>
 	
 		<link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
 		<link href="/dist/styles/main.css" media="all" rel="stylesheet"/>
@@ -24,7 +24,7 @@
 	
 	</head>
 	
-	<body ng-app="hotsVideos">
+	<body>
 		
 		<div class="viewport">
 		
