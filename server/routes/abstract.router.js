@@ -12,6 +12,11 @@ const AUTH_HEADER = 'Authorization';
 const DEFAULT_ROUTE_OPTIONS = {
 	auth: false
 };
+const DEBUG_HEADERS = {
+	ID: 'X-Debug-User-Id',
+	NAME: 'X-Debug-User-Name',
+	ROLE: 'X-Debug-User-Role'
+};
 
 class Router {
 
@@ -62,10 +67,10 @@ class Router {
 					var error;
 					
 					// Debug
-					if (self.config.debug && self.config.debug.alwaysLogin) {
-						authData.name = self.config.debug.alwaysLoginDetails.name;
-						authData.id = self.config.debug.alwaysLoginDetails.id;
-						authData.role = self.config.debug.alwaysLoginDetails.role;
+					if (self.config.debug && self.config.debug.loginHeaders) {
+						authData.name = req.header(DEBUG_HEADERS.NAME);
+						authData.id = req.header(DEBUG_HEADERS.ID);
+						authData.role = parseInt(req.header(DEBUG_HEADERS.ROLE), 10);
 					}
 
 					if (restrictLevel !== Constants.ROLES.OPTIONAL) {

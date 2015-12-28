@@ -2,6 +2,7 @@
 
 const API_USERS_LIST = '/api/users';
 const API_USERS_ME = '/api/users/me';
+const API_USER = '/api/user';
 
 var Router = require('./abstract.router'),
 	Constants = require('../constants');
@@ -18,6 +19,18 @@ class UsersRouter extends Router {
 		* @apiVersion 1.0.0
 		*/
 		this.bindGET(API_USERS_ME, this.routeMe, {auth: true});
+		
+		/**
+		* @api {post} /api/user Create a user
+		* @apiName AddUser
+		* @apiGroup User
+		* @apiPermission ADMIN
+		* @apiVersion 1.0.0
+		*
+		* @apiDescription
+		* For testing purposes only
+		*/
+		this.bindPOST(API_USER, this.routeAddUser, {auth: true, restrict: Constants.ROLES.ADMIN});
 		
 		/**
 		* @api {get} /api/users Get list of users
@@ -52,6 +65,26 @@ class UsersRouter extends Router {
 				Router.fail(res, err);
 				return next();
 			});
+	}
+	
+	routeAddUser (req, res, next) {
+		var user = new this.models.User({
+			name: Router.filter(req.params.name),
+			role: parseInt(req.params.role, 10) || Constants.ROLES.USER,
+			redditInfo: {
+				id: Math.random()
+			}
+		});
+		user.save(function (err, createdUser) {
+			if (err) {
+				Router.fail(res, err);
+				return next();
+			}
+			else {
+				Router.success(res, createdUser);
+				return next();
+			}
+		});
 	}
 }
 

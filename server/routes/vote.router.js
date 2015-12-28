@@ -20,7 +20,7 @@ class VoteRouter extends Router {
 		*
 		* @apiParam {ObjectId} videoId
 		* @apiParam {String} [entityType] One of entity types: video, tournament, teams, stage, format, casters
-		* @apiParam {ObjectId} [entityId]
+		* @apiParam {ObjectId} [entityId] (or array of enitity IDs)
 		*
 		* @apiSuccessExample Success-Response:
 		* HTTP/1.1 200 OK

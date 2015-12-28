@@ -12,7 +12,7 @@
 		"autoConnect": true
 	},
 	"logs": {
-		"level": "info"
+		"level": "error"
 	},
 	"reddit": {
 		"url": "https://www.reddit.com/api/v1/",
@@ -27,12 +27,7 @@
 		"cleanDatabase": true,
 		"disableTemplateCaching": true,
 		"showStackTrace": true,
-		"alwaysLogin": true,
-		"alwaysLoginDetails": {
-		 	"name": "idonreddit",
-		  	"id": "564b00fe5d63f20f4444e4b6",
-		  	"role": 10
-		}
+		"loginHeaders": true
 	},
 	"votes": {
 		"delayRestriction": 1000

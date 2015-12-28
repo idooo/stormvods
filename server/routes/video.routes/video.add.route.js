@@ -109,7 +109,7 @@ class VideoAddRoute {
 
 				video.save(function (err, videoFromDB) {
 					if (err) {
-						logger.error(_omit(err, 'stack'));
+						logger.warn(_omit(err, 'stack'));
 						Router.fail(res, err);
 						return next();
 					}
