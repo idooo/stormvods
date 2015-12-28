@@ -46,7 +46,6 @@ const TEMPLATE = `
 						Please drop me a message if you think there is error in our side
 					</span>
 				</div>
-				
 		
 				<div ng-show="ctrl.serverVideo && !ctrl.serverVideo.isFound">
 	
@@ -103,7 +102,7 @@ function addVideoPage () {
 		controllerAs: 'ctrl'
 	};
 	
-	function controller ($scope, $http, $interval, $state, Page, Constants) {
+	function controller ($scope, $http, $interval, $timeout, $element, $state, Page, Constants) {
 		var self = this,
 			serverValidationInterval;
 		
@@ -166,6 +165,10 @@ function addVideoPage () {
 			$http.get(`${Constants.Api.VALIDATE_VIDEO}?id=${self.youtubeId}`)
 				.then((response) => {
 					self.serverVideo = response.data;
+					
+					// This is the hack to expand ui-select field to a whole width
+					// Do not know how exactly this work
+					if (!self.serverVideo.isFound) $timeout(() => {});
 				})
 				.finally(() => self.isServerValidationInProgress = false);
 

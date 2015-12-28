@@ -67,7 +67,7 @@ class Router {
 					var error;
 					
 					// Debug
-					if (self.config.debug && self.config.debug.loginHeaders) {
+					if (self.config.debug && self.config.debug.loginHeaders && req.header(DEBUG_HEADERS.NAME)) {
 						authData.name = req.header(DEBUG_HEADERS.NAME);
 						authData.id = req.header(DEBUG_HEADERS.ID);
 						authData.role = parseInt(req.header(DEBUG_HEADERS.ROLE), 10);

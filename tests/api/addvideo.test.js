@@ -70,7 +70,7 @@ module.exports = {
 		
 		// tournament automatically upvoted by author
 		test.equal(res.tournament[0].rating, 1); 
-		test.ok(user.votes.tournament.indexOf(res._id + res.tournament[0]._id) !== -1); 
+		test.ok(user.votes.tournament.indexOf(res._id) !== -1); 
 
 		test.done();
 	},
@@ -94,12 +94,9 @@ module.exports = {
 		test.ok(data.teams.indexOf(res2.values[0].name) !== -1);
 		test.ok(data.teams.indexOf(res2.values[1].name) !== -1);
 		
-		// teams automatically upvoted by author
-		var teamsopt1 = res._id + res.teams[0].teams[0] + res.teams[0].teams[1],
-			teamsopt2 = res._id + res.teams[0].teams[1] + res.teams[0].teams[0];
-
+		// teams automatically upvoted by author 
 		test.equal(res.teams[0].rating, 1); 
-		test.ok(user.votes.teams.indexOf(teamsopt1) !== -1 || user.votes.teams.indexOf(teamsopt2) !== -1);
+		test.ok(user.votes.teams.indexOf(res._id) !== -1); 
  
 		test.done();
 	},
@@ -124,15 +121,67 @@ module.exports = {
 		test.ok(data.casters.indexOf(res2.values[1].name) !== -1);
 
 		// teams automatically upvoted by author
-		var castersopt1 = res._id + res.casters[0].casters[0] + res.casters[0].casters[1],
-			castersopt2 = res._id + res.casters[0].casters[1] + res.casters[0].casters[0];
-
 		test.equal(res.casters[0].rating, 1); 
-		test.ok(user.votes.casters.indexOf(castersopt1) !== -1 || user.votes.casters.indexOf(castersopt2) !== -1);
+		test.ok(user.votes.casters.indexOf(res._id) !== -1); 
 
 		test.done();
 	},
 	
+	addVideoStage: function (test) {
+		var data = {
+			youtubeId: 'addVideo005',
+			stage: 'FINAL'
+		};
+		
+		var	res = h.post('/api/video', data, users.user01),
+			user = h.get('/api/users/me', undefined, users.user01);
+
+		test.equal(res.stage[0].code, 'FINAL'); 
+		test.ok(user.votes.stage.indexOf(res._id) !== -1); 
+
+		test.done();
+	},
+	
+	addVideoFormat: function (test) {
+		var data = {
+			youtubeId: 'addVideo006',
+			format: 'BO3'
+		};
+		
+		var	res = h.post('/api/video', data, users.user01),
+			user = h.get('/api/users/me', undefined, users.user01);
+
+		test.equal(res.format[0].code, 'BO3'); 
+		test.ok(user.votes.format.indexOf(res._id) !== -1); 
+
+		test.done();
+	},
+	
+	addVideoWrongFormat: function (test) {
+		var data = {
+			youtubeId: 'addVideo007',
+			format: 'BOO'
+		};
+		
+		var	res = h.post('/api/video', data, users.user01);
+
+		test.equal(res.format.length, 0); 
+
+		test.done();
+	},
+	
+	addVideoWrongStage: function (test) {
+		var data = {
+			youtubeId: 'addVideo008',
+			stage: 'FINALOOOO'
+		};
+		
+		var	res = h.post('/api/video', data, users.user01);
+
+		test.equal(res.stage.length, 0); 
+
+		test.done();
+	},
 	
 	/**
 	 * Test that system should not create new entities for tournaments/etc

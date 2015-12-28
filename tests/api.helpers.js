@@ -23,6 +23,7 @@ function helper () {
 		
 		addUser: function (name, role) {
 			return getContent('POST', '/api/user', {name, role}, {
+				'X-Debug-User-Name': 'whatever',
 				'X-Debug-User-Id': 'whatever',
 				'X-Debug-User-Role': '10'
 			});

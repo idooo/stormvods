@@ -63,7 +63,7 @@ class VideoAddRoute {
 						author: auth.id,
 						rating: 1
 					},
-					userUpdate = {},
+					isEntityExist = {},
 					createdTeams = [],
 					createdCasters = [];
 
@@ -75,19 +75,17 @@ class VideoAddRoute {
 								rating: 1,
 								_id: resolvedPromise.value._id
 							}];
-							userUpdate['votes.tournament'] = resolvedPromise.value._id;
+							isEntityExist.tournament = true;
 							break;
 
 						case self.models.Caster.modelName:
 							createdCasters.push(resolvedPromise.value._id);
-							if (!userUpdate['votes.casters']) userUpdate['votes.casters'] = '';
-							userUpdate['votes.casters'] += resolvedPromise.value._id;
+							isEntityExist.casters = true;
 							break;
 
 						case self.models.Team.modelName:
 							createdTeams.push(resolvedPromise.value._id);
-							if (!userUpdate['votes.teams']) userUpdate['votes.teams'] = '';
-							userUpdate['votes.teams'] += resolvedPromise.value._id;
+							isEntityExist.teams = true;
 							break;
 					}
 				});
@@ -106,8 +104,14 @@ class VideoAddRoute {
 					}];
 				}
 
-				if (stage) videoData.stage = [{rating: 1, code: stage}];
-				if (format) videoData.format = [{rating: 1, code: format}];
+				if (stage) {
+					videoData.stage = [{rating: 1, code: stage}];
+					isEntityExist.stage = true;
+				}
+				if (format) {
+					videoData.format = [{rating: 1, code: format}];
+					isEntityExist.format = true;
+				}
 
 				var video = new self.models.Video(videoData);
 
@@ -118,17 +122,18 @@ class VideoAddRoute {
 						return next();
 					}
 					else {
-						Router.success(res, videoFromDB);
+						var userUpdate = {};
 						
 						// store user votes for video and entities
 						userUpdate['votes.video'] = videoFromDB._id;
-						['votes.tournament', 'votes.teams', 'votes.casters'].forEach(key => {
-							if (userUpdate[key]) userUpdate[key] = videoFromDB._id + userUpdate[key];
+						['tournament', 'teams', 'casters', 'stage', 'format'].forEach(key => {
+							if (isEntityExist[key]) userUpdate[`votes.${key}`] = videoFromDB._id;
 						});
 						
 						// Update user votes
 						self.models.User.updateOne({_id: auth.id}, {$push: userUpdate});
 						
+						Router.success(res, videoFromDB);
 						return next();
 					}
 				});

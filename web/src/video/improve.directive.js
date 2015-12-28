@@ -21,7 +21,7 @@ const TEMPLATE = `
 				<button ng-click="answerSuggestion(false)">No</button>
 			</div>
 	
-			<div ng-if="!info[type].length || isSuggestionCorrect === false">
+			<div ng-show="!info[type].length || isSuggestionCorrect === false">
 				{{TYPES[type].questionLookup.message}}?
 				
 				<select 
@@ -68,7 +68,7 @@ function improveVideoDirective () {
 		controller: controller
 	};
 	
-	function controller ($scope, $http, $timeout, Constants) {
+	function controller ($scope, $http, $element, $timeout, Constants) {
 		
 		$scope.TYPES = angular.merge({}, TYPES);
 		$scope.isInformationCorrect = true;
@@ -98,7 +98,13 @@ function improveVideoDirective () {
 		
 		function answerCorrectness (isCorrect) {
 			$scope.isInformationCorrect = isCorrect;
-			if (isCorrect) update(UPDATE_BY_ID, $scope.video[$scope.type]._id);
+			if (isCorrect) {
+				update(UPDATE_BY_ID, $scope.video[$scope.type]._id);
+			}
+			// Set focus to autocomplete field if there is no suggestion
+			else if (!$scope.info[$scope.type].length) {
+				$timeout(() => $element.find('input')[0].focus());
+			}
 		}
 		
 		function answerSuggestion (isCorrect) {
@@ -112,6 +118,8 @@ function improveVideoDirective () {
 				
 				update(UPDATE_BY_ID, entity);
 			}
+			// Set focus on autocomplete field
+			else $timeout(() => $element.find('input')[0].focus());
 		}
 		
 		function update (type, entity) {

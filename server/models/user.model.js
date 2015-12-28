@@ -50,6 +50,10 @@ class User extends SchemaDefinition {
 				stage: {
 					type: Array,
 					default: Array
+				},
+				format: {
+					type: Array,
+					default: Array
 				}
 			}
 		});
