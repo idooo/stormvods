@@ -129,8 +129,9 @@ function improveVideoDirective () {
 			else if (type === UPDATE_BY_VALUES) data.values = entity; 
 			
 			$http.put(`${Constants.Api.VIDEO}/${$scope.video._id}`, data)
-				.then(response => {
-					//self.additionalInfo = response.data;
+				.then(() => {
+					// TODO: Handle errors?
+					// self.additionalInfo = response.data;
 				});
 		}
 	}

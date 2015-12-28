@@ -63,6 +63,7 @@ class VideoAddRoute {
 						author: auth.id,
 						rating: 1
 					},
+					userUpdate = {},
 					createdTeams = [],
 					createdCasters = [];
 
@@ -74,14 +75,19 @@ class VideoAddRoute {
 								rating: 1,
 								_id: resolvedPromise.value._id
 							}];
+							userUpdate['votes.tournament'] = resolvedPromise.value._id;
 							break;
 
 						case self.models.Caster.modelName:
 							createdCasters.push(resolvedPromise.value._id);
+							if (!userUpdate['votes.casters']) userUpdate['votes.casters'] = '';
+							userUpdate['votes.casters'] += resolvedPromise.value._id;
 							break;
 
 						case self.models.Team.modelName:
 							createdTeams.push(resolvedPromise.value._id);
+							if (!userUpdate['votes.teams']) userUpdate['votes.teams'] = '';
+							userUpdate['votes.teams'] += resolvedPromise.value._id;
 							break;
 					}
 				});
@@ -105,8 +111,6 @@ class VideoAddRoute {
 
 				var video = new self.models.Video(videoData);
 
-				// TODO: add votes for entities
-
 				video.save(function (err, videoFromDB) {
 					if (err) {
 						logger.warn(_omit(err, 'stack'));
@@ -116,8 +120,14 @@ class VideoAddRoute {
 					else {
 						Router.success(res, videoFromDB);
 						
-						// Add user vote for video
-						self.models.User.updateOne({_id: auth.id}, {$push: {'votes.video': videoFromDB._id}})
+						// store user votes for video and entities
+						userUpdate['votes.video'] = videoFromDB._id;
+						['votes.tournament', 'votes.teams', 'votes.casters'].forEach(key => {
+							if (userUpdate[key]) userUpdate[key] = videoFromDB._id + userUpdate[key];
+						});
+						
+						// Update user votes
+						self.models.User.updateOne({_id: auth.id}, {$push: userUpdate});
 						
 						return next();
 					}

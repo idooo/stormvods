@@ -1,30 +1,29 @@
-var h = require('../api.helpers');
-
+var h = require('../api.helpers'),
+	users = {
+		user01: h.addUser('voteVideoUser1', 5),
+		user02: h.addUser('voteVideoUser2', 5)
+	};
+	
 module.exports = {
 
 	voteVideo: function (test) {
-		var data = {
-			youtubeId: 'voteTest001',
-			tournament: 'Vote Test 001 Tournament',
-			teams: ['Team voteTest001', 'Super voteTest001'],
-			casters: ['voteTest001 Caster']
-		};
-		
-		var res = h.post('/api/video', data);
-
-		console.log(res);
+		var video = h.post('/api/video', {youtubeId: 'voteTest001'}, users.user01),
+			res = h.post('/api/vote', {videoId: video._id}, users.user02),
+			res2 = h.get('/api/video/' + video._id);
+	
+		test.equal(res.status, 'ok');
+		test.equal(res2.rating, 2);
 
 		test.done();
 	},
 	
-	voteTournament: function (test) {
-		var res = h.get('/api/auth/url');
-
-		test.done();
-	},
+	voteVideoTwice: function (test) {
+		var video = h.post('/api/video', {youtubeId: 'voteTest002'}, users.user01),
+			res = h.post('/api/vote', {videoId: video._id}, users.user01),
+			res2 = h.get('/api/video/' + video._id);
 	
-	voteTeams: function (test) {
-		var res = h.get('/api/auth/url');
+		test.equal(res.message, 'VOTE_TWICE');
+		test.equal(res2.rating, 1);
 
 		test.done();
 	}

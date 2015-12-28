@@ -41,7 +41,7 @@ function ratingDirective () {
 				.post(Constants.Api.VOTE, {
 					videoId: _id
 				})
-				.catch(function (response) {
+				.catch(() => {
 					// TODO: show error
 					$scope.video.isVoted = false;
 					$scope.video.rating -= 1;

@@ -93,7 +93,8 @@ class RouteFactory {
 	}
 	
 	static generateGetListRoute (model) {
-		return function (req, res, next, auth) {
+		
+		return function (req, res, next) {
 			var fields = '-isRemoved -__v',
 				page = parseInt(req.params.p, 10) || 1;
 			

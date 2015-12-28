@@ -32,11 +32,6 @@ module.exports = function (grunt) {
 		'watch'
 	]);
 
-	grunt.registerTask('test', [
-		'eslint'
-		// tests
-	]);
-
 	grunt.registerTask('docs', [
 		'apidoc'
 	]);

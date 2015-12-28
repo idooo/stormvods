@@ -19,15 +19,9 @@
  * }
  */
 
-
-var Router = require('./../abstract.router'),
-	Constants = require('../../constants');
-
-const AVAILABLE_FIELDS = ['tournament', 'stage', 'teams', 'format', 'casters'];
-
 class UpdateVideoRoute {
 
-	static route (req, res, next, auth) {
+	static route () {
 		
 
 	}

@@ -97,7 +97,7 @@ class SchemaDefinition {
 		options = options || {};
 
 		return new Promise(function (resolve, reject) {
-			self.findOneAndUpdate(query, update, options, function (err, a) {
+			self.findOneAndUpdate(query, update, options, function (err) {
 				if (err) reject(err);
 				else resolve();
 			});

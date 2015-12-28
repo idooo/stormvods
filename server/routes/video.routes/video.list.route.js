@@ -167,7 +167,7 @@ class VideoListRoute {
 			mapPromise(result)
 				.then(reducePromise)
 				.then(function (data) {
-					resolve({videos: data, pageCount, itemCount, currentPage})
+					resolve({videos: data, pageCount, itemCount, currentPage});
 				});
 		});
 		

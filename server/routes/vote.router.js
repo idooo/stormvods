@@ -42,6 +42,8 @@ class VoteRouter extends Router {
 			entityId,
 			videoId,
 			user;
+			
+		// TODO: allow user to votes for teams and check it correctly
 
 		// Validate params
 		videoId = this.models.ObjectId(req.params.videoId);

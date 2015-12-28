@@ -11,13 +11,13 @@ module.exports = {
 		};
 		
 		var res = h.post('/api/video', data, users.user01),
-			res2 = h.get('/api/users/me', undefined, users.user01);
+			user = h.get('/api/users/me', undefined, users.user01);
 
 		test.equal(res.youtubeId, 'addVideo000');
 		
 		// video automatically upvoted by author
 		test.equal(res.rating, 1); 
-		test.ok(res2.votes.video.indexOf(res._id) !== -1); 
+		test.ok(user.votes.video.indexOf(res._id) !== -1); 
 
 		test.done();
 	},
@@ -58,7 +58,8 @@ module.exports = {
 		};
 		
 		var res = h.post('/api/video', data, users.user01),
-			res2 = h.get('/api/lookup/tournament?query=addVideoSimpleTest001', undefined, users.user01);
+			res2 = h.get('/api/lookup/tournament?query=addVideoSimpleTest001', undefined, users.user01),
+			user = h.get('/api/users/me', undefined, users.user01);
 		
 		test.equal(res.youtubeId, 'addVideo001');  
 		
@@ -66,6 +67,10 @@ module.exports = {
 		test.equal(res.youtubeId, 'addVideo001');
 		test.equal(res.tournament[0]._id, res2.values[0]._id);
 		test.equal(res2.values[0].name, 'addVideoSimpleTest001 Tournament');  
+		
+		// tournament automatically upvoted by author
+		test.equal(res.tournament[0].rating, 1); 
+		test.ok(user.votes.tournament.indexOf(res._id + res.tournament[0]._id) !== -1); 
 
 		test.done();
 	},
@@ -77,7 +82,8 @@ module.exports = {
 		};
 		
 		var res = h.post('/api/video', data, users.user01),
-			res2 = h.get('/api/lookup/team?query=addVideoSimpleTest002', undefined, users.user01);
+			res2 = h.get('/api/lookup/team?query=addVideoSimpleTest002', undefined, users.user01),
+			user = h.get('/api/users/me', undefined, users.user01);
 		
 		test.equal(res.youtubeId, 'addVideo002'); 
 		
@@ -87,7 +93,14 @@ module.exports = {
 		test.ok(res.teams[0].teams.indexOf(res2.values[1]._id) !== -1);
 		test.ok(data.teams.indexOf(res2.values[0].name) !== -1);
 		test.ok(data.teams.indexOf(res2.values[1].name) !== -1);
+		
+		// teams automatically upvoted by author
+		var teamsopt1 = res._id + res.teams[0].teams[0] + res.teams[0].teams[1],
+			teamsopt2 = res._id + res.teams[0].teams[1] + res.teams[0].teams[0];
 
+		test.equal(res.teams[0].rating, 1); 
+		test.ok(user.votes.teams.indexOf(teamsopt1) !== -1 || user.votes.teams.indexOf(teamsopt2) !== -1);
+ 
 		test.done();
 	},
 	
@@ -98,7 +111,8 @@ module.exports = {
 		};
 		
 		var res = h.post('/api/video', data, users.user01),
-			res2 = h.get('/api/lookup/caster?query=addVideoSimpleTest003', undefined, users.user01);
+			res2 = h.get('/api/lookup/caster?query=addVideoSimpleTest003', undefined, users.user01),
+			user = h.get('/api/users/me', undefined, users.user01);
 
 		test.equal(res.youtubeId, 'addVideo003');
 
@@ -108,6 +122,13 @@ module.exports = {
 		test.ok(res.casters[0].casters.indexOf(res2.values[1]._id) !== -1);
 		test.ok(data.casters.indexOf(res2.values[0].name) !== -1);
 		test.ok(data.casters.indexOf(res2.values[1].name) !== -1);
+
+		// teams automatically upvoted by author
+		var castersopt1 = res._id + res.casters[0].casters[0] + res.casters[0].casters[1],
+			castersopt2 = res._id + res.casters[0].casters[1] + res.casters[0].casters[0];
+
+		test.equal(res.casters[0].rating, 1); 
+		test.ok(user.votes.casters.indexOf(castersopt1) !== -1 || user.votes.casters.indexOf(castersopt2) !== -1);
 
 		test.done();
 	},
