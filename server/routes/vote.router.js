@@ -4,6 +4,7 @@ var logger = require('winston'),
 	Router = require('./abstract.router'),
 	Constants = require('../constants');
 
+// TODO: change path to /api/vote/:id
 const API_VOTE_PATH = '/api/vote';
 const TYPES = ['video', 'tournament', 'teams', 'stage', 'format', 'casters'];
 
@@ -57,7 +58,7 @@ class VoteRouter extends Router {
 
 		if (entityType === TYPES[0]) entityId = videoId;
 		else {
-			entityId = this.models.ObjectId(req.params.entityId);
+			entityId = Router.filter(req.params.entityId);
 			if (!entityId) return Router.notFound(res, next, req.params.entityId);
 		}
 		
@@ -77,7 +78,7 @@ class VoteRouter extends Router {
 				}
 				// else search by combinedId = videoId + entityId
 				else {
-					isAllowedById = user.votes[entityType].indexOf(videoId + entityId) === -1;
+					isAllowedById = user.votes[entityType].indexOf(videoId) === -1;
 				}
 				if (!isAllowedById) return Promise.reject({message: Constants.ERROR_VOTE_TWICE});
 
