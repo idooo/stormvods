@@ -37,9 +37,12 @@ $navigation-submenu-width: 12em;
 			padding-left: 0;
 		}
 	
-		img {
-			padding-top: 17px;
+		span {
+			display: inline-block;
+			margin-top: 17px;
 			width: 107px;
+			height: 60px;
+			@include retina-image('/dist/images/logo', 107px 60px);
 		}
 	}
 	

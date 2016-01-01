@@ -38,7 +38,7 @@ $video-container-bottom-color: #2c0448;
 		}
 	
 	&__play {
-		@include background-image(url("/dist/images/play.png") center no-repeat);
+		@include retina-image('/dist/images/play', 91px 105px);
 		width: 91px;
 		height: 105px;
 		margin: 0 auto 20px;

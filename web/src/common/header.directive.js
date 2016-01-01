@@ -10,7 +10,7 @@ const TEMPLATE = `
 		<div class="navigation-wrapper">
 			
 			<a href="#" ui-sref="index" class="logo">
-				<img src="/dist/images/logo.png" alt="Logo Image"> 
+				<span></span>
 			</a>
 			
 			<a href="#" class="navigation-menu-button" ng-click="ctrl.isMenuHidden = !ctrl.isMenuHidden">MENU</a>
