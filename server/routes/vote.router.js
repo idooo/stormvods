@@ -44,8 +44,6 @@ class VoteRouter extends Router {
 			videoId,
 			user;
 			
-		// TODO: allow user to votes for teams and check it correctly
-
 		// Validate params
 		videoId = this.models.ObjectId(req.params.videoId);
 		if (!videoId) return Router.notFound(res, next, req.params.videoId);
@@ -58,7 +56,11 @@ class VoteRouter extends Router {
 
 		if (entityType === TYPES[0]) entityId = videoId;
 		else {
-			entityId = Router.filter(req.params.entityId);
+			// entityId can be string (just _id for tournament)
+			// or an array (list of _ids for teams)
+			if (typeof req.params.entityId === 'string') entityId = Router.filter(req.params.entityId);
+			else entityId = req.params.entityId.map(Router.filter);
+			
 			if (!entityId) return Router.notFound(res, next, req.params.entityId);
 		}
 		
@@ -70,16 +72,8 @@ class VoteRouter extends Router {
 				var isAllowedByTime = user.lastVoteTime.getTime() <= Date.now() + self.config.votes.delayRestriction;
 				if (!isAllowedByTime) return Promise.reject({message: Constants.ERROR_TIME_RESTRICTION});
 
-				var isAllowedById = false;
-				
-				// If type is video than search by id
-				if (entityType === TYPES[0]) {
-					isAllowedById = user.votes[entityType].indexOf(entityId) === -1;
-				}
-				// else search by combinedId = videoId + entityId
-				else {
-					isAllowedById = user.votes[entityType].indexOf(videoId) === -1;
-				}
+				// Search through the list of already voted entities
+				var isAllowedById = user.votes[entityType].indexOf(videoId) === -1;
 				if (!isAllowedById) return Promise.reject({message: Constants.ERROR_VOTE_TWICE});
 
 				return self.models.Video.findOne({_id: videoId});

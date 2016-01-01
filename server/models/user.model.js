@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
 	logger = require('winston'),
 	SchemaDefinition = require('./schema.definition'),
 	Constants = require('../constants');
-
+	
 class User extends SchemaDefinition {
 
 	constructor () {
@@ -63,10 +63,12 @@ class User extends SchemaDefinition {
 
 	/**
 	 * Schema method to vote for video or one of the entities
+	 * NOTE: Here is no check that user already voted for entity - check it in route
 	 */ 
 	vote (video, entityType, entityId) {
-		var self = this;
-
+		var self = this,
+			isFound = false;
+		
 		if (entityType === 'video') {
 			video.rating++;
 			entityId = video._id;
@@ -75,18 +77,52 @@ class User extends SchemaDefinition {
 			// Search for entity by _id in the array of entities and increase its rating
 			for (let i = 0; i < video[entityType].length; i++) {
 				
-				// If entity is array of _ids (casters, teams)
-				// then go deeper and search inside that array
+				/**
+				 * 
+				 * If entity ids is an array of _ids (casters, teams)
+				 * then go deeper and search inside that array
+				 * 
+				 * eg user voted for teams AAA and BBB, _ids ['001...', '002...']
+				 * we have a structure in video entity with the arrays of arrays of teams like
+				 * teams: [
+				 * 	  {
+				 * 		teams: ['001...', '002...'],
+				 * 		rating: 1
+				 * 	  },
+				 * 	  {
+				 * 		teams: ['003...', '004...'],
+				 * 		rating: 1
+				 *    }	
+				 * ]
+				 * so we will search for the full match of arrays
+				*/
 				
-				// TODO: Check all IDS in arry, not the only one
-				if (Array.isArray(video[entityType][i][entityType])) {
-					for (let j = 0; j < video[entityType][i][entityType].length; j++) {
-						if (video[entityType][i][entityType][j].equals(entityId)) {
+				if (Array.isArray(entityId) && Array.isArray(video[entityType][i][entityType])) {
+					
+					if (entityId.length === video[entityType][i][entityType].length) {
+						let isArrayTheSame = true;
+						for (let j = 0; j < video[entityType][i][entityType].length; j++) {
+							isArrayTheSame = isArrayTheSame && entityId.indexOf(video[entityType][i][entityType][j].toString()) !== -1;
+						}
+						if (isArrayTheSame) video[entityType][i].rating++;
+						isFound = isArrayTheSame;
+					}
+				}
+				else {
+					try {
+						if (video[entityType][i]._id.equals(entityId)) {
+							isFound = true;
 							video[entityType][i].rating++;
 						}
 					}
+					catch (e) { 
+						//
+					}
 				}
-				else if (video[entityType][i]._id.equals(entityId)) video[entityType][i].rating++;
+			}
+			
+			if (!isFound) {
+				return Promise.reject({message: Constants.ERROR_WRONG_ENTITY_ID});
 			}
 			
 			// sort entities after vote, top rated will be always first
@@ -104,15 +140,9 @@ class User extends SchemaDefinition {
 		self.lastVoteTime = Date.now();
 
         return new Promise(function (resolve, reject) {
-			for (var i = 0; i < self.votes[entityType].length; i++) {
-				if (entityId.equals(self.votes[entityType][i])) reject({message: Constants.ERROR_VOTE_TWICE});
-			}
-
-			// Save only video Id
-			if (entityType === 'video') self.votes[entityType].push(entityId);
+			// Save video Id in the list of votes
 			
-			// or combined id
-			else self.votes[entityType].push(video._id + entityId);
+			self.votes[entityType].push(video._id);
 
 			self.save(function (err) {
 				if (err) reject(err);
