@@ -22,6 +22,14 @@ module.exports = function (grunt) {
 	grunt.initConfig(configs);
 
 	// Tasks
+	
+	grunt.registerTask('listen', [
+		'sass',
+		'apidoc',
+		'copy:images',
+		'browserify',
+		'watch'
+	]);
 
 	grunt.registerTask('serve', [
 		'sass',
@@ -35,5 +43,4 @@ module.exports = function (grunt) {
 	grunt.registerTask('docs', [
 		'apidoc'
 	]);
-
 };

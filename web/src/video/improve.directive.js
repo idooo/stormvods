@@ -99,7 +99,8 @@ function improveVideoDirective () {
 		function answerCorrectness (isCorrect) {
 			$scope.isInformationCorrect = isCorrect;
 			if (isCorrect) {
-				update(UPDATE_BY_ID, $scope.video[$scope.type]._id);
+				// Send _id or code (for stage and format only)
+				update(UPDATE_BY_ID, $scope.video[$scope.type]._id || $scope.video[$scope.type].code);
 			}
 			// Set focus to autocomplete field if there is no suggestion
 			else if (!$scope.info[$scope.type].length) {
@@ -127,7 +128,7 @@ function improveVideoDirective () {
 				videoId: $scope.video._id,
 				entityType: $scope.type
 			};
-			
+
 			if (type === UPDATE_BY_ID) {
 				data.entityId = entity;
 				$http.post(Constants.Api.VOTE, data);

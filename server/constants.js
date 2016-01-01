@@ -39,7 +39,7 @@ module.exports = {
 	},
 
 	// stages
-	STAGES: [
+	STAGE: [
 		'FINAL',
 		'SEMIFINAL',
 		'QUARTERFINAL',
@@ -61,5 +61,20 @@ module.exports = {
 		'BO3',
 		'BO5',
 		'BO7'
+	],
+	
+	// votes
+	VOTE_TYPES: [
+		'video', 
+		'tournament', 
+		'teams', 
+		'stage', 
+		'format', 
+		'casters'
+	],
+	// vote types with code instead of id
+	VOTE_TYPES_CODE: [
+		'stage', 
+		'format'
 	]
 };

@@ -6,7 +6,6 @@ var logger = require('winston'),
 
 // TODO: change path to /api/vote/:id
 const API_VOTE_PATH = '/api/vote';
-const TYPES = ['video', 'tournament', 'teams', 'stage', 'format', 'casters'];
 
 class VoteRouter extends Router {
 
@@ -39,7 +38,7 @@ class VoteRouter extends Router {
 	
 	routeVote (req, res, next, auth) {
 		var self = this,
-			entityType = req.params.entityType || TYPES[0], // video by default
+			entityType = req.params.entityType || Constants.VOTE_TYPES[0], // video by default
 			entityId,
 			videoId,
 			user;
@@ -48,17 +47,27 @@ class VoteRouter extends Router {
 		videoId = this.models.ObjectId(req.params.videoId);
 		if (!videoId) return Router.notFound(res, next, req.params.videoId);
 
-		if (TYPES.indexOf(entityType) === -1) {
+		if (Constants.VOTE_TYPES.indexOf(entityType) === -1) {
 			logger.info(`${Constants.ERROR_TYPE} "${entityType}"`);
 			Router.fail(res, {message: Constants.ERROR_TYPE}, 404);
 			return next();
 		}
 
-		if (entityType === TYPES[0]) entityId = videoId;
+		// if entity type 0 (video) then use video id
+		if (entityType === Constants.VOTE_TYPES[0]) entityId = videoId;
 		else {
 			// entityId can be string (just _id for tournament)
 			// or an array (list of _ids for teams)
-			if (typeof req.params.entityId === 'string') entityId = Router.filter(req.params.entityId);
+			if (typeof req.params.entityId === 'string') {
+				entityId = Router.filter(req.params.entityId);
+				
+				// for entity types 'stage' and 'format' (and probably more later) 
+				// we expect codes instead of ids
+				// validate that this is a correct code
+				if (Constants.VOTE_TYPES_CODE.indexOf(entityType) !== -1) {
+					if (Constants.STAGE.indexOf(entityId) + Constants.FORMAT.indexOf(entityId) === -2) entityId = null;
+				}
+			}
 			else entityId = req.params.entityId.map(Router.filter);
 			
 			if (!entityId) return Router.notFound(res, next, req.params.entityId);

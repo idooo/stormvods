@@ -23,7 +23,30 @@ module.exports = {
 			res2 = h.get('/api/video/' + video._id);
 	
 		test.equal(res.message, 'VOTE_TWICE');
+		test.equal(res.status, 'error');
 		test.equal(res2.rating, 1);
+
+		test.done();
+	},
+	
+	voteWrongType: function (test) {
+		var video = h.post('/api/video', {
+				youtubeId: 'voteTest011',
+				tournament: 'Super voteTest011'
+			}, users.user01),
+			
+			// Get video to get tournament id
+			res2 = h.get('/api/video/' + video._id),
+			
+			// User 2 votes for tournament
+			res = h.post('/api/vote', {
+				videoId: video._id,
+				entityType: 'tournamentblah',
+				entityId: res2.tournament._id
+			}, users.user02);
+	
+		test.equal(res.message, 'WRONG_TYPE');
+		test.equal(res.status, 'error');
 
 		test.done();
 	},
@@ -155,6 +178,73 @@ module.exports = {
 	
 		test.equal(data.res.message, 'VOTE_TWICE');
 		test.equal(res3.casters.rating, 1);
+
+		test.done();
+	},
+	
+	voteStage: function (test) {
+		var video = h.post('/api/video', {
+				youtubeId: 'voteTest012',
+				stage: 'FINAL'
+			}, users.user01),
+			
+			// User 2 votes for tournament
+			res = h.post('/api/vote', {
+				videoId: video._id,
+				entityType: 'stage',
+				entityId: 'FINAL'
+			}, users.user02),
+			
+			res2 = h.get('/api/users/me', undefined, users.user02),
+			res3 = h.get('/api/video/' + video._id);
+	
+		test.equal(res3.stage.rating, 2);
+		test.ok(res2.votes.stage.indexOf(video._id.toString()) !== -1);
+
+		test.done();
+	},
+	
+	voteStageWrongCode: function (test) {
+		var video = h.post('/api/video', {
+				youtubeId: 'voteTest013',
+				stage: 'FINAL'
+			}, users.user01),
+			
+			// User 2 votes for tournament
+			res = h.post('/api/vote', {
+				videoId: video._id,
+				entityType: 'stage',
+				entityId: 'FINALOMG'
+			}, users.user02),
+			
+			res2 = h.get('/api/users/me', undefined, users.user02),
+			res3 = h.get('/api/video/' + video._id);
+	
+		test.equal(res3.stage.rating, 1);
+		test.equal(res.message, 'NOT_FOUND');
+		test.ok(res2.votes.stage.indexOf(video._id.toString()) === -1);
+
+		test.done();
+	},
+	
+	voteFormat: function (test) {
+		var video = h.post('/api/video', {
+				youtubeId: 'voteTest014',
+				format: 'BO3'
+			}, users.user01),
+			
+			// User 2 votes for tournament
+			res = h.post('/api/vote', {
+				videoId: video._id,
+				entityType: 'format',
+				entityId: 'BO3'
+			}, users.user02),
+			
+			res2 = h.get('/api/users/me', undefined, users.user02),
+			res3 = h.get('/api/video/' + video._id);
+	
+		test.equal(res3.format.rating, 2);
+		test.ok(res2.votes.format.indexOf(video._id.toString()) !== -1);
 
 		test.done();
 	}

@@ -69,7 +69,8 @@ class User extends SchemaDefinition {
 		var self = this,
 			isFound = false;
 		
-		if (entityType === 'video') {
+		// VOTE_TYPES[0] = 'video'
+		if (entityType === Constants.VOTE_TYPES[0]) {
 			video.rating++;
 			entityId = video._id;
 		}
@@ -108,6 +109,17 @@ class User extends SchemaDefinition {
 						isFound = isArrayTheSame;
 					}
 				}
+				
+				// special logic to search by code (not id)
+				// for entities using code (stage, format and probably more later)
+				else if (Constants.VOTE_TYPES_CODE.indexOf(entityType) !== -1) {
+					if (video[entityType][i].code === entityId) {
+						isFound = true;
+						video[entityType][i].rating++;
+					}
+				}
+				
+				// normal ids
 				else {
 					try {
 						if (video[entityType][i]._id.equals(entityId)) {
@@ -121,9 +133,7 @@ class User extends SchemaDefinition {
 				}
 			}
 			
-			if (!isFound) {
-				return Promise.reject({message: Constants.ERROR_WRONG_ENTITY_ID});
-			}
+			if (!isFound) return Promise.reject({message: Constants.ERROR_WRONG_ENTITY_ID});
 			
 			// sort entities after vote, top rated will be always first
 			video[entityType] = video[entityType].sort((a, b) => a.rating < b.rating);
@@ -133,17 +143,15 @@ class User extends SchemaDefinition {
 		}
 
 		// update video rating (we do not care about the result)
-		video.save((err) => {
+		video.save(err => {
 			if (err) logger.debug(`Saving vote for video "${video._id}" failed`, err);
 		});
 
 		self.lastVoteTime = Date.now();
 
+		// Save video Id in the list of votes
         return new Promise(function (resolve, reject) {
-			// Save video Id in the list of votes
-			
 			self.votes[entityType].push(video._id);
-
 			self.save(function (err) {
 				if (err) reject(err);
 				else resolve();

@@ -40,7 +40,7 @@ class VideoAddRoute {
 			return next();
 		}
 
-		if (Constants.STAGES.indexOf(stage) === -1) stage = null;
+		if (Constants.STAGE.indexOf(stage) === -1) stage = null;
 		if (Constants.FORMAT.indexOf(format) === -1) format = null;
 
 		if (Array.isArray(req.params.teams)) {
