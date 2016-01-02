@@ -36,5 +36,8 @@
 	},
 	"votes": {
 		"delayRestriction": 1000
+	},
+	"actions": {
+		"delayRestriction": 10000
 	}
 }

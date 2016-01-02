@@ -4,6 +4,7 @@ module.exports = {
 
 	// Errors
 	ERROR_INVALID: 'INVALID_VALUE',
+	ERROR_DUPLICATE: 'DUPLICATE',
 	ERROR_REDDIT_AUTH: 'REDDIT_AUTH_ERROR',
 	ERROR_UNIQUE: 'EXPECTED_UNIQUE_VALUE',
 	ERROR_NOT_FOUND: 'NOT_FOUND',
@@ -63,8 +64,8 @@ module.exports = {
 		'BO7'
 	],
 	
-	// votes
-	VOTE_TYPES: [
+	// entity types
+	ENTITY_TYPES: [
 		'video', 
 		'tournament', 
 		'teams', 
@@ -72,8 +73,8 @@ module.exports = {
 		'format', 
 		'casters'
 	],
-	// vote types with code instead of id
-	VOTE_TYPES_CODE: [
+	// types with code instead of id
+	ENTITY_TYPES_CODE: [
 		'stage', 
 		'format'
 	]

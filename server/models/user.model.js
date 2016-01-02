@@ -3,6 +3,7 @@
 var mongoose = require('mongoose'),
 	logger = require('winston'),
 	SchemaDefinition = require('./schema.definition'),
+	Video = require('./video.model'),
 	Constants = require('../constants');
 	
 class User extends SchemaDefinition {
@@ -27,6 +28,10 @@ class User extends SchemaDefinition {
 				default: Date.now
 			},
 			lastVoteTime: {
+				type: Date,
+				default: 0
+			},
+			lastCreateTime: {
 				type: Date,
 				default: 0
 			},
@@ -66,72 +71,16 @@ class User extends SchemaDefinition {
 	 * NOTE: Here is no check that user already voted for entity - check it in route
 	 */ 
 	vote (video, entityType, entityId) {
-		var self = this,
-			isFound = false;
+		var self = this;
 		
-		// VOTE_TYPES[0] = 'video'
-		if (entityType === Constants.VOTE_TYPES[0]) {
+		// ENTITY_TYPES[0] = 'video'
+		if (entityType === Constants.ENTITY_TYPES[0]) {
 			video.rating++;
 			entityId = video._id;
 		}
 		else {
 			// Search for entity by _id in the array of entities and increase its rating
-			for (let i = 0; i < video[entityType].length; i++) {
-				
-				/**
-				 * 
-				 * If entity ids is an array of _ids (casters, teams)
-				 * then go deeper and search inside that array
-				 * 
-				 * eg user voted for teams AAA and BBB, _ids ['001...', '002...']
-				 * we have a structure in video entity with the arrays of arrays of teams like
-				 * teams: [
-				 * 	  {
-				 * 		teams: ['001...', '002...'],
-				 * 		rating: 1
-				 * 	  },
-				 * 	  {
-				 * 		teams: ['003...', '004...'],
-				 * 		rating: 1
-				 *    }	
-				 * ]
-				 * so we will search for the full match of arrays
-				*/
-				
-				if (Array.isArray(entityId) && Array.isArray(video[entityType][i][entityType])) {
-					
-					if (entityId.length === video[entityType][i][entityType].length) {
-						let isArrayTheSame = true;
-						for (let j = 0; j < video[entityType][i][entityType].length; j++) {
-							isArrayTheSame = isArrayTheSame && entityId.indexOf(video[entityType][i][entityType][j].toString()) !== -1;
-						}
-						if (isArrayTheSame) video[entityType][i].rating++;
-						isFound = isArrayTheSame;
-					}
-				}
-				
-				// special logic to search by code (not id)
-				// for entities using code (stage, format and probably more later)
-				else if (Constants.VOTE_TYPES_CODE.indexOf(entityType) !== -1) {
-					if (video[entityType][i].code === entityId) {
-						isFound = true;
-						video[entityType][i].rating++;
-					}
-				}
-				
-				// normal ids
-				else {
-					try {
-						if (video[entityType][i]._id.equals(entityId)) {
-							isFound = true;
-							video[entityType][i].rating++;
-						}
-					}
-					catch (e) { 
-						//
-					}
-				}
-			}
+			var isFound = Video.matchEntity(video, entityType, entityId, entity => entity.rating++);
 			
 			if (!isFound) return Promise.reject({message: Constants.ERROR_WRONG_ENTITY_ID});
 			

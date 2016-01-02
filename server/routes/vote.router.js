@@ -38,7 +38,7 @@ class VoteRouter extends Router {
 	
 	routeVote (req, res, next, auth) {
 		var self = this,
-			entityType = req.params.entityType || Constants.VOTE_TYPES[0], // video by default
+			entityType = req.params.entityType || Constants.ENTITY_TYPES[0], // video by default
 			entityId,
 			videoId,
 			user;
@@ -47,14 +47,14 @@ class VoteRouter extends Router {
 		videoId = this.models.ObjectId(req.params.videoId);
 		if (!videoId) return Router.notFound(res, next, req.params.videoId);
 
-		if (Constants.VOTE_TYPES.indexOf(entityType) === -1) {
+		if (Constants.ENTITY_TYPES.indexOf(entityType) === -1) {
 			logger.info(`${Constants.ERROR_TYPE} "${entityType}"`);
 			Router.fail(res, {message: Constants.ERROR_TYPE}, 404);
 			return next();
 		}
-
+			
 		// if entity type 0 (video) then use video id
-		if (entityType === Constants.VOTE_TYPES[0]) entityId = videoId;
+		if (entityType === Constants.ENTITY_TYPES[0]) entityId = videoId;
 		else {
 			// entityId can be string (just _id for tournament)
 			// or an array (list of _ids for teams)
@@ -64,11 +64,11 @@ class VoteRouter extends Router {
 				// for entity types 'stage' and 'format' (and probably more later) 
 				// we expect codes instead of ids
 				// validate that this is a correct code
-				if (Constants.VOTE_TYPES_CODE.indexOf(entityType) !== -1) {
+				if (Constants.ENTITY_TYPES_CODE.indexOf(entityType) !== -1) {
 					if (Constants.STAGE.indexOf(entityId) + Constants.FORMAT.indexOf(entityId) === -2) entityId = null;
 				}
 			}
-			else entityId = req.params.entityId.map(Router.filter);
+			else if (Array.isArray(req.params.entityId)) entityId = req.params.entityId.map(Router.filter);
 			
 			if (!entityId) return Router.notFound(res, next, req.params.entityId);
 		}
@@ -78,7 +78,7 @@ class VoteRouter extends Router {
 		self.models.User.findOne({name: auth.name}, 'votes lastVoteTime')
 			.then(function (_user) {
 				user = _user;
-				var isAllowedByTime = user.lastVoteTime.getTime() <= Date.now() + self.config.votes.delayRestriction;
+				var isAllowedByTime = user.lastVoteTime.getTime() <= Date.now() + (self.config.votes || {}).delayRestriction || 1000;
 				if (!isAllowedByTime) return Promise.reject({message: Constants.ERROR_TIME_RESTRICTION});
 
 				// Search through the list of already voted entities

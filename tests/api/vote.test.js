@@ -1,7 +1,8 @@
 var h = require('../api.helpers'),
 	users = {
 		user01: h.addUser('voteVideoUser1', 5),
-		user02: h.addUser('voteVideoUser2', 5)
+		user02: h.addUser('voteVideoUser2', 5),
+		user03: h.addUser('voteVideoUser3', 5)
 	};
 	
 module.exports = {
@@ -84,6 +85,32 @@ module.exports = {
 	
 		test.equal(data.res.message, 'VOTE_TWICE');
 		test.equal(res3.tournament.rating, 1);
+
+		test.done();
+	},
+	
+	voteTournamentSortEntities: function (test) {
+		var video = h.post('/api/video', {
+				youtubeId: 'voteTest015',
+				tournament: 'Super voteTest015'
+			}, users.user01),
+			
+			// Add second
+			res = h.put('/api/video/' + video._id, {field: 'tournament', values: 'Second Tour voteTest015'}, users.user02),
+			
+			// User 2 votes for tournament
+			res2 = h.post('/api/vote', {
+				videoId: video._id,
+				entityType: 'tournament',
+				entityId: res.value
+			}, users.user03),
+			
+			// Get video to get tournament id
+			res3 = h.get('/api/video/' + video._id);
+		
+		// Voting should put second tournament to the top 
+		test.equal(res3.tournament.rating, 2);
+		test.equal(res3.tournament.name, 'Second Tour voteTest015');
 
 		test.done();
 	},

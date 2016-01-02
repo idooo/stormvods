@@ -126,7 +126,7 @@ class VideoAddRoute {
 						
 						// store user votes for video and entities
 						userUpdate['votes.video'] = videoFromDB._id;
-						['tournament', 'teams', 'casters', 'stage', 'format'].forEach(key => {
+						Constants.ENTITY_TYPES.forEach(key => {
 							if (isEntityExist[key]) userUpdate[`votes.${key}`] = videoFromDB._id;
 						});
 						

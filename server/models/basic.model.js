@@ -50,7 +50,7 @@ class BasicModel extends SchemaDefinition {
 			
 			if (!entityName) return resolve({value: null, type: self.modelName});
 
-			self.findOne({name: entityName})
+			self.findOne({name: new RegExp(`^${entityName}$`, 'i')}) // case insensitive
 				.then(function (entity) {
 					if (entity) return resolve({value: entity, type: self.modelName});
 					
