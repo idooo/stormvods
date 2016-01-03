@@ -144,6 +144,8 @@ class VideoListRoute {
 	}
 	
 	/**
+	 * Not a typical map-reduce here but just a nice name
+	 * for a function that somehow reminds me about it
 	 * 
 	 * Big function that gets list of videos from the database,
 	 * and then creates multiple requests to DB to retrieve all info about
@@ -183,6 +185,7 @@ class VideoListRoute {
 			itemCount = data.total;
 			currentPage = data.page;
 			
+			// Go through video data and get top entities and their ids
 			videos = _tmp.map(function (video) {
 				video = video.toObject(); // Convert because tournament is Array in scheme
 
@@ -198,6 +201,7 @@ class VideoListRoute {
 				return video;
 			});
 
+			// Create a list of promises to get entities from other collections
 			promises.push(self.models.Tournament.getList({_id: {'$in': tournamentIds}}, 'name _id'));
 			promises.push(self.models.Team.getList({_id: {'$in': teamIds}}, 'name _id'));
 			promises.push(self.models.Caster.getList({_id: {'$in': casterIds}}, 'name _id'));
@@ -214,6 +218,7 @@ class VideoListRoute {
 				var lookup = {};
 				_flatten(data).forEach(i => lookup[i._id] = i);
 
+				// Populate video data using entities data resolved from other collections 
 				for (let i = 0; i < videos.length; i++) {
 					if (videos[i].tournament) videos[i].tournament = lookup[videos[i].tournament._id];
 					if (videos[i].teams) videos[i].teams.teams = videos[i].teams.teams.map(item => lookup[item]);

@@ -20,6 +20,8 @@
  * {
  *     "status": "ok"
  * }
+ * 
+ * @apiUse NOT_FOUND
  */
 
 var logger = require('winston'),
@@ -82,14 +84,11 @@ class UpdateVideoRoute {
 				
 				switch (field) {
 					case 'tournament':
-						promises.push(self.models.Tournament.getOrCreate(values, auth));
-						break;
+						promises.push(self.models.Tournament.getOrCreate(values, auth)); break;
 					case 'teams':
-						values.forEach(teamName => promises.push(self.models.Team.getOrCreate(teamName, auth)));
-						break;
+						values.forEach(teamName => promises.push(self.models.Team.getOrCreate(teamName, auth))); break;
 					case 'casters':
-						values.forEach(casterName => promises.push(self.models.Caster.getOrCreate(casterName, auth)));
-						break;
+						values.forEach(casterName => promises.push(self.models.Caster.getOrCreate(casterName, auth))); break;
 				}
 				
 				return Promise.all(promises);
