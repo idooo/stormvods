@@ -131,7 +131,10 @@ class VideoAddRoute {
 						});
 						
 						// Update user votes
-						self.models.User.updateOne({_id: auth.id}, {$push: userUpdate});
+						self.models.User.updateOne({_id: auth.id}, {
+							$push: userUpdate, 
+							$inc: {'stats.videosAdded': 1} 
+						});
 						
 						Router.success(res, videoFromDB);
 						return next();

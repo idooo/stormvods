@@ -60,6 +60,20 @@ class User extends SchemaDefinition {
 					type: Array,
 					default: Array
 				}
+			},
+			stats: {
+				videosAdded: {
+					type: Number,
+					default: 0
+				},
+				videosUpdated: {
+					type: Number,
+					default: 0
+				},
+				votes: {
+					type: Number,
+					default: 0
+				}
 			}
 		});
 
@@ -101,6 +115,7 @@ class User extends SchemaDefinition {
 		// Save video Id in the list of votes
         return new Promise(function (resolve, reject) {
 			self.votes[entityType].push(video._id);
+			self.stats.votes += 1;
 			self.save(function (err) {
 				if (err) reject(err);
 				else resolve();

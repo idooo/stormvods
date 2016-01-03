@@ -75,7 +75,7 @@ class VoteRouter extends Router {
 		
 		// Main logic: searching for users, 
 		// checking can he vote and vote if everything is ok
-		self.models.User.findOne({name: auth.name}, 'votes lastVoteTime')
+		self.models.User.findOne({name: auth.name}, 'votes stats lastVoteTime')
 			.then(function (_user) {
 				user = _user;
 				var isAllowedByTime = user.lastVoteTime.getTime() <= Date.now() + (self.config.votes || {}).delayRestriction || 1000;

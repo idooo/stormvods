@@ -65,7 +65,7 @@ class UpdateVideoRoute {
 			return next();
 		}
 		
-		self.models.User.findOne({name: auth.name}, 'votes lastCreateTime')
+		self.models.User.findOne({name: auth.name}, 'votes stats lastCreateTime')
 			.then(function (_user) {
 				user = _user;
 				var isAllowedByTime = user.lastCreateTime.getTime() <= Date.now() + (self.config.actions || {}).delayRestriction || 1000;
@@ -150,6 +150,7 @@ class UpdateVideoRoute {
 				// Save video Id in the list of votes
 				return new Promise(function (resolve, reject) {
 					user.votes[field].push(video._id);
+					user.stats.videosUpdated += 1;
 					user.markModified('votes');
 					user.save(function (err) {
 						if (err) reject(err);
