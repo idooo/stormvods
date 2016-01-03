@@ -48,6 +48,8 @@ const TEMPLATE = `
 				</span>
 			</div>
 			
+			<rating video="object" class="rating--video-object"></rating>
+			
 		</div>
 	
 		<div ng-if="isPlaying" class="video__wrapper">
@@ -60,12 +62,12 @@ const TEMPLATE = `
 			
 		</div>
 		
-		<rating video="object"></rating>
-		
+		<improve-block></improve-block>
+
 	</div>
 `;
 
-function videoDirective ($sce, $rootScope, Constants) {
+function videoDirective ($sce, $http, $rootScope, Constants) {
 
 	return {
 		restrict: 'E',

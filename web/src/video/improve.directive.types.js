@@ -9,7 +9,7 @@ module.exports = {
 		},
 		suggestion: {
 			message: 'Is it from',
-			func: (info) => info.tournament.length ? info.tournament[0].name : ''
+			func: (info) => info.tournament && info.tournament.length ? info.tournament[0].name : ''
 		},
 		questionLookup: {
 			lookup: 'tournament',
@@ -25,7 +25,7 @@ module.exports = {
 		},
 		suggestion: {
 			message: 'Is it between',
-			func: (info) => info.teams.length ? info.teams[0].teams[0].name + ' and ' + info.teams[0].teams[1].name : ''
+			func: (info) => info.teams && info.teams.length ? info.teams[0].teams[0].name + ' and ' + info.teams[0].teams[1].name : ''
 		},
 		questionLookup: {
 			message: 'What teams are fighting there',
@@ -41,7 +41,7 @@ module.exports = {
 		},
 		suggestion: {
 			message: 'Is it casted by',
-			func: (info) => info.casters.length ? info.casters[0].casters.map(i => i.name).join(', ').replace(LAST_COMMA, ' and') : ''
+			func: (info) => info.casters && info.casters.length ? info.casters[0].casters.map(i => i.name).join(', ').replace(LAST_COMMA, ' and') : ''
 		},
 		questionLookup: {
 			message: 'Who casted this game',
@@ -57,7 +57,7 @@ module.exports = {
 		},
 		suggestion: {
 			message: 'Is it',
-			func: (info) => info.stage.length ? info.stage[0].code : ''
+			func: (info) => info.stage && info.stage.length ? info.stage[0].code : ''
 		},
 		questionLookup: {
 			message: 'What stage is it?',
@@ -73,7 +73,7 @@ module.exports = {
 		},
 		suggestion: {
 			message: 'Is it',
-			func: (info) => info.format.length ? info.format[0].code : ''
+			func: (info) => info.format && info.format.length ? info.format[0].code : ''
 		},
 		questionLookup: {
 			message: 'What format is it?',

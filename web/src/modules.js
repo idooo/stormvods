@@ -24,20 +24,20 @@ require('./common/auth.service');
 require('./common/page.service');
 require('./common/header.directive');
 require('./common/footer.directive');
-require('./common/video.directive');
 require('./common/videolist.directive');
 require('./common/autocomplete.directive');
 require('./common/spinner.directive');
 require('./common/rating.directive');
 require('./common/topselector.directive');
 
-// Page specific 
 require('./index/index.page');
 require('./top/top.page');
 require('./callback/callback.page');
 require('./addvideo/addvideo.page');
 require('./video/video.page');
+require('./video/video.directive');
 require('./video/improve.directive');
+require('./video/improve.block.directive');
 require('./admin/zone.page');
 require('./sidebar/sidebar.directive');
 require('./tournament/tournament.page');

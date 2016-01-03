@@ -13,6 +13,7 @@
 	
 	path {
 		@include transition(all 0.25s);
+		fill: #122e5a; 
 	}
 	
 	&--not-voted {
@@ -31,6 +32,17 @@
 			path {
 				fill: #62835c;
 			}
+		}
+	}
+	
+	&--video-object {
+		position: absolute;
+		margin-top: -25px;
+		margin-left: 15px;
+		
+		path {
+			fill: none;
+			stroke: #ffffff;
 		}
 	}
 }

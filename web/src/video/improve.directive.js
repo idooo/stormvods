@@ -3,26 +3,29 @@ angular
 	.directive('improveVideo', improveVideoDirective);
 
 const TEMPLATE = `
-	<div>
+	<div class="improve">
 		
-		<div ng-show="isInformationCorrect">
-			{{TYPES[type].questionCorrectness.message}}?
+		<div class="improve__question-container" ng-show="isInformationCorrect">
+			<span class="improve__question">{{TYPES[type].questionCorrectness.message}}?</span>
 			
 			<button ng-click="answerCorrectness(true)">Yes</button> 
 			<button ng-click="answerCorrectness(false)">No</button>
 		</div>
 		
-		<div ng-show="!isInformationCorrect">
+		<div class="improve__question-container" ng-show="!isInformationCorrect">
 			
 			<div ng-if="info[type].length && isSuggestionCorrect">
-				{{TYPES[type].suggestion.message}}?
+				<span class="improve__question">{{TYPES[type].suggestion.message}}?</span>
 				
 				<button ng-click="answerSuggestion(true)">Yes</button>
 				<button ng-click="answerSuggestion(false)">No</button>
 			</div>
 	
-			<div ng-show="!info[type].length || isSuggestionCorrect === false">
-				{{TYPES[type].questionLookup.message}}?
+			<div 
+				class="improve__question-advanced-container" 
+				ng-show="!info[type].length || isSuggestionCorrect === false">
+				
+				<span class="improve__question">{{TYPES[type].questionLookup.message}}?</span>
 				
 				<select 
 					ng-show="TYPES[type].questionLookup.isSelect"
@@ -73,6 +76,7 @@ function improveVideoDirective () {
 		$scope.TYPES = angular.merge({}, TYPES);
 		$scope.isInformationCorrect = true;
 		$scope.isSuggestionCorrect = true;
+		$scope.isAnswered = false;
 		
 		$scope.answerCorrectness = answerCorrectness;
 		$scope.answerSuggestion = answerSuggestion;
@@ -124,6 +128,10 @@ function improveVideoDirective () {
 		}
 		
 		function update (type, entity) {
+			if ($scope.isAnswered) return;
+			
+			$scope.info.answeredQuestions += 1;
+			
 			var data = {
 				videoId: $scope.video._id,
 				entityType: $scope.type
