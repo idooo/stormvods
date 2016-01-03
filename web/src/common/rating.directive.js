@@ -5,7 +5,7 @@ angular
 const TEMPLATE = `
 	<svg 
 		class="rating"
-		ng-class="{'rating--not-voted': !video.isVoted}"
+		ng-class="{'rating--not-voted': !video.isVoted, 'rating--voted': video.isVoted}"
 		ng-click="vote(video._id)"
 		
 		version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"

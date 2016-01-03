@@ -35,9 +35,15 @@
 		}
 	}
 	
+	&--voted {
+		path {
+			fill: #62835c;
+		}
+	}
+	
 	&--video-object {
 		position: absolute;
-		margin-top: -25px;
+		margin-top: -60px;
 		margin-left: 15px;
 		
 		path {

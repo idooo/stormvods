@@ -1,5 +1,4 @@
 $secondary-button-border-color: $base-border-color;
-$secondary-button-border: 1px solid $secondary-button-border-color;
 $secondary-button-background: lighten($secondary-button-border-color, 10);
 $secondary-button-hover-background: lighten($secondary-button-background, 5);
 $secondary-button-color: $base-font-color;
@@ -42,8 +41,8 @@ $secondary-button-color: $base-font-color;
 }
 
 .secondary {
-	background: $secondary-button-background;
-	border: $secondary-button-border;
+	box-shadow: inset 0px  0px 0px 1px $secondary-button-border-color;
+	background: $secondary-button-background; 
 	color: $secondary-button-color;
 	
 	&:hover,

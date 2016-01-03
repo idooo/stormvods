@@ -10,6 +10,7 @@ const TEMPLATE = `
 			
 			<button ng-click="answerCorrectness(true)">Yes</button> 
 			<button ng-click="answerCorrectness(false)">No</button>
+			<button class="secondary" ng-click="skip()">Skip</button>
 		</div>
 		
 		<div class="improve__question-container" ng-show="!isInformationCorrect">
@@ -19,6 +20,7 @@ const TEMPLATE = `
 				
 				<button ng-click="answerSuggestion(true)">Yes</button>
 				<button ng-click="answerSuggestion(false)">No</button>
+				<button class="secondary" ng-click="skip()">Skip</button>
 			</div>
 	
 			<div 
@@ -42,12 +44,15 @@ const TEMPLATE = `
 				</auto-complete>
 					
 				<button ng-show="entity.length || entity" ng-click="update(2, entity)">Yep</button>
+				<button class="secondary" ng-click="skip()">Skip</button>
 			</div>
 			
 		</div>
 		
 	</div>
 `;
+
+// TODO: auto-complete field still has issue with input width 
 
 const UPDATE_BY_ID = 1;
 const UPDATE_BY_VALUES = 2;
@@ -81,6 +86,7 @@ function improveVideoDirective () {
 		$scope.answerCorrectness = answerCorrectness;
 		$scope.answerSuggestion = answerSuggestion;
 		$scope.update = update;
+		$scope.skip = skip;
 		
 		var listener = $scope.$watch('video', function (newValue) {
 			if (newValue && newValue._id) {
@@ -89,8 +95,14 @@ function improveVideoDirective () {
 				
 				$timeout(function () {
 					var data = $scope.TYPES[$scope.type];
-					data.questionCorrectness.message += ' ' + data.questionCorrectness.func($scope.video);
-					data.suggestion.message += ' ' + data.suggestion.func($scope.info);
+					
+					try {
+						data.questionCorrectness.message += ' ' + data.questionCorrectness.func($scope.video, Constants);
+						data.suggestion.message += ' ' + data.suggestion.func($scope.info, Constants);
+					}
+					catch (e) {
+						//
+					}
 					
 					if (data.questionLookup.isSelect) {
 						data.questionLookup.options = data.questionLookup.options(Constants);
@@ -103,8 +115,11 @@ function improveVideoDirective () {
 		function answerCorrectness (isCorrect) {
 			$scope.isInformationCorrect = isCorrect;
 			if (isCorrect) {
-				// Send _id or code (for stage and format only)
-				update(UPDATE_BY_ID, $scope.video[$scope.type]._id || $scope.video[$scope.type].code);
+				var entity = $scope.video[$scope.type]._id || $scope.video[$scope.type].code;
+					
+				if (!entity) entity = $scope.video[$scope.type][$scope.type].map(item => item._id);
+				
+				update(UPDATE_BY_ID, entity);
 			}
 			// Set focus to autocomplete field if there is no suggestion
 			else if (!$scope.info[$scope.type].length) {
@@ -129,27 +144,32 @@ function improveVideoDirective () {
 		
 		function update (type, entity) {
 			if ($scope.isAnswered) return;
-			
 			$scope.info.answeredQuestions += 1;
 			
-			var data = {
-				videoId: $scope.video._id,
-				entityType: $scope.type
-			};
-
+			// User selected one of suggested values
 			if (type === UPDATE_BY_ID) {
-				data.entityId = entity;
-				$http.post(Constants.Api.VOTE, data);
-			}
-			
-			// TODO: Implement
-			else if (type === UPDATE_BY_VALUES) data.values = entity; 
-			
-			$http.put(`${Constants.Api.VIDEO}/${$scope.video._id}`, data)
-				.then(() => {
-					// TODO: Handle errors?
-					// self.additionalInfo = response.data;
+				$http.post(Constants.Api.VOTE, {
+					videoId: $scope.video._id,
+					entityType: $scope.type,
+					entityId: entity
 				});
+			}
+			// User added new entity
+			else if (type === UPDATE_BY_VALUES) {
+				$http.put(`${Constants.Api.VIDEO}/${$scope.video._id}`, {
+						videoId: $scope.video._id,
+						field: $scope.type,
+						values: $scope.entity	
+					})
+					.then(() => {
+						// TODO: Handle errors?
+						// self.additionalInfo = response.data;
+					});
+			}
+		}
+		
+		function skip () {
+			$scope.info.answeredQuestions += 1;
 		}
 	}
 }

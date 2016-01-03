@@ -32,13 +32,11 @@
 	$expander-toggle-arrow-size: $expander-toggle-size;
 	$expander-toggle-margin: 1em;
 
-	&__trigger {
+	&__row {
 		@include user-select(none);
 		padding: em(10);
 		border-bottom: 1px solid $light-gray;
 		color: $action-color;
-		cursor: pointer;
-		display: block;
 		font-size: $expander-toggle-size;
 		margin-bottom: $expander-toggle-size;
 		text-decoration: none;
@@ -58,9 +56,31 @@
 			}
 		}
 	}
+	
+	&__trigger {
+		cursor: pointer;
+	}
 
 	&__content p {
 		color: $base-font-color;
 		line-height: $base-line-height;
+	}
+	
+	&__loading {
+		
+		div {
+			margin: 14px auto;
+		}
+		
+		span {
+			text-align: center;
+			display: inline-block;
+			width: 100%;
+		}
+	}
+	
+	&__thankyou {
+		text-align: center;
+		color: #62835c;
 	}
 }

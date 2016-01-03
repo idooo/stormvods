@@ -57,8 +57,8 @@ class UpdateVideoRoute {
 		// additional validation
 		// if teams - length = 2
 		// if casters - length > 0
-		if (field === 'teams' && values.length !== 2) values = null;
-		else if (field === 'casters' && values.length === 0) values = null;
+		if (field === 'teams' && values && values.length !== 2) values = null;
+		else if (field === 'casters' && values && values.length === 0) values = null;
 		
 		if (!values) {
 			Router.fail(res, {message: Constants.ERROR_INVALID});

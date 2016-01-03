@@ -48,9 +48,9 @@ const TEMPLATE = `
 				</span>
 			</div>
 			
-			<rating video="object" class="rating--video-object"></rating>
-			
 		</div>
+		
+		<rating video="object" class="rating--video-object"></rating>
 	
 		<div ng-if="isPlaying" class="video__wrapper">
 		

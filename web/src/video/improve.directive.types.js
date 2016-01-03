@@ -4,7 +4,7 @@ module.exports = {
 	
 	tournament: {
 		questionCorrectness: {
-			message: 'Is this vod from',
+			message: 'Is this VOD from',
 			func: (video) => video.tournament.name
 		},
 		suggestion: {
@@ -24,7 +24,7 @@ module.exports = {
 			func: (video) => video.teams.teams[0].name + ' and ' + video.teams.teams[1].name
 		},
 		suggestion: {
-			message: 'Is it between',
+			message: 'Is it a game between',
 			func: (info) => info.teams && info.teams.length ? info.teams[0].teams[0].name + ' and ' + info.teams[0].teams[1].name : ''
 		},
 		questionLookup: {
@@ -53,14 +53,14 @@ module.exports = {
 	stage: {
 		questionCorrectness: {
 			message: 'Is this a',
-			func: (video) => video.stage.code
+			func: (video, Constants) => Constants.Stages[video.stage.code]
 		},
 		suggestion: {
 			message: 'Is it',
-			func: (info) => info.stage && info.stage.length ? info.stage[0].code : ''
+			func: (info, Constants) => info.stage && info.stage.length ? Constants.Stages[info.stage[0].code] : ''
 		},
 		questionLookup: {
-			message: 'What stage is it?',
+			message: 'What stage is it',
 			isSelect: true,
 			options: constants => constants.Stages
 		}
@@ -69,14 +69,14 @@ module.exports = {
 	format: {
 		questionCorrectness: {
 			message: 'Is this a',
-			func: (video) => video.format.code
+			func: (video, Constants) => Constants.Formats[video.format.code]
 		},
 		suggestion: {
 			message: 'Is it',
-			func: (info) => info.format && info.format.length ? info.format[0].code : ''
+			func: (info, Constants) => info.format && info.format.length ? Constants.Formats[info.format[0].code] : ''
 		},
 		questionLookup: {
-			message: 'What format is it?',
+			message: 'What format is it',
 			isSelect: true,
 			options: constants => constants.Formats
 		}

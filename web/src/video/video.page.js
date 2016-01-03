@@ -10,10 +10,14 @@ const TEMPLATE = `
 			<small class="newline-mobile">vs.</small>
 			<a href="#" ui-sref="team({id: ctrl.video.teams.teams[1]._id})">{{ctrl.video.teams.teams[1].name}}</a>
 		</h1>
-		<h1 ng-if="!ctrl.video.teams || ctrl.video.teams.teams.length == 0">Video</h1>
+		<h1 ng-if="!ctrl.video.teams.teams || ctrl.video.teams.teams.length == 0">
+			Misterious match
+		</h1>
 
-		<video object="ctrl.video"></video>
-
+		<video object="ctrl.video" ng-if="!ctrl.error"></video>
+		
+		{{ctrl.error}}
+		
 	</section>
 `;
 
@@ -39,11 +43,19 @@ function videoPage () {
 				self.video = response.data;
 				Page.loaded();
 				setTitle(self.video);
+			})
+			.catch(response => {
+				self.error = response.data;
+				Page.loaded();
+				setTitle('Not Found');
 			});
 
 		function setTitle (video) {
-			if (!video.teams || !video.teams.teams.length) return;
-			Page.setTitle(`${video.teams.teams[0].name} vs ${video.teams.teams[1].name}`);
+			if (!video.teams || !video.teams.teams || !video.teams.teams.length) {
+				if (video.tournament.name) Page.setTitle(video.tournament.name);
+				else Page.setTitle('Misterious match');
+			}
+			else Page.setTitle(`${video.teams.teams[0].name} vs ${video.teams.teams[1].name}`);
 		}
 	}
 
