@@ -69,7 +69,7 @@ function improveVideoDirective () {
 		replace: true,
 		scope: {
 			video: '=',
-			type: '@',
+			type: '=',
 			info: '='
 		},
 		template: TEMPLATE,

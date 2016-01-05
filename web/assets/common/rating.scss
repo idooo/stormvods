@@ -16,7 +16,7 @@
 		fill: #122e5a; 
 	}
 	
-	&--not-voted {
+	&--not-voted.rating--authorised {
 		cursor: pointer;
 		
 		&:hover {

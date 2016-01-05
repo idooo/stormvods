@@ -125,6 +125,9 @@ class VideoGetRoute {
 					topFormat = VideoGetRoute.maxByRating(video.format);
 
 				video = video.toObject(); // Convert because tournament is Array in scheme
+				
+				if (topStage) video.stage = topStage;
+				if (topFormat) video.format = topFormat;
 
 				promisesNames.forEach(function (modelName, i) {
 					if (!data[i] || Array.isArray(data[i] && !data[i].length)) return;
@@ -158,12 +161,14 @@ class VideoGetRoute {
 							
 						case 'votes':
 							video.isVoted = data[i].votes.video.indexOf(video._id) !== -1;
+							video.tournament.isVoted = data[i].votes.tournament.indexOf(video._id) !== -1;
+							video.casters.isVoted = data[i].votes.casters.indexOf(video._id) !== -1;
+							video.teams.isVoted = data[i].votes.teams.indexOf(video._id) !== -1;
+							video.stage.isVoted = data[i].votes.stage.indexOf(video._id) !== -1;
+							video.format.isVoted = data[i].votes.format.indexOf(video._id) !== -1;
 							break;
 					}
 				});
-
-				if (topStage) video.stage = topStage;
-				if (topFormat) video.format = topFormat;
 
 				Router.success(res, video);
 				return next();

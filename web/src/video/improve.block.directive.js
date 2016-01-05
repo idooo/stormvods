@@ -21,45 +21,26 @@ const TEMPLATE = `
 			
 			<div ng-show="isImproveBlockLoaded">
 				
-				<improve-video
-					ng-show="additionalInfo.answeredQuestions === 0"
-					type="tournament"
-					video="object"
-					info="additionalInfo">
-				</improve-video>
-
-				<improve-video
-					ng-show="additionalInfo.answeredQuestions === 1"
-					type="stage"
-					video="object"
-					info="additionalInfo">
-				</improve-video>
-
-				<improve-video
-					ng-show="additionalInfo.answeredQuestions === 2"
-					type="format"
-					video="object"
-					info="additionalInfo">
-				</improve-video>
-
-				<improve-video
-					ng-show="additionalInfo.answeredQuestions === 3"
-					type="teams"
-					video="object"
-					info="additionalInfo">
-				</improve-video>
-
-				<improve-video
-					ng-show="additionalInfo.answeredQuestions === 4"
-					type="casters"
-					video="object"
-					info="additionalInfo">
-				</improve-video>
+				<div ng-repeat="type in questions">
+					<improve-video
+						ng-show="additionalInfo.answeredQuestions === $index"
+						type="type"
+						video="object"
+						info="additionalInfo">
+					</improve-video>
+				</div>
 				
 				<div 
-					ng-show="additionalInfo.answeredQuestions === 5"
+					ng-show="additionalInfo.answeredQuestions === questions.length"
 					class="expander__thankyou">
-					Thank you for improving quality of content here!
+					
+					<span ng-if="questions.length">
+						Thank you for improving quality of content here!
+					</span>
+					
+					<span ng-if="!questions.length">
+						You've already improved this video. Thank you
+					</span>
 				</div>
 			
 			</div>
@@ -83,6 +64,13 @@ function improveBlockDirective ($http, Constants) {
 		scope.additionalInfo = {};
 		scope.isImproveBlockVisible = false;
 		scope.isImproveBlockLoaded = false;
+		
+		scope.questions = ['tournament', 'stage', 'format', 'teams', 'casters'];
+		
+		scope.$watch('object', function (object) {
+			if (!object || !object._id) return;
+			scope.questions = scope.questions.filter(key => !object[key].isVoted);
+		});
 		
 		scope.toggleImproveVideoBlock = toggleImproveVideoBlock;
 		

@@ -62,7 +62,7 @@ const TEMPLATE = `
 			
 		</div>
 		
-		<improve-block></improve-block>
+		<improve-block ng-if="$root.isAuthorised"></improve-block>
 
 	</div>
 `;
