@@ -17,6 +17,7 @@
 
 var logger = require('winston'),
 	_omit = require('lodash/object/omit'),
+	_uniq = require('lodash/array/uniq'),
 	Router = require('./../abstract.router'),
 	Video = require('../../models/video.model'),
 	Constants = require('../../constants');
@@ -39,9 +40,18 @@ class VideoAddRoute {
 			Router.fail(res, {message: {youtubeId: Constants.ERROR_INVALID}});
 			return next();
 		}
+		
+		// Sanitise
+		youtubeIds = youtubeIds.map(Router.filter);
 
 		if (Constants.STAGE.indexOf(stage) === -1) stage = null;
 		if (Constants.FORMAT.indexOf(format) === -1) format = null;
+
+		// Validate youtube ids among each ither
+		if (youtubeIds.length !== _uniq(youtubeIds).length) {
+			Router.fail(res, {message: Constants.ERROR_UNIQUE}, 400);
+			return next();
+		}
 
 		this.models.Video.getList({youtubeId: {'$in': youtubeIds}}, '_id')
 			.then(function (video) {

@@ -84,6 +84,18 @@ module.exports = {
 		test.done();
 	},
 	
+	addVideoPreventSameIdMultipleIdsAmongItself: function (test) {
+		var	res = h.post('/api/video', {
+			youtubeId: ['addVideo210', 'addVideo211', 'addVideo210']
+		}, users.user01);
+
+		test.equal(res.status, 'error'); 
+		test.equal(res.code, 400); 
+		test.equal(res.message, 'EXPECTED_UNIQUE_VALUE'); 
+
+		test.done();
+	},
+	
 	addVideoLimitVideos: function (test) {
 		var data = {
 			youtubeId: [

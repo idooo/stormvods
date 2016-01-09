@@ -52,14 +52,30 @@ const TEMPLATE = `
 		
 		<rating video="object" class="rating--video-object"></rating>
 	
+		<div 
+			ng-if="isPlaying && object.youtubeId.length !== 1"
+		 	class="video__game-tabs">
+		
+			<span
+				class="video__game-tab"
+				ng-class="{'video__game-tab--selected': selectedGame === $index + 1}" 
+				ng-repeat="i in object.youtubeId track by $index"
+				ng-click="selectGame($index + 1)">Game {{$index + 1}}</span>
+			
+		</div>
+	
 		<div ng-if="isPlaying" class="video__wrapper">
 		
-			<iframe 
-				ng-src="{{getIframeSrc()}}"
-				frameborder="0" 
-				allowfullscreen>
-			</iframe>
+			<div ng-repeat="id in object.youtubeId track by $index">
 			
+				<iframe 
+					ng-if="selectedGame === $index + 1"
+					ng-src="{{getIframeSrc(id)}}"
+					frameborder="0" 
+					allowfullscreen>
+				</iframe>
+			
+			</div>
 		</div>
 		
 		<improve-block ng-if="$root.isAuthorised"></improve-block>
@@ -84,16 +100,29 @@ function videoDirective ($sce, $http, $rootScope, Constants) {
 		scope.isPlaying = false;
 		scope.isTeamVisible = false; 
 		scope.hideDuration = true;
+		scope.autoPlay = true;
+		scope.selectedGame = 1;
 		
 		scope.getIframeSrc = getIframeSrc;
 		scope.showTeams = showTeams;
 		scope.play = play;
+		scope.selectGame = selectGame;
 		
 		// Listen for the incoming object to apply some formatting
 		scope.$watch('object', function (newValue) {
 			if (!newValue || !newValue.stage) return;
 			if (newValue.stage) scope.object.stage.name = Constants.Stages[newValue.stage.code];
 			if (newValue.format) scope.object.format.name = Constants.Formats[newValue.format.code];
+			
+			if (newValue.youtubeId.length > 1) {
+				// disable autoplay if there are more than one video 
+				scope.autoPlay = false; 
+				// Fill videos for games weren't played to avoid spoilers
+				if (newValue.format.code) {
+					let maxGames = parseInt(newValue.format.code.slice(-1), 10);
+					for (let i = newValue.youtubeId.length; i < maxGames; i++) newValue.youtubeId.push('');
+				}
+			}
 		});
 		
 		// Listen for global changes to apply app level config to the video
@@ -105,9 +134,9 @@ function videoDirective ($sce, $http, $rootScope, Constants) {
 		});
 		
 		// TODO: Support multiple videos per match
-		function getIframeSrc () {
+		function getIframeSrc (youtubeId) {
 			var controls = scope.hideDuration ? 'controls=0&amp;' : '',
-				url = `https://www.youtube.com/embed/${scope.object.youtubeId[0]}?autoplay=1&rel=0&amp;${controls}showinfo=0"`;
+				url = `https://www.youtube.com/embed/${youtubeId}?${scope.autoPlay ? 'autoplay=1&' : ''}rel=0&amp;${controls}showinfo=0"`;
 				
 			return $sce.trustAsResourceUrl(url);
 		}
@@ -119,6 +148,10 @@ function videoDirective ($sce, $http, $rootScope, Constants) {
 		function showTeams () {
 			scope.isTeamVisible = true;
 			return false;
+		}
+		
+		function selectGame (index) {
+			scope.selectedGame = index;
 		}
 	}
 }

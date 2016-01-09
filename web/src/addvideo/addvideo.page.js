@@ -1,5 +1,3 @@
-/* global angular */
-
 angular
 	.module(`${window.APP_NAME}.pages`)
 	.directive('addVideoPage', addVideoPage);
@@ -13,41 +11,10 @@ const TEMPLATE = `
 
 			<fieldset>
 				<label>Link to video</label>
-				
-				<div class="field-container">
-					<spinner ng-show="ctrl.isServerValidationInProgress"></spinner>
-					<input 
-						type="text" 
-						name="url" 
-						ng-model="ctrl.url" 
-						ng-model-options="{ debounce: 1000 }"
-						autocomplete="off" 
-						required>
-					<input type="hidden" name="youtubeId" ng-model="ctrl.youtubeId" required>
-				</div>
-				
-				<div 
-					ng-class="{
-						'flash-alert': ctrl.serverVideo.isFound,
-						'flash-error': ctrl.youtubeId == null
-					}"
-					ng-show="ctrl.serverVideo.isFound || ctrl.youtubeId == null">
 					
-					<span ng-show="ctrl.serverVideo.isFound">					
-						This video is <a href="#" ui-sref="video({id: ctrl.serverVideo.id})">already uploaded</a>.
-						<br>
-						You can help <a href="#" ui-sref="video({id: ctrl.serverVideo.id})">improve</a>
-						its description or upload another one
-					</span>
-					
-					<span ng-show="ctrl.youtubeId == null">
-						Video URL looks wrong. Are you sure you are trying to add a correct link?
-						<br>
-						Please drop me a message if you think there is error in our side
-					</span>
-				</div>
+				<video-urls urls="ctrl.urls"></video-urls>
 		
-				<div ng-show="ctrl.serverVideo && !ctrl.serverVideo.isFound">
+				<div>
 	
 					<label>Tournament</label>
 					
@@ -79,7 +46,7 @@ const TEMPLATE = `
 			
 			<button 
 				type="button" 
-				ng-disabled="!ctrl.form.$valid || ctrl.serverVideo.isFound || ctrl.isServerValidationInProgress" 
+				ng-disabled="!ctrl.allVideosAreValid" 
 				ng-click="ctrl.submit()" >
 				
 				Submit
@@ -89,6 +56,8 @@ const TEMPLATE = `
 	
 	</section> 
 `;
+
+// TODO: Handle server errors
 
 const TITLE = 'Add VOD';
 
@@ -103,33 +72,37 @@ function addVideoPage () {
 	};
 	
 	function controller ($scope, $http, $interval, $timeout, $element, $state, Page, Constants) {
-		var self = this,
-			serverValidationInterval;
+		var self = this;
 		
-		self.youtubeId = '';
-		self.serverVideo = null;
-		self.isServerValidationInProgress = false;
-		self.isVideoUploading = false;
-
-		self.submit = submit;
+		self.urls;
 		self.stages = Constants.Stages;
 		self.formats = Constants.Formats;
+		self.allVideosAreValid = false;
+
+		self.submit = submit;
 
 		Page.loaded();
 		Page.setTitle(TITLE);
-
-		$scope.$watch('ctrl.url', function (newValue) {
-			self.serverVideo = null;
-			self.youtubeId = youtubeUrlParser(newValue);
-			if (self.youtubeId) serverValidation();
-		});
+		
+		$scope.$watch('ctrl.urls', function (urls) {
+			if (!urls || !urls.length) return self.allVideosAreValid = false;
+			
+			if (urls.filter(i => i.youtubeId).length === 0) return self.allVideosAreValid = false;
+			
+			for (let i = 0; i < urls.length; i++) {
+				if (urls[i].isValid === false || urls.isServerValidationInProgress) {
+					return self.allVideosAreValid = false;
+				}
+			}
+			self.allVideosAreValid = true;
+		}, true);
 
 		function submit () {
-			if (!self.form.$valid && !self.youtubeId) return;
+			if (!self.form.$valid && !self.allVideosAreValid) return;
 			self.isVideoUploading = true;
 			
 			$http.post(Constants.Api.VIDEO, {
-				youtubeId: self.youtubeId,
+				youtubeId: self.urls.map(i => i.youtubeId),
 				tournament: self.tournament ? self.tournament[0] : null,
 				stage: self.stage,
 				format: self.format,
@@ -140,38 +113,5 @@ function addVideoPage () {
 			});
 		}
 
-		function youtubeUrlParser (url) {
-			if (!url) return false;
-			var regExp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
-			var match = url.match(regExp);
-			return (match && match[1].length === 11) ? match[1] : null;
-		}
-
-		/**
-		 * Validate youtube ID on the server side to prevent duplicates
-		 */
-		function serverValidation () {
-			if (self.isServerValidationInProgress) {
-				if (!serverValidationInterval) serverValidationInterval = $interval(serverValidation, 1000);
-				return;
-			}
-
-			if (serverValidationInterval) {
-				$interval.cancel(serverValidationInterval);
-				serverValidationInterval = null;
-			}
-			self.isServerValidationInProgress = true;
-
-			$http.get(`${Constants.Api.VALIDATE_VIDEO}?id=${self.youtubeId}`)
-				.then((response) => {
-					self.serverVideo = response.data;
-					
-					// This is the hack to expand ui-select field to a whole width
-					// Do not know how exactly this work
-					if (!self.serverVideo.isFound) $timeout(() => {});
-				})
-				.finally(() => self.isServerValidationInProgress = false);
-
-		}
 	}
 }

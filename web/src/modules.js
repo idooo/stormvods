@@ -34,6 +34,7 @@ require('./index/index.page');
 require('./top/top.page');
 require('./callback/callback.page');
 require('./addvideo/addvideo.page');
+require('./addvideo/videourls.directive');
 require('./video/video.page');
 require('./video/video.directive');
 require('./video/improve.directive');

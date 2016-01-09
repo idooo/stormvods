@@ -4,18 +4,18 @@ angular
 
 const TEMPLATE = `
 
-	<section> 
-		
+	<section ng-if="ctrl.page !== 'addvideo'"> 
+
 		<h1>Add video</h1>	
 		
 		<div class="sidebar__add-video">
 		
 			<p>
-				Heroes Video is an experiment to create 
-				a community-driven spoiler-free catalog of vods for Heroes of the Storm.
+				Storm Vods is an experiment to create 
+				a community-driven spoiler-free catalog of vods for Heroes of the Storm game.
 			</p>
 			<p>
-				You can help by adding new video or improve information for added vods. 
+				You can help us by adding new video or improve information for already added vods. 
 			</p>
 			
 			<p>
@@ -28,22 +28,36 @@ const TEMPLATE = `
 		
 		</div>
 	
-	</section>	
+	</section>
+	
+	<section ng-if="ctrl.page === 'addvideo'"> 
+	
+		<h1>Add quality</h1>	
+		
+		<div class="sidebar__add-video">
+		
+		</div>
+	
+	</secion>	
 	
 `;
 
 function sidebarDirective () {
 
 	return {
-		restrict: 'E',
+		restrict: 'A',
 		controllerAs: 'ctrl',
 		scope: true,
 		template: TEMPLATE,
 		controller: controller
 	};
 	
-	function controller (Auth) {
+	function controller ($rootScope, Auth) {
 		var self = this;
+		
+		$rootScope.$on('$stateChangeStart', (event, toState) => {
+			self.page = toState.name;
+		});
 		
 		self.openAuthUrl = Auth.openAuthUrl;
 	}

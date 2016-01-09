@@ -54,8 +54,7 @@ const TEMPLATE = `
 				<div class="video-list-item__casters" ng-if="video.casters.casters.length">
 					Casted by 
 					<span ng-repeat="caster in video.casters.casters">
-						{{caster.name}}
-						<span ng-if="!$last">,<span>
+						{{caster.name}}<span ng-if="!$last">,<span>
 					</span>
 				</div>
 			</div>		
