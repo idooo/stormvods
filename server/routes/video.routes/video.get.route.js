@@ -75,8 +75,6 @@ class VideoGetRoute {
 	 */
 	static route (req, res, next, auth) {
 
-		// TODO: add users' votes
-
 		var self = this,
 			id = self.models.ObjectId(req.params.id),
 			promisesNames = [], // We need array to store promises order

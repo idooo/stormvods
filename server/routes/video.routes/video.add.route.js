@@ -25,7 +25,7 @@ class VideoAddRoute {
 
 	static route (req, res, next, auth) {
 		var self = this;
-
+		
 		// Check params and sanitise them
 		var promises = [],
 			tournament = Router.filter(req.params.tournament),
@@ -57,7 +57,7 @@ class VideoAddRoute {
 
 		Promise.all(promises)
 			.then(function (data) {
-
+				
 				var videoData = {
 						youtubeId: youtubeId,
 						author: auth.id,
@@ -129,7 +129,6 @@ class VideoAddRoute {
 						Constants.ENTITY_TYPES.forEach(key => {
 							if (isEntityExist[key]) userUpdate[`votes.${key}`] = videoFromDB._id;
 						});
-						
 						// Update user votes
 						self.models.User.updateOne({_id: auth.id}, {
 							$push: userUpdate, 

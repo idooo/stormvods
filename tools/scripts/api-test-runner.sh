@@ -5,6 +5,7 @@ CONFIG=$1
 
 echo "Starting Test server... [config "$CONFIG"]"
 echo "Waiting 10 seconds to run tests..."
+echo "NOTE: check h.get() to pass all three params correctly if you are receiving Socket Hang Out error"
 
 eval "(config="$CONFIG"  node server.js) &"
 PID=$!

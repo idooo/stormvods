@@ -47,7 +47,7 @@ class Router {
 		var wrapper = route.bind(this);
 
 		options = util._extend(util._extend({}, DEFAULT_ROUTE_OPTIONS), options || {});
-
+		
 		// Auth
 		if (options.auth) {
 			wrapper = this.wrapAuth(route, options.restrict || Constants.ROLES.USER);

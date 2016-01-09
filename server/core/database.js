@@ -26,10 +26,13 @@ class Database {
 	connect () {
 		var options = {
 			db: {native_parser: true}, // eslint-disable-line camelcase
-			server: {poolSize: 5},
-			user: this.config.username,
-			pass: this.config.password
+			server: {poolSize: 5}
 		};
+
+		if (this.config) {
+			options.user = this.config.username;
+			options.pass = this.config.password;
+		}
 
 		mongoose.connect(`${this.config.uri}:${this.config.port}/${this.config.db}`, options);
 
