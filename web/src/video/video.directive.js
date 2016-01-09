@@ -104,9 +104,10 @@ function videoDirective ($sce, $http, $rootScope, Constants) {
 			if (typeof newValue === 'boolean' && newValue !== oldValue) scope.isTeamVisible = newValue;
 		});
 		
+		// TODO: Support multiple videos per match
 		function getIframeSrc () {
 			var controls = scope.hideDuration ? 'controls=0&amp;' : '',
-				url = `https://www.youtube.com/embed/${scope.object.youtubeId}?autoplay=1&rel=0&amp;${controls}showinfo=0"`;
+				url = `https://www.youtube.com/embed/${scope.object.youtubeId[0]}?autoplay=1&rel=0&amp;${controls}showinfo=0"`;
 				
 			return $sce.trustAsResourceUrl(url);
 		}

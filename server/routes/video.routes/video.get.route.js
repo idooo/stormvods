@@ -18,7 +18,10 @@
  * HTTP/1.1 200 OK
  * {
  *     "_id": "565c2776b200b02e8ea406c8",
- *     "youtubeId": "1AwlsNfxYok",
+ *     "youtubeId": [
+ *         "1AwlsNfxYok", 
+ *         "1AwlsNfxYok1
+ *     "],
  *     "author": "564b00fe5d63f20f4444e4b6",
  *     "format": {
  *         "rating": 1,

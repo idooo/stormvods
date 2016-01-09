@@ -20,7 +20,9 @@
   "videos": [
     {
       "_id": "566e8e811f35829d4c78778e",
-      "youtubeId": "ooDCHGPKvoo",
+      "youtubeId": [
+        "ooDCHGPKvoo"
+      ],
       "author": {
         "name": "idonreddit",
         "_id": "564b00fe5d63f20f4444e4b6"

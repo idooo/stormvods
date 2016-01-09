@@ -13,7 +13,24 @@ module.exports = {
 		var res = h.post('/api/video', data, users.user01),
 			user = h.get('/api/users/me', undefined, users.user01);
 
-		test.equal(res.youtubeId, 'addVideo000');
+		test.equal(res.youtubeId[0], 'addVideo000');
+		
+		// video automatically upvoted by author
+		test.equal(res.rating, 1); 
+		test.ok(user.votes.video.indexOf(res._id) !== -1); 
+
+		test.done();
+	},
+	
+	addVideoMultipleIds: function (test) {
+		var data = {
+			youtubeId: ['addVideo100', 'addVideo101', 'addVideo102']
+		};
+		
+		var res = h.post('/api/video', data, users.user01),
+			user = h.get('/api/users/me', undefined, users.user01);
+
+		test.equal(res.youtubeId[2], 'addVideo102');
 		
 		// video automatically upvoted by author
 		test.equal(res.rating, 1); 
@@ -46,7 +63,55 @@ module.exports = {
 
 		test.equal(res.status, 'error'); 
 		test.equal(res.code, 400); 
-		test.equal(res.message.youtubeId, 'EXPECTED_UNIQUE_VALUE'); 
+		test.equal(res.message, 'EXPECTED_UNIQUE_VALUE'); 
+
+		test.done();
+	},
+	
+	addVideoPreventSameIdMultipleIds: function (test) {
+		h.post('/api/video', {
+			youtubeId: ['addVideo200', 'addVideo201']
+		}, users.user01);
+		
+		var	res = h.post('/api/video', {
+			youtubeId: ['addVideo202', 'addVideo201']
+		}, users.user01);
+
+		test.equal(res.status, 'error'); 
+		test.equal(res.code, 400); 
+		test.equal(res.message, 'EXPECTED_UNIQUE_VALUE'); 
+
+		test.done();
+	},
+	
+	addVideoLimitVideos: function (test) {
+		var data = {
+			youtubeId: [
+				'addVideo300', 'addVideo301', 'addVideo302', 'addVideo303', 
+				'addVideo304', 'addVideo305', 'addVideo306', 'addVideo307'
+			]
+		};
+		
+		var	res = h.post('/api/video', data, users.user01);
+
+		test.equal(res.status, 'error'); 
+		test.equal(res.code, 400); 
+		test.equal(res.message.youtubeId, 'INVALID_VALUE'); 
+
+		test.done();
+	},
+	
+	
+	addVideoInvalidId: function (test) {
+		var data = {
+			youtubeId: ['aaaa']
+		};
+		
+		var	res = h.post('/api/video', data, users.user01);
+
+		test.equal(res.status, 'error'); 
+		test.equal(res.code, 400); 
+		test.equal(res.message.youtubeId, 'INVALID_VALUE'); 
 
 		test.done();
 	},
@@ -61,10 +126,10 @@ module.exports = {
 			res2 = h.get('/api/lookup/tournament?query=addVideoSimpleTest001', undefined, users.user01),
 			user = h.get('/api/users/me', undefined, users.user01);
 		
-		test.equal(res.youtubeId, 'addVideo001');  
+		test.equal(res.youtubeId[0], 'addVideo001');  
 		
 		// should create Tournament and save an _id
-		test.equal(res.youtubeId, 'addVideo001');
+		test.equal(res.youtubeId[0], 'addVideo001');
 		test.equal(res.tournament[0]._id, res2.values[0]._id);
 		test.equal(res2.values[0].name, 'addVideoSimpleTest001 Tournament');  
 		
@@ -85,7 +150,7 @@ module.exports = {
 			res2 = h.get('/api/lookup/team?query=addVideoSimpleTest002', undefined, users.user01),
 			user = h.get('/api/users/me', undefined, users.user01);
 		
-		test.equal(res.youtubeId, 'addVideo002'); 
+		test.equal(res.youtubeId[0], 'addVideo002'); 
 		
 		// should create Teams and save ids
 		test.equal(res2.values.length, 2);  
@@ -111,7 +176,7 @@ module.exports = {
 			res2 = h.get('/api/lookup/caster?query=addVideoSimpleTest003', undefined, users.user01),
 			user = h.get('/api/users/me', undefined, users.user01);
 
-		test.equal(res.youtubeId, 'addVideo003');
+		test.equal(res.youtubeId[0], 'addVideo003');
 
 		// should create Casters and save ids
 		test.equal(res2.values.length, 2);  

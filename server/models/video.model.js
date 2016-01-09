@@ -17,12 +17,11 @@ class Video extends SchemaDefinition {
 				trim: true
 			},
 			youtubeId: {
-				type: String,
-				trim: true,
-				unique: true,
+				type: Array,
 				index: true,
+				required: true,
 				validate: {
-					validator: (value) => value.toString().length === Video.constants().YOUTUBE_ID_LENGTH,
+					validator: Video.validateYoutubeId,
 					message: Constants.ERROR_INVALID
 				}
 			},
@@ -69,7 +68,10 @@ class Video extends SchemaDefinition {
 	}
 
 	static constants () {
-		return {YOUTUBE_ID_LENGTH: 11};
+		return {
+			YOUTUBE_ID_LENGTH: 11,
+			MAX_VIDEOS_IN_MATCH: 7
+		};
 	}
 	
 	/**
@@ -146,6 +148,14 @@ class Video extends SchemaDefinition {
 		}
 		
 		return isFound;
+	}
+	
+	static validateYoutubeId (value) {
+		if (!value || !value.length || value.length > Video.constants().MAX_VIDEOS_IN_MATCH) return false;
+		for (let i = 0; i < value.length; i++) {
+			if (value[i].toString().length !== Video.constants().YOUTUBE_ID_LENGTH) return false;
+		}
+		return true;
 	}
 }
 

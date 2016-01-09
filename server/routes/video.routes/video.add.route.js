@@ -7,7 +7,7 @@
  * @apiPermission USER
  * @apiVersion 1.0.0
  *
- * @apiParam {String} youtubeId youtube Id
+ * @apiParam {String[]} youtubeId youtube Ids (max 7)
  * @apiParam {String} tournament tournament name
  * @apiParam {String} format format
  * @apiParam {String} stage stage
@@ -29,13 +29,13 @@ class VideoAddRoute {
 		// Check params and sanitise them
 		var promises = [],
 			tournament = Router.filter(req.params.tournament),
-			youtubeId = Router.filter(req.params.youtubeId),
+			youtubeIds = [].concat(req.params.youtubeId),
 			teams = [],
 			casters = [],
 			format = Router.filter(req.params.format),
 			stage = Router.filter(req.params.stage);
 
-		if (!youtubeId || youtubeId.length !== Video.constants().YOUTUBE_ID_LENGTH) {
+		if (!Video.validateYoutubeId(youtubeIds)) {
 			Router.fail(res, {message: {youtubeId: Constants.ERROR_INVALID}});
 			return next();
 		}
@@ -43,23 +43,31 @@ class VideoAddRoute {
 		if (Constants.STAGE.indexOf(stage) === -1) stage = null;
 		if (Constants.FORMAT.indexOf(format) === -1) format = null;
 
-		if (Array.isArray(req.params.teams)) {
-			teams = req.params.teams.map(teamName => Router.filter(teamName));
-		}
-		if (Array.isArray(req.params.casters)) {
-			casters = req.params.casters.map(casterName => Router.filter(casterName));
-		}
+		this.models.Video.getList({youtubeId: {'$in': youtubeIds}}, '_id')
+			.then(function (video) {
+				if (video.length) {
+					Router.fail(res, {message: Constants.ERROR_UNIQUE}, 400);
+					return next();
+				}
+						
+				if (Array.isArray(req.params.teams)) {
+					teams = req.params.teams.map(teamName => Router.filter(teamName));
+				}
+				if (Array.isArray(req.params.casters)) {
+					casters = req.params.casters.map(casterName => Router.filter(casterName));
+				}
 
-		// Create getOrCreate promises
-		promises.push(self.models.Tournament.getOrCreate(tournament, auth));
-		teams.forEach(teamName => promises.push(self.models.Team.getOrCreate(teamName, auth)));
-		casters.forEach(casterName => promises.push(self.models.Caster.getOrCreate(casterName, auth)));
+				// Create getOrCreate promises
+				promises.push(self.models.Tournament.getOrCreate(tournament, auth));
+				teams.forEach(teamName => promises.push(self.models.Team.getOrCreate(teamName, auth)));
+				casters.forEach(casterName => promises.push(self.models.Caster.getOrCreate(casterName, auth)));
 
-		Promise.all(promises)
+				return Promise.all(promises);
+			})
 			.then(function (data) {
 				
 				var videoData = {
-						youtubeId: youtubeId,
+						youtubeId: youtubeIds,
 						author: auth.id,
 						rating: 1
 					},

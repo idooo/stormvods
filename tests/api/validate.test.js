@@ -36,7 +36,7 @@ module.exports = {
 	
 	validateVideoAuthRequired: function (test) {
 		var data = {
-			youtubeId: 'valVideo001'
+			youtubeId: 'valVideo002'
 		};
 		
 		var res = h.post('/api/video', data, users.user01),
@@ -50,6 +50,21 @@ module.exports = {
 		test.equal(res2.message, 'AUTH_REQUIRED'); 
 		
 		test.done();
-	}
+	},
+	
+	validateVideoMultipleIdsFound: function (test) {
+		var data = {
+			youtubeId: ['valVideo003', 'valVideo004']
+		};
+		
+		var res = h.post('/api/video', data, users.user01),
+			res2 = h.get('/api/video/validate?id=valVideo004', undefined, users.user02);
+			
+		test.ok(res2.isFound);
+		test.equal(res2.id, res._id);
+		
+		test.done();
+	},
+	
 };
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Change user role value
+ * Generate lists of top videos
  * 
  * -c (path to config) 
  * 

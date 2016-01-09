@@ -22,7 +22,7 @@ module.exports = {
 		// Check some fields
 		var video = h.get('/api/video/' + list.videos[1]._id);
 		
-		test.equal(list.videos[1].youtubeId, video.youtubeId);
+		test.equal(list.videos[1].youtubeId[0], video.youtubeId[0]);
 		test.equal(list.videos[1].rating, video.rating);
 		test.ok(typeof list.videos[1].creationDate !== 'undefined'); 
 		test.equal(list.videos[1].author._id, video.author._id);
@@ -51,7 +51,7 @@ module.exports = {
 		var video = h.get('/api/video/' + list.videos[1]._id);
 		
 		// Check some fields
-		test.equal(list.videos[1].youtubeId, video.youtubeId);
+		test.equal(list.videos[1].youtubeId[0], video.youtubeId[0]);
 		test.equal(list.videos[1].rating, video.rating);
 		test.ok(typeof list.videos[1].creationDate !== 'undefined'); 
 		test.equal(list.videos[1].author._id, video.author._id);
