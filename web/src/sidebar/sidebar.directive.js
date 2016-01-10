@@ -2,9 +2,11 @@ angular
 	.module(`${window.APP_NAME}.pages`)
 	.directive('sidebar', sidebarDirective);
 
+// TODO: fix this conditions
+
 const TEMPLATE = `
 
-	<section ng-if="ctrl.page !== 'addvideo'"> 
+	<section ng-if="ctrl.page !== 'addvideo' && ctrl.page !== 'zone'"> 
 
 		<h1>Add video</h1>	
 		
@@ -41,6 +43,8 @@ const TEMPLATE = `
 	</secion>	
 	
 `;
+
+// TODO: add sidebar content ^^^
 
 function sidebarDirective () {
 

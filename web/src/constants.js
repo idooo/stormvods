@@ -4,6 +4,7 @@ angular
 		
 		Api: {
 			AUTH_ME: '/api/users/me',
+			USERS: '/api/users',
 			AUTH_GET_URL: '/api/auth/url',
 		
 			VIDEO: '/api/video',

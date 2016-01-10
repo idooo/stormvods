@@ -23,6 +23,13 @@ html, body {
 		@include media($medium-screen-up) {
 			@include span-columns(8);
 		}
+			
+		// pages
+		&.zone {
+			@include media($medium-screen-up) {
+				@include span-columns(12);
+			}
+		}
 	}
 	
 	.sidebar-container {

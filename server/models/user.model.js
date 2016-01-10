@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose'),
 	logger = require('winston'),
+	mongoosePaginate = require('mongoose-paginate'),
 	SchemaDefinition = require('./schema.definition'),
 	Video = require('./video.model'),
 	Constants = require('../constants');
@@ -34,6 +35,16 @@ class User extends SchemaDefinition {
 			lastCreateTime: {
 				type: Date,
 				default: 0
+			},
+			
+			// TODO: prevent banned users add videos
+			isBanned: {
+				type: Boolean,
+				default: false
+			},
+			isRemoved: {
+				type: Boolean,
+				default: false
 			},
 			votes: {
 				video: {
@@ -78,6 +89,7 @@ class User extends SchemaDefinition {
 		});
 
 		this.schema.methods.vote = this.vote;
+		this.schema.plugin(mongoosePaginate);
 	}
 
 	/**

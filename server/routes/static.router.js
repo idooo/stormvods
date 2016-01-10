@@ -32,8 +32,12 @@ class StaticRouter extends Router {
 		var data = {},
 			cookies = req.cookies;
 			
-		if (cookies.token && cookies.username) {
-			data.configurationString = `window.Auth = {username: '${cookies.username}', token: '${cookies.token}'};`;
+		if (cookies.token && cookies.username && cookies.role) {
+			data.configurationString = `window.Auth = {
+				username: '${cookies.username}', 
+				token: '${cookies.token}',
+				role: '${cookies.role}'
+			};`;
 		}
 		
 		if (this.config.debug.disableTemplateCaching) this.compileIndexTemplate();

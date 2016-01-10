@@ -42,7 +42,7 @@ class Auth {
 		cache.put(token, `${id.toString()}:${username}:${role}`);
 		logger.debug(`User ${username} authorized (role ${role})`);
 
-		return {token, username};
+		return {token, username, role};
 	}
 }
 

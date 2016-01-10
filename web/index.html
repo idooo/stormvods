@@ -40,7 +40,7 @@
 			
 			<div class="content" ng-class="{'content--loading': $root.loading}">
 				
-				<div class="page-container" ui-view></div>
+				<div class="page-container" ng-class="$root.pageName" ui-view></div>
 				
 				<div class="sidebar-container" sidebar>
 

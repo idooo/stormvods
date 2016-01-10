@@ -18,6 +18,7 @@ function authService ($rootScope, $window, $http, Constants) {
 		$rootScope.isAuthorised = !!auth;
 		if (auth) {
 			$rootScope.username = auth.username;
+			$rootScope.role = auth.role;
 			$http.defaults.headers.common[HEADER] = auth.token;
 		}
 		else {

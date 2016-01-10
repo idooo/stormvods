@@ -100,6 +100,7 @@ class AuthRouter extends Router {
 
 				res.setCookie('username', auth.username, {path: '/'});
 				res.setCookie('token', auth.token, {path: '/'});
+				res.setCookie('role', auth.role, {path: '/'});
 
 				Router.success(res, auth);
 				return next();

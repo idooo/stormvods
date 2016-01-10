@@ -4,7 +4,7 @@ angular
 	.module(`${window.APP_NAME}.common`)
 	.service('Page', pageService);
 
-function pageService ($rootScope, $timeout) {
+function pageService ($rootScope, $state, $timeout) {
 	var self = this;
 	
 	self.loaded = loaded;
@@ -13,6 +13,7 @@ function pageService ($rootScope, $timeout) {
 	
 	function loaded () {
 		$rootScope.loading = false;
+		$rootScope.pageName = $state.current.name;
 		$timeout(() => $rootScope.$digest());
 	}
 	

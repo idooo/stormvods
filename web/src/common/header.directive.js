@@ -29,6 +29,9 @@ const TEMPLATE = `
 					<li class="nav-link">
 						<a href="#" ui-sref="casters">Casters</a>
 					</li>
+					<li class="nav-link" ng-if="$root.role == 10">
+						<a href="#" ui-sref="zone">Zone</a>
+					</li>
 					
 					<li class="nav-link delimiter"></li>
 					

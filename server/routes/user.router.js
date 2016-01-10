@@ -8,6 +8,8 @@ var Router = require('./abstract.router'),
 	Constants = require('../constants');
 
 
+const LIST_PAGE_SIZE = 20;
+
 class UsersRouter extends Router {
 
 	configure () {
@@ -43,7 +45,7 @@ class UsersRouter extends Router {
 	}
 
 	routeMe (req, res, next, auth) {
-		this.models.User.findOne({name: auth.name}, '_id name votes role')
+		this.models.User.findOne({name: auth.name}, '_id name role')
 			.then(function (user) {
 				if (!user) Router.fail(res, {message: Constants.ERROR_NOT_FOUND});
 				else Router.success(res, user);
@@ -56,9 +58,23 @@ class UsersRouter extends Router {
 	}
 
 	routeUsers (req, res, next) {
-		this.models.User.getList()
-			.then(function (datasources) {
-				Router.success(res, datasources);
+		var self = this,
+			page = parseInt(req.params.p, 10) || 1,
+			fields = '-__v -votes';
+		
+		self.models.User.paginate({}, {
+				page: page,
+				sort: {'_id': -1}, // sort by date, latest first
+				limit: LIST_PAGE_SIZE,
+				select: fields
+			})
+			.then(function (data) {
+				Router.success(res, {
+					users: data.docs, 
+					pageCount: data.pages, 
+					itemCount: data.total, 
+					currentPage: data.page
+				});
 				return next();
 			})
 			.catch(function (err) {

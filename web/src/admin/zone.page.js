@@ -5,23 +5,40 @@ angular
 	.directive('zonePage', zonePage);
 
 const TEMPLATE = `
-	<div>
-		zone
+	<section>
+		<h1>Zone</h1>
 		
-		<table>
-			<tr ng-repeat="video in ctrl.videos">
-				<td width="100">
-					<a href="#" ui-sref="video({id: video._id})">{{video.youtubeId || 'broken'}}</a>
-				</td>
-				<td width="100">
-					<a href="#" ng-click="ctrl.remove(video._id)">Remove</a>
-				</td>
-				<td>
-					<a href="#" ng-click="ctrl.remove(video._id, true)">Destroy</a>
-				</td>
-			</tr>
-		</table>
-	</div>
+		<div>
+			<h2>Users</h2>
+			
+			<table>
+				<thead>
+					<tr>Username</tr>
+					<tr>Vote</tr>
+					<tr>Videos added</tr>
+					<tr>Videos updated</tr>
+					<tr>Created</tr>
+					<tr>Last Voted</tr>
+					<tr>Last Created</tr>
+					<tr>Removed?</tr>
+					<tr>Banned?</tr>
+				</thead>
+				<tr ng-repeat="user in ctrl.users.users">
+					<td>{{::user.name}}</td>
+					<td>{{::user.stats.votes}}</td>
+					<td>{{::user.stats.videosAdded}}</td>
+					<td>{{::user.stats.videosUpdated}}</td>
+					<td>{{::user.creationDate}}</td>
+					<td>{{::user.lastVoteTime}}</td>
+					<td>{{::user.lastCreateTime}}</td>
+					<td>{{::user.isRemoved}}</td>
+					<td>{{::user.isBanned}}</td>
+				</tr>
+			</table>
+			
+		</div>
+		
+	</section>
 `;
 
 function zonePage () {
@@ -35,30 +52,16 @@ function zonePage () {
 		controller: controller
 	};
 	
-	function controller ($http, $state, Auth, Constants) {
+	function controller ($rootScope, $http, $state, Page, Constants) {
 		var self = this;
 		
-		if (!Auth.user.role || Auth.user.role < Constants.Roles.ADMIN) return $state.go('index'); 
+		self.users = [];
 		
-		self.videos = [];
+		if (!$rootScope.username || $rootScope.role < Constants.Roles.ADMIN) return $state.go('index');
 		
-		self.remove = remove;
+		Page.loaded();
+		Page.setTitle('Zone'); 
 		
-		$http.get(Constants.Api.GET_REMOVED_VIDEO_LIST)
-			.then(response => self.videos = response.data.videos);
-			
-		function remove (videoId, isPermanent) {
-			
-			$http
-				.delete(`${Constants.Api.VIDEO}/${videoId}`, {
-					data: {permanent: isPermanent}
-				})
-				.then(function () {
-					for (var i = 0; i < self.videos.length; i++) {
-						if (self.videos[i]._id === videoId) return self.videos.splice(i, 1);
-					}
-				});
-		}
+		$http.get(`${Constants.Api.USERS}`).then(response => self.users = response.data);
 	}
-		
 }
