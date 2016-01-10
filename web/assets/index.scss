@@ -22,6 +22,8 @@
 @import "./common/video";
 @import "./common/sidebar";
 
+@import "./pages/zone";
+
 // Minor helpers
 a[ng-click]{
     cursor: pointer;

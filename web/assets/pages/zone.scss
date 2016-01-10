@@ -1,0 +1,48 @@
+.zone-table {
+	width: 100%;
+	margin-top: 10px;
+	
+	tr {
+		
+		&.even {
+			background-color: #F7F7F7;
+		}
+	}
+		
+		th {
+			font-size: 12px;
+			padding: 5px;
+			text-align: left;
+			min-width: 100px;
+			width: 10%;
+			border-bottom: 1px solid #dddddd;
+		}
+		
+		td {
+			font-size: 14px;
+			padding: 8px 5px;
+		}
+		
+	span {
+		cursor: pointer;
+		
+		&:hover {
+			color: $action-color;
+		}
+	}
+	
+	&__popup {
+		    position: absolute;
+			padding: 10px;
+			margin-top: 6px;
+			width: 50%;
+			background: white;
+			box-shadow: 0px 3px 6px rgba(0,0,0,0.2);
+			border-radius: 5px;
+	}
+}
+
+.zone-input {
+	width: 33% !important;
+	display: inline-block;
+}

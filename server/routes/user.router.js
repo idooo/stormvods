@@ -60,11 +60,22 @@ class UsersRouter extends Router {
 	routeUsers (req, res, next) {
 		var self = this,
 			page = parseInt(req.params.p, 10) || 1,
+			query = req.params.query || {}, // only for admins so do not care for now
+			sort = req.params.sort || {'_id': -1}, // sort by date, latest first by default
 			fields = '-__v -votes';
 		
-		self.models.User.paginate({}, {
+		try {
+			query = JSON.parse(query);
+			sort = JSON.parse(sort);
+		}
+		catch (e) {
+			Router.fail(res, e);
+			return next();
+		}
+		
+		self.models.User.paginate(query, {
 				page: page,
-				sort: {'_id': -1}, // sort by date, latest first
+				sort: sort, 
 				limit: LIST_PAGE_SIZE,
 				select: fields
 			})

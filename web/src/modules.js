@@ -39,7 +39,6 @@ require('./video/video.page');
 require('./video/video.directive');
 require('./video/improve.directive');
 require('./video/improve.block.directive');
-require('./admin/zone.page');
 require('./sidebar/sidebar.directive');
 require('./tournament/tournament.page');
 require('./tournament/tournaments.page');
@@ -47,5 +46,7 @@ require('./team/team.page');
 require('./team/teams.page');
 require('./caster/caster.page');
 require('./caster/casters.page');
+require('./admin/zone.page');
+require('./admin/users.zone.directive');
 
 module.exports = modules.concat(appModules);
