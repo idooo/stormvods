@@ -1,12 +1,24 @@
-/* global angular */
-
 angular
 	.module(`${window.APP_NAME}.pages`)
 	.directive('callbackPage', callbackPage);
 
 const TEMPLATE = `
 	<div>
-		Callback page
+		
+		<div class="callback_message">
+			
+			<span ng-if="!ctrl.isError">
+				Logging in...
+				<br>
+				You will be redirected soon™
+			</span>
+			
+			<span ng-if="ctrl.isError">
+				Sorry an error happened. Try to login again.
+			</span>
+			
+		</div>
+		
 	</div>
 `;
 
@@ -19,11 +31,15 @@ function callbackPage () {
 		replace: true,
 		scope: true,
 		template: TEMPLATE,
-		controller: controller
+		controller: controller,
+		controllerAs: 'ctrl'
 	};
 	
 	function controller ($http, $window, Page) {
-		var params = {};
+		var self = this,
+			params = {};
+			
+		self.isError = false;
 		
 		$window.location.search
 			.replace('?', '')
@@ -35,8 +51,9 @@ function callbackPage () {
 			
 		Page.loaded();
 			
-		// TODO: handle errors
-		$http.get(ENDPOINT_CALLBACK, {params}).then(() => $window.location.assign('/'));
+		$http.get(ENDPOINT_CALLBACK, {params})
+			.then(() => $window.location.assign('/'))
+			.catch(() => self.isError = true);
 	}
 		
 }

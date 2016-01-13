@@ -52,8 +52,6 @@ const TEMPLATE = `
 	</div>
 `;
 
-// TODO: auto-complete field still has issue with input width 
-
 const UPDATE_BY_ID = 1;
 const UPDATE_BY_VALUES = 2;
 

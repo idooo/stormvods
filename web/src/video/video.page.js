@@ -10,13 +10,21 @@ const TEMPLATE = `
 			<small class="newline-mobile">vs.</small>
 			<a href="#" ui-sref="team({id: ctrl.video.teams.teams[1]._id})">{{ctrl.video.teams.teams[1].name}}</a>
 		</h1>
-		<h1 ng-if="!ctrl.video.teams.teams || ctrl.video.teams.teams.length == 0">
+		
+		<h1 ng-if="!ctrl.error && (!ctrl.video.teams.teams || ctrl.video.teams.teams.length == 0)">
 			Misterious match
 		</h1>
+		
+		<div ng-if="ctrl.error">
+			<h1 ng-if="ctrl.error.message === 'NOT_FOUND'">
+				Video not found
+			</h1>
+			<span>
+				Sorry, the video you asked for couldn’t be found
+			</span>
+		</div>
 
 		<video object="ctrl.video" ng-if="!ctrl.error"></video>
-		
-		{{ctrl.error}}
 		
 	</section>
 `;
@@ -36,8 +44,6 @@ function videoPage () {
 
 		self.video = {};
 		
-		// TODO: handle 404 if !$state.params.id -> not found page
-
 		$http.get(`${Constants.Api.VIDEO}/${$state.params.id}`)
 			.then(response => {
 				self.video = response.data;
@@ -47,7 +53,7 @@ function videoPage () {
 			.catch(response => {
 				self.error = response.data;
 				Page.loaded();
-				setTitle('Not Found');
+				Page.setTitle('Not Found');
 			});
 
 		function setTitle (video) {

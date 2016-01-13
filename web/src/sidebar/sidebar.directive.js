@@ -6,7 +6,7 @@ angular
 
 const TEMPLATE = `
 
-	<section ng-if="ctrl.page !== 'addvideo' && ctrl.page !== 'zone'"> 
+	<section ng-if="ctrl.isAddVideoVisible"> 
 
 		<h1>Add video</h1>	
 		
@@ -46,6 +46,8 @@ const TEMPLATE = `
 
 // TODO: add sidebar content ^^^
 
+const ADDVIDEO_NOT_VISIBLE = ['addvideo', 'zone', 'callback'];
+
 function sidebarDirective () {
 
 	return {
@@ -59,8 +61,11 @@ function sidebarDirective () {
 	function controller ($rootScope, Auth) {
 		var self = this;
 		
+		self.isAddVideoVisible = false;
+		
 		$rootScope.$on('$stateChangeStart', (event, toState) => {
 			self.page = toState.name;
+			self.isAddVideoVisible = ADDVIDEO_NOT_VISIBLE.indexOf(self.page) === -1;
 		});
 		
 		self.openAuthUrl = Auth.openAuthUrl;

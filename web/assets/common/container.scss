@@ -23,13 +23,6 @@ html, body {
 		@include media($medium-screen-up) {
 			@include span-columns(8);
 		}
-			
-		// pages
-		&.zone {
-			@include media($medium-screen-up) {
-				@include span-columns(12);
-			}
-		}
 	}
 	
 	.sidebar-container {
@@ -52,3 +45,18 @@ html, body {
 section {
 	margin-bottom: 20px;
 }
+
+// Pages
+// ---------------------------------------------------------
+
+.page-container {
+		
+	// full width container
+	&.zone,
+	&.callback {
+		@include media($medium-screen-up) {
+			@include span-columns(12);
+		}
+	}
+}
+	

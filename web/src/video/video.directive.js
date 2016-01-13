@@ -133,7 +133,6 @@ function videoDirective ($sce, $http, $rootScope, Constants) {
 			if (typeof newValue === 'boolean' && newValue !== oldValue) scope.isTeamVisible = newValue;
 		});
 		
-		// TODO: Support multiple videos per match
 		function getIframeSrc (youtubeId) {
 			var controls = scope.hideDuration ? 'controls=0&amp;' : '',
 				url = `https://www.youtube.com/embed/${youtubeId}?${scope.autoPlay ? 'autoplay=1&' : ''}rel=0&amp;${controls}showinfo=0"`;
