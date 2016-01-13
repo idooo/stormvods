@@ -48,5 +48,7 @@ require('./caster/caster.page');
 require('./caster/casters.page');
 require('./admin/zone.page');
 require('./admin/users.zone.directive');
+require('./admin/videos.zone.directive');
+require('./admin/entities.zone.directive');
 
 module.exports = modules.concat(appModules);

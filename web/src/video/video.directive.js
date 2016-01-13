@@ -54,11 +54,11 @@ const TEMPLATE = `
 	
 		<div 
 			ng-if="isPlaying && object.youtubeId.length !== 1"
-		 	class="video__game-tabs">
+		 	class="tabs">
 		
 			<span
-				class="video__game-tab"
-				ng-class="{'video__game-tab--selected': selectedGame === $index + 1}" 
+				class="tab"
+				ng-class="{'tab--selected': selectedGame === $index + 1}" 
 				ng-repeat="i in object.youtubeId track by $index"
 				ng-click="selectGame($index + 1)">Game {{$index + 1}}</span>
 			

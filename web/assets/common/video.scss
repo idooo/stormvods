@@ -121,31 +121,4 @@ $video-container-bottom-color: #2c0448;
 			@include size(100%);
 		}
 	}
-	
-	&__game-tabs {
-		margin-bottom: em(10);
-	}
-	
-		&__game-tab {
-			@include user-select(none);
-			@include transition(all 0.15s);
-			padding: 10px 16px;
-			cursor: pointer; 
-			display: inline-block;
-			
-			&:hover {
-				background-color: $action-color;
-				color: white;
-			}
-			
-			&--selected {
-				color: white;
-				cursor: default;
-				background-color: $light-text-color-blend;
-					
-				&:hover {
-					background-color: $light-text-color-blend;
-				}
-			}
-		}
 }
