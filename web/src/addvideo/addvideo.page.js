@@ -3,16 +3,16 @@ angular
 	.directive('addVideoPage', addVideoPage);
 
 const TEMPLATE = `
-	<h1>Add new video link</h1>
+	<h1>Add new VOD</h1>
 
-	<section class="add-video-page__section-add-video">
+	<section>
 	
 		<form name="ctrl.form" novalidate ng-hide="ctrl.isVideoUploading">
 
 			<fieldset>
 				<label>Link to video</label>
 					
-				<video-urls urls="ctrl.urls"></video-urls>
+				<video-urls urls="ctrl.urls" class="add-video-page__video-urls"></video-urls>
 		
 				<div>
 	

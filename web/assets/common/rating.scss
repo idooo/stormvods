@@ -1,3 +1,7 @@
+$rating-voted-color: #122e5a;
+$rating-not-voted-color: $action-color;
+$rating-hover-color: #62835c;
+
 .rating {
 	@include user-select(none);
 	margin-top: 3px;
@@ -13,7 +17,7 @@
 	
 	path {
 		@include transition(all 0.25s);
-		fill: #122e5a; 
+		fill: $rating-not-voted-color; 
 	}
 	
 	&--not-voted.rating--authorised {
@@ -30,14 +34,15 @@
 			}
 			
 			path {
-				fill: #62835c;
+				fill: $rating-hover-color;
 			}
 		}
 	}
 	
 	&--voted {
+		
 		path {
-			fill: #62835c;
+			fill: $rating-voted-color;
 		}
 	}
 	

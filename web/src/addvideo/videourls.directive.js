@@ -42,7 +42,7 @@ const TEMPLATE = `
 				ng-show="urls.length < MAX_VIDEOS" ng-click="addVideoRow()">
 				Add another url
 			</button>
-			<span>
+			<span class="disclaimer">
 				In case if each game of the match is a separate video on YouTube
 			</span>
 		</div>
@@ -58,6 +58,7 @@ function videoUrlsDirective ($http, $interval, $timeout, Constants) {
 
 	return {
 		restrict: 'E',
+		replace: true,
 		scope: {
 			urls: '='
 		},

@@ -12,26 +12,35 @@ const TEMPLATE = `
 		<div class="footer-links">
 			<ul>
 				<li><h3>Content</h3></li>
-				<li><a href="javascript:void(0)">About</a></li>
-				<li><a href="javascript:void(0)">Contact</a></li>
-				<li><a href="javascript:void(0)">Products</a></li>
+				<li><a href="#">Home</a></li>
+				<li class="nav-link">
+					<a href="#" ui-sref="tournaments">Tournaments</a>
+				</li>
+				<li class="nav-link">
+					<a href="#" ui-sref="teams">Teams</a>
+				</li>
+				<li class="nav-link">
+					<a href="#" ui-sref="casters">Casters</a>
+				</li>
 			</ul>
 			<ul>
-				<li><h3>Follow Us</h3></li>
-				<li><a href="javascript:void(0)">Facebook</a></li>
-				<li><a href="javascript:void(0)">Twitter</a></li>
-				<li><a href="javascript:void(0)">YouTube</a></li>
+				<li><h3>Community links</h3></li>
+				<li><a href="http://us.heroesofthestorm.com/esports/en/">HoTS eSports</a></li>
+				<li><a href="https://www.reddit.com/r/heroesofthestorm/">/r/heroesofthestorm</a></li>
+				<li><a href="https://www.hotslogs.com">HoTS Logs</a></li>
+				<li><a href="http://www.heroescounters.com/">Heroes Counters</a></li>
+				<li><a href="http://www.heroesfire.com/">HeroesFire</a></li>
 			</ul>
 			<ul>
-				<li><h3>Legal</h3></li>
-				<li><a href="javascript:void(0)">Terms and Conditions</a></li>
-				<li><a href="javascript:void(0)">Privacy Policy</a></li>
+				<li><h3>Social</h3></li>
+				<li><a href="https://www.reddit.com/user/stormvods">/u/stormvods</a></li>
+				<li><a href="https://twitter.com/stormvods">@stormvods</a></li>
 			</ul>
 		</div>
 		
 		<hr>
 		
-		<p>Disclaimer area lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum, nostrum repudiandae saepe.</p>
+		<p>All videos and copyrights belong to their respective owners.</p>
 	</footer>
 `;
 
@@ -41,13 +50,6 @@ function footerDirective () {
 		restrict: 'E',
 		replace: true,
 		scope: true,
-		template: TEMPLATE,
-		controller: controller,
-		controllerAs: 'ctrl'
+		template: TEMPLATE
 	};
-	
-	function controller () {
-		// TODO: footer links
-	}
-		
 }

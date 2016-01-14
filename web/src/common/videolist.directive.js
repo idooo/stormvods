@@ -18,14 +18,16 @@ const TEMPLATE = `
 				<div class="video-list-item__time" am-time-ago="video.creationDate"></div>
 				
 				<div class="video-list-item__main">
-					<span ng-if="video.tournament.name">{{video.tournament.name}}</span>
+					<div ng-if="video.tournament.name" class="video-list-item__tournament">
+						{{video.tournament.name}}
+							
+						<span class="video-list-item__stage" ng-if="video.stage"> 
+							{{video.stage}}
+						</span>
+					</div>
 					<i ng-if="!video.tournament || !video.tournament.name">
 						Unknown tournament
 					</i>
-						
-					<div class="video-list-item__stage mobile-only"> 
-						{{video.stage}}
-					</div>
 					
 					<div class="video-list-item__teams">
 						<span
@@ -47,10 +49,6 @@ const TEMPLATE = `
 					</div>
 				</div>
 			
-				<div class="video-list-item__stage mobile-hidden"> 
-					{{video.stage}}
-				</div>
-				
 				<div class="video-list-item__casters" ng-if="video.casters.casters.length">
 					Casted by 
 					<span ng-repeat="caster in video.casters.casters">
