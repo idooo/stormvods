@@ -3,6 +3,7 @@
 var logger = require('winston'),
 	_omit = require('lodash/object/omit'),
 	_pick = require('lodash/object/pick'),
+	_flatten = require('lodash/array/flatten'),
 	Constants = require('../constants'),
 	Router = require('../routes/abstract.router');
 
@@ -94,9 +95,14 @@ class RouteFactory {
 
 	static generateGetListRoute (model) {
 
-		return function (req, res, next) {
-			var fields = '-isRemoved -__v',
-				page = parseInt(req.params.p, 10) || 1;
+		return function (req, res, next, auth) {
+			var self = this,
+				fields = '-isRemoved -__v',
+				page = parseInt(req.params.p, 10) || 1,
+				pageCount,
+				itemCount,
+				currentPage,
+				items;
 
 			model.paginate({}, {
 				page: page,
@@ -105,10 +111,37 @@ class RouteFactory {
 				select: fields
 			})
 				.then(function (result) {
-					var pageCount = result.pages,
-						itemCount = result.total,
-						currentPage = result.page,
-						items = result.docs;
+					pageCount = result.pages;
+					itemCount = result.total;
+					currentPage = result.page;
+					items = result.docs;
+
+					// we will also return real user names
+					let _ids = [];
+					for (let i = 0; i < items.length; i++) {
+						_ids.push(items[i].author);
+					}
+					return self.models.User.getList({_id: {'$in' : _ids}});
+				})
+				.then(function (users) {
+					var lookup = {};
+					_flatten(users).forEach(i => lookup[i._id] = i);
+
+					for (let i = 0; i < items.length; i++) {
+						items[i] = items[i].toObject();
+						if (lookup[items[i].author]) {
+							items[i].author = {
+								name: lookup[items[i].author].name,
+								_id: lookup[items[i].author]._id
+							};
+						}
+						else {
+							items[i].author = {
+								name: '[deleted]',
+								_id: items[i].author
+							};
+						}
+					}
 
 					Router.success(res, {items, pageCount, itemCount, currentPage});
 					return next();

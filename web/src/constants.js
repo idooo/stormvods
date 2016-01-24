@@ -3,6 +3,7 @@ angular
 	.constant('Constants', {
 
 		Api: {
+			PREFIX: '/api',
 			AUTH_ME: '/api/users/me',
 			USERS: '/api/users',
 			USER: '/api/user',

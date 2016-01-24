@@ -155,11 +155,11 @@ module.exports = {
 	addVideoTeams: function (test) {
 		var data = {
 			youtubeId: 'addVideo002',
-			teams: ['Team addVideoSimpleTest002', 'Super addVideoSimpleTest002']
+			teams: ['Team Go)', 'Super Team Go) addVideoSimpleTest002']
 		};
 
 		var res = h.post('/api/video', data, users.user01),
-			res2 = h.get('/api/lookup/team?query=addVideoSimpleTest002', undefined, users.user01),
+			res2 = h.get('/api/lookup/team?query=Team Go)', undefined, users.user01),
 			user = h.get('/api/users/me', undefined, users.user01);
 
 		test.equal(res.youtubeId[0], 'addVideo002');

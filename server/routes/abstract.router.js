@@ -6,7 +6,7 @@ var util = require('util'),
 	Database = require('../core/database'),
 	Constants = require('../constants');
 
-const RE_FILTER = /[^a-zA-Z0-9\s\#_\-]+/g;
+const RE_FILTER = /[^a-zA-Z0-9\s#_\-\)\(]+/g;
 const RE_PRETTIFY_ERROR = /\(?`?\{(PATH|VALUE)}`?\)?\s?/g;
 const AUTH_HEADER = 'Authorization';
 const DEFAULT_ROUTE_OPTIONS = {

@@ -16,7 +16,7 @@ class TournamentRouter extends Router {
 		* @apiVersion 1.0.0
 		*/
 		this.bindPOST('/api/tournament', RouteFactory.generateAddRoute(this.models.Tournament), {auth: true});
-		
+
 		/**
 		* @api {delete} /api/tournament/:id Delete Tournament
 		* @apiName DeleteTournament
@@ -28,14 +28,17 @@ class TournamentRouter extends Router {
 			auth: true,
 			restrict: Constants.ROLES.ADMIN
 		});
-		
+
 		/**
 		* @api {get} /api/tournaments Get list of tournaments
 		* @apiName GetTournaments
 		* @apiGroup Tournament
 		* @apiVersion 1.0.0
 		*/
-		this.bindGET('/api/tournaments', RouteFactory.generateGetListRoute(this.models.Tournament));
+		this.bindGET('/api/tournaments', RouteFactory.generateGetListRoute(this.models.Tournament), {
+			auth: true,
+			restrict: Constants.ROLES.OPTIONAL
+		});
 	}
 }
 

@@ -23,7 +23,7 @@ class BasicModel extends SchemaDefinition {
 			},
 			creationDate: {
 				type: Date,
-				default: Date.now	
+				default: Date.now
 			},
 			isRemoved: {
 				type: Boolean,
@@ -39,21 +39,24 @@ class BasicModel extends SchemaDefinition {
 		this.schema.plugin(mongoosePaginate);
 		this.schema.statics.getOrCreate = this.getOrCreate;
 	}
-	
+
 	static constants () {
 		return {MIN_LENGTH: 3};
 	}
-	
+
 	getOrCreate (entityName, auth) {
 		var self = this;
 		return new Promise(function (resolve, reject) {
-			
+
 			if (!entityName) return resolve({value: null, type: self.modelName});
-			
-			self.findOne({name: new RegExp(`^${entityName}$`, 'i')}) // case insensitive
+
+			// TODO: test this
+			var regexp = entityName.replace('(', '\\(').replace(')', '\\)');
+
+			self.findOne({name: new RegExp(`^${regexp}$`, 'i')}) // case insensitive
 				.then(function (entity) {
 					if (entity) return resolve({value: entity, type: self.modelName});
-					
+
 					try {
 						entity = new self({
 							name: entityName,

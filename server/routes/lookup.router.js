@@ -16,31 +16,31 @@ const LOOKUP = {
 class LookupRouter extends Router {
 
 	configure () {
-		
+
 		/**
-		* @api {get} /api/lookup/:type Search for enity 
+		* @api {get} /api/lookup/:type Search for enity
 		* @apiName Lookup
 		* @apiGroup Lookup
 		* @apiPermission USER
 		* @apiVersion 1.0.0
-		* 
+		*
 		* @apiDescription
 		* Lookup entity by type and query
 		* if query is valid objectId - lookup by _id full match, returns entity or 404
 		* otherwise - lookup by name partial match, returns array (empty if not found)
-		* 
+		*
 		* params:
 		* - type
 		* - query
 		*/
 		this.bindGET('/api/lookup/:type', this.routeLookup, {auth: true});
 	}
-	
+
 	routeLookup (req, res, next) {
 		var self = this,
-			query, 
+			query,
 			id;
-		
+
 		// Validate params
 		var modelName = LOOKUP[req.params.type];
 		if (!modelName) {
@@ -54,12 +54,14 @@ class LookupRouter extends Router {
 			Router.fail(res, {message: {'query': Constants.ERROR_INVALID}});
 			return next();
 		}
-		
+
 		id = self.models.ObjectId(req.params.query);
-		
+
+		var regexp = queryString.replace('(', '\\(').replace(')', '\\)');
+
 		if (id) query = {'_id': id};
-		else query = {'name': {'$regex': `.*${queryString}.*`, '$options': 'i'}};
-		
+		else query = {'name': {'$regex': `.*${regexp}.*`, '$options': 'i'}};
+
 		self.models[modelName].getList(query, 'name _id')
 			.then(function (values) {
 				if (id) {
