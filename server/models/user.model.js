@@ -36,8 +36,6 @@ class User extends SchemaDefinition {
 				type: Date,
 				default: 0
 			},
-
-			// TODO: prevent banned users add videos
 			isRemoved: {
 				type: Boolean,
 				default: false

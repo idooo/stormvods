@@ -4,8 +4,6 @@ const API_CALLBACK_PATH = '/api/auth/callback';
 const API_URL_PATH = '/api/auth/url';
 
 var uuid = require('node-uuid'),
-	logger = require('winston'),
-	_omit = require('lodash/object/omit'),
 	Auth = require('../core/auth'),
 	RedditAPIClient = require('../core/reddit'),
 	Router = require('./abstract.router'),

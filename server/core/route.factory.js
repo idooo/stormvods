@@ -73,12 +73,12 @@ class RouteFactory {
 			// Validate params
 			var name = Router.filter(req.params.name);
 
-			var model = new model({
+			var modelInstance = new model({
 				name,
 				author: auth.id
 			});
 
-			model.save(function (err, responseFromDB) {
+			modelInstance.save(function (err, responseFromDB) {
 				if (err) {
 					logger.debug(_omit(err, 'stack'));
 					Router.fail(res, err);

@@ -110,7 +110,7 @@ class VideoListRoute {
 				sort = JSON.parse(sort);
 			}
 			catch (e) {
-
+				// eslint-disable-line no-empty
 			}
 			fields = '-__v';
 		}

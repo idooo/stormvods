@@ -2,7 +2,7 @@ angular
 	.module(`${window.APP_NAME}.pages`)
 	.directive('sidebar', sidebarDirective);
 
-// TODO: fix this conditions
+// TODO: #33 fix this conditions
 
 const TEMPLATE = `
 

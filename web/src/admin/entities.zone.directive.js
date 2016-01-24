@@ -5,9 +5,9 @@ angular
 const TEMPLATE = `
 	<div>
 		<h2>Entities</h2>
-		
+
 		<div>
-		
+
 		</div>
 	</div>
 `;
@@ -22,10 +22,8 @@ function entitiesZoneDirective () {
 		template: TEMPLATE,
 		controller: controller
 	};
-	
-	function controller ($http, Constants) {
-		var self = this;
-		
-		
+
+	function controller () {
+
 	}
 }

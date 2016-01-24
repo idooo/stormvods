@@ -160,7 +160,7 @@ function improveVideoDirective () {
 						values: $scope.entity
 					})
 					.then(() => {
-						// TODO: Handle errors?
+						// TODO: #32 Handle errors?
 						// self.additionalInfo = response.data;
 					});
 			}
