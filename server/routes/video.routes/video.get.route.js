@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * @api {get} /video/:id Get video 
+ * @api {get} /video/:id Get video
  * @apiName GetVideo
  * @apiGroup Video
  * @apiPermission USER
@@ -19,7 +19,7 @@
  * {
  *     "_id": "565c2776b200b02e8ea406c8",
  *     "youtubeId": [
- *         "1AwlsNfxYok", 
+ *         "1AwlsNfxYok",
  *         "1AwlsNfxYok1
  *     "],
  *     "author": "564b00fe5d63f20f4444e4b6",
@@ -85,15 +85,15 @@ class VideoGetRoute {
 
 		if (!id) return Router.notFound(res, next, req.params.id);
 
-		self.models.Video.findOne({_id: id})
+		self.models.Video.findOne({_id: id, isRemoved: {'$ne': true}})
 			.then(function (_video) {
 				video = _video;
-				
+
 				if (!video) {
 					Router.fail(res, {message: Constants.ERROR_NOT_FOUND}, 404);
 					return next();
 				}
-			
+
 				var topTournament = VideoGetRoute.maxByRating(video.tournament),
 					topTeams = VideoGetRoute.maxByRating(video.teams),
 					topCasters = VideoGetRoute.maxByRating(video.casters),
@@ -113,7 +113,7 @@ class VideoGetRoute {
 				}
 				promises.push(self.models.User.findOne({_id: video.author}, 'name _id'));
 				promisesNames.push(self.models.User.modelName);
-				
+
 				if (auth && auth.id) {
 					promises.push(self.models.User.findOne({_id: auth.id}, 'votes'));
 					promisesNames.push('votes');
@@ -126,7 +126,7 @@ class VideoGetRoute {
 					topFormat = VideoGetRoute.maxByRating(video.format);
 
 				video = video.toObject(); // Convert because tournament is Array in scheme
-				
+
 				if (topStage) video.stage = topStage;
 				if (topFormat) video.format = topFormat;
 
@@ -159,7 +159,7 @@ class VideoGetRoute {
 						case self.models.User.modelName:
 							video.author = data[i];
 							break;
-							
+
 						case 'votes':
 							video.isVoted = data[i].votes.video.indexOf(video._id) !== -1;
 							video.tournament.isVoted = data[i].votes.tournament.indexOf(video._id) !== -1;

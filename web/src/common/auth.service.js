@@ -12,7 +12,7 @@ function authService ($rootScope, $window, $http, Constants) {
 	self.authorise = authorise;
 	self.openAuthUrl = openAuthUrl;
 	self.logout = logout;
-	
+
 	function authorise () {
 		var auth = $window.Auth;
 		$rootScope.isAuthorised = !!auth;
@@ -25,21 +25,21 @@ function authService ($rootScope, $window, $http, Constants) {
 			getAuthUrl();
 		}
 	}
-	
+
 	function getAuthUrl () {
 		authPromise = $http.get(Constants.Api.AUTH_GET_URL).then(response => authUrl = response.data.url);
 	}
-	
+
 	function openAuthUrl () {
 		if (!authUrl) authPromise.then(openAuthUrl);
 		else $window.location.href = authUrl;
 	}
-	
+
 	function logout () {
 		deleteAllCookies();
 		$window.location.assign('/');
 	}
-	
+
 	function deleteAllCookies () {
 		var cookies = document.cookie.split(';');
 

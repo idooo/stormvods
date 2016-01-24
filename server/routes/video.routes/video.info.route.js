@@ -10,10 +10,10 @@
  * @apiVersion 1.0.0
  *
  * @apiDescription
- * Inforamtion includes: data about teams, casters, tournaments,
+ * Information includes: data about teams, casters, tournaments,
  * stages and formats that suggested but not in the first position
  * by rating for the current video.
- * 
+ *
  * Field will be empty array if there is no additional info for it
  *
  * @apiParam {ObjectId} id video id
@@ -83,42 +83,42 @@ class VideoInfoRoute {
 		self.models.Video.findOne({_id: id}, fields.join(' '))
 			.then(function (_video) {
 				video = _video;
-				
+
 				if (!video) {
 					Router.fail(res, {message: Constants.ERROR_NOT_FOUND}, 404);
 					return next();
 				}
-				
+
 				var tournamentIds = [],
 					teamIds = [],
 					casterIds = [],
 					promises = [];
-					
-				// Exclude top rated indo	
+
+				// Exclude top rated indo
 				video.tournament.splice(0, 1);
 				video.casters.splice(0, 1);
 				video.teams.splice(0, 1);
 				video.stage.splice(0, 1);
 				video.format.splice(0, 1);
-					
+
 				if (video.tournament.length) {
 					for (let i = 0; i < video.tournament.length; i++) tournamentIds.push(video.tournament[i]._id);
 					promises.push(self.models.Tournament.getList({_id: {'$in': tournamentIds}}));
 				}
 				else video.tournament = [];
-				
+
 				if (video.casters.length) {
 					for (let i = 0; i < video.casters.length; i++) casterIds = casterIds.concat(video.casters[i].casters);
 					promises.push(self.models.Caster.getList({_id: {'$in': casterIds}}));
 				}
 				else video.casters = [];
-				
+
 				if (video.teams.length) {
 					for (let i = 0; i < video.teams.length; i++) teamIds = teamIds.concat(video.teams[i].teams);
 					promises.push(self.models.Team.getList({_id: {'$in': teamIds}}));
 				}
 				else video.teams = [];
-				
+
 				if (auth && auth.id) {
 					promises.push(self.models.User.findOne({_id: auth.id}, 'votes'));
 				}
@@ -128,7 +128,7 @@ class VideoInfoRoute {
 			.then(function (data) {
 				var lookup = {};
 				_flatten(data).forEach(i => lookup[i._id] = i);
-				
+
 				video = video.toObject(); // Convert because tournament is Array in scheme
 
 				// TODO: stage and format
@@ -140,7 +140,7 @@ class VideoInfoRoute {
 						video.tournament[i].rating = rating;
 					}
 				}
-				
+
 				if (video.teams.length) {
 					for (let i = 0; i < video.teams.length; i++) {
 						video.teams[i] = {
@@ -149,7 +149,7 @@ class VideoInfoRoute {
 						};
 					}
 				}
-				
+
 				if (video.casters.length) {
 					for (let i = 0; i < video.casters.length; i++) {
 						video.casters[i] = {
@@ -158,7 +158,7 @@ class VideoInfoRoute {
 						};
 					}
 				}
-				
+
 				Router.success(res, video);
 				return next();
 			})

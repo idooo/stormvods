@@ -34,10 +34,10 @@ class SchemaDefinition {
 
 		return new Promise(function (resolve, reject) {
 			query = self.where(query).select(fields);
-			
+
 			if (sort) query.sort(sort);
 			if (limit) query.limit(limit);
-			
+
 			query.find(function (err, objects) {
 				if (objects) resolve(objects);
 				else if (err) reject(err);
@@ -84,16 +84,17 @@ class SchemaDefinition {
 			});
 		});
 	}
-	
+
 	/**
 	 * Promise-based function to update object in collection
 	 * @param {Object} query
+	 * @param {Object} update
+	 * @param {Object} [options]
 	 * @return {Promise}
 	 */
 	updateOne (query, update, options) {
 		var self = this;
 
-		query = query || {};
 		options = options || {};
 
 		return new Promise(function (resolve, reject) {
@@ -103,7 +104,7 @@ class SchemaDefinition {
 			});
 		});
 	}
-	
+
 	/**
 	 * Promise-based function mark object as removed
 	 * Note: applied to model but not for schema
@@ -120,8 +121,8 @@ class SchemaDefinition {
 			});
 		});
 	}
-	
-	
+
+
 }
 
 module.exports = SchemaDefinition;

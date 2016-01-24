@@ -14,6 +14,9 @@
  * @apiParam {ObjectId} [team] team Id
  * @apiParam {ObjectId} [caster] caster Id
  *
+ * @apiParam {Object} [query] ADMIN ONLY: db query
+ * @apiParam {Object} [sort] ADMIN ONLY: db sort
+ *
  * @apiSuccessExample Success-Response:
  * HTTP/1.1 200 OK
  * {
@@ -74,21 +77,6 @@
 }
  */
 
-/**
- * @api {get} /video/removed Get the list of removed videos
- * @apiName GetRemovedVideoList
- * @apiGroup Video
- * @apiPermission ADMIN
- * @apiVersion 1.0.0
- *
- * @apiDescription
- * The same as /video/list but will return list of removed videos
- *
- * @apiParam {ObjectId} [tournament] tournament Id
- * @apiParam {ObjectId} [team] team Id
- * @apiParam {ObjectId} [caster] caster Id
- */
-
 var _max = require('lodash/math/max'),
 	_flatten = require('lodash/array/flatten'),
 	Router = require('./../abstract.router'),
@@ -98,14 +86,11 @@ const LIST_PAGE_SIZE = 20;
 
 class VideoListRoute {
 
-	constructor (viewMode) {
-		this.viewMode = viewMode;
-	}
-
-	route (req, res, next, auth) {
+	static route (req, res, next, auth) {
 
 		var self = this,
-			query = {}, 
+			query = {isRemoved: {'$ne': true}},
+			sort = {'_id': -1}, // sort by date, latest first by default
 			page = parseInt(req.params.p, 10) || 1,
 			fields = '-isRemoved -__v',
 			tournamentId = self.models.ObjectId(req.params.tournament),
@@ -116,12 +101,23 @@ class VideoListRoute {
 		else if (teamId) query['teams.0.teams'] = teamId;
 		else if (casterId) query['casters.0.casters'] = casterId;
 
-		if (self.viewMode === Constants.VIEW_MODES.DEFAULT) query.isRemoved = {'$ne': true};
-		else if (self.viewMode === Constants.VIEW_MODES.ONLY_REMOVED) query.isRemoved = {'$ne': false};
+		// Admin mode
+		if (auth && auth.role >= Constants.ROLES.ADMIN) {
+			query = req.params.query || query; // only for admins so do not care for now
+			sort = req.params.sort || sort; // sort by date, latest first by default
+			try {
+				query = JSON.parse(query);
+				sort = JSON.parse(sort);
+			}
+			catch (e) {
+
+			}
+			fields = '-__v';
+		}
 
 		self.models.Video.paginate(query, {
 			page: page,
-			sort: {'_id': -1}, // sort by date, latest first
+			sort: sort, // sort by date, latest first
 			limit: LIST_PAGE_SIZE,
 			select: fields
 		})
@@ -138,24 +134,24 @@ class VideoListRoute {
 			});
 
 	}
-	
+
 	static maxByRating (items) {
 		var max = _max(items, 'rating');
 		if (typeof max === 'number') return undefined;
 		return max;
 	}
-	
+
 	/**
 	 * Not a typical map-reduce here but just a nice name
 	 * for a function that somehow reminds me about it
-	 * 
+	 *
 	 * Big function that gets list of videos from the database,
 	 * and then creates multiple requests to DB to retrieve all info about
 	 * tournaments, teams and etc based on ids stored in video records (map).
-	 * 
-	 * After getting response, it formats all the data it received 
+	 *
+	 * After getting response, it formats all the data it received
 	 * and returns as a promise (reduce)
-	 * 
+	 *
 	 * @param {Object} result
 	 * @param {Object} auth
 	 * @returns {Promise}
@@ -166,7 +162,7 @@ class VideoListRoute {
 			currentPage,
 			pageCount,
 			itemCount;
-		
+
 		return new Promise(function (resolve) {
 			mapPromise(result)
 				.then(reducePromise)
@@ -174,7 +170,7 @@ class VideoListRoute {
 					resolve({videos: data, pageCount, itemCount, currentPage});
 				});
 		});
-		
+
 		function mapPromise (data) {
 			var tournamentIds = [],
 				teamIds = [],
@@ -186,7 +182,7 @@ class VideoListRoute {
 			pageCount = data.pages;
 			itemCount = data.total;
 			currentPage = data.page;
-			
+
 			// Go through video data and get top entities and their ids
 			videos = _tmp.map(function (video) {
 				video = video.toObject(); // Convert because tournament is Array in scheme
@@ -208,21 +204,24 @@ class VideoListRoute {
 			promises.push(self.models.Team.getList({_id: {'$in': teamIds}}, 'name _id'));
 			promises.push(self.models.Caster.getList({_id: {'$in': casterIds}}, 'name _id'));
 			promises.push(self.models.User.getList({_id: {'$in': userIds}}, 'name _id'));
-			
+
 			if (auth && auth.id) promises.push(self.models.User.findOne({_id: auth.id}, 'name _id votes'));
 
 			return Promise.all(promises);
 		}
-		
+
 		function reducePromise (data) {
-			
+
 			return new Promise(function (resolve) {
 				var lookup = {};
 				_flatten(data).forEach(i => lookup[i._id] = i);
 
-				// Populate video data using entities data resolved from other collections 
+				// Populate video data using entities data resolved from other collections
 				for (let i = 0; i < videos.length; i++) {
-					if (videos[i].tournament) videos[i].tournament = lookup[videos[i].tournament._id];
+					if (videos[i].tournament) {
+						videos[i].tournament.name = lookup[videos[i].tournament._id].name;
+						videos[i].tournament._id = lookup[videos[i].tournament._id]._id;
+					}
 					if (videos[i].teams) videos[i].teams.teams = videos[i].teams.teams.map(item => lookup[item]);
 					if (videos[i].casters) videos[i].casters.casters = videos[i].casters.casters.map(item => lookup[item]);
 					if (videos[i].stage) videos[i].stage = videos[i].stage[0];
@@ -232,8 +231,8 @@ class VideoListRoute {
 						_id: lookup[videos[i].author]._id
 					};
 				}
-				
-				if (auth && auth.id) { 
+
+				if (auth && auth.id) {
 					for (let i = 0; i < videos.length; i++) {
 						videos[i].isVoted = lookup[auth.id].votes.video.indexOf(videos[i]._id.toString()) !== -1;
 					}

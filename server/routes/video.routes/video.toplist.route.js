@@ -7,7 +7,7 @@
  * @apiVersion 1.0.0
  *
  * @apiParam {String} [mode] Top mode (today, week (default), month, alltime)
- * 
+ *
  * @apiSuccessExample Success-Response:
  * HTTP/1.1 200 OK
  * Identical to /video/list
@@ -21,11 +21,11 @@ const DEFAULT_TOP_MODE = 'DAY7';
 
 class VideoTopListRoute extends VideoListRoute {
 
-	route (req, res, next, auth) {
+	static route (req, res, next, auth) {
 
 		var self = this,
-			query = {isRemoved: {'$ne': true}}, 
-			mode = DEFAULT_TOP_MODE,  
+			query = {isRemoved: {'$ne': true}},
+			mode = DEFAULT_TOP_MODE,
 			fields = '-isRemoved -__v';
 
 		if (Object.keys(Constants.TOP_MODES).indexOf(req.params.mode) !== -1) {

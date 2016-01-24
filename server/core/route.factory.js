@@ -4,6 +4,8 @@ var logger = require('winston'),
 	_omit = require('lodash/object/omit'),
 	_pick = require('lodash/object/pick'),
 	Constants = require('../constants'),
+	User = require('../models/user.model'),
+	Auth = require('./auth'),
 	Router = require('../routes/abstract.router');
 
 const LIST_PAGE_SIZE = 100;
@@ -73,12 +75,12 @@ class RouteFactory {
 			// Validate params
 			var name = Router.filter(req.params.name);
 
-			var tournament = new model({
+			var model = new model({
 				name,
 				author: auth.id
 			});
 
-			tournament.save(function (err, responseFromDB) {
+			model.save(function (err, responseFromDB) {
 				if (err) {
 					logger.debug(_omit(err, 'stack'));
 					Router.fail(res, err);
@@ -91,13 +93,13 @@ class RouteFactory {
 			});
 		};
 	}
-	
+
 	static generateGetListRoute (model) {
-		
+
 		return function (req, res, next) {
 			var fields = '-isRemoved -__v',
 				page = parseInt(req.params.p, 10) || 1;
-			
+
 			model.paginate({}, {
 				page: page,
 				sort: {'_id': -1}, // sort by date, latest first
@@ -109,12 +111,31 @@ class RouteFactory {
 						itemCount = result.total,
 						currentPage = result.page,
 						items = result.docs;
-						
+
 					Router.success(res, {items, pageCount, itemCount, currentPage});
 					return next();
 				})
 				.catch(function (err) {
 					Router.fail(res, err);
+					return next();
+				});
+		};
+	}
+
+	static generateUpdateRoute (model) {
+
+		return function (req, res, next) {
+
+			var id = this.models.ObjectId(req.params.id),
+				update = req.params.update;
+
+			model.updateOne({_id: id}, update)
+				.then(() => {
+					Router.success(res);
+					return next();
+				})
+				.catch(e => {
+					Router.fail(res, e);
 					return next();
 				});
 		};

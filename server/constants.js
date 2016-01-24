@@ -12,6 +12,7 @@ module.exports = {
 	ERROR_REQUIRED: 'REQUIRED',
 	ERROR_AUTH_REQUIRED: 'AUTH_REQUIRED',
 	ERROR_ACCESS_DENIED: 'ACCESS_DENIED',
+	ERROR_INACTIVE_USER: 'INACTIVE_USER',
 	ERROR_INTERNAL: 'INTERNAL_ERROR',
 	ERROR_TYPE: 'WRONG_TYPE',
 	ERROR_TIME_RESTRICTION: 'TIME_RESTRICTION',
@@ -26,12 +27,6 @@ module.exports = {
 		ADMIN: 10
 	},
 
-	VIEW_MODES: {
-		DEFAULT: 'DEFAULT',
-		ONLY_REMOVED: 'ONLY_REMOVED',
-		ALL: 'ALL'
-	},
-	
 	TOP_MODES: {
 		today: 'DAY1',
 		week: 'DAY7',
@@ -63,19 +58,19 @@ module.exports = {
 		'BO5',
 		'BO7'
 	],
-	
+
 	// entity types
 	ENTITY_TYPES: [
-		'video', 
-		'tournament', 
-		'teams', 
-		'stage', 
-		'format', 
+		'video',
+		'tournament',
+		'teams',
+		'stage',
+		'format',
 		'casters'
 	],
 	// types with code instead of id
 	ENTITY_TYPES_CODE: [
-		'stage', 
+		'stage',
 		'format'
 	]
 };

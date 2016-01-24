@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 	SchemaDefinition = require('./schema.definition'),
 	Video = require('./video.model'),
 	Constants = require('../constants');
-	
+
 class User extends SchemaDefinition {
 
 	constructor () {
@@ -36,12 +36,8 @@ class User extends SchemaDefinition {
 				type: Date,
 				default: 0
 			},
-			
+
 			// TODO: prevent banned users add videos
-			isBanned: {
-				type: Boolean,
-				default: false
-			},
 			isRemoved: {
 				type: Boolean,
 				default: false
@@ -95,10 +91,10 @@ class User extends SchemaDefinition {
 	/**
 	 * Schema method to vote for video or one of the entities
 	 * NOTE: Here is no check that user already voted for entity - check it in route
-	 */ 
+	 */
 	vote (video, entityType, entityId) {
 		var self = this;
-		
+
 		// ENTITY_TYPES[0] = 'video'
 		if (entityType === Constants.ENTITY_TYPES[0]) {
 			video.rating++;
@@ -107,12 +103,12 @@ class User extends SchemaDefinition {
 		else {
 			// Search for entity by _id in the array of entities and increase its rating
 			var isFound = Video.matchEntity(video, entityType, entityId, entity => entity.rating++);
-			
+
 			if (!isFound) return Promise.reject({message: Constants.ERROR_WRONG_ENTITY_ID});
-			
+
 			// sort entities after vote, top rated will be always first
 			video[entityType] = video[entityType].sort((a, b) => a.rating < b.rating);
-			
+
 			// mark model mongoose model as modified to save it
 			video.markModified(entityType);
 		}

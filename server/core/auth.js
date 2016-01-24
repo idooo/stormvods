@@ -16,7 +16,7 @@ class Auth {
 				.then((data) => {
 					if (!data) data = '';
 					var tmp = data.split(':');
-					
+
 					try {
 						tmp[2] = parseInt(tmp[2], 10);
 					}

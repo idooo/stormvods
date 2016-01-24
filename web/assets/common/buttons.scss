@@ -18,22 +18,22 @@ $secondary-button-color: $base-font-color;
 	-webkit-font-smoothing: antialiased;
 	font-weight: 600;
 	line-height: 1;
-	padding: $small-spacing $base-spacing;
+	padding: 0.7em $base-spacing;
 	text-decoration: none;
 	transition: background-color $base-duration $base-timing;
-	vertical-align: middle;
+	vertical-align: baseline;
 	white-space: nowrap;
-	
+
 	&:hover,
 	&:focus {
 		background-color: shade($action-color, 20%);
 		color: #fff;
 	}
-	
+
 	&:disabled {
 		cursor: not-allowed;
 		opacity: 0.4;
-		
+
 		&:hover {
 			background-color: $action-color;
 		}
@@ -42,9 +42,9 @@ $secondary-button-color: $base-font-color;
 
 .secondary {
 	box-shadow: inset 0px  0px 0px 1px $secondary-button-border-color;
-	background: $secondary-button-background; 
+	background: $secondary-button-background;
 	color: $secondary-button-color;
-	
+
 	&:hover,
 	&:focus {
 		background: $secondary-button-hover-background;
@@ -54,9 +54,9 @@ $secondary-button-color: $base-font-color;
 	&:active {
 		background: $secondary-button-background;
 	}
-	
+
 	&:disabled {
-		
+
 		&:hover {
 			background: $secondary-button-background;
 			color: $secondary-button-color;

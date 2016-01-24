@@ -10,22 +10,22 @@ const TEMPLATE = `
 			<small class="newline-mobile">vs.</small>
 			<a href="#" ui-sref="team({id: ctrl.video.teams.teams[1]._id})">{{ctrl.video.teams.teams[1].name}}</a>
 		</h1>
-		
+
 		<h1 ng-if="!ctrl.error && (!ctrl.video.teams.teams || ctrl.video.teams.teams.length == 0)">
-			Misterious match
+			Mysterious match
 		</h1>
-		
+
 		<div ng-if="ctrl.error">
 			<h1 ng-if="ctrl.error.message === 'NOT_FOUND'">
 				Video not found
 			</h1>
 			<span>
-				Sorry, the video you asked for couldn’t be found
+				Sorry, we cannot find video with that id
 			</span>
 		</div>
 
 		<video object="ctrl.video" ng-if="!ctrl.error"></video>
-		
+
 	</section>
 `;
 
@@ -39,11 +39,11 @@ function videoPage () {
 		controllerAs: 'ctrl'
 	};
 
-	function controller ($http, $rootScope, $state, $sce, Page, Constants) {
+	function controller ($http, $state, Page, Constants) {
 		var self = this;
 
 		self.video = {};
-		
+
 		$http.get(`${Constants.Api.VIDEO}/${$state.params.id}`)
 			.then(response => {
 				self.video = response.data;
@@ -59,7 +59,7 @@ function videoPage () {
 		function setTitle (video) {
 			if (!video.teams || !video.teams.teams || !video.teams.teams.length) {
 				if (video.tournament.name) Page.setTitle(video.tournament.name);
-				else Page.setTitle('Misterious match');
+				else Page.setTitle('Mysterious match');
 			}
 			else Page.setTitle(`${video.teams.teams[0].name} vs ${video.teams.teams[1].name}`);
 		}

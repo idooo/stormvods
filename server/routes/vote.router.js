@@ -4,13 +4,12 @@ var logger = require('winston'),
 	Router = require('./abstract.router'),
 	Constants = require('../constants');
 
-// TODO: change path to /api/vote/:id
 const API_VOTE_PATH = '/api/vote';
 
 class VoteRouter extends Router {
 
 	configure () {
-			
+
 		/**
 		* @api {post} /api/vote Vote for video or video's entity
 		* @apiName Vote
@@ -27,7 +26,7 @@ class VoteRouter extends Router {
 		* {
 		*     "status": "ok"
 		* }
-		* 
+		*
 		* @apiUse NOT_FOUND
 		* @apiError VOTE_TWICE User cannot vote twice for the same entity
 		* @apiError WRONG_TYPE Wrong entity type
@@ -35,14 +34,14 @@ class VoteRouter extends Router {
 		*/
 		this.bindPOST(API_VOTE_PATH, this.routeVote, {auth:true});
 	}
-	
+
 	routeVote (req, res, next, auth) {
 		var self = this,
 			entityType = req.params.entityType || Constants.ENTITY_TYPES[0], // video by default
 			entityId,
 			videoId,
 			user;
-			
+
 		// Validate params
 		videoId = this.models.ObjectId(req.params.videoId);
 		if (!videoId) return Router.notFound(res, next, req.params.videoId);
@@ -52,7 +51,7 @@ class VoteRouter extends Router {
 			Router.fail(res, {message: Constants.ERROR_TYPE}, 404);
 			return next();
 		}
-			
+
 		// if entity type 0 (video) then use video id
 		if (entityType === Constants.ENTITY_TYPES[0]) entityId = videoId;
 		else {
@@ -60,8 +59,8 @@ class VoteRouter extends Router {
 			// or an array (list of _ids for teams)
 			if (typeof req.params.entityId === 'string') {
 				entityId = Router.filter(req.params.entityId);
-				
-				// for entity types 'stage' and 'format' (and probably more later) 
+
+				// for entity types 'stage' and 'format' (and probably more later)
 				// we expect codes instead of ids
 				// validate that this is a correct code
 				if (Constants.ENTITY_TYPES_CODE.indexOf(entityType) !== -1) {
@@ -69,11 +68,11 @@ class VoteRouter extends Router {
 				}
 			}
 			else if (Array.isArray(req.params.entityId)) entityId = req.params.entityId.map(Router.filter);
-			
+
 			if (!entityId) return Router.notFound(res, next, req.params.entityId);
 		}
-		
-		// Main logic: searching for users, 
+
+		// Main logic: searching for users,
 		// checking can he vote and vote if everything is ok
 		self.models.User.findOne({name: auth.name}, 'votes stats lastVoteTime')
 			.then(function (_user) {

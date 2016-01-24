@@ -5,6 +5,7 @@ const API_USERS_ME = '/api/users/me';
 const API_USER = '/api/user';
 
 var Router = require('./abstract.router'),
+	RouteFactory = require('../core/route.factory'),
 	Constants = require('../constants');
 
 
@@ -21,7 +22,7 @@ class UsersRouter extends Router {
 		* @apiVersion 1.0.0
 		*/
 		this.bindGET(API_USERS_ME, this.routeMe, {auth: true});
-		
+
 		/**
 		* @api {post} /api/user Create a user
 		* @apiName AddUser
@@ -32,20 +33,50 @@ class UsersRouter extends Router {
 		* @apiDescription
 		* For testing purposes only
 		*/
-		this.bindPOST(API_USER, this.routeAddUser, {auth: true, restrict: Constants.ROLES.ADMIN});
-		
+		this.bindPOST(API_USER, this.routeAddUser, {
+			auth: true,
+			restrict: Constants.ROLES.ADMIN
+		});
+
 		/**
 		* @api {get} /api/users Get list of users
 		* @apiName GetUser
 		* @apiGroup User
 		* @apiPermission ADMIN
 		* @apiVersion 1.0.0
+		*
+		* @apiDescription
+		* Allowed only for admin
+		*
+		* @apiParam {Object} [query] db query
+		* @apiParam {Object} [sort] db sort
 		*/
-		this.bindGET(API_USERS_LIST, this.routeUsers, {auth: true, restrict: Constants.ROLES.ADMIN});
+		this.bindGET(API_USERS_LIST, this.routeUsers, {
+			auth: true,
+			restrict: Constants.ROLES.ADMIN
+		});
+
+		/**
+		 * @api {put} /api/user Change user
+		 * @apiName ChangeUser
+		 * @apiGroup User
+		 * @apiPermission ADMIN
+		 * @apiVersion 1.0.0
+		 *
+		 * @apiDescription
+		 * Allowed only for admin
+		 *
+		 * @apiParam {ObjectId} id User id
+		 * @apiParam {Object} update fields to update
+		 */
+		this.bindPUT(API_USER, RouteFactory.generateUpdateRoute(this.models.User), {
+			auth: true,
+			restrict: Constants.ROLES.ADMIN
+		});
 	}
 
 	routeMe (req, res, next, auth) {
-		this.models.User.findOne({name: auth.name}, '_id name role')
+		this.models.User.findOne({name: auth.name}, '_id name role votes')
 			.then(function (user) {
 				if (!user) Router.fail(res, {message: Constants.ERROR_NOT_FOUND});
 				else Router.success(res, user);
@@ -63,7 +94,7 @@ class UsersRouter extends Router {
 			query = req.params.query || {}, // only for admins so do not care for now
 			sort = req.params.sort || {'_id': -1}, // sort by date, latest first by default
 			fields = '-__v -votes';
-		
+
 		try {
 			query = JSON.parse(query);
 			sort = JSON.parse(sort);
@@ -72,18 +103,18 @@ class UsersRouter extends Router {
 			Router.fail(res, e);
 			return next();
 		}
-		
+
 		self.models.User.paginate(query, {
 				page: page,
-				sort: sort, 
+				sort: sort,
 				limit: LIST_PAGE_SIZE,
 				select: fields
 			})
 			.then(function (data) {
 				Router.success(res, {
-					users: data.docs, 
-					pageCount: data.pages, 
-					itemCount: data.total, 
+					users: data.docs,
+					pageCount: data.pages,
+					itemCount: data.total,
 					currentPage: data.page
 				});
 				return next();
@@ -93,7 +124,7 @@ class UsersRouter extends Router {
 				return next();
 			});
 	}
-	
+
 	routeAddUser (req, res, next) {
 		var user = new this.models.User({
 			name: Router.filter(req.params.name),
