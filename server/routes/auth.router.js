@@ -82,16 +82,7 @@ class AuthRouter extends Router {
 					}
 				});
 
-				user.save(function (err, createdUser) {
-					if (err) {
-						logger.error(_omit(err, 'stack'));
-						logger.error(err);
-						throw {message: Constants.ERROR_INTERNAL};
-					}
-					else {
-						Promise.resolve(createdUser);
-					}
-				});
+				return user.save();
 			})
 
 			// Authorise user

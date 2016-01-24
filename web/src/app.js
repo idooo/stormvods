@@ -8,21 +8,14 @@ angular
 	.config(configuration)
 	.run(init);
 
-function configuration ($httpProvider, $stateProvider, $urlRouterProvider) {
+function configuration ($httpProvider, $stateProvider, $urlRouterProvider, CookieHelper) {
 
-	// TODO: do something better
 	// TODO: user registration throws error (check it)
 	$httpProvider.interceptors.push(($q) => {
 		return {
-			responseError: function(response) {
+			responseError: function (response) {
 				if (response.status === 403) {
-					var cookies = document.cookie.split(';');
-					for (var i = 0; i < cookies.length; i++) {
-						var cookie = cookies[i];
-						var eqPos = cookie.indexOf('=');
-						var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-						document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
-					}
+					CookieHelper.deleteAllCookies();
 					window.location.assign('/');
 				}
 				return $q.reject(response);

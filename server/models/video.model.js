@@ -73,11 +73,11 @@ class Video extends SchemaDefinition {
 			MAX_VIDEOS_IN_MATCH: 7
 		};
 	}
-	
+
 	/**
 	 * @description
 	 * Deep search in the video data trying to find full match for entity
-	 * 
+	 *
 	 * @param {Obejct} Video
 	 * @param {String} entityType
 	 * @param {String} entityId _id of entity or array
@@ -86,19 +86,19 @@ class Video extends SchemaDefinition {
 	static matchEntity (video, entityType, entityId, callback) {
 		var isFound = false,
 			isCode = Constants.ENTITY_TYPES_CODE.indexOf(entityType) !== -1;
-		
+
 		// convert entity ids to a string
 		if (!isCode) {
 			if (Array.isArray(entityId)) entityId = entityId.map(e => e.toString());
 			else entityId = entityId.toString();
 		}
-		
+
 		for (let i = 0; i < video[entityType].length; i++) {
 
 			/**
 			* If entity ids is an array of _ids (casters, teams)
 			* then go deeper and search inside that array
-			* 
+			*
 			* eg user voted for teams AAA and BBB, _ids ['001...', '002...']
 			* we have a structure in video entity with the arrays of arrays of teams like
 			* teams: [
@@ -109,7 +109,7 @@ class Video extends SchemaDefinition {
 			* 	  {
 			* 		teams: ['003...', '004...'],
 			* 		rating: 1
-			*    }	
+			*    }
 			* ]
 			* so we will search for the full match of arrays
 			*/
@@ -123,7 +123,7 @@ class Video extends SchemaDefinition {
 					isFound = isArrayTheSame;
 				}
 			}
-			
+
 			// special logic to search by code (not id)
 			// for entities using code (stage, format and probably more later)
 			else if (Constants.ENTITY_TYPES_CODE.indexOf(entityType) !== -1) {
@@ -132,7 +132,7 @@ class Video extends SchemaDefinition {
 					if (typeof callback === 'function') callback(video[entityType][i]);
 				}
 			}
-			
+
 			// normal ids
 			else {
 				try {
@@ -146,10 +146,10 @@ class Video extends SchemaDefinition {
 				}
 			}
 		}
-		
+
 		return isFound;
 	}
-	
+
 	static validateYoutubeId (value) {
 		if (!value || !value.length || value.length > Video.constants().MAX_VIDEOS_IN_MATCH) return false;
 		for (let i = 0; i < value.length; i++) {

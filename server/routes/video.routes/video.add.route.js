@@ -15,9 +15,7 @@
  * @apiParam {String[]} casters
  */
 
-var logger = require('winston'),
-	_omit = require('lodash/object/omit'),
-	_uniq = require('lodash/array/uniq'),
+var _uniq = require('lodash/array/uniq'),
 	Router = require('./../abstract.router'),
 	Video = require('../../models/video.model'),
 	Constants = require('../../constants');
@@ -26,13 +24,14 @@ class VideoAddRoute {
 
 	static route (req, res, next, auth) {
 		var self = this;
-		
+
 		// Check params and sanitise them
 		var promises = [],
 			tournament = Router.filter(req.params.tournament),
 			youtubeIds = [].concat(req.params.youtubeId),
 			teams = [],
 			casters = [],
+			isEntityExist = {},
 			format = Router.filter(req.params.format),
 			stage = Router.filter(req.params.stage);
 
@@ -40,7 +39,7 @@ class VideoAddRoute {
 			Router.fail(res, {message: {youtubeId: Constants.ERROR_INVALID}});
 			return next();
 		}
-		
+
 		// Sanitise
 		youtubeIds = youtubeIds.map(Router.filter);
 
@@ -59,7 +58,7 @@ class VideoAddRoute {
 					Router.fail(res, {message: Constants.ERROR_UNIQUE}, 400);
 					return next();
 				}
-						
+
 				if (Array.isArray(req.params.teams)) {
 					teams = req.params.teams.map(teamName => Router.filter(teamName));
 				}
@@ -75,13 +74,12 @@ class VideoAddRoute {
 				return Promise.all(promises);
 			})
 			.then(function (data) {
-				
+
 				var videoData = {
 						youtubeId: youtubeIds,
 						author: auth.id,
 						rating: 1
 					},
-					isEntityExist = {},
 					createdTeams = [],
 					createdCasters = [];
 
@@ -133,31 +131,24 @@ class VideoAddRoute {
 
 				var video = new self.models.Video(videoData);
 
-				video.save(function (err, videoFromDB) {
-					if (err) {
-						logger.warn(_omit(err, 'stack'));
-						Router.fail(res, err);
-						return next();
-					}
-					else {
-						var userUpdate = {};
-						
-						// store user votes for video and entities
-						userUpdate['votes.video'] = videoFromDB._id;
-						Constants.ENTITY_TYPES.forEach(key => {
-							if (isEntityExist[key]) userUpdate[`votes.${key}`] = videoFromDB._id;
-						});
-						// Update user votes
-						self.models.User.updateOne({_id: auth.id}, {
-							$push: userUpdate, 
-							$inc: {'stats.videosAdded': 1} 
-						});
-						
-						Router.success(res, videoFromDB);
-						return next();
-					}
+				return video.save();
+			})
+			.then(function (videoFromDB) {
+				var userUpdate = {};
+
+				// store user votes for video and entities
+				userUpdate['votes.video'] = videoFromDB._id;
+				Constants.ENTITY_TYPES.forEach(key => {
+					if (isEntityExist[key]) userUpdate[`votes.${key}`] = videoFromDB._id;
+				});
+				// Update user votes
+				self.models.User.updateOne({_id: auth.id}, {
+					$push: userUpdate,
+					$inc: {'stats.videosAdded': 1}
 				});
 
+				Router.success(res, videoFromDB);
+				return next();
 			})
 			.catch(function (err) {
 				Router.fail(res, {message: err}, 500);

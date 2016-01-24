@@ -226,10 +226,19 @@ class VideoListRoute {
 					if (videos[i].casters) videos[i].casters.casters = videos[i].casters.casters.map(item => lookup[item]);
 					if (videos[i].stage) videos[i].stage = videos[i].stage[0];
 					if (videos[i].format) videos[i].format = videos[i].format[0];
-					videos[i].author = {
-						name: lookup[videos[i].author].name,
-						_id: lookup[videos[i].author]._id
-					};
+
+					if (lookup[videos[i].author]) {
+						videos[i].author = {
+							name: lookup[videos[i].author].name,
+							_id: lookup[videos[i].author]._id
+						};
+					}
+					else {
+						videos[i].author = {
+							name: '[deleted]',
+							_id: videos[i].author
+						};
+					}
 				}
 
 				if (auth && auth.id) {

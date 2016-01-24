@@ -100,8 +100,6 @@ class Router {
 					// leave earlier if we have any errors already
 					if (error) return Router.fail(res, {message: error}, 403);
 
-					console.log(authData)
-
 					// query the database to check user is active
 					// if we have user data in session storage
 					if (authData.id) {
@@ -112,6 +110,11 @@ class Router {
 					}
 				})
 				.then(function (user) {
+					// For testing, ignore user search for testUser
+					if (self.config.debug && self.config.debug.loginHeaders && authData.name === 'testUser') {
+						user = true;
+					}
+
 					// if we have id from session cache but there is no user in db
 					// then die
 					if (!user && authData.id) {

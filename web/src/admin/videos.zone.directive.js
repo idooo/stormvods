@@ -15,6 +15,7 @@ const TEMPLATE = `
 				<tr>
 					<th>Creation Date</th>
 					<th>Youtube Id</th>
+					<th>Author</th>
 					<th width="20">Rating</th>
 
 					<th>Tournament</th>
@@ -33,6 +34,7 @@ const TEMPLATE = `
 					   <a href="https://www.youtube.com/watch?v={{::id}}" target="_blank">{{::id}}</a>
 					</div>
 				</td>
+				<td>{{::video.author.name}}</td>
 				<td>{{::video.rating}}</td>
 
 				<td>

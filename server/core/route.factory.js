@@ -4,8 +4,6 @@ var logger = require('winston'),
 	_omit = require('lodash/object/omit'),
 	_pick = require('lodash/object/pick'),
 	Constants = require('../constants'),
-	User = require('../models/user.model'),
-	Auth = require('./auth'),
 	Router = require('../routes/abstract.router');
 
 const LIST_PAGE_SIZE = 100;

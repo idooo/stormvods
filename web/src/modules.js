@@ -3,7 +3,7 @@ var modules = [
 	'ngAnimate',
 	'ngSanitize',
 	'ui.router',
-	'ui.select', 
+	'ui.select',
 	'angularMoment',
 	'LocalStorageModule'
 ];
@@ -20,6 +20,7 @@ appModules.forEach((moduleName) => angular.module(moduleName, []));
 
 // Common modules
 require('./constants');
+require('./cookies');
 require('./common/auth.service');
 require('./common/page.service');
 require('./common/header.directive');
