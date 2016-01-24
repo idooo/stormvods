@@ -33,6 +33,7 @@ require('./common/topselector.directive');
 
 require('./index/index.page');
 require('./top/top.page');
+require('./error/error.page');
 require('./callback/callback.page');
 require('./addvideo/addvideo.page');
 require('./addvideo/videourls.directive');

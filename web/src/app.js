@@ -10,13 +10,12 @@ angular
 
 function configuration ($httpProvider, $stateProvider, $urlRouterProvider, CookieHelper) {
 
-	// TODO: user registration throws error (check it)
-	$httpProvider.interceptors.push(($q) => {
+	$httpProvider.interceptors.push($q => {
 		return {
 			responseError: function (response) {
 				if (response.status === 403) {
 					CookieHelper.deleteAllCookies();
-					window.location.assign('/');
+					window.location.assign(`/#/error/${response.data.message}`);
 				}
 				return $q.reject(response);
 			}
@@ -69,6 +68,10 @@ function configuration ($httpProvider, $stateProvider, $urlRouterProvider, Cooki
 		.state('top', {
 			url: '/top/:mode',
 			template: '<top-page/>'
+		})
+		.state('error', {
+			url: '/error/:error',
+			template: '<error-page/>'
 		})
 		.state('zone', {
 			url: '/zone',
