@@ -21,7 +21,10 @@ class UsersRouter extends Router {
 		* @apiPermission USER
 		* @apiVersion 1.0.0
 		*/
-		this.bindGET(API_USERS_ME, this.routeMe, {auth: true});
+		this.bindGET(API_USERS_ME, this.routeMe, {
+			auth: true,
+			restrict: Constants.ROLES.USER
+		});
 
 		/**
 		* @api {post} /api/user Create a user

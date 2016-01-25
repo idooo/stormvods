@@ -60,6 +60,10 @@ class Video extends SchemaDefinition {
 			format: {
 				type: Array,
 				default: Array
+			},
+			reports: {
+				type: Array,
+				default: Array
 			}
 		});
 

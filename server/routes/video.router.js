@@ -4,6 +4,7 @@
  * API documentation for video routes in routes files
  */
 const API_VIDEO = '/api/video';
+const API_VIDEO_REPORT = '/api/video/report';
 const API_VIDEO_ID = '/api/video/:id';
 const API_VIDEO_ENTITY = '/api/video/entity';
 const API_VIDEO_INFO = '/api/video/:id/info';
@@ -20,15 +21,27 @@ var Constants = require('../constants'),
 	VideoInfoRoute = require('./video.routes/video.info.route'),
 	VideoAddRoute = require('./video.routes/video.add.route'),
 	VideoUpdateRouteEntity = require('./video.routes/video.update.entity.route'),
-	ValidateVideoRoute = require('./video.routes/video.validate.route');
+	ValidateVideoRoute = require('./video.routes/video.validate.route'),
+	VideoReportRoute = require('./video.routes/video.report.route');
 
 
 class VideoRouter extends Router {
 
 	configure () {
-		this.bindPOST(API_VIDEO, VideoAddRoute.route, {auth: true});
+		this.bindPOST(API_VIDEO, VideoAddRoute.route, {
+			auth: true,
+			restrict: Constants.ROLES.USER
+		});
 
-		this.bindGET(API_VIDEO_VALIDATE, ValidateVideoRoute.route, {auth: true});
+		this.bindPOST(API_VIDEO_REPORT, VideoReportRoute.route, {
+			auth: true,
+			restrict: Constants.ROLES.USER
+		});
+
+		this.bindGET(API_VIDEO_VALIDATE, ValidateVideoRoute.route, {
+			auth: true,
+			restrict: Constants.ROLES.USER
+		});
 
 		this.bindGET(API_VIDEO_LIST, VideoListRoute.route, {
 			auth: true,
@@ -83,7 +96,10 @@ class VideoRouter extends Router {
 			restrict: Constants.ROLES.ADMIN
 		});
 
-		this.bindGET(API_VIDEO_INFO, VideoInfoRoute.route, {auth: true});
+		this.bindGET(API_VIDEO_INFO, VideoInfoRoute.route, {
+			auth: true,
+			restrict: Constants.ROLES.USER
+		});
 	}
 }
 

@@ -81,11 +81,14 @@ class VideoGetRoute {
 		var self = this,
 			id = self.models.ObjectId(req.params.id),
 			promisesNames = [], // We need array to store promises order
-			video;
+			video,
+			fields = '-reports';
 
 		if (!id) return Router.notFound(res, next, req.params.id);
 
-		self.models.Video.findOne({_id: id, isRemoved: {'$ne': true}})
+		if (auth && auth.role >= Constants.ROLES.ADMIN) fields = '';
+
+		self.models.Video.findOne({_id: id, isRemoved: {'$ne': true}}, fields)
 			.then(function (_video) {
 				video = _video;
 

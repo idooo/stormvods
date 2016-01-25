@@ -32,7 +32,10 @@ class VoteRouter extends Router {
 		* @apiError WRONG_TYPE Wrong entity type
 		* @apiError TIME_RESTRICTION User can't vote too often
 		*/
-		this.bindPOST(API_VOTE_PATH, this.routeVote, {auth:true});
+		this.bindPOST(API_VOTE_PATH, this.routeVote, {
+			auth:true,
+			restrict: Constants.ROLES.USER
+		});
 	}
 
 	routeVote (req, res, next, auth) {

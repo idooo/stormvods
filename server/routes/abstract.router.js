@@ -98,7 +98,7 @@ class Router {
 					}
 
 					// leave earlier if we have any errors already
-					if (error) return Router.fail(res, {message: error}, 403);
+					if (error) return Promise.reject(error);
 
 					// query the database to check user is active
 					// if we have user data in session storage
@@ -127,8 +127,14 @@ class Router {
 					}
 				})
 				.catch(function (err) {
-					logger.error(err.stack);
-					Router.fail(res, {message: Constants.ERROR_INTERNAL}, 500);
+					if (err.stack) {
+						logger.error(err.stack);
+						Router.fail(res, {message: Constants.ERROR_INTERNAL}, 500);
+					}
+					else {
+						Router.fail(res, {message: err}, 403);
+					}
+
 				});
 		};
 	}
