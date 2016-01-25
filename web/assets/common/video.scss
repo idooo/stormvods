@@ -4,7 +4,8 @@ $video-container-top-color: #172c58;
 $video-container-bottom-color: #2c0448;
 
 .video {
-	
+	position: relative;
+
 	&__cover {
 		@include display(flex);
 		@include justify-content(center);
@@ -13,14 +14,14 @@ $video-container-bottom-color: #2c0448;
 		height: $video-height;
 		text-align: center;
 	}
-	
-	
+
+
 	&__hide-duration-container {
 		padding: 16px 0 0 20px;
 		position: absolute;
 		@include mobile-hidden();
 	}
-	
+
 		&__hide-duration-link {
 			@include user-select(none);
 			@include transition(all 0.25s);
@@ -30,13 +31,20 @@ $video-container-bottom-color: #2c0448;
 			font-size: 14px;
 			font-weight: 600;
 			border-bottom: 1px dotted rgba($light-text-color, 0.5);
-			
+
 			&:hover {
 				color: $light-text-color-bright;
 				border-bottom-color: $light-text-color-bright;
 			}
 		}
-	
+
+	&__report-container {
+		right: 20px;
+		padding: 16px 0 0 20px;
+		position: absolute;
+		@include mobile-hidden();
+	}
+
 	&__play {
 		@include retina-image('/dist/images/play', 91px 105px);
 		width: 91px;
@@ -44,76 +52,76 @@ $video-container-bottom-color: #2c0448;
 		margin: 0 auto 20px;
 		cursor: pointer;
 	}
-	
+
 	&__description {
 		text-align: center;
 		color: $light-text-color;
 		font-weight: 700;
-		
+
 		a {
 			color: $light-text-color;
 			text-decoration: none;
 			border-bottom: 1px solid $light-text-color-blend;
 			@include transition(all 0.3s ease-in-out);
-			
+
 			&:hover {
 				color: $light-text-color-bright;
 				border-bottom-color: $light-text-color-bright;
 			}
 		}
-		
+
 		span {
 			display: block;
 			text-transform: uppercase;
 		}
 	}
-	
+
 		&__stage {
 			font-size: 16px;
 			margin-bottom: 6px;
 			color: $light-text-color-blend;
 		}
-		
+
 		&__tournament {
 			font-size: em(22);
     		line-height: em(22px);
 			letter-spacing: 1px;
 			margin-bottom: 10px;
 		}
-		
+
 		&__format {
 			font-size: 14px;
 			color: $light-text-color-blend;
 			margin-bottom: 16px;
 		}
-		
+
 		&__teams {
 			color: $light-text-color-blend;
 			margin-bottom: 38px;
-			
+
 			a, span {
 				text-transform: none;
 			}
 		}
-		
+
 		&__casters {
 			font-size: 14px;
 			text-transform: none !important;
 			color: $light-text-color-blend;
-			
+
 			span, a {
 				color: $light-text-color-blend;
 				text-transform: none;
 				display: inline;
 			}
 		}
-		
+
 	&__wrapper {
 		height: 0;
 		overflow: hidden;
 		padding-bottom: 56.25%; // For ratio 16:9. 75% if ratio is 4:3
 		position: relative;
-		
+
 		embed,
 		object,
 		iframe {

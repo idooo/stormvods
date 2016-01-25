@@ -5,7 +5,8 @@ var modules = [
 	'ui.router',
 	'ui.select',
 	'angularMoment',
-	'LocalStorageModule'
+	'LocalStorageModule',
+	'ngDialog'
 ];
 
 // Application modules list

@@ -24,6 +24,8 @@ const TEMPLATE = `
 					<th>Teams</th>
 					<th>Casters</th>
 
+					<th>Reports</th>
+
 					<th width="50">Removed?</th>
 				</tr>
 			</thead>
@@ -64,6 +66,11 @@ const TEMPLATE = `
 						{{::caster.name}}
 					</div>
 					<span>{{::video.casters.rating}}</span>
+				</td>
+
+				<td>
+					{{::video.reports.length}}
+					<div ng-repeat="report in video.reports">{{::report}}</div>
 				</td>
 
 				<td>

@@ -7,3 +7,4 @@ require('angular-ui-router');
 require('angular-moment');
 require('angular-local-storage');
 require('ui-select');
+require('ng-dialog');
