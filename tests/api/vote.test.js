@@ -1,8 +1,8 @@
 var h = require('../api.helpers'),
 	users = {
-		user01: h.addUser('voteVideoUser1', 5),
-		user02: h.addUser('voteVideoUser2', 5),
-		user03: h.addUser('voteVideoUser3', 5)
+		user01: h.addUser('voteVideoUser1', 2),
+		user02: h.addUser('voteVideoUser2', 2),
+		user03: h.addUser('voteVideoUser3', 2)
 	};
 
 module.exports = {
