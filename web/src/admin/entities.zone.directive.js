@@ -29,6 +29,22 @@ const TEMPLATE = `
 				<td am-time-ago="item.creationDate"></td>
 			</tr>
 		</table>
+
+		<h2>Actions</h2>
+
+		<div>
+			<h3>Rename</h3>
+			<input class="zone-input" type="text" ng-model="renameId">
+			<input class="zone-input" type="text" ng-model="renameNewName">
+			<button ng-click="ctrl.rename(ctrl.entityType, renameId, renameNewName)">Rename</button>
+		</div>
+
+		<div>
+			<h3>Merge</h3>
+			<input class="zone-input" type="text" ng-model="mergeFromId">
+			<input class="zone-input" type="text" ng-model="mergeToId">
+			<button ng-click="ctrl.merge(ctrl.entityType, mergeFromId, mergeToId)">Merge</button>
+		</div>
 	</div>
 `;
 
@@ -56,10 +72,11 @@ function entitiesZoneDirective () {
 		self.data = {};
 		self.query = '{}';
 		self.sort = '{"_id": -1}';
-		self.entityType = ENTITY_TYPES[0];
+		self.entityType = ENTITY_TYPES[1];
 		self.entityTypes = ENTITY_TYPES;
 
 		self.getData = getData;
+		self.rename = rename;
 
 		getData();
 
@@ -69,5 +86,8 @@ function entitiesZoneDirective () {
 			$http.get(url).then(response => self.data = response.data);
 		}
 
+		function rename (entityType, id, newName) {
+
+		}
 	}
 }
