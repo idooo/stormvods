@@ -104,6 +104,8 @@ class RouteFactory {
 				currentPage,
 				items;
 
+			if (auth && auth.role >= Constants.ROLES.ADMIN) fields = '-__v';
+
 			model.paginate({}, {
 				page: page,
 				sort: {'_id': -1}, // sort by date, latest first
@@ -159,6 +161,11 @@ class RouteFactory {
 
 			var id = this.models.ObjectId(req.params.id),
 				update = req.params.update;
+
+			if (!id) {
+				Router.fail(res, {message: Constants.ERROR_NOT_FOUND});
+				return next();
+			}
 
 			model.updateOne({_id: id}, update)
 				.then(() => {

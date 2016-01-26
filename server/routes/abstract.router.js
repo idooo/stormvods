@@ -207,3 +207,26 @@ module.exports = Router;
  *     "code": 404
  * }
  */
+
+/**
+ * @apiDefine AUTH_REQUIRED
+ * @apiError AUTH_REQUIRED Auth required
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 403 Forbidden
+ * {
+ *     "message": "AUTH_REQUIRED",
+ *     "status": "error",
+ *     "code": 403
+ * }
+ */
+
+/**
+ * @apiDefine WRONG_TYPE
+ * @apiError WRONG_TYPE Wrong type parameter
+ */
+
+/**
+ * @apiDefine INVALID_VALUE
+ * @apiError INVALID_VALUE Wrong input values
+ */
