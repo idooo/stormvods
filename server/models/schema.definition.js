@@ -104,25 +104,6 @@ class SchemaDefinition {
 			});
 		});
 	}
-
-	/**
-	 * Promise-based function mark object as removed
-	 * Note: applied to model but not for schema
-	 * @return {Promise}
-	 */
-	markAsRemoved () {
-		var self = this;
-		return new Promise(function (resolve, reject) {
-			self.isRemoved = true;
-
-			self.save(function (err) {
-				if (err) reject(err);
-				else resolve();
-			});
-		});
-	}
-
-
 }
 
 module.exports = SchemaDefinition;

@@ -10,93 +10,72 @@ const API_VIDEO_ENTITY = '/api/video/entity';
 const API_VIDEO_INFO = '/api/video/:id/info';
 const API_VIDEO_VALIDATE = '/api/video/validate';
 const API_VIDEO_LIST = '/api/video/list';
-const API_VIDEO_TOPLIST = '/api/video/list/top';
+const API_VIDEO_TOP_LIST = '/api/video/list/top';
 
 var Constants = require('../constants'),
 	Router = require('./abstract.router'),
-	RouteFactory = require('../core/route.factory'),
-	VideoListRoute = require('./video.routes/video.list.route'),
-	VideoTopListRoute = require('./video.routes/video.toplist.route'),
-	VideoGetRoute = require('./video.routes/video.get.route'),
-	VideoInfoRoute = require('./video.routes/video.info.route'),
-	VideoAddRoute = require('./video.routes/video.add.route'),
-	VideoUpdateRouteEntity = require('./video.routes/video.update.entity.route'),
-	ValidateVideoRoute = require('./video.routes/video.validate.route'),
-	VideoReportRoute = require('./video.routes/video.report.route');
-
+	routes = {
+		list: require('./video.routes/video.list.route'),
+		topList: require('./video.routes/video.toplist.route'),
+		get: require('./video.routes/video.get.route'),
+		info: require('./video.routes/video.info.route'),
+		add: require('./video.routes/video.add.route'),
+		updateEntity: require('./video.routes/video.update.entity.route'),
+		validate: require('./video.routes/video.validate.route'),
+		report: require('./video.routes/video.report.route'),
+		update: require('./video.routes/video.update.route'),
+		remove: require('./video.routes/video.remove.route')
+	};
 
 class VideoRouter extends Router {
 
 	configure () {
-		this.bindPOST(API_VIDEO, VideoAddRoute.route, {
+		this.bindPOST(API_VIDEO, routes.add.route, {
 			auth: true,
 			restrict: Constants.ROLES.USER
 		});
 
-		this.bindPOST(API_VIDEO_REPORT, VideoReportRoute.route, {
+		this.bindPOST(API_VIDEO_REPORT, routes.report.route, {
 			auth: true,
 			restrict: Constants.ROLES.USER
 		});
 
-		this.bindGET(API_VIDEO_VALIDATE, ValidateVideoRoute.route, {
+		this.bindGET(API_VIDEO_VALIDATE, routes.validate.route, {
 			auth: true,
 			restrict: Constants.ROLES.USER
 		});
 
-		this.bindGET(API_VIDEO_LIST, VideoListRoute.route, {
+		this.bindGET(API_VIDEO_LIST, routes.list.route, {
 			auth: true,
 			restrict: Constants.ROLES.OPTIONAL
 		});
 
-		this.bindGET(API_VIDEO_TOPLIST, VideoTopListRoute.route, {
+		this.bindGET(API_VIDEO_TOP_LIST, routes.topList.route, {
 			auth: true,
 			restrict: Constants.ROLES.OPTIONAL
 		});
 
-		this.bindGET(API_VIDEO_ID, VideoGetRoute.route, {
+		this.bindGET(API_VIDEO_ID, routes.get.route, {
 			auth: true,
 			restrict: Constants.ROLES.OPTIONAL
 		});
 
-		this.bindPUT(API_VIDEO_ENTITY, VideoUpdateRouteEntity.route, {
+		this.bindPUT(API_VIDEO_ENTITY, routes.updateEntity.route, {
 			auth: true,
 			restrict: Constants.ROLES.USER
 		});
 
-		/**
-		 * @api {put} /api/video Change Video
-		 * @apiName ChangeVideo
-		 * @apiGroup Video
-		 * @apiPermission ADMIN
-		 * @apiVersion 1.0.0
-		 *
-		 * @apiDescription
-		 * Allowed only for admin
-		 *
-		 * @apiParam {ObjectId} id Video id
-		 * @apiParam {Object} update fields to update
-		 */
-		this.bindPUT(API_VIDEO, RouteFactory.generateUpdateRoute(this.models.Video), {
+		this.bindPUT(API_VIDEO, routes.update.route, {
 			auth: true,
 			restrict: Constants.ROLES.ADMIN
 		});
 
-		/**
-		* @api {delete} /api/video/:id Delete video
-		* @apiName DeleteVideo
-		* @apiGroup Video
-		* @apiPermission ADMIN
-		* @apiVersion 1.0.0
-		*
-		* @apiParam {ObjectId} id video id
-		* @apiParam {Boolean} [permanent] removes record from db permanently
-		*/
-		this.bindDELETE(API_VIDEO_ID, RouteFactory.generateRemoveRoute(this.models.Video), {
+		this.bindDELETE(API_VIDEO_ID, routes.remove.route, {
 			auth: true,
 			restrict: Constants.ROLES.ADMIN
 		});
 
-		this.bindGET(API_VIDEO_INFO, VideoInfoRoute.route, {
+		this.bindGET(API_VIDEO_INFO, routes.info.route, {
 			auth: true,
 			restrict: Constants.ROLES.USER
 		});

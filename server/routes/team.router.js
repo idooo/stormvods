@@ -1,12 +1,13 @@
 'use strict';
 
-var Router = require('./abstract.router'),
-	Constants = require('../constants'),
-	RouteFactory = require('../core/route.factory');
+var AbstractEntityRouter = require('./abstract.entity.router');
 
-class TeamRouter extends Router {
+class TeamRouter extends AbstractEntityRouter {
 
 	configure () {
+
+		this.bindRoutes('team', this.models.Team);
+
 		/**
 		 * @api {post} /api/team Create Team
 		 * @apiName CreateTeam
@@ -24,10 +25,6 @@ class TeamRouter extends Router {
 		 *     status: 'ok'
 		 * }
 		 */
-		this.bindPOST('/api/team', RouteFactory.generateAddRoute(this.models.Team), {
-			auth: true,
-			restrict: Constants.ROLES.USER
-		});
 
 		/**
 		 * @api {delete} /api/team/:id Delete Team
@@ -36,10 +33,6 @@ class TeamRouter extends Router {
 		 * @apiPermission ADMIN
 		 * @apiVersion 1.0.0
 		 */
-		this.bindDELETE('/api/team/:id', RouteFactory.generateRemoveRoute(this.models.Team), {
-			auth: true,
-			restrict: Constants.ROLES.ADMIN
-		});
 
 		/**
 		 * @api {get} /api/teams Get list of teams
@@ -47,10 +40,6 @@ class TeamRouter extends Router {
 		 * @apiGroup Team
 		 * @apiVersion 1.0.0
 		 */
-		this.bindGET('/api/teams', RouteFactory.generateGetListRoute(this.models.Team), {
-			auth: true,
-			restrict: Constants.ROLES.OPTIONAL
-		});
 
 		/**
 		 * @api {put} /api/team Update Team
@@ -62,10 +51,6 @@ class TeamRouter extends Router {
 		 * @apiParam {ObjectId} id Team id
 		 * @apiParam {Object} update Fields to update
 		 */
-		this.bindPUT('/api/team', RouteFactory.generateUpdateRoute(this.models.Team), {
-			auth: true,
-			restrict: Constants.ROLES.ADMIN
-		});
 	}
 }
 

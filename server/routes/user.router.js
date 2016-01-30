@@ -5,7 +5,6 @@ const API_USERS_ME = '/api/users/me';
 const API_USER = '/api/user';
 
 var Router = require('./abstract.router'),
-	RouteFactory = require('../core/route.factory'),
 	Constants = require('../constants');
 
 
@@ -72,7 +71,7 @@ class UsersRouter extends Router {
 		 * @apiParam {ObjectId} id User id
 		 * @apiParam {Object} update fields to update
 		 */
-		this.bindPUT(API_USER, RouteFactory.generateUpdateRoute(this.models.User), {
+		this.bindPUT(API_USER, this.updateUser, {
 			auth: true,
 			restrict: Constants.ROLES.ADMIN
 		});
@@ -146,6 +145,27 @@ class UsersRouter extends Router {
 				return next();
 			}
 		});
+	}
+
+	updateUser (req, res, next) {
+
+		var id = this.models.ObjectId(req.params.id),
+			update = req.params.update;
+
+		if (!id) {
+			Router.fail(res, {message: Constants.ERROR_NOT_FOUND});
+			return next();
+		}
+
+		this.models.User.updateOne({_id: id}, update)
+			.then(() => {
+				Router.success(res);
+				return next();
+			})
+			.catch(e => {
+				Router.fail(res, e);
+				return next();
+			});
 	}
 }
 

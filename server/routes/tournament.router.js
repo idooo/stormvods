@@ -1,13 +1,13 @@
 'use strict';
 
-var Router = require('./abstract.router'),
-	Constants = require('../constants'),
-	RouteFactory = require('../core/route.factory');
+var AbstractEntityRouter = require('./abstract.entity.router');
 
-
-class TournamentRouter extends Router {
+class TournamentRouter extends AbstractEntityRouter {
 
 	configure () {
+
+		this.bindRoutes('tournament', this.models.Tournament);
+
 		/**
 		 * @api {post} /api/tournament Create Tournament
 		 * @apiName CreateTournament
@@ -25,10 +25,6 @@ class TournamentRouter extends Router {
 		 *     status: 'ok'
 		 * }
 		 */
-		this.bindPOST('/api/tournament', RouteFactory.generateAddRoute(this.models.Tournament), {
-			auth: true,
-			restrict: Constants.ROLES.USER
-		});
 
 		/**
 		 * @api {delete} /api/tournament/:id Delete Tournament
@@ -37,10 +33,6 @@ class TournamentRouter extends Router {
 		 * @apiPermission ADMIN
 		 * @apiVersion 1.0.0
 		 */
-		this.bindDELETE('/api/tournament/:id', RouteFactory.generateRemoveRoute(this.models.Tournament), {
-			auth: true,
-			restrict: Constants.ROLES.ADMIN
-		});
 
 		/**
 		 * @api {get} /api/tournaments Get list of tournaments
@@ -48,10 +40,6 @@ class TournamentRouter extends Router {
 		 * @apiGroup Tournament
 		 * @apiVersion 1.0.0
 		 */
-		this.bindGET('/api/tournaments', RouteFactory.generateGetListRoute(this.models.Tournament), {
-			auth: true,
-			restrict: Constants.ROLES.OPTIONAL
-		});
 
 		/**
 		 * @api {put} /api/tournament Update Tournament
@@ -63,10 +51,19 @@ class TournamentRouter extends Router {
 		 * @apiParam {ObjectId} id Tournament id
 		 * @apiParam {Object} update Fields to update
 		 */
-		this.bindPUT('/api/tournament', RouteFactory.generateUpdateRoute(this.models.Tournament), {
-			auth: true,
-			restrict: Constants.ROLES.ADMIN
-		});
+
+        //
+		///**
+		// * @api {get} /api/tournament/:id Get tournament
+		// * @apiName GetTournament
+		// * @apiGroup Tournament
+		// * @apiPermission ADMIN
+		// * @apiVersion 1.0.0
+		// */
+		//this.bindGET('/api/tournaments/:id', RouteFactory.generateGetListRoute(this.models.Tournament), {
+		//	auth: true,
+		//	restrict: Constants.ROLES.ADMIN
+		//});
 	}
 }
 

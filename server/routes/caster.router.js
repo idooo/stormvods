@@ -1,13 +1,13 @@
 'use strict';
 
-var Router = require('./abstract.router'),
-	Constants = require('../constants'),
-	RouteFactory = require('../core/route.factory');
+var AbstractEntityRouter = require('./abstract.entity.router');
 
-
-class CasterRouter extends Router {
+class CasterRouter extends AbstractEntityRouter {
 
 	configure () {
+
+		this.bindRoutes('caster', this.models.Caster);
+
 		/**
 		 * @api {post} /api/caster Create Caster
 		 * @apiName CreateCaster
@@ -25,10 +25,6 @@ class CasterRouter extends Router {
 		 *     status: 'ok'
 		 * }
 		 */
-		this.bindPOST('/api/caster', RouteFactory.generateAddRoute(this.models.Caster), {
-			auth: true,
-			restrict: Constants.ROLES.USER
-		});
 
 		/**
 		 * @api {delete} /api/caster/:id Delete Caster
@@ -37,10 +33,6 @@ class CasterRouter extends Router {
 		 * @apiPermission ADMIN
 		 * @apiVersion 1.0.0
 		 */
-		this.bindDELETE('/api/caster/:id', RouteFactory.generateRemoveRoute(this.models.Caster), {
-			auth: true,
-			restrict: Constants.ROLES.ADMIN
-		});
 
 		/**
 		 * @api {get} /api/casters Get list of casters
@@ -48,10 +40,6 @@ class CasterRouter extends Router {
 		 * @apiGroup Caster
 		 * @apiVersion 1.0.0
 		 */
-		this.bindGET('/api/casters', RouteFactory.generateGetListRoute(this.models.Caster), {
-			auth: true,
-			restrict: Constants.ROLES.OPTIONAL
-		});
 
 		/**
 		 * @api {put} /api/caster Update Caster
@@ -63,10 +51,6 @@ class CasterRouter extends Router {
 		 * @apiParam {ObjectId} id Caster id
 		 * @apiParam {Object} update Fields to update
 		 */
-		this.bindPUT('/api/caster', RouteFactory.generateUpdateRoute(this.models.Caster), {
-			auth: true,
-			restrict: Constants.ROLES.ADMIN
-		});
 	}
 }
 
