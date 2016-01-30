@@ -16,6 +16,8 @@
  */
 
 var _uniq = require('lodash/array/uniq'),
+	logger = require('winston'),
+	errors = require('../../core/errors'),
 	Router = require('./../abstract.router'),
 	Video = require('../../models/video.model'),
 	Constants = require('../../constants');
@@ -23,17 +25,26 @@ var _uniq = require('lodash/array/uniq'),
 class VideoAddRoute {
 
 	static route (req, res, next, auth) {
-		var self = this;
+		var self = this,
 
-		// Check params and sanitise them
-		var promises = [],
+			// Check params and sanitise them
 			tournament = Router.filter(req.params.tournament),
 			youtubeIds = [].concat(req.params.youtubeId),
+			format = Router.filter(req.params.format),
+			stage = Router.filter(req.params.stage),
+
+			// Prepopulate some data
+			videoObjectData = {
+				youtubeId: youtubeIds,
+				author: auth.id,
+				rating: 1
+			},
+
+			// init structures we will need later
+			promises = [],
 			teams = [],
 			casters = [],
-			isEntityExist = {},
-			format = Router.filter(req.params.format),
-			stage = Router.filter(req.params.stage);
+			videoFromDB;
 
 		if (!Video.validateYoutubeId(youtubeIds)) {
 			Router.fail(res, {message: {youtubeId: Constants.ERROR_INVALID}});
@@ -54,10 +65,7 @@ class VideoAddRoute {
 
 		this.models.Video.getList({youtubeId: {'$in': youtubeIds}}, '_id')
 			.then(function (video) {
-				if (video.length) {
-					Router.fail(res, {message: Constants.ERROR_UNIQUE}, 400);
-					return next();
-				}
+				if (video.length) throw new errors.GenericAPIError(Constants.ERROR_UNIQUE);
 
 				if (Array.isArray(req.params.teams)) {
 					teams = req.params.teams.map(teamName => Router.filter(teamName));
@@ -66,7 +74,8 @@ class VideoAddRoute {
 					casters = req.params.casters.map(casterName => Router.filter(casterName));
 				}
 
-				// Create getOrCreate promises
+				// Create getOrCreate promises to get entities from database by name
+				// or create them if they are not exist
 				promises.push(self.models.Tournament.getOrCreate(tournament, auth));
 				teams.forEach(teamName => promises.push(self.models.Team.getOrCreate(teamName, auth)));
 				casters.forEach(casterName => promises.push(self.models.Caster.getOrCreate(casterName, auth)));
@@ -74,87 +83,89 @@ class VideoAddRoute {
 				return Promise.all(promises);
 			})
 			.then(function (data) {
-
-				var videoData = {
-						youtubeId: youtubeIds,
-						author: auth.id,
-						rating: 1
-					},
-					createdTeams = [],
-					createdCasters = [];
-
-				data.forEach(function (resolvedPromise) {
-					if (!resolvedPromise.value) return;
-					switch (resolvedPromise.type) {
-						case self.models.Tournament.modelName:
-							videoData.tournament = [{
-								rating: 1,
-								_id: resolvedPromise.value._id
-							}];
-							isEntityExist.tournament = true;
-							break;
-
-						case self.models.Caster.modelName:
-							createdCasters.push(resolvedPromise.value._id);
-							isEntityExist.casters = true;
-							break;
-
-						case self.models.Team.modelName:
-							createdTeams.push(resolvedPromise.value._id);
-							isEntityExist.teams = true;
-							break;
-					}
-				});
-
-				if (createdTeams.length) {
-					videoData.teams = [{
-						rating: 1,
-						teams: createdTeams
-					}];
-				}
-
-				if (createdCasters.length) {
-					videoData.casters = [{
-						rating: 1,
-						casters: createdCasters
-					}];
-				}
-
-				if (stage) {
-					videoData.stage = [{rating: 1, code: stage}];
-					isEntityExist.stage = true;
-				}
-				if (format) {
-					videoData.format = [{rating: 1, code: format}];
-					isEntityExist.format = true;
-				}
-
-				var video = new self.models.Video(videoData);
-
-				return video.save();
+				if (stage) videoObjectData.stage = [{rating: 1, code: stage}];
+				if (format) videoObjectData.format = [{rating: 1, code: format}];
+				return VideoAddRoute.createVideoObject.call(self, videoObjectData, data);
 			})
-			.then(function (videoFromDB) {
+			.then(function (_videoFromDB) {
 				var userUpdate = {};
+				videoFromDB = _videoFromDB;
 
 				// store user votes for video and entities
 				userUpdate['votes.video'] = videoFromDB._id;
 				Constants.ENTITY_TYPES.forEach(key => {
-					if (isEntityExist[key]) userUpdate[`votes.${key}`] = videoFromDB._id;
+					if (videoFromDB[key] && videoFromDB[key].length) userUpdate[`votes.${key}`] = videoFromDB._id;
 				});
+
 				// Update user votes
-				self.models.User.updateOne({_id: auth.id}, {
+				return self.models.User.findOneAndUpdate({_id: auth.id}, {
 					$push: userUpdate,
 					$inc: {'stats.videosAdded': 1}
 				});
-
+			})
+			.then(function () {
 				Router.success(res, videoFromDB);
 				return next();
 			})
 			.catch(function (err) {
-				Router.fail(res, {message: err}, 500);
+				if (!err.isApiError) {
+					logger.error(err.stack);
+					Router.fail(res, {message: Constants.ERROR_INTERNAL}, 500);
+				}
+				else Router.fail(res, {message: err.message}, 400);
 				return next();
 			});
+	}
 
+	/**
+	 * Create new Video object using passed video data and populate it using data returned
+	 * from promises (passed as `data` param)
+	 *
+	 * @param {Object} video Video data
+	 * @param {Array<Object>} data Array of promises results
+     */
+	static createVideoObject (video, data) {
+		var self = this,
+			createdTeams = [],
+			createdCasters = [];
+
+		if (data) {
+			data.forEach(function (resolvedPromise) {
+				if (!resolvedPromise.value) return;
+				switch (resolvedPromise.type) {
+					case self.models.Tournament.modelName:
+						video.tournament = [{
+							rating: 1,
+							_id: resolvedPromise.value._id
+						}];
+						break;
+
+					case self.models.Caster.modelName:
+						createdCasters.push(resolvedPromise.value._id);
+						break;
+
+					case self.models.Team.modelName:
+						createdTeams.push(resolvedPromise.value._id);
+						break;
+				}
+			});
+		}
+
+		if (createdTeams.length) {
+			video.teams = [{
+				rating: 1,
+				teams: createdTeams
+			}];
+		}
+
+		if (createdCasters.length) {
+			video.casters = [{
+				rating: 1,
+				casters: createdCasters
+			}];
+		}
+
+		return (new self.models.Video(video)).save();
 	}
 }
 

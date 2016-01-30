@@ -157,7 +157,7 @@ class UsersRouter extends Router {
 			return next();
 		}
 
-		this.models.User.updateOne({_id: id}, update)
+		this.models.User.findOneAndUpdate({_id: id}, update)
 			.then(() => {
 				Router.success(res);
 				return next();

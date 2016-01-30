@@ -29,7 +29,7 @@ class VideoUpdateRoute {
 			return next();
 		}
 
-		self.models.Video.updateOne({_id: id}, update)
+		self.models.Video.findOneAndUpdate({_id: id}, update)
 			.then(() => {
 				Router.success(res);
 				return next();

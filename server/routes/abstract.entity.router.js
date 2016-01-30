@@ -126,7 +126,7 @@ class AbstractEntityRouter extends Router {
 			return next();
 		}
 
-		this.model.updateOne({_id: id}, update)
+		this.model.findOneAndUpdate({_id: id}, update)
 			.then(() => {
 				Router.success(res);
 				return next();
@@ -143,7 +143,7 @@ class AbstractEntityRouter extends Router {
 
 		if (!id) return Router.notFound(res, next, req.params.id);
 
-		this.model.updateOne({_id: id}, {isRemoved: true})
+		this.model.findOneAndUpdate({_id: id}, {isRemoved: true})
 			.then(() => {
 				Router.success(res);
 				return next();

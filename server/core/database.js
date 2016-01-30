@@ -40,6 +40,7 @@ class Database {
 			.on('error', (err) => logger.error('Database connection error', JSON.stringify(err)))
 			.once('open', () => {
 				this.isConnected = true;
+				mongoose.Promise = global.Promise;
 				logger.info(`DB connected ${this.config.uri}/${this.config.db}`);
 			});
 	}

@@ -1,5 +1,7 @@
 'use strict';
 
+// TODO: Remove this, use native mongoose promises
+
 var logger = require('winston');
 
 const DEFAULT_FIELDS = '-__v -isRemoved';
@@ -15,9 +17,6 @@ class SchemaDefinition {
 		this.schema.statics.getList = this.getList;
 		this.schema.statics.findOne = this.findOne;
 		this.schema.statics.removeOne = this.removeOne;
-		this.schema.statics.updateOne = this.updateOne;
-
-		this.schema.methods.markAsRemoved = this.markAsRemoved;
 	}
 
 	/**
@@ -79,26 +78,6 @@ class SchemaDefinition {
 
 		return new Promise(function (resolve, reject) {
 			self.remove(query, function (err) {
-				if (err) reject(err);
-				else resolve();
-			});
-		});
-	}
-
-	/**
-	 * Promise-based function to update object in collection
-	 * @param {Object} query
-	 * @param {Object} update
-	 * @param {Object} [options]
-	 * @return {Promise}
-	 */
-	updateOne (query, update, options) {
-		var self = this;
-
-		options = options || {};
-
-		return new Promise(function (resolve, reject) {
-			self.findOneAndUpdate(query, update, options, function (err) {
 				if (err) reject(err);
 				else resolve();
 			});

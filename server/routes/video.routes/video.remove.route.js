@@ -38,7 +38,7 @@ class VideoRemoveRoute {
 				});
 		}
 		else {
-			self.model.updateOne({_id: id}, {isRemoved: true})
+			self.models.Video.findOneAndUpdate({_id: id}, {isRemoved: true})
 				.then(() => {
 					Router.success(res);
 					return next();
