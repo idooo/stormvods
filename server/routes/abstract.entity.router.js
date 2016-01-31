@@ -25,7 +25,7 @@ class AbstractEntityRouter extends Router {
 			restrict: Constants.ROLES.USER
 		});
 
-		this.bindDELETE(`/api/${routeName}/:id`, this.removeRoute, {
+		this.bindDELETE(`/api/${routeName}`, this.removeRoute, {
 			auth: true,
 			restrict: Constants.ROLES.ADMIN
 		});
@@ -186,19 +186,18 @@ class AbstractEntityRouter extends Router {
 			})
 			.then(function (videos) {
 				var promises = [];
-
 				for (let i = 0; i < videos.length; i++) {
-					for (let j = 1; j < videos[self.fieldName].length; j++) {
+					for (let j = 0; j < videos[i][self.fieldName].length; j++) {
 						// video.teams.0.teams [] for example
-						if (Array.isArray(videos[i][self.fieldName][j])) {
-							if (!videos[i][self.fieldName][j][self.fieldName][0]._id.equals(id) &&
-								!videos[i][self.fieldName][j][self.fieldName][1]._id.equals(id)) continue;
+						if (videos[i][self.fieldName][j][self.fieldName]) {
+							if (!videos[i][self.fieldName][j][self.fieldName][0].equals(id) &&
+								!videos[i][self.fieldName][j][self.fieldName][1].equals(id)) continue;
 						}
 						else if (!videos[i][self.fieldName][j]._id.equals(id)) continue;
 
 						videos[i][self.fieldName].splice(j, 1);
 						promises.push(
-							self.models.Video.update({_id: videos[j]._id}, {
+							self.models.Video.update({_id: videos[i]._id}, {
 								[self.fieldName]: videos[i][self.fieldName]
 							})
 						);
@@ -206,11 +205,12 @@ class AbstractEntityRouter extends Router {
 				}
 				return Promise.all(promises);
 			})
-			.then(() => {
+			.then((a) => {
 				Router.success(res);
 				return next();
 			})
 			.catch(e => {
+				logger.error(e.stack);
 				Router.fail(res, e);
 				return next();
 			});

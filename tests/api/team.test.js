@@ -91,7 +91,7 @@ module.exports = {
 		];
 
 		// Create 3 videos
-		videos.map(data => h.post('/api/video', data, users.user01));
+		videos = videos.map(data => h.post('/api/video', data, users.user01));
 
 		// add new teams to second video
 		h.put('/api/video/entity', {
@@ -99,6 +99,18 @@ module.exports = {
 			field: 'teams',
 			values: ['Team Test 201', 'Team Test 001']
 		}, users.user02);
+
+		var res = h.get('/api/lookup/team?query=Team Test 001', undefined, users.user01),
+			res2 = h.delete('/api/team', {id: res.values[0]._id}, users.admin),
+			resVideo0 = h.get('/api/video/' + videos[0]._id),
+			resVideo1 = h.get('/api/video/' + videos[1]._id),
+			resVideo2 = h.get('/api/video/' + videos[2]._id);
+
+		console.log(res2)
+
+		console.log(resVideo0)
+		console.log(resVideo1)
+		console.log(resVideo2)
 
 		test.done();
 	}
