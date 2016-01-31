@@ -103,19 +103,19 @@ class VideoInfoRoute {
 
 				if (video.tournament.length) {
 					for (let i = 0; i < video.tournament.length; i++) tournamentIds.push(video.tournament[i]._id);
-					promises.push(self.models.Tournament.getList({_id: {'$in': tournamentIds}}));
+					promises.push(self.models.Tournament.find({_id: {'$in': tournamentIds}}));
 				}
 				else video.tournament = [];
 
 				if (video.casters.length) {
 					for (let i = 0; i < video.casters.length; i++) casterIds = casterIds.concat(video.casters[i].casters);
-					promises.push(self.models.Caster.getList({_id: {'$in': casterIds}}));
+					promises.push(self.models.Caster.find({_id: {'$in': casterIds}}));
 				}
 				else video.casters = [];
 
 				if (video.teams.length) {
 					for (let i = 0; i < video.teams.length; i++) teamIds = teamIds.concat(video.teams[i].teams);
-					promises.push(self.models.Team.getList({_id: {'$in': teamIds}}));
+					promises.push(self.models.Team.find({_id: {'$in': teamIds}}));
 				}
 				else video.teams = [];
 

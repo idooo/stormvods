@@ -100,7 +100,7 @@ class LookupRouter extends Router {
 			return next();
 		}
 
-		self.models[modelName].getList(query, 'name _id')
+		self.models[modelName].find(query, 'name _id')
 			.then(function (values) {
 				var result = [];
 

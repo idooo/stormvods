@@ -3,15 +3,14 @@
 var mongoose = require('mongoose'),
 	uniqueValidator = require('mongoose-unique-validator'),
 	mongoosePaginate = require('mongoose-paginate'),
-	SchemaDefinition = require('./schema.definition'),
+	AbstractModel = require('./abstract.model'),
 	logger = require('winston'),
 	Constants = require('../constants');
 
-class BasicModel extends SchemaDefinition {
+class BasicModel extends AbstractModel {
 
 	constructor () {
 		super();
-
 		this.schema = new mongoose.Schema({
 			name: {
 				type: String,

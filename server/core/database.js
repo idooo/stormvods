@@ -2,7 +2,7 @@
 
 const MODELS_PATH = `${__dirname}/../models`;
 const RE_PATTERN_TO_LOAD =  /.*\.model\.js/;
-const EXCLUDED_FILES = ['basic.model.js'];
+const EXCLUDED_FILES = ['basic.model.js', 'abstract.model.js'];
 
 var fs = require('fs'),
 	mongoose = require('mongoose'),
@@ -53,7 +53,6 @@ class Database {
 			.filter((filename) => RE_PATTERN_TO_LOAD.test(filename) && EXCLUDED_FILES.indexOf(filename) === -1)
 			.forEach((filename) => {
 				var schemaDefinition = new (require(`${MODELS_PATH}/${filename}`));
-				schemaDefinition.configure();
 				this.models[schemaDefinition.name] = mongoose.model(schemaDefinition.name, schemaDefinition.schema);
 			});
 

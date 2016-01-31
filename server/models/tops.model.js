@@ -1,9 +1,9 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-	SchemaDefinition = require('./schema.definition');
+	AbstractModel = require('./abstract.model');
 
-class Tops extends SchemaDefinition {
+class Tops extends AbstractModel {
 
 	constructor () {
 		super();
@@ -25,9 +25,7 @@ class Tops extends SchemaDefinition {
 				default: Array
 			}
 		});
-
 	}
-
 }
 
 module.exports = Tops;

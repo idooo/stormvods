@@ -11,6 +11,10 @@ const LIST_PAGE_SIZE = 100;
 
 class AbstractEntityRouter extends Router {
 
+	/**
+	 * @param {String} routeName
+	 * @param {AbstractModel} model
+     */
 	bindRoutes (routeName, model) {
 		this.model = model;
 
@@ -85,7 +89,7 @@ class AbstractEntityRouter extends Router {
 				for (let i = 0; i < items.length; i++) {
 					_ids.push(items[i].author);
 				}
-				return self.models.User.getList({_id: {'$in' : _ids}});
+				return self.models.User.find({_id: {'$in' : _ids}});
 			})
 			.then(function (users) {
 				var lookup = {};

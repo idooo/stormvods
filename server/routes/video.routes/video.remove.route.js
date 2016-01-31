@@ -25,7 +25,7 @@ class VideoRemoveRoute {
 		if (!id) return Router.notFound(res, next, req.params.id);
 
 		if (body.permanent) {
-			self.models.Video.removeOne({_id: id})
+			self.models.Video.remove({_id: id})
 				.then(function () {
 					Router.success(res);
 					logger.info(`Video "${id}" has been permanently removed`);

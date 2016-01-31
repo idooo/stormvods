@@ -107,11 +107,11 @@ class VideoGetRoute {
 					promisesNames.push(self.models.Tournament.modelName);
 				}
 				if (topTeams) {
-					promises.push(self.models.Team.getList({_id: {'$in': topTeams.teams}}, 'name _id'));
+					promises.push(self.models.Team.find({_id: {'$in': topTeams.teams}}, 'name _id'));
 					promisesNames.push(self.models.Team.modelName);
 				}
 				if (topCasters) {
-					promises.push(self.models.Caster.getList({_id: {'$in': topCasters.casters}}, 'name _id'));
+					promises.push(self.models.Caster.find({_id: {'$in': topCasters.casters}}, 'name _id'));
 					promisesNames.push(self.models.Caster.modelName);
 				}
 				promises.push(self.models.User.findOne({_id: video.author}, 'name _id'));

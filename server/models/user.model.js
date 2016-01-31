@@ -3,11 +3,11 @@
 var mongoose = require('mongoose'),
 	logger = require('winston'),
 	mongoosePaginate = require('mongoose-paginate'),
-	SchemaDefinition = require('./schema.definition'),
+	AbstractModel = require('./abstract.model'),
 	Video = require('./video.model'),
 	Constants = require('../constants');
 
-class User extends SchemaDefinition {
+class User extends AbstractModel {
 
 	constructor () {
 		super();

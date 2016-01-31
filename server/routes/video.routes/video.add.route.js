@@ -63,7 +63,7 @@ class VideoAddRoute {
 			return next();
 		}
 
-		this.models.Video.getList({youtubeId: {'$in': youtubeIds}}, '_id')
+		this.models.Video.find({youtubeId: {'$in': youtubeIds}}, '_id')
 			.then(function (video) {
 				if (video.length) throw new errors.GenericAPIError(Constants.ERROR_UNIQUE);
 

@@ -3,10 +3,10 @@
 var mongoose = require('mongoose'),
 	uniqueValidator = require('mongoose-unique-validator'),
 	mongoosePaginate = require('mongoose-paginate'),
-	SchemaDefinition = require('./schema.definition'),
+	AbstractModel = require('./abstract.model'),
 	Constants = require('../constants');
 
-class Video extends SchemaDefinition {
+class Video extends AbstractModel {
 
 	constructor () {
 		super();
@@ -82,7 +82,7 @@ class Video extends SchemaDefinition {
 	 * @description
 	 * Deep search in the video data trying to find full match for entity
 	 *
-	 * @param {Obejct} Video
+	 * @param {Object} video
 	 * @param {String} entityType
 	 * @param {String} entityId _id of entity or array
 	 * @param {Function} callback Sync callbcak function
