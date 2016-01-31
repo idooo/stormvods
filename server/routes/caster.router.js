@@ -6,7 +6,7 @@ class CasterRouter extends AbstractEntityRouter {
 
 	configure () {
 
-		this.bindRoutes('caster', this.models.Caster);
+		this.bindRoutes('caster', this.models.Caster, 'casters');
 
 		/**
 		 * @api {post} /api/caster Create Caster

@@ -14,9 +14,11 @@ class AbstractEntityRouter extends Router {
 	/**
 	 * @param {String} routeName
 	 * @param {AbstractModel} model
+	 * @param {String} [videoField] Field name in video object for that entity
      */
-	bindRoutes (routeName, model) {
+	bindRoutes (routeName, model, videoField) {
 		this.model = model;
+		this.fieldName = videoField || routeName;
 
 		this.bindPOST(`/api/${routeName}`, this.addRoute, {
 			auth: true,
@@ -39,6 +41,13 @@ class AbstractEntityRouter extends Router {
 		});
 	}
 
+	/**
+	 *
+	 * @param req
+	 * @param res
+	 * @param next
+     * @param auth
+     */
 	addRoute (req, res, next, auth) {
 		// Validate params
 		var name = Router.filter(req.params.name);
@@ -61,6 +70,13 @@ class AbstractEntityRouter extends Router {
 		});
 	}
 
+	/**
+	 *
+	 * @param req
+	 * @param res
+	 * @param next
+     * @param auth
+     */
 	listRoute (req, res, next, auth) {
 		var self = this,
 			fields = '-isRemoved -__v',
@@ -120,6 +136,13 @@ class AbstractEntityRouter extends Router {
 			});
 	}
 
+	/**
+	 *
+	 * @param req
+	 * @param res
+	 * @param next
+     * @returns {*}
+     */
 	updateRoute (req, res, next) {
 
 		var id = this.models.ObjectId(req.params.id),
@@ -141,13 +164,48 @@ class AbstractEntityRouter extends Router {
 			});
 	}
 
+	/**
+	 * Pretty slow operation
+	 * After marking entity as removed we have to go through all the videos
+	 * and remove it from there. If entity is a part of group
+	 *
+	 * @param req
+	 * @param res
+	 * @param next
+     * @returns {*}
+     */
 	removeRoute (req, res, next) {
-
-		var id = this.models.ObjectId(req.params.id);
+		var self = this,
+			id = this.models.ObjectId(req.params.id);
 
 		if (!id) return Router.notFound(res, next, req.params.id);
 
-		this.model.findOneAndUpdate({_id: id}, {isRemoved: true})
+		self.model.findOneAndUpdate({_id: id}, {isRemoved: true})
+			.then(() => {
+				return self.models.Video.find({}, `_id ${self.fieldName}`);
+			})
+			.then(function (videos) {
+				var promises = [];
+
+				for (let i = 0; i < videos.length; i++) {
+					for (let j = 1; j < videos[self.fieldName].length; j++) {
+						// video.teams.0.teams [] for example
+						if (Array.isArray(videos[i][self.fieldName][j])) {
+							if (!videos[i][self.fieldName][j][self.fieldName][0]._id.equals(id) &&
+								!videos[i][self.fieldName][j][self.fieldName][1]._id.equals(id)) continue;
+						}
+						else if (!videos[i][self.fieldName][j]._id.equals(id)) continue;
+
+						videos[i][self.fieldName].splice(j, 1);
+						promises.push(
+							self.models.Video.update({_id: videos[j]._id}, {
+								[self.fieldName]: videos[i][self.fieldName]
+							})
+						);
+					}
+				}
+				return Promise.all(promises);
+			})
 			.then(() => {
 				Router.success(res);
 				return next();

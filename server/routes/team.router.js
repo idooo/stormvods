@@ -6,7 +6,7 @@ class TeamRouter extends AbstractEntityRouter {
 
 	configure () {
 
-		this.bindRoutes('team', this.models.Team);
+		this.bindRoutes('team', this.models.Team, 'teams');
 
 		/**
 		 * @api {post} /api/team Create Team

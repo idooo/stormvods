@@ -74,7 +74,32 @@ module.exports = {
 
 	// TODO: write test
 	deleteTeam: function (test) {
-		test.equal('ok', 'ok');
+
+		var videos = [
+			{
+				youtubeId: 'teaVideo000',
+				teams: ['Team Test 001', 'Team Test 002']
+			},
+			{
+				youtubeId: 'teaVideo100',
+				teams: ['Team Test 101', 'Team Test 102']
+			},
+			{
+				youtubeId: 'teaVideo200',
+				teams: ['Team Test 201', 'Team Test 001']
+			}
+		];
+
+		// Create 3 videos
+		videos.map(data => h.post('/api/video', data, users.user01));
+
+		// add new teams to second video
+		h.put('/api/video/entity', {
+			id: videos[1]._id,
+			field: 'teams',
+			values: ['Team Test 201', 'Team Test 001']
+		}, users.user02);
+
 		test.done();
 	}
 };
