@@ -72,7 +72,6 @@ module.exports = {
 	},
 
 
-	// TODO: write test
 	deleteTeam: function (test) {
 
 		var videos = [
@@ -87,10 +86,14 @@ module.exports = {
 			{
 				youtubeId: 'teaVideo200',
 				teams: ['Team Test 201', 'Team Test 001']
+			},
+			{
+				youtubeId: 'teaVideo300',
+				teams: ['Team Test 301', 'Team Test 302']
 			}
 		];
 
-		// Create 3 videos
+		// Create videos
 		videos = videos.map(data => h.post('/api/video', data, users.user01));
 
 		// add new teams to second video
@@ -98,19 +101,28 @@ module.exports = {
 			id: videos[1]._id,
 			field: 'teams',
 			values: ['Team Test 201', 'Team Test 001']
+		}, users.user03);
+
+		// even upvote it ^
+		var res = h.get('/api/lookup/team?query=Team Test 001', undefined, users.user01);
+		h.post('/api/vote', {
+			videoId: videos[1]._id,
+			entityType: 'teams',
+			entityId: res.values[0]._id
 		}, users.user02);
 
-		var res = h.get('/api/lookup/team?query=Team Test 001', undefined, users.user01),
-			res2 = h.delete('/api/team', {id: res.values[0]._id}, users.admin),
+		var res2 = h.delete(`/api/team/${res.values[0]._id}`, undefined, users.admin),
 			resVideo0 = h.get('/api/video/' + videos[0]._id),
 			resVideo1 = h.get('/api/video/' + videos[1]._id),
-			resVideo2 = h.get('/api/video/' + videos[2]._id);
+			resVideo2 = h.get('/api/video/' + videos[2]._id),
+			resVideo3 = h.get('/api/video/' + videos[3]._id);
 
-		console.log(res2)
-
-		console.log(resVideo0)
-		console.log(resVideo1)
-		console.log(resVideo2)
+		test.equal(resVideo0.teams.length, 0);
+		test.equal(resVideo1.teams.teams[0].name, 'Team Test 101');
+		test.equal(resVideo1.teams.teams[1].name, 'Team Test 102');
+		test.equal(resVideo2.teams.length, 0);
+		test.equal(resVideo3.teams.teams[0].name, 'Team Test 301');
+		test.equal(resVideo3.teams.teams[1].name, 'Team Test 302');
 
 		test.done();
 	}

@@ -25,7 +25,7 @@ class AbstractEntityRouter extends Router {
 			restrict: Constants.ROLES.USER
 		});
 
-		this.bindDELETE(`/api/${routeName}`, this.removeRoute, {
+		this.bindDELETE(`/api/${routeName}/:id`, this.removeRoute, {
 			auth: true,
 			restrict: Constants.ROLES.ADMIN
 		});
