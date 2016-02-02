@@ -100,6 +100,8 @@ class LookupRouter extends Router {
 			return next();
 		}
 
+		query.isRemoved = {'$ne': true};
+
 		self.models[modelName].find(query, 'name _id')
 			.then(function (values) {
 				var result = [];

@@ -9,6 +9,13 @@ class CasterRouter extends AbstractEntityRouter {
 		this.bindRoutes('caster', this.models.Caster, 'casters');
 
 		/**
+		 * @api {get} /api/casters Get list of casters
+		 * @apiName GetCasters
+		 * @apiGroup Caster
+		 * @apiVersion 1.0.0
+		 */
+
+		/**
 		 * @api {post} /api/caster Create Caster
 		 * @apiName CreateCaster
 		 * @apiGroup Caster
@@ -27,21 +34,6 @@ class CasterRouter extends AbstractEntityRouter {
 		 */
 
 		/**
-		 * @api {delete} /api/caster/:id Delete Caster
-		 * @apiName DeleteCaster
-		 * @apiGroup Caster
-		 * @apiPermission ADMIN
-		 * @apiVersion 1.0.0
-		 */
-
-		/**
-		 * @api {get} /api/casters Get list of casters
-		 * @apiName GetCasters
-		 * @apiGroup Caster
-		 * @apiVersion 1.0.0
-		 */
-
-		/**
 		 * @api {put} /api/caster Update Caster
 		 * @apiName UpdateCaster
 		 * @apiGroup Caster
@@ -50,6 +42,34 @@ class CasterRouter extends AbstractEntityRouter {
 		 *
 		 * @apiParam {ObjectId} id Caster id
 		 * @apiParam {Object} update Fields to update
+		 */
+
+		/**
+		 * @api {put} /api/caster/merge Merge Caster
+		 * @apiName MergeCaster
+		 * @apiGroup Caster
+		 * @apiPermission ADMIN
+		 * @apiVersion 1.0.0
+		 *
+		 * @apiDescription
+		 * Merge SOURCE entity into TARGET entity. System goes over
+		 * all videos and replace SOURCE id by TARGET id. Deletes SOURCE entity
+		 * permanently
+		 *
+		 * @apiParam {ObjectId} src Source entity id
+		 * @apiParam {ObjectId} target Target entity id
+		 */
+
+		/**
+		 * @api {delete} /api/caster/:id Delete Caster
+		 * @apiName DeleteCaster
+		 * @apiGroup Caster
+		 * @apiPermission ADMIN
+		 * @apiVersion 1.0.0
+		 *
+		 * @apiDescription
+		 * Remove entity permanently, search through all the videos
+		 * and remove entity from there
 		 */
 	}
 }

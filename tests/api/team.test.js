@@ -71,7 +71,6 @@ module.exports = {
 		test.done();
 	},
 
-
 	deleteTeam: function (test) {
 
 		var videos = [
@@ -112,6 +111,7 @@ module.exports = {
 		}, users.user02);
 
 		var res2 = h.delete(`/api/team/${res.values[0]._id}`, undefined, users.admin),
+			res3 = h.get('/api/lookup/team?query=Team Test 001', undefined, users.user01),
 			resVideo0 = h.get('/api/video/' + videos[0]._id),
 			resVideo1 = h.get('/api/video/' + videos[1]._id),
 			resVideo2 = h.get('/api/video/' + videos[2]._id),
@@ -123,6 +123,76 @@ module.exports = {
 		test.equal(resVideo2.teams.length, 0);
 		test.equal(resVideo3.teams.teams[0].name, 'Team Test 301');
 		test.equal(resVideo3.teams.teams[1].name, 'Team Test 302');
+
+		test.equal(res3.values.length, 0);
+
+		test.done();
+	},
+
+	mergeTeam: function (test) {
+
+		var videos = [
+			{
+				youtubeId: 'temVideo000',
+				teams: ['Team Test 1001', 'Team Test 1002']
+			},
+			{
+				youtubeId: 'temVideo100',
+				teams: ['Team Test 1101', 'Team Test 1102']
+			},
+			{
+				youtubeId: 'temVideo200',
+				teams: ['Team Test 1201', 'Team Test 1001']
+			},
+			{
+				youtubeId: 'temVideo300',
+				teams: ['Team Test 1301', 'Team Test 1302']
+			}
+		];
+
+		// Create videos
+		videos = videos.map(data => h.post('/api/video', data, users.user01));
+
+		// add new teams to second video
+		h.put('/api/video/entity', {
+			id: videos[1]._id,
+			field: 'teams',
+			values: ['Team Test 1201', 'Team Test 1001']
+		}, users.user03);
+
+		// even upvote it ^
+		var res = h.get('/api/lookup/team?query=Team Test 1001', undefined, users.user01),
+			res2 = h.get('/api/lookup/team?query=Team Test 1301', undefined, users.user01);
+
+		h.post('/api/vote', {
+			videoId: videos[1]._id,
+			entityType: 'teams',
+			entityId: res.values[0]._id
+		}, users.user02);
+
+		var res3 = h.post(`/api/team/merge`, {
+				src: res.values[0]._id, // 'Team Test 1001'
+				target: res2.values[0]._id // 'Team Test 1301'
+			}, users.admin),
+			res4 = h.get('/api/lookup/team?query=Team Test 1001', undefined, users.user01),
+			resVideo0 = h.get('/api/video/' + videos[0]._id),
+			resVideo1 = h.get('/api/video/' + videos[1]._id),
+			resVideo2 = h.get('/api/video/' + videos[2]._id),
+			resVideo3 = h.get('/api/video/' + videos[3]._id);
+
+		test.ok(resVideo0.teams.teams.map(i => i.name).indexOf('Team Test 1301') !== -1);
+		test.ok(resVideo0.teams.teams.map(i => i.name).indexOf('Team Test 1002') !== -1);
+
+		test.ok(resVideo1.teams.teams.map(i => i.name).indexOf('Team Test 1101') !== -1);
+		test.ok(resVideo1.teams.teams.map(i => i.name).indexOf('Team Test 1102') !== -1);
+
+		test.ok(resVideo2.teams.teams.map(i => i.name).indexOf('Team Test 1201') !== -1);
+		test.ok(resVideo2.teams.teams.map(i => i.name).indexOf('Team Test 1301') !== -1);
+
+		test.ok(resVideo3.teams.teams.map(i => i.name).indexOf('Team Test 1301') !== -1);
+		test.ok(resVideo3.teams.teams.map(i => i.name).indexOf('Team Test 1302') !== -1);
+
+		test.equal(res4.values.length, 0);
 
 		test.done();
 	}

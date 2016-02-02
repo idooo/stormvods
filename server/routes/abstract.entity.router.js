@@ -4,6 +4,7 @@ var logger = require('winston'),
 	_omit = require('lodash/object/omit'),
 	_pick = require('lodash/object/pick'),
 	_flatten = require('lodash/array/flatten'),
+	errors = require('../core/errors'),
 	Router = require('./abstract.router'),
 	Constants = require('../constants');
 
@@ -20,6 +21,11 @@ class AbstractEntityRouter extends Router {
 		this.model = model;
 		this.fieldName = videoField || routeName;
 
+		this.bindGET(`/api/${routeName}s`, this.listRoute, {
+			auth: true,
+			restrict: Constants.ROLES.OPTIONAL
+		});
+
 		this.bindPOST(`/api/${routeName}`, this.addRoute, {
 			auth: true,
 			restrict: Constants.ROLES.USER
@@ -30,12 +36,12 @@ class AbstractEntityRouter extends Router {
 			restrict: Constants.ROLES.ADMIN
 		});
 
-		this.bindGET(`/api/${routeName}s`, this.listRoute, {
+		this.bindPUT(`/api/${routeName}`, this.updateRoute, {
 			auth: true,
-			restrict: Constants.ROLES.OPTIONAL
+			restrict: Constants.ROLES.ADMIN
 		});
 
-		this.bindPUT(`/api/${routeName}`, this.updateRoute, {
+		this.bindPOST(`/api/${routeName}/merge`, this.mergeRoute, {
 			auth: true,
 			restrict: Constants.ROLES.ADMIN
 		});
@@ -176,26 +182,36 @@ class AbstractEntityRouter extends Router {
      */
 	removeRoute (req, res, next) {
 		var self = this,
-			id = this.models.ObjectId(req.params.id);
+			id = self.models.ObjectId(req.params.id);
 
 		if (!id) return Router.notFound(res, next, req.params.id);
 
-		self.model.findOneAndUpdate({_id: id}, {isRemoved: true})
+		self.model.findOneAndRemove({_id: id})
 			.then(() => {
+				// get all the videos (extremely slow)
 				return self.models.Video.find({}, `_id ${self.fieldName}`);
 			})
 			.then(function (videos) {
 				var promises = [];
+
+				// iterate over videos
 				for (let i = 0; i < videos.length; i++) {
+					// iterate over entities we need to search by id
 					for (let j = 0; j < videos[i][self.fieldName].length; j++) {
+						// go to next entity if we didn't find entity we need
+						// for teams and casters
 						// video.teams.0.teams [] for example
 						if (videos[i][self.fieldName][j][self.fieldName]) {
 							if (!videos[i][self.fieldName][j][self.fieldName][0].equals(id) &&
 								!videos[i][self.fieldName][j][self.fieldName][1].equals(id)) continue;
 						}
+						// for tournaments
 						else if (!videos[i][self.fieldName][j]._id.equals(id)) continue;
 
+						// remove entity from the list
 						videos[i][self.fieldName].splice(j, 1);
+
+						// update video
 						promises.push(
 							self.models.Video.update({_id: videos[i]._id}, {
 								[self.fieldName]: videos[i][self.fieldName]
@@ -205,13 +221,89 @@ class AbstractEntityRouter extends Router {
 				}
 				return Promise.all(promises);
 			})
-			.then((a) => {
+			.then(() => {
 				Router.success(res);
 				return next();
 			})
 			.catch(e => {
 				logger.error(e.stack);
 				Router.fail(res, e);
+				return next();
+			});
+	}
+
+	/**
+	 * Merge entity (source) to a target (target)
+	 * src - id
+	 * target - id
+	 *
+	 * @param req
+	 * @param res
+	 * @param next
+     * @returns {*}
+     */
+	mergeRoute (req, res, next) {
+		var self = this,
+			src = self.models.ObjectId(req.params.src),
+			target = self.models.ObjectId(req.params.target);
+
+		if (!src) return Router.notFound(res, next, req.params.src);
+		if (!target) return Router.notFound(res, next, req.params.target);
+
+		self.model.findOne({_id: target}, '_id')
+			.then(entity => {
+				if (!entity) throw new errors.GenericAPIError(Constants.ERROR_NOT_FOUND);
+				return self.model.findOneAndRemove({_id: src}); // remove entity
+			})
+			.then(() => {
+				// get all the videos (extremely slow)
+				return self.models.Video.find({}, `_id ${self.fieldName}`);
+			})
+			.then(function (videos) {
+				var promises = [];
+
+				// iterate over videos
+				for (let i = 0; i < videos.length; i++) {
+					// iterate over entities we need to search by id
+					for (let j = 0; j < videos[i][self.fieldName].length; j++) {
+						// go to next entity if we didn't find entity we need
+						// for teams and casters
+						// video.teams.0.teams [] for example
+						if (videos[i][self.fieldName][j][self.fieldName]) {
+							if (videos[i][self.fieldName][j][self.fieldName][0].equals(src)) {
+								videos[i][self.fieldName][j][self.fieldName][0] = target;
+							}
+							else if (videos[i][self.fieldName][j][self.fieldName][1].equals(src)) {
+								videos[i][self.fieldName][j][self.fieldName][1] = target;
+							}
+							else continue;
+						}
+						// for tournaments
+						else if (videos[i][self.fieldName][j]._id.equals(src)) {
+							videos[i][self.fieldName][j]._id = target;
+						}
+						else continue;
+
+						// update video
+						promises.push(
+							self.models.Video.update({_id: videos[i]._id}, {
+								[self.fieldName]: videos[i][self.fieldName]
+							})
+						);
+					}
+				}
+				return Promise.all(promises);
+			})
+			.then(() => {
+				Router.success(res);
+				return next();
+			})
+			.catch(err => {
+				if (!err.isApiError) {
+					logger.error(err.stack);
+					Router.fail(res, {message: Constants.ERROR_INTERNAL}, 500);
+				}
+				else Router.fail(res, {message: err.message}, 400);
 				return next();
 			});
 	}

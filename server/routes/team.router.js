@@ -9,6 +9,13 @@ class TeamRouter extends AbstractEntityRouter {
 		this.bindRoutes('team', this.models.Team, 'teams');
 
 		/**
+		 * @api {get} /api/teams Get list of teams
+		 * @apiName GetTeams
+		 * @apiGroup Team
+		 * @apiVersion 1.0.0
+		 */
+
+		/**
 		 * @api {post} /api/team Create Team
 		 * @apiName CreateTeam
 		 * @apiGroup Team
@@ -27,21 +34,6 @@ class TeamRouter extends AbstractEntityRouter {
 		 */
 
 		/**
-		 * @api {delete} /api/team/:id Delete Team
-		 * @apiName DeleteTeam
-		 * @apiGroup Team
-		 * @apiPermission ADMIN
-		 * @apiVersion 1.0.0
-		 */
-
-		/**
-		 * @api {get} /api/teams Get list of teams
-		 * @apiName GetTeams
-		 * @apiGroup Team
-		 * @apiVersion 1.0.0
-		 */
-
-		/**
 		 * @api {put} /api/team Update Team
 		 * @apiName UpdateTeam
 		 * @apiGroup Team
@@ -50,6 +42,34 @@ class TeamRouter extends AbstractEntityRouter {
 		 *
 		 * @apiParam {ObjectId} id Team id
 		 * @apiParam {Object} update Fields to update
+		 */
+
+		/**
+		 * @api {put} /api/team/merge Merge Team
+		 * @apiName MergeTeam
+		 * @apiGroup Team
+		 * @apiPermission ADMIN
+		 * @apiVersion 1.0.0
+		 *
+		 * @apiDescription
+		 * Merge SOURCE entity into TARGET entity. System goes over
+		 * all videos and replace SOURCE id by TARGET id. Deletes SOURCE entity
+		 * permanently
+		 *
+		 * @apiParam {ObjectId} src Source entity id
+		 * @apiParam {ObjectId} target Target entity id
+		 */
+
+		/**
+		 * @api {delete} /api/team/:id Delete Team
+		 * @apiName DeleteTeam
+		 * @apiGroup Team
+		 * @apiPermission ADMIN
+		 * @apiVersion 1.0.0
+		 *
+		 * @apiDescription
+		 * Remove entity permanently, search through all the videos
+		 * and remove entity from there
 		 */
 	}
 }
