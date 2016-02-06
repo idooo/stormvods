@@ -3,16 +3,19 @@ angular
 	.directive('teamsPage', teamsPage);
 
 const TEMPLATE = `
-	<section>
-		
+	<section class="entity-list">
+
 		<h1>Teams</h1>
-		
-		<input type="text" ng-model="filter" />
-		
-		<div ng-repeat="item in ctrl.items | filter:filter as results">
+
+		<label>Filter</label>
+		<input type="text" ng-model="filter" placeholder="eg. Cloud 9" />
+
+		<div
+			ng-repeat="item in ctrl.items | orderBy:'name' | filter:filter as results"
+			class="entity-list__entity">
 			<a href="#" ui-sref="team({id: item._id})">{{item.name}}</a>
-		</div>	
-		
+		</div>
+
 	</section>
 `;
 
@@ -27,14 +30,14 @@ function teamsPage () {
 		template: TEMPLATE,
 		controller: controller
 	};
-	
+
 	function controller ($http, Page, Constants) {
 		var self = this;
-		
+
 		self.items = [];
 		self.currentPage = 1;
 		self.pageCount = 1;
-		
+
 		$http.get(Constants.Api.GET_TEAMS)
 			.then(response => {
 				self.items = response.data.items;
@@ -43,5 +46,5 @@ function teamsPage () {
 				Page.setTitle(TITLE);
 			});
 	}
-		
+
 }

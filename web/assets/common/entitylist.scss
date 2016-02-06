@@ -1,0 +1,19 @@
+.entity-list {
+	margin-bottom: em(50);
+
+	&__entity {
+		margin-bottom: em(10);
+
+		a {
+			@include transition(all 0.2s);
+			color: $action-color;
+			text-decoration: none;
+			border-bottom: 1px solid $action-color-blend;
+
+			&:hover {
+				color: darken($action-color, 33%);
+				border-bottom-color: darken($action-color, 33%);
+			}
+		}
+	}
+}

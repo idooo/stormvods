@@ -17,7 +17,8 @@ $base-line-height: 1.5em !default;
 // Colors
 $base-background-color: #ffffff;
 $secondary-background-color: tint($base-border-color, 75%);
-$action-color: #477DCA !default;
+$action-color: rgba(71, 125, 202, 1) !default;
+$action-color-blend: rgba(71, 125, 202, 0.3) !default;
 $dark-gray: #333 !default;
 $navigation-background-color: #17214b;
 

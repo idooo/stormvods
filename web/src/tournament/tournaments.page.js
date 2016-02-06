@@ -3,16 +3,19 @@ angular
 	.directive('tournamentsPage', tournamentsPage);
 
 const TEMPLATE = `
-	<section>
-		
+	<section class="entity-list">
+
 		<h1>Tournaments</h1>
-		
-		<input type="text" ng-model="filter" />
-		
-		<div ng-repeat="item in ctrl.items | filter:filter as results">
+
+		<label>Filter</label>
+		<input type="text" ng-model="filter" placeholder="eg. World Championship 2015"/>
+
+		<div
+			ng-repeat="item in ctrl.items | filter:filter as results"
+			class="entity-list__entity">
 			<a href="#" ui-sref="tournament({id: item._id})">{{item.name}}</a>
-		</div>	
-		
+		</div>
+
 	</section>
 `;
 
@@ -27,14 +30,14 @@ function tournamentsPage () {
 		template: TEMPLATE,
 		controller: controller
 	};
-	
+
 	function controller ($http, Page, Constants) {
 		var self = this;
-		
+
 		self.items = [];
 		self.currentPage = 1;
 		self.pageCount = 1;
-		
+
 		$http.get(Constants.Api.GET_TOURNAMENTS)
 			.then(response => {
 				self.items = response.data.items;
@@ -43,5 +46,5 @@ function tournamentsPage () {
 				Page.setTitle(TITLE);
 			});
 	}
-		
+
 }
