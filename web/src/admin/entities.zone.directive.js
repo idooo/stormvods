@@ -34,16 +34,16 @@ const TEMPLATE = `
 
 		<div>
 			<h3>Rename</h3>
-			<input class="zone-input" type="text" ng-model="renameId">
-			<input class="zone-input" type="text" ng-model="renameNewName">
-			<button ng-click="ctrl.rename(ctrl.entityType, renameId, renameNewName)">Rename</button>
+			<input class="zone-input" type="text" ng-model="renameId" placeholder="ID">
+			<input class="zone-input" type="text" ng-model="renameNewName" placeholder="New name">
+			<button ng-click="ctrl.rename(renameId, renameNewName)">Rename</button>
 		</div>
 
 		<div>
 			<h3>Merge</h3>
-			<input class="zone-input" type="text" ng-model="mergeFromId">
-			<input class="zone-input" type="text" ng-model="mergeToId">
-			<button ng-click="ctrl.merge(ctrl.entityType, mergeFromId, mergeToId)">Merge</button>
+			<input class="zone-input" type="text" ng-model="mergeFromId" placeholder="Source ID">
+			<input class="zone-input" type="text" ng-model="mergeToId" placeholder="Target ID">
+			<button ng-click="ctrl.merge(mergeFromId, mergeToId)">Merge</button>
 		</div>
 	</div>
 `;
@@ -77,6 +77,7 @@ function entitiesZoneDirective () {
 
 		self.getData = getData;
 		self.rename = rename;
+		self.merge = merge;
 
 		getData();
 
@@ -86,8 +87,22 @@ function entitiesZoneDirective () {
 			$http.get(url).then(response => self.data = response.data);
 		}
 
-		function rename (entityType, id, newName) {
+		function rename (id, newName) {
+			$http
+				.put(`${Constants.Api.PREFIX}/${self.entityType.slice(0, -1)}`, {
+					id,
+					update: {name: newName}
+				})
+				.catch(e => alert(e)); // eslint-disable-line no-alert
+		}
 
+		function merge (src, target) {
+			$http
+				.post(`${Constants.Api.PREFIX}/${self.entityType.slice(0, -1)}/merge`, {
+					src,
+					target
+				})
+				.catch(e => alert(e)); // eslint-disable-line no-alert
 		}
 	}
 }
