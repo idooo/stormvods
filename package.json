@@ -1,5 +1,5 @@
 {
-  "name": "heroesvods",
+  "name": "stormvods",
   "version": "1.0.0",
   "description": "My HOTS VODS project",
   "main": "server/server.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/idooo/heroesvods.git"
+    "url": "git+https://github.com/idooo/stormvods.git"
   },
   "author": "Alex Shteinikov",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/idooo/heroesvods/issues"
+    "url": "https://github.com/idooo/stormvods/issues"
   },
-  "homepage": "https://github.com/idooo/heroesvods#readme",
+  "homepage": "https://github.com/idooo/stormvods#readme",
   "devDependencies": {
     "angular": "^1.4.8",
     "angular-animate": "^1.4.8",
@@ -30,7 +30,9 @@
     "grunt-browserify": "^4.0.1",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-copy": "^0.8.2",
+    "grunt-contrib-cssmin": "^0.14.0",
     "grunt-contrib-nodeunit": "^0.4.1",
+    "grunt-contrib-uglify": "^0.11.1",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-develop": "^0.4.0",
     "grunt-eslint": "^17.3.1",
@@ -42,7 +44,7 @@
     "node-neat": "^1.7.2",
     "sync-request": "^2.1.0",
     "time-grunt": "^1.2.2",
-    "ui-select": "^0.13.2"
+    "ui-select": "0.13.2"
   },
   "babel": {
     "presets": [

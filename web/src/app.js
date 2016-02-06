@@ -1,4 +1,4 @@
-window.APP_NAME = 'hotsVideos';
+window.APP_NAME = 'StormVods';
 
 var modules = require('./modules');
 
