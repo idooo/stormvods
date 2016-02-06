@@ -63,7 +63,19 @@ class VideoAddRoute {
 			return next();
 		}
 
-		this.models.Video.find({youtubeId: {'$in': youtubeIds}}, '_id')
+		// Ability to disable video adding
+		if ((self.config.actions || {}).addVideoDisabled) {
+			Router.fail(res, {message: Constants.ERROR_DISABLED}, 400);
+			return next();
+		}
+
+		self.models.User.findOne({name: auth.name}, 'lastCreateTime')
+			.then(function (user) {
+				var isAllowedByTime = user.lastCreateTime.getTime() <= Date.now() + (self.config.actions || {}).delayRestriction || 1000;
+				if (!isAllowedByTime) return Promise.reject({message: Constants.ERROR_TIME_RESTRICTION});
+
+				return self.models.Video.find({youtubeId: {'$in': youtubeIds}}, '_id');
+			})
 			.then(function (video) {
 				if (video.length) throw new errors.GenericAPIError(Constants.ERROR_UNIQUE);
 
@@ -98,7 +110,7 @@ class VideoAddRoute {
 				});
 
 				// Update user votes
-				return self.models.User.findOneAndUpdate({_id: auth.id}, {
+				return self.models.User.update({_id: auth.id}, {
 					$push: userUpdate,
 					$inc: {'stats.videosAdded': 1}
 				});

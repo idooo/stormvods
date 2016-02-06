@@ -29,5 +29,8 @@
 	},
 	"votes": {
 		"delayRestriction": 1000
+	},
+	"actions": {
+		"delayRestriction": 1
 	}
 }
