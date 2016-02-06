@@ -1,9 +1,3 @@
-/* global angular */
-
-angular
-	.module(`${window.APP_NAME}.common`)
-	.directive('appFooter', footerDirective);
-
 const TEMPLATE = `
 	<footer class="footer" role="contentinfo">
 		<div class="footer-logo">
@@ -37,19 +31,16 @@ const TEMPLATE = `
 				<li><a href="https://twitter.com/stormvods">@stormvods</a></li>
 			</ul>
 		</div>
-		
+
 		<hr>
-		
+
 		<p>All videos and copyrights belong to their respective owners.</p>
 	</footer>
 `;
 
-function footerDirective () {
-
-	return {
-		restrict: 'E',
-		replace: true,
-		scope: true,
-		template: TEMPLATE
-	};
-}
+angular
+	.module(`${window.APP_NAME}.common`)
+	.component('appFooter', {
+		template: TEMPLATE,
+		replace: true
+	});
