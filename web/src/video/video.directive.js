@@ -87,7 +87,9 @@ const TEMPLATE = `
 			<improve-block ng-if="$root.isAuthorised"></improve-block>
 		</div>
 
-		${require('./video.hotkeys.template.js')}
+		<div ng-show="showHotkeyInfo">
+			${require('./video.hotkeys.template.js')}
+		</div>
 
 	</div>
 `;
@@ -98,7 +100,8 @@ function videoDirective ($sce, $rootScope, ngDialog, Constants) {
 		restrict: 'E',
 		replace: true,
 		scope: {
-			object: '='
+			object: '=',
+			showHotkeyInfo: '=?'
 		},
 		template: TEMPLATE,
 		link: link

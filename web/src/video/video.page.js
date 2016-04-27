@@ -24,7 +24,7 @@ const TEMPLATE = `
 			</span>
 		</div>
 
-		<video object="ctrl.video" ng-if="!ctrl.error"></video>
+		<video object="ctrl.video" show-hotkey-info="true" ng-if="!ctrl.error"></video>
 
 	</section>
 `;

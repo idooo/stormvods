@@ -2,28 +2,28 @@
 h1 {
 	font-size: em(22);
 	font-weight: 700;
-	padding: ($small-spacing) 0;
+	padding: em(10) 0 em(10);
 	text-transform: uppercase;
 	text-align: center;
 	line-height: 1.2;
-	
+
 	@include media($medium-screen-up) {
 		text-align: left;
 	}
-	
+
 	a {
 		@include transition(all 0.15s);
 		text-decoration: none;
 		color: $action-color;
 		display: inline-block;
 		border-bottom: 1px solid rgba($action-color, 0.5);
-		
+
 		&:hover {
 			color: darken($action-color, 20%);
 			border-bottom-color: darken($action-color, 20%);
 		}
 	}
-	
+
 	small {
 		font-size: 20px;
 	}
@@ -37,7 +37,7 @@ h2 {
 	text-align: center;
 	margin: 0;
     padding: 0 0 em(10) 0;
-	
+
 	@include media($medium-screen-up) {
 		text-align: left;
 	}

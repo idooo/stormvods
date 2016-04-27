@@ -134,7 +134,7 @@ $video-container-bottom-color: #2c0448;
 		@include display(flex);
 		@include justify-content(flex-start);
 		@include flex-direction(row);
-		padding: em(16) em(10) em(30);
+		padding: em(16) em(10) em(16);
 
 		@include media($medium-screen-up) {
 			padding-left: 0;
@@ -147,7 +147,7 @@ $video-container-bottom-color: #2c0448;
 	}
 
 	&__hotkeys-container {
-		padding: 0 20px;
+		padding: em(16) em(20) 0;
 
 		@include media($medium-screen-up) {
 			padding: 0;

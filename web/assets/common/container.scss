@@ -7,12 +7,12 @@ html, body {
 .content {
 	opacity: 1;
 	@include transition(opacity 0.5s);
-	
+
 	@include media($medium-screen-up) {
 		@include outer-container;
 		margin-top: 1em;
 	}
-	
+
 	&--loading {
 		@include transition(opacity 0s);
 		opacity: 0;
@@ -24,33 +24,33 @@ html, body {
 			@include span-columns(8);
 		}
 	}
-	
+
 	.sidebar-container {
 		@include media($medium-screen-up) {
 			@include span-columns(4);
 		}
 	}
-	
+
 	.content-spinner {
 		position: absolute;
 		top: 25%;
   		left: 50%;
     	@include transform(translateX(-50%));
-		
+
 		.spinner {
 			margin: 14px auto;
 		}
 	};
-	
+
 section {
-	margin-bottom: 20px;
+	margin-bottom: em(20);
 }
 
 // Pages
 // ---------------------------------------------------------
 
 .page-container {
-		
+
 	// full width container
 	&.zone,
 	&.callback {
@@ -59,4 +59,3 @@ section {
 		}
 	}
 }
-	
