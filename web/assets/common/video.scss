@@ -129,4 +129,16 @@ $video-container-bottom-color: #2c0448;
 			@include size(100%);
 		}
 	}
+
+	&__improvement-container {
+		@include display(flex);
+		@include justify-content(flex-start);
+		@include flex-direction(row);
+		padding-top: em(16);
+		padding-bottom: em(30);
+
+		& > *:first-child {
+			margin-right: em(16);
+		}
+	}
 }

@@ -6,54 +6,43 @@ $rating-hover-color: #62835c;
 	@include user-select(none);
 	margin-top: 3px;
 	font-weight: 600;
-	
+
 	text {
 		@include user-select(none);
-		
+
 		&:last-child {
 			display: none;
 		}
 	}
-	
+
 	path {
 		@include transition(all 0.25s);
-		fill: $rating-not-voted-color; 
+		fill: $rating-not-voted-color;
 	}
-	
+
 	&--not-voted.rating--authorised {
 		cursor: pointer;
-		
+
 		&:hover {
-			
+
 			text {
 				display: none;
-				
+
 				&:last-child {
 					display: block;
 				}
 			}
-			
+
 			path {
 				fill: $rating-hover-color;
 			}
 		}
 	}
-	
+
 	&--voted {
-		
+
 		path {
 			fill: $rating-voted-color;
-		}
-	}
-	
-	&--video-object {
-		position: absolute;
-		margin-top: -60px;
-		margin-left: 15px;
-		
-		path {
-			fill: none;
-			stroke: #ffffff;
 		}
 	}
 }

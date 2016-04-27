@@ -1,36 +1,33 @@
 .improve {
-	
+
 	&__question-container {
-		text-align: center;	
+		padding-left: em(10);
 	}
-	
+
 	&__question-advanced-container {
-		width: 90%;
-		margin: 0 auto;
-		
 		select {
 			width: 50%;
-			margin: 0 auto 10px;
+			margin: 0 0 10px;
 		}
-		
+
 		.ui-select-container {
 			text-align: left;
 		}
 	}
-	
+
 	&__question {
-		text-align: center;
 		display: block;
 		margin-bottom: em(10);
 	}
 }
 
-.expander {  
+.expander {
 	$light-gray: #DDD !default;
 	$expander-arrow-width: 0.7em;
 	$expander-toggle-size: 1em;
 	$expander-toggle-arrow-size: $expander-toggle-size;
 	$expander-toggle-margin: 1em;
+	width: 100%;
 
 	&__row {
 		@include user-select(none);
@@ -48,7 +45,7 @@
 			content: "\25BC";
 			margin-right: 0.5em;
 		}
-		
+
 		&--content-hidden {
 			&:before {
 				font-size: $expander-arrow-width;
@@ -56,7 +53,7 @@
 			}
 		}
 	}
-	
+
 	&__trigger {
 		cursor: pointer;
 	}
@@ -65,22 +62,21 @@
 		color: $base-font-color;
 		line-height: $base-line-height;
 	}
-	
+
 	&__loading {
-		
+
 		div {
 			margin: 14px auto;
 		}
-		
+
 		span {
 			text-align: center;
 			display: inline-block;
 			width: 100%;
 		}
 	}
-	
+
 	&__thankyou {
-		text-align: center;
 		color: #62835c;
 	}
 }

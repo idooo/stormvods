@@ -58,8 +58,6 @@ const TEMPLATE = `
 
 		</div>
 
-		<rating video="object" class="rating--video-object"></rating>
-
 		<div
 			ng-if="isPlaying && object.youtubeId.length !== 1"
 		 	class="tabs">
@@ -86,7 +84,10 @@ const TEMPLATE = `
 			</div>
 		</div>
 
-		<improve-block ng-if="$root.isAuthorised"></improve-block>
+		<div class="video__improvement-container">
+			<rating video="object"></rating>
+			<improve-block ng-if="$root.isAuthorised"></improve-block>
+		</div>
 
 	</div>
 `;
