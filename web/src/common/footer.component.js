@@ -34,7 +34,10 @@ const TEMPLATE = `
 
 		<hr>
 
-		<p>All videos and copyrights belong to their respective owners.</p>
+		<p>
+			All videos and copyrights belong to their respective owners.<br>
+			Heroes of the Storm is a trademark of Blizzard Entertainment, Inc.
+		</p>
 	</footer>
 `;
 

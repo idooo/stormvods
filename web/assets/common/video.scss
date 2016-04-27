@@ -134,11 +134,44 @@ $video-container-bottom-color: #2c0448;
 		@include display(flex);
 		@include justify-content(flex-start);
 		@include flex-direction(row);
-		padding-top: em(16);
-		padding-bottom: em(30);
+		padding: em(16) em(10) em(30);
+
+		@include media($medium-screen-up) {
+			padding-left: 0;
+			padding-right: 0;
+		}
 
 		& > *:first-child {
 			margin-right: em(16);
 		}
 	}
+
+	&__hotkeys-container {
+		padding: 0 20px;
+
+		@include media($medium-screen-up) {
+			padding: 0;
+		}
+
+		h4 {
+			font-size: 16px;
+			font-weight: 600;
+			margin-bottom: 6px;
+		}
+	}
+
+		&__hotkeys-line {
+			color: #797979;
+			font-size: 14px;
+			padding: 5px 0;
+
+			key {
+				color: black;
+				padding: 4px 9px;
+				display: inline-block;
+				border: 1px solid #C7C7C7;
+				border-radius: 5px;
+				box-shadow: 0 1px 1px #D0D0D0;
+			}
+		}
 }

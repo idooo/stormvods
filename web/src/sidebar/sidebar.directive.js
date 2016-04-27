@@ -14,10 +14,12 @@ const TEMPLATE = `
 
 			<p>
 				Storm Vods is an experiment to create
-				a community-driven spoiler-free catalog of vods for Heroes of the Storm game.
+				a community-driven spoiler-free catalog of competitive videos
+				for <a href="http://us.battle.net/heroes/en/">Heroes of the Storm</a> game.
 			</p>
 			<p>
-				You can help us by adding new video or improve information for already added vods.
+				You can help the community by adding
+				new videos or improve information for existing vods.
 			</p>
 
 			<p>
