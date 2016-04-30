@@ -48,9 +48,15 @@ module.exports = {
 		'GROUPB',
 		'GROUPC',
 		'GROUPD',
-		'QUALIFIER',
-		'WB',
-		'LB'
+		'GROUPAW',
+		'GROUPAL',
+		'GROUPAD',
+		'GROUPBW',
+		'GROUPBL',
+		'GROUPBD',
+		'LR1',
+		'LF',
+		'WF'
 	],
 
 	FORMAT: [

@@ -146,6 +146,11 @@ $video-container-bottom-color: #2c0448;
 		}
 	}
 
+	&__please-login {
+		padding-top: em(14);
+		color: #888888;
+	}
+
 	&__hotkeys-container {
 		padding: em(16) em(20) 0;
 

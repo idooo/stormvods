@@ -1,27 +1,29 @@
+const PREFIX = '/api';
+
 angular
 	.module(`${window.APP_NAME}.common`)
 	.constant('Constants', {
 
 		Api: {
-			PREFIX: '/api',
-			AUTH_ME: '/api/users/me',
-			USERS: '/api/users',
-			USER: '/api/user',
-			AUTH_GET_URL: '/api/auth/url',
+			PREFIX: PREFIX,
+			AUTH_ME: `${PREFIX}/users/me`,
+			USERS: `${PREFIX}/users`,
+			USER: `${PREFIX}/user`,
+			AUTH_GET_URL: `${PREFIX}/auth/url`,
 
-			VIDEO: '/api/video',
-			GET_VIDEO_LIST: '/api/video/list',
-			GET_VIDEO_TOPLIST: '/api/video/list/top',
-			GET_REMOVED_VIDEO_LIST: '/api/video/removed',
-			VALIDATE_VIDEO: '/api/video/validate',
+			VIDEO: `${PREFIX}/video`,
+			GET_VIDEO_LIST: `${PREFIX}/video/list`,
+			GET_VIDEO_TOPLIST: `${PREFIX}/video/list/top`,
+			GET_REMOVED_VIDEO_LIST: `${PREFIX}/video/removed`,
+			VALIDATE_VIDEO: `${PREFIX}/video/validate`,
 
-			LOOKUP: '/api/lookup',
+			LOOKUP: `${PREFIX}/lookup`,
 
-			GET_TEAMS: '/api/teams',
-			GET_TOURNAMENTS: '/api/tournaments',
-			GET_CASTERS: '/api/casters',
+			GET_TEAMS: `${PREFIX}/teams`,
+			GET_TOURNAMENTS: `${PREFIX}/tournaments`,
+			GET_CASTERS: `${PREFIX}/casters`,
 
-			VOTE: '/api/vote'
+			VOTE: `${PREFIX}/vote`
 		},
 
 		Roles: {
@@ -36,14 +38,20 @@ angular
 		],
 
 		Stages: {
-			QUALIFIER: 'Qualifier',
-			LB: 'Losers Bracket',
-			WB: 'Winners Bracket',
+			LR1: 'Losers\' Round 1',
+			LF: 'Losers\' Final',
+			WF: 'Winners\' Final',
 			GROUP: 'Group Stage',
 			GROUPA: 'Group A',
 			GROUPB: 'Group B',
 			GROUPC: 'Group C',
 			GROUPD: 'Group D',
+			GROUPAW: 'Group A. Winners Match',
+			GROUPAL: 'Group A. Losers Match',
+			GROUPAD: 'Group A. Decider Match',
+			GROUPBW: 'Group B. Winners Match',
+			GROUPBL: 'Group B. Losers Match',
+			GROUPBD: 'Group B. Decider Match',
 			RO64: 'Round of 64',
 			RO32: 'Round of 32',
 			RO16: 'Round of 16',

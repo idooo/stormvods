@@ -85,6 +85,11 @@ const TEMPLATE = `
 		<div class="video__improvement-container">
 			<rating video="object"></rating>
 			<improve-block ng-if="$root.isAuthorised"></improve-block>
+			<div
+				class="video__please-login"
+				ng-if="!$root.isAuthorised">
+				Login to vote for videos and improve content
+			</div>
 		</div>
 
 		<div ng-show="showHotkeyInfo">
