@@ -11,10 +11,10 @@ $video-container-bottom-color: #2c0448;
 		@include justify-content(center);
 		@include flex-direction(column);
 		@include linear-gradient($video-container-top-color, $video-container-bottom-color);
-		height: $video-height;
+		min-height: $video-height;
+		padding: em(36) 0;
 		text-align: center;
 	}
-
 
 	&__hide-duration-container {
 		padding: 16px 0 0 20px;
@@ -87,6 +87,7 @@ $video-container-bottom-color: #2c0448;
     		line-height: em(22px);
 			letter-spacing: 1px;
 			margin-bottom: 10px;
+			padding: 0 em(20);
 		}
 
 		&__format {
@@ -147,15 +148,16 @@ $video-container-bottom-color: #2c0448;
 	}
 
 	&__please-login {
-		padding-top: em(14);
+		padding-top: em(6);
 		color: #888888;
 	}
 
 	&__hotkeys-container {
-		padding: em(16) em(20) 0;
+		display: none;
 
 		@include media($medium-screen-up) {
-			padding: 0;
+			padding: em(16) 0;
+			display: block;
 		}
 
 		h4 {

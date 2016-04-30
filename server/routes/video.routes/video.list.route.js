@@ -201,7 +201,7 @@ class VideoListRoute {
 
 			// Create a list of promises to get entities from other collections
 			promises.push(self.models.Tournament.find({_id: {'$in': tournamentIds}}, 'name _id'));
-			promises.push(self.models.Team.find({_id: {'$in': teamIds}}, 'name _id'));
+			promises.push(self.models.Team.find({_id: {'$in': teamIds}}, 'name _id image'));
 			promises.push(self.models.Caster.find({_id: {'$in': casterIds}}, 'name _id'));
 			promises.push(self.models.User.find({_id: {'$in': userIds}}, 'name _id'));
 

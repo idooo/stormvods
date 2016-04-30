@@ -28,6 +28,9 @@ class BasicModel extends AbstractModel {
 				type: Boolean,
 				default: false
 			},
+			image: {
+				type: String
+			},
 			author: {
 				type: mongoose.Schema.Types.ObjectId,
 				required: true

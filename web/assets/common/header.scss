@@ -19,24 +19,24 @@ $navigation-submenu-width: 12em;
 	min-height: $navigation-height;
 	width: 100%;
 	z-index: 999;
-	
+
 	.navigation-wrapper {
 		@include clearfix;
 		@include outer-container;
 		position: relative;
 		z-index: 9999;
 	}
-	
+
 	.logo {
 		float: left;
 		max-height: $navigation-height;
 		padding-right: em(20);
 		padding-left: em(10);
-		
+
 		@include media($medium-screen-up) {
 			padding-left: 0;
 		}
-	
+
 		span {
 			display: inline-block;
 			margin-top: 17px;
@@ -45,9 +45,9 @@ $navigation-submenu-width: 12em;
 			@include retina-image('/dist/images/logo', 107px 60px);
 		}
 	}
-	
+
 	// Mobile view
-	
+
 	.navigation-menu-button {
 		@include mobile-only();
 		color: $light-text-color;
@@ -59,26 +59,26 @@ $navigation-submenu-width: 12em;
 		text-decoration: none;
 		text-transform: uppercase;
 		font-weight: 600;
-	
+
 		&:focus,
 		&:hover {
 			color: $navigation-color-hover;
 		}
 	}
-	
-	
+
+
 	// Nav menu
-	
+
 	nav {
 		float: none;
 		min-height: $navigation-height;
 		z-index: 9999999;
-	
+
 		@include media($medium-screen-up) {
 			float: left;
 		}
 	}
-	
+
 	.navigation-menu {
 		clear: both;
 		display: none;
@@ -87,21 +87,21 @@ $navigation-submenu-width: 12em;
 		padding: 0;
 		width: 100%;
 		z-index: 9999;
-	
+
 		&.show {
 			display: block;
 		}
-	
+
 		@include media($medium-screen-up) {
 			display: inline;
 			margin: 0;
 			padding: 0;
 		}
 	}
-	
-	
+
+
 	// The nav items
-	
+
 	.nav-link {
 		background: $navigation-background-color;
 		display: block;
@@ -110,15 +110,17 @@ $navigation-submenu-width: 12em;
 		text-align: right;
 		width: 100%;
 		z-index: 9999;
-	
+		padding-right: em(15);
+
 		@include media($medium-screen-up) {
 			background: transparent;
 			display: inline;
 			line-height: $navigation-height;
 			text-decoration: none;
 			width: auto;
+			padding-right: 0;
 		}
-		
+
 		&--secondary > span {
 			@include transition(all 0.15s);
 			line-height: 1;
@@ -130,17 +132,17 @@ $navigation-submenu-width: 12em;
 			font-size: 12px;
 			margin-right: em(5);
 			border-bottom: 1px dotted rgba($navigation-secondary-link-color, 0.4);
-			
+
 			&:hover {
 				color: $light-text-color-bright;
 				border-bottom-color: $light-text-color-bright;
 			}
 		}
 	}
-	
+
 	.delimiter {
 		display: none;
-		
+
 		@include media($medium-screen-up) {
 			border-left: 1px solid rgba($navigation-secondary-link-color, 0.4);
 			padding-top: 6px;
@@ -149,7 +151,7 @@ $navigation-submenu-width: 12em;
 			display: inline;
 		}
 	}
-	
+
 	&__user-container {
 		@include mobile-hidden();
 		height: 60px;
@@ -157,12 +159,12 @@ $navigation-submenu-width: 12em;
 		right: 0;
 		padding-top: 22px;
 	}
-	
+
 		&__user {
 			font-size: em(14);
 			color: rgba($navigation-secondary-link-color, 0.4);
 		}
-	
+
 	a {
 		@include transition(all 0.15s);
 		color: $light-text-color;
@@ -171,11 +173,11 @@ $navigation-submenu-width: 12em;
 		text-transform: uppercase;
 		font-weight: 600;
 		letter-spacing: 1px;
-	
+
 		@include media($medium-screen-up) {
 			padding: 0 0.4em;
 		}
-	
+
 		&:focus,
 		&:hover {
 			color: $navigation-color-hover;

@@ -5,13 +5,15 @@ angular
 const TEMPLATE = `
 	<section>
 
-		<h1 ng-if="ctrl.video.teams.teams.length">
+		<h1 class="mobile-hidden"
+			ng-if="ctrl.video.teams.teams.length">
 			<a href="#" ui-sref="team({id: ctrl.video.teams.teams[0]._id})">{{ctrl.video.teams.teams[0].name}}</a>
 			<small class="newline-mobile">vs.</small>
 			<a href="#" ui-sref="team({id: ctrl.video.teams.teams[1]._id})">{{ctrl.video.teams.teams[1].name}}</a>
 		</h1>
 
-		<h1 ng-if="!ctrl.error && (!ctrl.video.teams.teams || ctrl.video.teams.teams.length == 0)">
+		<h1 class="mobile-hidden"
+			ng-if="!ctrl.error && (!ctrl.video.teams.teams || ctrl.video.teams.teams.length == 0)">
 			Mysterious match
 		</h1>
 

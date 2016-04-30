@@ -88,7 +88,7 @@ const TEMPLATE = `
 			<div
 				class="video__please-login"
 				ng-if="!$root.isAuthorised">
-				Login to vote for videos and improve content
+				Login to vote for videos<br>and improve content
 			</div>
 		</div>
 

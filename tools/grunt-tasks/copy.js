@@ -7,7 +7,7 @@ module.exports.tasks = {
 					expand: true,
 					dest: '<%= settings.webDist %>/images',
 					cwd: '<%= settings.webAssets %>/images',
-					src: ['*']
+					src: ['**/*']
 				}
 			]
 		}
