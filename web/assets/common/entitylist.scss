@@ -15,5 +15,14 @@
 				border-bottom-color: darken($action-color, 33%);
 			}
 		}
+
+		&--team {
+
+			img {
+				width: 20px;
+				vertical-align: middle;
+			}
+
+		}
 	}
 }

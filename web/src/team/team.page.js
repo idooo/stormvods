@@ -3,9 +3,15 @@ angular
 	.directive('teamPage', teamPage);
 
 const TEMPLATE = `
-	<section>
+	<section class="entity-page">
 
-		<h1>Team: {{ctrl.team.name}}</h1>
+		<h1>
+			<img
+				class="entity-page__image"
+				ng-src="/dist/images/teams/{{ctrl.team.image || 'unknown.png'}}">
+
+			{{ctrl.team.name}}
+		</h1>
 
 		<video-list params="ctrl.searchParams" page-load="true"></video-list>
 
