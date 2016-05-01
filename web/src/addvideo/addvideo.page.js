@@ -10,13 +10,13 @@ const TEMPLATE = `
 		<form name="ctrl.form" novalidate ng-hide="ctrl.isVideoUploading">
 
 			<fieldset>
-				<label>Link to video</label>
+				<label>Link to video *</label>
 
 				<video-urls urls="ctrl.urls" class="add-video-page__video-urls"></video-urls>
 
 				<div>
 
-					<label>Tournament</label>
+					<label>Tournament *</label>
 
 					<auto-complete model="ctrl.tournament" lookup="tournament" limit="1"></auto-complete>
 
@@ -34,7 +34,7 @@ const TEMPLATE = `
 						<option value="{{k}}">{{v}}</option>
 					</select>
 
-					<label>Teams</label>
+					<label>Teams *</label>
 					<auto-complete model="ctrl.teams" lookup="team" limit="2"></auto-complete>
 
 					<label>Caster</label>
@@ -46,11 +46,13 @@ const TEMPLATE = `
 
 			<button
 				type="button"
-				ng-disabled="!ctrl.allVideosAreValid"
+				ng-disabled="!ctrl.allVideosAreValid || !ctrl.tournament.length || !ctrl.teams.length < 2"
 				ng-click="ctrl.submit()" >
 
 				Submit
 			</button>
+
+			<div class="disclaimer">URL, tournament and both team names are required</div>
 
 		</form>
 

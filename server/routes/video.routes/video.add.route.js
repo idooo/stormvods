@@ -86,6 +86,8 @@ class VideoAddRoute {
 					casters = req.params.casters.map(casterName => Router.filter(casterName));
 				}
 
+				if (!teams.length || !tournament) throw new errors.GenericAPIError(Constants.ERROR_REQUIRED);
+
 				// Create getOrCreate promises to get entities from database by name
 				// or create them if they are not exist
 				promises.push(self.models.Tournament.getOrCreate(tournament, auth));

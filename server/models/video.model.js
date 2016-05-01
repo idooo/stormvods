@@ -47,11 +47,13 @@ class Video extends AbstractModel {
 			},
 			tournament: {
 				type: Array,
-				default: Array
+				default: Array,
+				required: true
 			},
 			teams: {
 				type: Array,
-				default: Array
+				default: Array,
+				required: true
 			},
 			stage: {
 				type: Array,

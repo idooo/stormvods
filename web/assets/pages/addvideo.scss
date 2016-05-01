@@ -1,5 +1,5 @@
 .add-video-page {
-	
+
 	&__video-urls {
 		margin-bottom: em(20);
 	}
@@ -9,9 +9,9 @@
 		display: inline-block;
 		font-size: 14px;
 		color: #8E8E8E;
-		margin-top: em(10);	
+		margin-top: em(10);
 		line-height: 1.3;
-			
+
 		@include media($medium-screen-up) {
 			margin-left: em(10);
 			margin-top: 0;
