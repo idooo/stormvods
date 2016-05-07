@@ -10,6 +10,8 @@ const TEMPLATE = `
 			ng-class="{'expander__row--content-hidden': !isImproveBlockVisible}">
 
 			<span class="expander__trigger" ng-click="toggleImproveVideoBlock()" >Improve video</span>
+
+			<div class="expander__author">Added by {{object.author.name}}</div>
 		</div>
 
 		<div class="expander__content" ng-show="isImproveBlockVisible">
@@ -39,7 +41,7 @@ const TEMPLATE = `
 					</span>
 
 					<span ng-if="!questions.length">
-						You've already improved this video. Thank you
+						You already improved this video. Thank you
 					</span>
 				</div>
 
