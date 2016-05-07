@@ -10,7 +10,7 @@ const TEMPLATE = `
 
 		<h1>Add video</h1>
 
-		<div class="sidebar__add-video">
+		<div class="sidebar__block">
 
 			<p>
 				Storm Vods is an experiment to create
@@ -36,10 +36,33 @@ const TEMPLATE = `
 
 	<section ng-if="ctrl.page === 'addvideo'">
 
-		<h1>Add quality</h1>
+		<h1>Quality first</h1>
 
-		<div class="sidebar__add-video">
+		<div class="sidebar__block">
+			<h3>Short guidelines</h3>
+			<ul>
+				<li>
+					Video must contain at least one competitive Heroes of the Storm
+					full match
+				</li>
+				<li>
+					Should be a match between two professional Heroes of the Storm teams
+				</li>
+				<li>
+					Game should have commentary in English by a caster
+				</li>
+			</ul>
 
+			<h3>Please don't</h3>
+			<ul>
+				<li>
+					Don't add highlight videos, WTF, funny moments or other videos that
+					don't contain full competitive Heroes of the Storm match
+				</li>
+				<li>
+					Don't add videos with commentaries on other than English languages
+				</li>
+			</ul>
 		</div>
 
 	</secion>
