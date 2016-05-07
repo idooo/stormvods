@@ -1,7 +1,37 @@
 .add-video-page {
 
-	&__video-urls {
-		margin-bottom: em(20);
+	&__section {
+		min-height: em(500);
+	}
+
+		&__video-urls {
+			margin-bottom: em(20);
+		}
+
+	&__in-progress {
+		padding: 0 em(10);
+
+		@include media($medium-screen-up) {
+			padding: em(20) 0;
+		}
+
+		.spinner {
+			margin: em(20) auto;
+
+			@include media($medium-screen-up) {
+				float: left;
+				margin: 0 em(10) 0 0;
+			}
+		}
+
+		span {
+			display: inline-block;
+			text-align: center;
+
+			@include media($medium-screen-up) {
+				text-align: left;
+			}
+		}
 	}
 }
 
