@@ -34,7 +34,7 @@ const TEMPLATE = `
 				<div class="video-list-item__team-logo">
 					<img ng-src="/dist/images/teams/{{video.teams.teams[0].image || 'unknown.png'}}">
 				</div>
-				<div>vs</div>
+				<div class="vs">vs</div>
 				<div class="video-list-item__team-logo">
 					<img ng-src="/dist/images/teams/{{video.teams.teams[1].image || 'unknown.png'}}">
 				</div>
