@@ -82,7 +82,7 @@ var _max = require('lodash/math/max'),
 	Router = require('./../abstract.router'),
 	Constants = require('../../constants');
 
-const LIST_PAGE_SIZE = 20;
+const LIST_PAGE_SIZE = 24;
 
 class VideoListRoute {
 

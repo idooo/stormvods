@@ -27,6 +27,7 @@ require('./common/page.service');
 require('./common/header.component.js');
 require('./common/footer.component.js');
 require('./common/videolist.component.js');
+require('./common/videolist.item.component.js');
 require('./common/autocomplete.directive');
 require('./common/spinner.component.js');
 require('./common/rating.component.js');
