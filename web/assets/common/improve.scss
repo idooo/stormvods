@@ -59,10 +59,25 @@
 	}
 
 	&__author {
+		display: none;
 		float: right;
-		display: inline-block;
 		color: $light-text-color-secondary;
 		font-size: 14px;
+
+		@include media($medium-screen-up) {
+			display: inline-block;
+		}
+
+		a {
+			color: #8E8E8E;
+			text-decoration: none;
+			border-bottom: 1px solid #8E8E8E;
+
+			&:hover {
+				color: #656565;
+				border-bottom: 1px solid #656565;
+			}
+		}
 	}
 
 	&__content p {

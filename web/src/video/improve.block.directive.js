@@ -11,7 +11,12 @@ const TEMPLATE = `
 
 			<span class="expander__trigger" ng-click="toggleImproveVideoBlock()" >Improve video</span>
 
-			<div class="expander__author">Added by {{object.author.name}}</div>
+			<div class="expander__author">
+				Added by
+				<a ng-href="https://reddit.com/u/{{object.author.name}}"
+				   title="Profile on Reddit"
+				   target="_blank">{{object.author.name}}</a>
+			</div>
 		</div>
 
 		<div class="expander__content" ng-show="isImproveBlockVisible">

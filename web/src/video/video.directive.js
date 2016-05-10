@@ -90,6 +90,14 @@ const TEMPLATE = `
 				ng-if="!$root.isAuthorised">
 				Login to vote for videos<br>and improve content
 			</div>
+			<div
+				class="expander__author video__unauthorised-author"
+				ng-if="!$root.isAuthorised">
+				Added by
+				<a ng-href="https://reddit.com/u/{{object.author.name}}"
+				   title="Profile on Reddit"
+				   target="_blank">{{object.author.name}}</a>
+			</div>
 		</div>
 
 		<div ng-show="showHotkeyInfo">
