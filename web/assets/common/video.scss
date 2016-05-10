@@ -51,6 +51,13 @@ $video-container-bottom-color: #2c0448;
 		height: 105px;
 		margin: 0 auto 20px;
 		cursor: pointer;
+
+		&:hover {
+
+			@include media($medium-screen-up) {
+				background-position: 0 105px;
+			}
+		}
 	}
 
 	&__description {
