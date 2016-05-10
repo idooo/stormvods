@@ -101,7 +101,7 @@ function tournamentPage ($http, $state, Page, Constants) {
 
 	function getComparator (order) {
 		return function getComparator (x, y) {
-			return (order.indexOf(x.stageCode) > order.indexOf(y.stageCode))
+			return order.indexOf(x.stageCode) - order.indexOf(y.stageCode);
 		};
 	}
 }
