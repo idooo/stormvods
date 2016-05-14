@@ -1,6 +1,6 @@
 {
 	"server": {
-		"port": 8088,
+		"port": 8080,
 	  	"staticMaxAge": 1
 	},
 	"database": {

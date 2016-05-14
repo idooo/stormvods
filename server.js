@@ -1,3 +1,5 @@
+require('newrelic');
+
 var Server = require('./server/server');
 
 var configName = `${__dirname}/config/default.json`;
