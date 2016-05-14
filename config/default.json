@@ -1,6 +1,7 @@
 {
 	"server": {
 		"port": 8080,
+		"host": "0.0.0.0",
 	  	"staticMaxAge": 1
 	},
 	"database": {
@@ -12,7 +13,7 @@
 		"autoConnect": true
 	},
 	"logs": {
-		"level": "debug"
+		"level": "info"
 	},
 	"reddit": {
 		"url": "https://www.reddit.com/api/v1/",
@@ -28,11 +29,6 @@
 		"port": 6379,
 		"maxAttempts": 5,
 	  	"expire": 604800
-	},
-	"debug": {
-		"disableTemplateCaching": true,
-		"showStackTrace": true,
-		"loginHeaders": true
 	},
 	"votes": {
 		"delayRestriction": 1000

@@ -12,6 +12,7 @@ class Server {
 	constructor (configName) {
 		try {
 			this.config = require(configName);
+			if (!this.config.debug) this.config.debug = {};
 		}
 		catch (e) {
 			console.error(`Error! Cannot find config file '${process.env.config}'. Existing now...`); // eslint-disable-line no-console
@@ -57,9 +58,11 @@ class Server {
 	}
 	start () {
 		var self = this;
-		self.server.listen(self.config.server.port, function () {
-			self.logger.info('Server is listening at %s', self.server.url);
-		});
+		self.server.listen(
+			self.config.server.port || 8080,
+			self.config.server.host || 'localhost',
+			() => self.logger.info('Server is listening at %s', self.server.url)
+		);
 	}
 }
 
