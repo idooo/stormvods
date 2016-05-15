@@ -1,29 +1,15 @@
-
 const TEMPLATE = `
 	<section class="tournament">
 
 		<h1>Tournament: {{$ctrl.tournament.name}}</h1>
 
-		<div ng-repeat="(stageCode, videos) in $ctrl.videos" ng-show="videos.length > 0">
-			<h3 class="tournament__stage">{{stageCode}}</h3>
-			<video-list-item ng-repeat="video in videos" video="video"></video-list-item>
+		<div ng-repeat="stage in $ctrl.videos" ng-show="$ctrl.videos.length > 0">
+			<h3 class="tournament__stage" ng-hide="stage.name == 'Unknown'">{{stage.name}}</h3>
+			<video-list-item ng-repeat="video in stage.videos" video="video"></video-list-item>
 		</div>
 
 	</section>
 `;
-
-const GROUP_STAGE = [
-	'GROUP',
-	'GROUPA', 'GROUPAW', 'GROUPAL', 'GROUPAD',
-	'GROUPB', 'GROUPBW', 'GROUPBL', 'GROUPBD',
-	'GROUPC', 'GROUPD'
-];
-const PLAYOFF = [
-	'RO64', 'RO32', 'RO16', 'LR1', 'WF', 'LF'
-];
-const QUARTERFINAL = 'QUARTERFINAL';
-const SEMIFINAL = 'SEMIFINAL';
-const FINAL = 'FINAL';
 
 angular
 	.module(`${window.APP_NAME}.pages`)
@@ -64,39 +50,46 @@ function tournamentPage ($http, $state, Page, Constants) {
 
 	function formatVideos (data) {
 		var stages = {
-			'Group Stage': [],
-			'Playoff': [],
-			'Quaterfinals': [],
-			'Semifinals': [],
-			'Final': []
-		};
+				'Unknown': []
+			},
+			result = [];
 
-		// TODO: fix this, it is so ugly
 		data.forEach(video => {
+			var isStageFound = false;
 			if (video.stage) {
-				if (GROUP_STAGE.indexOf(video.stage.code) !== -1) stages['Group Stage'].push(video);
-				else if (PLAYOFF.indexOf(video.stage.code) !== -1) stages['Playoff'].push(video);
-				else {
-					switch (video.stage.code) {
-						case QUARTERFINAL:
-							stages['Quaterfinals'].push(video);
-							break;
-						case SEMIFINAL:
-							stages['Semifinals'].push(video);
-							break;
-						case FINAL:
-							stages['Final'].push(video);
-							break;
+				for (let stageCode in Constants.StagesOrder) {
+					let stageName = Constants.StagesOrder[stageCode].caption;
+					if (Constants.StagesOrder[stageCode].codes.indexOf(video.stage.code) !== -1) {
+						isStageFound = true;
+						if (!stages[stageName]) stages[stageName] = [];
+						stages[stageName].push(video);
 					}
 				}
-				video.stageCode = video.stage.code;
-				video.stage = Constants.Stages[video.stage.code];
 			}
-		});
-		stages['Group Stage'] = stages['Group Stage'].sort(getComparator(GROUP_STAGE));
-		stages['Playoff'] = stages['Playoff'].sort(getComparator(GROUP_STAGE));
+			if (!isStageFound) stages['Unknown'].push(video);
 
-		return stages;
+			if (video.stage) {
+				video.stageCode = video.stage.code;
+			}
+			video.stage = Constants.Stages[video.stageCode];
+		});
+
+		result.push({
+			name: 'Unknown',
+			videos: stages['Unknown']
+		});
+
+		for (let i = 0; i < Constants.StagesOrder.length; i++) {
+			let stageName = Constants.StagesOrder[i].caption;
+			if (!stages[stageName] || stageName.length < 1) continue;
+			stages[stageName] = stages[stageName].sort(getComparator(Constants.StagesOrder[i].codes));
+
+			result.splice(i, 0, {
+				name: stageName,
+				videos: stages[stageName]
+			});
+		}
+		return result;
 	}
 
 	function getComparator (order) {

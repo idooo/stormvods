@@ -60,6 +60,41 @@ angular
 			FINAL: 'Final'
 		},
 
+		// For tournament page when we want to group matches
+		// by stage type and sort matches inside the same stage
+		StagesOrder: [
+			{
+				name: 'GROUP_STAGE',
+				caption: 'Group Stage',
+				codes: [
+					'GROUP',
+					'GROUPA', 'GROUPAW', 'GROUPAL', 'GROUPAD',
+					'GROUPB', 'GROUPBW', 'GROUPBL', 'GROUPBD',
+					'GROUPC', 'GROUPD'
+				]
+			},
+			{
+				name: 'PLAYOFF',
+				caption: 'Playoff',
+				codes: ['RO64', 'RO32', 'RO16', 'LR1', 'WF', 'LF']
+			},
+			{
+				name: 'QUARTERFINAL',
+				caption: 'Quaterfinals',
+				codes: ['QUARTERFINAL']
+			},
+			{
+				name: 'SEMIFINAL',
+				caption: 'Semifinals',
+				codes: ['SEMIFINAL']
+			},
+			{
+				name: 'FINAL',
+				caption: 'Final',
+				codes: ['FINAL']
+			}
+		],
+
 		Formats: {
 			BO1: 'Best of 1',
 			BO3: 'Best of 3',
