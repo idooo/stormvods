@@ -2,6 +2,8 @@
 
 host=$1
 
+grunt build
+
 ssh $host 'rm -rf ~/stormvods; mkdir ~/stormvods'
 rsync -rav -e ssh --exclude={docs,node_modules,web/src,web/assets,tests,.*,grunt,Gruntfile.js} ./ $host:~/stormvods
 

@@ -29,7 +29,8 @@ class Database {
 			server: {poolSize: 5}
 		};
 
-		if (this.config) {
+		if (this.config && this.config.username) {
+			logger.info('DB Auth enabled');
 			options.user = this.config.username;
 			options.pass = this.config.password;
 		}

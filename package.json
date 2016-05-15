@@ -1,74 +1,75 @@
 {
-  "name": "stormvods",
-  "version": "1.0.0",
-  "description": "HOTS VODS project",
-  "main": "server/server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/idooo/stormvods.git"
-  },
-  "author": "Alex Shteinikov",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/idooo/stormvods/issues"
-  },
-  "homepage": "https://github.com/idooo/stormvods#readme",
-  "devDependencies": {
-    "angular": "^1.5.5",
-    "angular-animate": "^1.5.5",
-    "angular-local-storage": "^0.2.2",
-    "angular-moment": "^0.10.3",
-    "angular-sanitize": "^1.5.5",
-    "angular-ui-router": "^0.2.15",
-    "babel-preset-es2015": "^6.1.4",
-    "babelify": "^7.2.0",
-    "grunt": "^1.0.1",
-    "grunt-apidoc": "^0.11.0",
-    "grunt-browserify": "^4.0.1",
-    "grunt-contrib-clean": "^1.0.0",
-    "grunt-contrib-copy": "^0.8.2",
-    "grunt-contrib-cssmin": "^0.14.0",
-    "grunt-contrib-nodeunit": "^1.0.0",
-    "grunt-contrib-uglify": "^0.11.1",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-develop": "^0.4.0",
-    "grunt-eslint": "17.3.1",
-    "grunt-sass": "^1.1.0",
-    "load-grunt-configs": "^0.4.3",
-    "load-grunt-tasks": "^3.3.0",
-    "ng-dialog": "^0.5.6",
-    "node-bourbon": "^4.2.3",
-    "node-neat": "^1.7.2",
-    "sync-request": "^2.1.0",
-    "time-grunt": "^1.2.2",
-    "ui-select": "0.13.2"
-  },
-  "babel": {
-    "presets": [
-      "es2015"
-    ]
-  },
-  "engines": {
-    "node": ">4.0.0"
-  },
-  "dependencies": {
-    "base64url": "^1.0.5",
-    "handlebars": "^4.0.4",
-    "lodash": "^3.10.1",
-    "moment": "^2.10.6",
-    "mongoose": "^4.2.5",
-    "mongoose-paginate": "^5.0.0",
-    "mongoose-unique-validator": "^0.6.1",
-    "newrelic": "^1.27.2",
-    "node-uuid": "^1.4.4",
-    "redis": "^2.3.0",
-    "request": "^2.65.0",
-    "restify": "^4.0.3",
-    "restify-cookies": "^0.2.0",
-    "winston": "^2.1.0",
-    "yargs": "^3.30.0"
-  }
+	"name": "stormvods",
+	"version": "1.0.0",
+	"description": "HOTS VODS project",
+	"main": "server/server.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"deploy": "tools/scripts/deploy.sh"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/idooo/stormvods.git"
+	},
+	"author": "Alex Shteinikov",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/idooo/stormvods/issues"
+	},
+	"homepage": "https://github.com/idooo/stormvods#readme",
+	"devDependencies": {
+		"angular": "^1.5.5",
+		"angular-animate": "^1.5.5",
+		"angular-local-storage": "^0.2.2",
+		"angular-moment": "^0.10.3",
+		"angular-sanitize": "^1.5.5",
+		"angular-ui-router": "^0.2.15",
+		"babel-preset-es2015": "^6.1.4",
+		"babelify": "^7.2.0",
+		"grunt": "^1.0.1",
+		"grunt-apidoc": "^0.11.0",
+		"grunt-browserify": "^4.0.1",
+		"grunt-contrib-clean": "^1.0.0",
+		"grunt-contrib-copy": "^0.8.2",
+		"grunt-contrib-cssmin": "^0.14.0",
+		"grunt-contrib-nodeunit": "^1.0.0",
+		"grunt-contrib-uglify": "^0.11.1",
+		"grunt-contrib-watch": "^1.0.0",
+		"grunt-develop": "^0.4.0",
+		"grunt-eslint": "17.3.1",
+		"grunt-sass": "^1.1.0",
+		"load-grunt-configs": "^0.4.3",
+		"load-grunt-tasks": "^3.3.0",
+		"ng-dialog": "^0.5.6",
+		"node-bourbon": "^4.2.3",
+		"node-neat": "^1.7.2",
+		"sync-request": "^2.1.0",
+		"time-grunt": "^1.2.2",
+		"ui-select": "0.13.2"
+	},
+	"babel": {
+		"presets": [
+			"es2015"
+		]
+	},
+	"engines": {
+		"node": ">4.0.0"
+	},
+	"dependencies": {
+		"base64url": "^1.0.5",
+		"handlebars": "^4.0.4",
+		"lodash": "^3.10.1",
+		"moment": "^2.10.6",
+		"mongoose": "^4.2.5",
+		"mongoose-paginate": "^5.0.0",
+		"mongoose-unique-validator": "^0.6.1",
+		"newrelic": "^1.27.2",
+		"node-uuid": "^1.4.4",
+		"redis": "^2.3.0",
+		"request": "^2.65.0",
+		"restify": "^4.0.3",
+		"restify-cookies": "^0.2.0",
+		"winston": "^2.1.0",
+		"yargs": "^3.30.0"
+	}
 }
