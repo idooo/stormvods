@@ -23,7 +23,8 @@ const TEMPLATE = `
 			</p>
 
 			<p>
-				At least for now it will require Reddit account
+				At least for now registration requires your Reddit account
+				(no password)
 			</p>
 
 			<button ng-if="!$root.isAuthorised" ng-click="ctrl.openAuthUrl()">Login/Register</button>

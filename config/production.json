@@ -16,10 +16,10 @@
 	"reddit": {
 		"url": "https://www.reddit.com/api/v1/",
 		"oauthUrl": "https://oauth.reddit.com/api/v1/",
-		"clientId": "mayQBZFocpPb7Q",
-		"secret": "jMgOim9gg-5aSicLxHLbJU1e5X8",
+		"clientId": "Xrx03-_KnT0d0A",
+		"secret": "PNvSrh3eOfO1-NHPqNyNw5N2jNE",
 		"scope": "identity",
-		"callbackUrl": "http:%2F%2Flocalhost:8088%2F%23%2Fcallback",
+		"callbackUrl": "http:%2F%2Fstormvods.com%2F%23%2Fcallback",
 		"duration": "temporary"
 	},
 	"redis": {

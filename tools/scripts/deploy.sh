@@ -16,5 +16,10 @@ ssh $host << EOF
   npm i --production
   cp ~/newrelic/newrelic.js /var/www/stormvods/newrelic.js
 
+  mv /var/www/stormvods/config/production.json /var/www/stormvods/config/default.json
+
+  cd /var/www/stormvods/tools/scripts
+  npm i
+
   forever start /var/www/stormvods/server.js
 EOF

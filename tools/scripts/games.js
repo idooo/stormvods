@@ -7,7 +7,7 @@
  * -u (authorization header)
  * -a (address eg http://localhost:8088
  *
- * ./games.js -c config/default.json -f data/games.csv -u mQtMjdjYi00NzVmLTkwOWQtMWUxNzA5Mzk5OWVhNWE4NGU5N -a http://localhost:8088
+ * ./games.js -c config/default.json -f data/games.csv -u ItZmZlZi00NTZhLTljYTQtMWM0NmMxNzM0NjRjY2E5Njc0Y -a http://localhost:8088
  *
  */
 
@@ -43,11 +43,11 @@ parse(file, {comment: '#'}, (err, output) => {
 		i++;
 		if (!data[i]) return;
 		var res = addVideo(argv.u, data[i]);
-		if (res.code === 400) {
+		if (res.code > 300) {
 			console.error(res);
 		}
 		else {
-			console.log(`OK - ${i}/${data.length} - ${data[i].youtubeId}`);
+			console.log(`OK - ${i + 1}/${data.length} - ${data[i].youtubeId}`);
 		}
 		insert();
 	}

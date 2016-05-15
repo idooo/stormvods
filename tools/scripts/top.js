@@ -25,7 +25,7 @@ if (!argv.c) {
 	return console.error('-c argument must be specified');
 }
 
-var configPath = path.join(process.cwd(), argv.c);
+var configPath = path.join(argv.c);
 
 try {
 	this.config = require(configPath);
@@ -64,11 +64,16 @@ models.Tops.findOne({})
 
 		for (var i = 0; i < response.length; i++) {
 			if (response[i] && response[i].length > 0) {
-				data[Object.keys(tops)[i]] = response[i];
+				data[Object.keys(tops)[i]] = response[i].reverse();
 			}
 			else {
 				console.log(`No new data for ${Object.keys(tops)[i]}`);
-				data[Object.keys(tops)[i]] = oldTops[Object.keys(tops)[i]];
+				try {
+					data[Object.keys(tops)[i]] = oldTops[Object.keys(tops)[i]];
+				}
+				catch (e) {
+					console.log(`No old data for ${Object.keys(tops)[i]}`);
+				}
 			}
 		}
 

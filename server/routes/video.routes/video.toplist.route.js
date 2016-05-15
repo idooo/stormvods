@@ -41,6 +41,7 @@ class VideoTopListRoute extends VideoListRoute {
 				return VideoTopListRoute.mapReduce.call(self, data, auth);
 			})
 			.then(function (data) {
+				data.videos = data.videos.sort((x, y) => y.rating - x.rating);
 				Router.success(res, data);
 				return next();
 			})
