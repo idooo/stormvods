@@ -39,6 +39,10 @@ class Router {
 		this.bind(url, 'put', route, options);
 	}
 
+	bindHEAD (url, route, options) {
+		this.bind(url, 'head', route, options);
+	}
+
 	bindDELETE (url, route, options) {
 		this.bind(url, 'del', route, options);
 	}
