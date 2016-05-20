@@ -52,6 +52,12 @@ const TEMPLATE = `
 				<li>
 					Game should have commentary in English by a caster
 				</li>
+				<li>
+					Use <a href="http://wiki.teamliquid.net/heroes/Main_Page" target="_blank">Team Liquid Wiki</a>
+					as a source of correct names
+					for <a href="http://wiki.teamliquid.net/heroes/Portal:Teams" target="_blank" >teams</a>
+					and <a href="http://wiki.teamliquid.net/heroes/Portal:Tournaments" target="_blank">tournaments</a>
+				</li>
 			</ul>
 
 			<h3>Please don't</h3>

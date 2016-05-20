@@ -1,7 +1,5 @@
 'use strict';
 
-'use strict';
-
 /**
  * @api {get} /video/:id/info Get additional video information
  * @apiName GetVideoInfo
