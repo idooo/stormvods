@@ -1,16 +1,15 @@
 .sidebar {
-
 	&__block {
 		font-size: em(14);
 		padding: 15px;
 
 		@include media($medium-screen-up) {
-			border: 2px solid #6b62dc;
+			border: 2px solid #6B62DC;
 		}
 
 		p {
 			margin-bottom: 10px;
-    		line-height: 1.3;
+			line-height: 1.3;
 
 			&:last-child {
 				margin-bottom: 0;

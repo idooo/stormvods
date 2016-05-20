@@ -10,7 +10,7 @@ $secondary-button-color: $base-font-color;
 	background-color: $action-color;
 	border: 0;
 	border-radius: $base-border-radius;
-	color: #fff;
+	color: #FFFFFF;
 	cursor: pointer;
 	display: inline-block;
 	font-family: $base-font-family;
@@ -18,21 +18,20 @@ $secondary-button-color: $base-font-color;
 	-webkit-font-smoothing: antialiased;
 	font-weight: 600;
 	line-height: 1;
-	padding: 0.7em $base-spacing;
+	padding: .7em $base-spacing;
 	text-decoration: none;
 	transition: background-color $base-duration $base-timing;
 	vertical-align: baseline;
 	white-space: nowrap;
 
-	&:hover,
-	&:focus {
+	&:hover, &:focus {
 		background-color: shade($action-color, 20%);
-		color: #fff;
+		color: #FFFFFF;
 	}
 
 	&:disabled {
 		cursor: not-allowed;
-		opacity: 0.4;
+		opacity: .4;
 
 		&:hover {
 			background-color: $action-color;
@@ -41,12 +40,11 @@ $secondary-button-color: $base-font-color;
 }
 
 .secondary {
-	box-shadow: inset 0px  0px 0px 1px $secondary-button-border-color;
+	box-shadow: inset 0  0 0 1px $secondary-button-border-color;
 	background: $secondary-button-background;
 	color: $secondary-button-color;
 
-	&:hover,
-	&:focus {
+	&:hover, &:focus {
 		background: $secondary-button-hover-background;
 		color: $action-color;
 	}
@@ -56,7 +54,6 @@ $secondary-button-color: $base-font-color;
 	}
 
 	&:disabled {
-
 		&:hover {
 			background: $secondary-button-background;
 			color: $secondary-button-color;

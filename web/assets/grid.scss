@@ -1,6 +1,5 @@
 $medium-screen: 600px;
 $large-screen: 900px;
-
 $medium-screen-up: new-breakpoint(min-width $medium-screen);
 $large-screen-up: new-breakpoint(min-width $large-screen);
 
@@ -31,7 +30,7 @@ $large-screen-up: new-breakpoint(min-width $large-screen);
 .newline-mobile {
 	display: block;
 	padding: em(3);
-	
+
 	@include media($medium-screen-up) {
 		display: inline-block;
 		padding: 0;

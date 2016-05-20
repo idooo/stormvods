@@ -6,7 +6,7 @@ html, body {
 
 .content {
 	opacity: 1;
-	@include transition(opacity 0.5s);
+	@include transition(opacity .5s);
 
 	@include media($medium-screen-up) {
 		@include outer-container;
@@ -19,28 +19,28 @@ html, body {
 	}
 }
 
-	.page-container {
-		@include media($medium-screen-up) {
-			@include span-columns(8);
-		}
+.page-container {
+	@include media($medium-screen-up) {
+		@include span-columns(8);
 	}
+}
 
-	.sidebar-container {
-		@include media($medium-screen-up) {
-			@include span-columns(4);
-		}
+.sidebar-container {
+	@include media($medium-screen-up) {
+		@include span-columns(4);
 	}
+}
 
-	.content-spinner {
-		position: absolute;
-		top: 25%;
-  		left: 50%;
-    	@include transform(translateX(-50%));
+.content-spinner {
+	position: absolute;
+	top: 25%;
+	left: 50%;
+	@include transform(translateX(-50%));
 
-		.spinner {
-			margin: 14px auto;
-		}
-	};
+	.spinner {
+		margin: 14px auto;
+	}
+};
 
 section {
 	margin-bottom: em(20);
@@ -50,10 +50,8 @@ section {
 // ---------------------------------------------------------
 
 .page-container {
-
 	// full width container
-	&.zone,
-	&.callback {
+	&.zone, &.callback {
 		@include media($medium-screen-up) {
 			@include span-columns(12);
 		}

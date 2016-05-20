@@ -1,7 +1,7 @@
 $video-width: 640px;
 $video-height: 360px;
-$video-container-top-color: #172c58;
-$video-container-bottom-color: #2c0448;
+$video-container-top-color: #172C58;
+$video-container-bottom-color: #2C0448;
 
 .video {
 	position: relative;
@@ -22,21 +22,21 @@ $video-container-bottom-color: #2c0448;
 		@include mobile-hidden();
 	}
 
-		&__hide-duration-link {
-			@include user-select(none);
-			@include transition(all 0.25s);
-			cursor: pointer;
-			color: $light-text-color;
-			text-transform: uppercase;
-			font-size: 14px;
-			font-weight: 600;
-			border-bottom: 1px dotted rgba($light-text-color, 0.5);
+	&__hide-duration-link {
+		@include user-select(none);
+		@include transition(all .25s);
+		cursor: pointer;
+		color: $light-text-color;
+		text-transform: uppercase;
+		font-size: 14px;
+		font-weight: 600;
+		border-bottom: 1px dotted rgba($light-text-color, .5);
 
-			&:hover {
-				color: $light-text-color-bright;
-				border-bottom-color: $light-text-color-bright;
-			}
+		&:hover {
+			color: $light-text-color-bright;
+			border-bottom-color: $light-text-color-bright;
 		}
+	}
 
 	&__report-container {
 		right: 20px;
@@ -53,7 +53,6 @@ $video-container-bottom-color: #2c0448;
 		cursor: pointer;
 
 		&:hover {
-
 			@include media($medium-screen-up) {
 				background-position: 0 105px;
 			}
@@ -69,7 +68,7 @@ $video-container-bottom-color: #2c0448;
 			color: $light-text-color;
 			text-decoration: none;
 			border-bottom: 1px solid $light-text-color-blend;
-			@include transition(all 0.3s ease-in-out);
+			@include transition(all .3s ease-in-out);
 
 			&:hover {
 				color: $light-text-color-bright;
@@ -83,46 +82,46 @@ $video-container-bottom-color: #2c0448;
 		}
 	}
 
-		&__stage {
-			font-size: 16px;
-			margin-bottom: 6px;
+	&__stage {
+		font-size: 16px;
+		margin-bottom: 6px;
+		color: $light-text-color-blend;
+	}
+
+	&__tournament {
+		font-size: em(22);
+		line-height: em(22px);
+		letter-spacing: 1px;
+		margin-bottom: 10px;
+		padding: 0 em(20);
+	}
+
+	&__format {
+		font-size: 14px;
+		color: $light-text-color-blend;
+		margin-bottom: 16px;
+	}
+
+	&__teams {
+		color: $light-text-color-blend;
+		margin-bottom: 38px;
+
+		a, span {
+			text-transform: none;
+		}
+	}
+
+	&__casters {
+		font-size: 14px;
+		text-transform: none !important;
+		color: $light-text-color-blend;
+
+		span, a {
 			color: $light-text-color-blend;
+			text-transform: none;
+			display: inline;
 		}
-
-		&__tournament {
-			font-size: em(22);
-    		line-height: em(22px);
-			letter-spacing: 1px;
-			margin-bottom: 10px;
-			padding: 0 em(20);
-		}
-
-		&__format {
-			font-size: 14px;
-			color: $light-text-color-blend;
-			margin-bottom: 16px;
-		}
-
-		&__teams {
-			color: $light-text-color-blend;
-			margin-bottom: 38px;
-
-			a, span {
-				text-transform: none;
-			}
-		}
-
-		&__casters {
-			font-size: 14px;
-			text-transform: none !important;
-			color: $light-text-color-blend;
-
-			span, a {
-				color: $light-text-color-blend;
-				text-transform: none;
-				display: inline;
-			}
-		}
+	}
 
 	&__wrapper {
 		height: 0;
@@ -130,9 +129,7 @@ $video-container-bottom-color: #2c0448;
 		padding-bottom: 56.25%; // For ratio 16:9. 75% if ratio is 4:3
 		position: relative;
 
-		embed,
-		object,
-		iframe {
+		embed, object, iframe {
 			@include position(absolute, 0px null null 0px);
 			@include size(100%);
 		}
@@ -186,18 +183,18 @@ $video-container-bottom-color: #2c0448;
 		}
 	}
 
-		&__hotkeys-line {
-			color: #797979;
-			font-size: 14px;
-			padding: 5px 0;
+	&__hotkeys-line {
+		color: #797979;
+		font-size: 14px;
+		padding: 5px 0;
 
-			key {
-				color: black;
-				padding: 4px 9px;
-				display: inline-block;
-				border: 1px solid #C7C7C7;
-				border-radius: 5px;
-				box-shadow: 0 1px 1px #D0D0D0;
-			}
+		key {
+			color: black;
+			padding: 4px 9px;
+			display: inline-block;
+			border: 1px solid #C7C7C7;
+			border-radius: 5px;
+			box-shadow: 0 1px 1px #D0D0D0;
 		}
+	}
 }

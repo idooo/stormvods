@@ -2,11 +2,11 @@
 	display: block;
 	font-size: 16px;
 	padding-top: 5px;
-	
+
 	@include media($medium-screen-up) {
 		float: right;
 	}
-	
+
 	a {
 		margin-left: em(5);
 	}

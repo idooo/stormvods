@@ -1,6 +1,6 @@
-$rating-voted-color: #122e5a;
+$rating-voted-color: #122E5A;
 $rating-not-voted-color: $action-color;
-$rating-hover-color: #62835c;
+$rating-hover-color: #62835C;
 
 .rating {
 	@include user-select(none);
@@ -16,7 +16,7 @@ $rating-hover-color: #62835c;
 	}
 
 	path {
-		@include transition(all 0.25s);
+		@include transition(all .25s);
 		fill: $rating-not-voted-color;
 	}
 
@@ -24,7 +24,6 @@ $rating-hover-color: #62835c;
 		cursor: pointer;
 
 		&:hover {
-
 			text {
 				display: none;
 
@@ -40,7 +39,6 @@ $rating-hover-color: #62835c;
 	}
 
 	&--voted {
-
 		path {
 			fill: $rating-voted-color;
 		}

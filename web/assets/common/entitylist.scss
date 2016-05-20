@@ -6,7 +6,7 @@
 		margin-bottom: em(10);
 
 		a {
-			@include transition(all 0.2s);
+			@include transition(all .2s);
 			color: $action-color;
 			text-decoration: none;
 			border-bottom: 1px solid $action-color-blend;
@@ -18,12 +18,10 @@
 		}
 
 		&--team {
-
 			img {
 				width: 20px;
 				vertical-align: middle;
 			}
-
 		}
 	}
 }

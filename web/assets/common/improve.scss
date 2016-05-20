@@ -1,5 +1,4 @@
 .improve {
-
 	&__question-container {
 		padding-left: em(10);
 	}
@@ -22,8 +21,8 @@
 }
 
 .expander {
-	$light-gray: #DDD !default;
-	$expander-arrow-width: 0.7em;
+	$light-gray: #DDDDDD !default;
+	$expander-arrow-width: .7em;
 	$expander-toggle-size: 1em;
 	$expander-toggle-arrow-size: $expander-toggle-size;
 	$expander-toggle-margin: 1em;
@@ -37,14 +36,14 @@
 
 		&:before {
 			font-size: $expander-arrow-width;
-			content: "\25BC";
-			margin-right: 0.5em;
+			content: '\25BC';
+			margin-right: .5em;
 		}
 
 		&--content-hidden {
 			&:before {
 				font-size: $expander-arrow-width;
-				content: "\25BA";
+				content: '\25BA';
 			}
 		}
 	}
@@ -86,7 +85,6 @@
 	}
 
 	&__loading {
-
 		div {
 			margin: 14px auto;
 		}
@@ -99,6 +97,6 @@
 	}
 
 	&__thankyou {
-		color: #62835c;
+		color: #62835C;
 	}
 }

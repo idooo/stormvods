@@ -12,11 +12,11 @@ h1 {
 	}
 
 	a {
-		@include transition(all 0.15s);
+		@include transition(all .15s);
 		text-decoration: none;
 		color: $action-color;
 		display: inline-block;
-		border-bottom: 1px solid rgba($action-color, 0.5);
+		border-bottom: 1px solid rgba($action-color, .5);
 
 		&:hover {
 			color: darken($action-color, 20%);
@@ -36,7 +36,7 @@ h2 {
 	text-transform: uppercase;
 	text-align: center;
 	margin: 0;
-    padding: 0 0 em(10) 0;
+	padding: 0 0 em(10) 0;
 
 	@include media($medium-screen-up) {
 		text-align: left;

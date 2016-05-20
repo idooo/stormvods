@@ -1,27 +1,27 @@
-	
+
 .tabs {
 	margin-bottom: em(10);
 }
 
-	.tab {
-		@include user-select(none);
-		@include transition(all 0.15s);
-		padding: 10px 16px;
-		cursor: pointer; 
-		display: inline-block;
-		
+.tab {
+	@include user-select(none);
+	@include transition(all .15s);
+	padding: 10px 16px;
+	cursor: pointer;
+	display: inline-block;
+
+	&:hover {
+		background-color: $action-color;
+		color: white;
+	}
+
+	&--selected {
+		color: white;
+		cursor: default;
+		background-color: $light-text-color-blend;
+
 		&:hover {
-			background-color: $action-color;
-			color: white;
-		}
-		
-		&--selected {
-			color: white;
-			cursor: default;
 			background-color: $light-text-color-blend;
-				
-			&:hover {
-				background-color: $light-text-color-blend;
-			}
 		}
 	}
+}

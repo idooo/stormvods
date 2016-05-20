@@ -1,14 +1,13 @@
 $video-list-item-primary-color: #000000 !default;
 $video-list-item-secondary-color: #777777 !default;
-$video-list-item-info-border-color: #e1e1e1 !default;
-$video-list-item-hover-background-color: rgba(43, 6, 73, 0.07) !default;
+$video-list-item-info-border-color: #E1E1E1 !default;
+$video-list-item-hover-background-color: rgba(43, 6, 73, .07) !default;
 
 .video-list {
-
 }
 
 .video-list-item {
-	@include transition(background-color 0.15s);
+	@include transition(background-color .15s);
 	cursor: pointer;
 	padding: em(20) em(10) 0;
 
@@ -78,31 +77,30 @@ $video-list-item-hover-background-color: rgba(43, 6, 73, 0.07) !default;
 		}
 	}
 
-		&__team-name {
-			width: 50%;
+	&__team-name {
+		width: 50%;
 
-			&:first-child {
-				text-align: right;
+		&:first-child {
+			text-align: right;
+		}
+	}
+
+	&__team-logo {
+		width: 100px;
+		padding: 0 10px;
+
+		img {
+			width: em(30);
+
+			@include media($medium-screen-up) {
+				width: em(60);
+				margin: 0 em(5);
 			}
 		}
+	}
 
-		&__team-logo {
-			width: 100px;
-			padding: 0 10px;
-
-			img {
-				width: em(30);
-
-				@include media($medium-screen-up) {
-					width: em(60);
-					margin: 0 em(5);
-				}
-			}
-		}
-
-		&__show-teams {
-
-		}
+	&__show-teams {
+	}
 
 	&__delimiter {
 		background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAGCAMAAADNLv/0AAAABlBMVEX////JyckzPGiiAAAAAXRSTlMAQObYZgAAABdJREFUeAFjYGRAAEYYDcEIEkWOEVU9AAGMAAvTXO59AAAAAElFTkSuQmCC);
@@ -112,22 +110,21 @@ $video-list-item-hover-background-color: rgba(43, 6, 73, 0.07) !default;
 		background-position: 0 em(8);
 	}
 
-		&__show-teams {
-			text-align: center;
+	&__show-teams {
+		text-align: center;
 
-			span {
-				background-color: white;
-				display: inline-block;
-				color: $action-color;
-				font-size: 12px;
-				padding: 4px 5px 5px;
-				border-bottom: 1px dotted $light-text-color-secondary;
+		span {
+			background-color: white;
+			display: inline-block;
+			color: $action-color;
+			font-size: 12px;
+			padding: 4px 5px 5px;
+			border-bottom: 1px dotted $light-text-color-secondary;
 
-				&:hover {
-					color: darken($action-color, 50%);
-					border-bottom: 1px dotted $action-color;
-				}
+			&:hover {
+				color: darken($action-color, 50%);
+				border-bottom: 1px dotted $action-color;
 			}
 		}
-
+	}
 }

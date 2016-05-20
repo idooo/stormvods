@@ -1,39 +1,39 @@
-@import "bourbon";
-@import "neat";
+@import 'bourbon';
+@import 'neat';
 
-@import "vendor/ngDialog";
-@import "vendor/ngDialog.theme";
+@import 'vendor/ngDialog';
+@import 'vendor/ngDialog.theme';
 
-@import "./reset";
-@import "./variables";
-@import "./grid";
+@import './reset';
+@import './variables';
+@import './grid';
 
-@import "./common/spinner";
-@import "./common/container";
-@import "./common/header";
-@import "./common/footer";
-@import "./common/section";
-@import "./common/form";
-@import "./common/buttons";
-@import "./common/flashes";
-@import "./common/autocomplete";
-@import "./common/videolist";
-@import "./common/pagination";
-@import "./common/rating";
-@import "./common/improve";
-@import "./common/top";
-@import "./common/video";
-@import "./common/sidebar";
-@import "./common/tabs";
-@import "./common/entitylist";
-@import "./common/entity";
+@import './common/spinner';
+@import './common/container';
+@import './common/header';
+@import './common/footer';
+@import './common/section';
+@import './common/form';
+@import './common/buttons';
+@import './common/flashes';
+@import './common/autocomplete';
+@import './common/videolist';
+@import './common/pagination';
+@import './common/rating';
+@import './common/improve';
+@import './common/top';
+@import './common/video';
+@import './common/sidebar';
+@import './common/tabs';
+@import './common/entitylist';
+@import './common/entity';
 
-@import "./pages/addvideo";
-@import "./pages/callback";
-@import "./pages/zone";
-@import "./pages/tournament";
+@import './pages/addvideo';
+@import './pages/callback';
+@import './pages/zone';
+@import './pages/tournament';
 
 // Minor helpers
-a[ng-click]{
-    cursor: pointer;
+a[ng-click] {
+	cursor: pointer;
 }
