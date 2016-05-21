@@ -74,11 +74,6 @@ function tournamentPage ($http, $state, Page, Constants) {
 			video.stage = Constants.Stages[video.stageCode];
 		});
 
-		result.push({
-			name: 'Unknown',
-			videos: stages['Unknown']
-		});
-
 		for (let i = 0; i < Constants.StagesOrder.length; i++) {
 			let stageName = Constants.StagesOrder[i].caption;
 			if (!stages[stageName] || stageName.length < 1) continue;
@@ -89,6 +84,7 @@ function tournamentPage ($http, $state, Page, Constants) {
 				videos: stages[stageName]
 			});
 		}
+
 		return result;
 	}
 

@@ -64,6 +64,11 @@ angular
 		// by stage type and sort matches inside the same stage
 		StagesOrder: [
 			{
+				name: 'UNKNOWN',
+				caption: 'Unknown',
+				codes: []
+			},
+			{
 				name: 'GROUP_STAGE',
 				caption: 'Group Stage',
 				codes: [
