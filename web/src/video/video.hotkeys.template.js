@@ -11,11 +11,11 @@ module.exports = `
 			Go forward / back 5 seconds
 		</div>
 		<div class="video__hotkeys-line">
-			<key>Ctrl</key> + <key>&larr;</key> <key>&rarr;</key>
+			<key>Ctrl</key> + <key>&larr;</key> <key>&rarr;</key> or <key>j</key> / <key>l</key>
 			Go forward / back 10 seconds
 		</div>
 		<div class="video__hotkeys-line">
-			<key>F</key>
+			<key>f</key>
 			Toggle Full Screen mode
 		</div>
 		<div class="video__hotkeys-line">
