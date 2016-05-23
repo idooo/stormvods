@@ -22,7 +22,7 @@ if (!argv.f || !argv.u || !argv.a) {
 	return console.error('-f, -u, -a arguments must be specified');
 }
 
-var configPath = path.join(process.cwd(), argv.c);
+var configPath = path.join(argv.c);
 
 try {
 	this.config = require(configPath);

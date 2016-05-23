@@ -1,0 +1,81 @@
+<!doctype html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+		<base href="/">
+
+		<title ng-bind="$root.title">Storm Vods</title>
+
+		<link rel="icon" type="image/png" href="/dist/images/favicon.png?v1" />
+		<link href="/dist/images/touch-icon.png?v1" rel="apple-touch-icon" sizes="180x180" />
+
+		<style type="text/css">
+			html, body {
+				margin: 0;
+				height: 0;
+				width: 100%;
+				height: 100%;
+			}
+
+			body {
+				background-image: -webkit-linear-gradient(#172C58,#2C0448);
+				background-image: linear-gradient(#172C58,#2C0448);
+				background-color: #172C58;	
+			}
+
+			.logo {
+				width: 107px;
+				height: 60px;
+				margin: 140px auto 20px;
+				background-image: url(data:image/png;base64,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);
+			}
+			.message {
+				font-family: "PT Sans";
+				font-size: 16px;
+				line-height: 1.3;
+				color: white;
+				text-align: center;
+			}
+
+			a {
+				color: white;
+				text-decoration: none;
+				border-bottom: 1px solid rgba(255,255,255,0.3);
+			}
+
+			a:hover {
+				color: red;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div class="viewport">
+			<div class="logo"></div>
+			<div class="message"> 
+				We have some problems here. We will come back soon™<br>
+				Check our <a href="https://twitter.com/Stormvods">twitter</a> for updates
+			</div>
+		</div>
+
+	</body>
+
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-38569190-2', 'auto');
+		ga('send', 'pageview');
+
+	</script>
+
+</html>

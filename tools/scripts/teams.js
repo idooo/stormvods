@@ -53,7 +53,7 @@ var path = require('path'),
 	argv = require('yargs').argv,
 	Database = require('../../server/core/database');
 
-var configPath = path.join(process.cwd(), argv.c);
+var configPath = path.join(argv.c);
 
 try {
 	this.config = require(configPath);
