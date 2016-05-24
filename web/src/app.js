@@ -79,8 +79,10 @@ function configuration ($httpProvider, $stateProvider, $urlRouterProvider, Cooki
 		});
 }
 
-function init ($rootScope, Page, Auth) {
+function init ($location, $rootScope, $window, Auth, Page) {
 	Auth.authorise();
+
+	$window.ga('create', 'UA-38569190-2', 'auto');
 
 	$rootScope.isDurationHidden = true;
 	$rootScope.isTeamVisible = false;
@@ -89,5 +91,9 @@ function init ($rootScope, Page, Auth) {
 		window.scrollTo(0, 0);
 		Page.loading();
 		Page.setTitle();
+	});
+
+	$rootScope.$on('$stateChangeSuccess', () => {
+		$window.ga('send', 'pageview', $location.path());
 	});
 }
