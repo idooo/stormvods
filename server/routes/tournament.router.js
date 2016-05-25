@@ -1,6 +1,12 @@
 'use strict';
 
 var AbstractEntityRouter = require('./abstract.entity.router');
+var logger = require('winston'),
+	_omit = require('lodash/object/omit'),
+	_pick = require('lodash/object/pick'),
+	Router = require('./abstract.router');
+
+const MIN_YEAR = 2015;
 
 class TournamentRouter extends AbstractEntityRouter {
 
@@ -13,24 +19,6 @@ class TournamentRouter extends AbstractEntityRouter {
 		 * @apiName GetTournaments
 		 * @apiGroup Tournament
 		 * @apiVersion 1.0.0
-		 */
-
-		/**
-		 * @api {post} /api/tournament Create Tournament
-		 * @apiName CreateTournament
-		 * @apiGroup Tournament
-		 * @apiPermission USER
-		 * @apiVersion 1.0.0
-		 *
-		 * @apiParam {String} name
-		 *
-		 * @apiSuccessExample Success-Response:
-		 * HTTP/1.1 200 OK
-		 * {
-		 *     _id: '56a723653ddc195f787e07c2',
-		 *     name: 'exampleName',
-		 *     status: 'ok'
-		 * }
 		 */
 
 		/**
@@ -71,6 +59,70 @@ class TournamentRouter extends AbstractEntityRouter {
 		 * Remove entity permanently, search through all the videos
 		 * and remove entity from there
 		 */
+	}
+
+
+	/**
+	 * @api {post} /api/tournament Create Tournament
+	 * @apiName CreateTournament
+	 * @apiGroup Tournament
+	 * @apiPermission USER
+	 * @apiVersion 1.0.0
+	 *
+	 * @apiParam {String} name
+	 * @apiParam {Number} month (1..12)
+	 * @apiParam {Number} year (2015..)
+	 *
+	 * @apiSuccessExample Success-Response:
+	 * HTTP/1.1 200 OK
+	 * {
+	 *     _id: '56a723653ddc195f787e07c2',
+	 *     name: 'exampleName',
+	 *     status: 'ok'
+	 * }
+	 */
+	addRoute (req, res, next, auth) {
+		// Validate params
+		var name = Router.filter(req.params.name),
+			date = TournamentRouter.validateTournamentDate(
+				Router.filter(req.params.month),
+				Router.filter(req.params.year));
+
+		var modelInstance = this.model({
+			name,
+			author: auth.id,
+			dateMonth: date.month,
+			dateYear: date.year
+		});
+
+		modelInstance.save(function (err, responseFromDB) {
+			if (err) {
+				logger.debug(_omit(err, 'stack'));
+				Router.fail(res, err);
+				return next();
+			}
+			else {
+				Router.success(res, _pick(responseFromDB, ['_id', 'name']));
+				return next();
+			}
+		});
+	}
+
+	/**
+	 * @param rawMonth
+	 * @param rawYear
+	 * @returns {{year: (Number|number), month: (Number|number)}}
+     */
+	static validateTournamentDate (rawMonth, rawYear) {
+		let now = new Date(),
+			month = parseInt(rawMonth, 10) || now.getMonth() + 1,
+			year = parseInt(rawYear, 10) || now.getFullYear();
+
+		if (month < 1 || month > 12) month = now.getMonth() + 1;
+		if (MIN_YEAR > year || year > now.getFullYear()) year = now.getFullYear();
+		if (year === now.getFullYear() && month > now.getMonth() + 1) month = now.getMonth() + 1;
+
+		return {year, month};
 	}
 }
 
