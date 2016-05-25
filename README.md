@@ -1,11 +1,5 @@
 # Storm Vods
 
-To run tests
-
-```
-./tools/scripts/api-test-runner.sh config/test.json
-```
-
 ## Setup
 
 ### Database
@@ -34,7 +28,7 @@ npm i
 
 Edit `default.conf` to set right permissions for database, redis and other minor stuff
 
-### Run
+### Development
 
 Run development server and watch client resources for changes:
 
@@ -42,7 +36,16 @@ Run development server and watch client resources for changes:
 grunt serve
 ```
 
-## Build
+### Tests
+
+To run tests (add `--tests testname.test.js` to run specific test)
+
+```
+./tools/scripts/api-test-runner.sh config/test.json
+```
+
+
+### Production Build
 
 Run grunt task to build client-side resources:
 
@@ -50,8 +53,17 @@ Run grunt task to build client-side resources:
 grunt build
 ```
 
+### Run
 
-## Deployment
+Build static assets first
+
+```
+config=<config path> node server.js
+```
+
+
+
+### Deployment
 
 To deploy using build int script (requires newrelic.js and production.json to existsL
 

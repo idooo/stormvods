@@ -8,7 +8,13 @@ var h = require('../api.helpers'),
 module.exports = {
 
 	voteVideo: function (test) {
-		var video = h.post('/api/video', {youtubeId: 'voteTest001'}, users.user01),
+		var data = {
+			youtubeId: 'voteTest001',
+			tournament: 'voteTest001 Tournament',
+			teams: ['voteTest001 team1', 'voteTest001 team2']
+		};
+
+		var video = h.post('/api/video', data, users.user01),
 			res = h.post('/api/vote', {videoId: video._id}, users.user02),
 			res2 = h.get('/api/video/' + video._id);
 
@@ -19,7 +25,13 @@ module.exports = {
 	},
 
 	voteVideoTwice: function (test) {
-		var video = h.post('/api/video', {youtubeId: 'voteTest002'}, users.user01),
+		var data = {
+			youtubeId: 'voteTest002',
+			tournament: 'voteTest002 Tournament',
+			teams: ['voteTest002 team1', 'voteTest002 team2']
+		};
+
+		var video = h.post('/api/video', data, users.user01),
 			res = h.post('/api/vote', {videoId: video._id}, users.user01),
 			res2 = h.get('/api/video/' + video._id);
 
@@ -33,7 +45,8 @@ module.exports = {
 	voteWrongType: function (test) {
 		var video = h.post('/api/video', {
 				youtubeId: 'voteTest011',
-				tournament: 'Super voteTest011'
+				tournament: 'Super voteTest011',
+				teams: ['voteTest011 team1', 'voteTest011 team2']
 			}, users.user01),
 
 			// Get video to get tournament id
@@ -55,7 +68,8 @@ module.exports = {
 	voteTournament: function (test) {
 		var data = createVideoAndVoteForTournament({
 				youtubeId: 'voteTest003',
-				tournament: 'Super voteTest003'
+				tournament: 'Super voteTest003',
+				teams: ['voteTest003 team1', 'voteTest003 team2']
 			},
 			[users.user01, users.user02],
 			function (res) {
@@ -74,7 +88,8 @@ module.exports = {
 	voteTournamentTwice: function (test) {
 		var data = createVideoAndVoteForTournament({
 				youtubeId: 'voteTest005',
-				tournament: 'Super voteTest005'
+				tournament: 'Super voteTest005',
+				teams: ['voteTest005 team1', 'voteTest005 team2']
 			},
 			[users.user01, users.user01],
 			function (res) {
@@ -92,7 +107,8 @@ module.exports = {
 	voteTournamentSortEntities: function (test) {
 		var video = h.post('/api/video', {
 				youtubeId: 'voteTest015',
-				tournament: 'Super voteTest015'
+				tournament: 'Super voteTest015',
+				teams: ['voteTest015 team1', 'voteTest015 team2']
 			}, users.user01),
 
 			// Add second
@@ -118,6 +134,7 @@ module.exports = {
 	voteTeams: function (test) {
 		var data = createVideoAndVoteForTeams({
 				youtubeId: 'voteTest006',
+				tournament: 'Super voteTest006',
 				teams: ['Team voteTest006', 'Superteam voteTest006']
 			},
 			[users.user01, users.user02],
@@ -137,7 +154,8 @@ module.exports = {
 	voteTeamsTwice: function (test) {
 		var data = createVideoAndVoteForTeams({
 				youtubeId: 'voteTest007',
-				teams: ['Team voteTest007', 'Superteam voteTest007']
+				teams: ['Team voteTest007', 'Superteam voteTest007'],
+				tournament: 'Super voteTest007'
 			},
 			[users.user01, users.user01],
 			function (video) {
@@ -155,7 +173,9 @@ module.exports = {
 	voteCasters: function (test) {
 		var data = createVideoAndVoteForCasters({
 				youtubeId: 'voteTest008',
-				casters: ['Caster voteTest008', 'AnotherCaster voteTest008']
+				casters: ['Caster voteTest008', 'AnotherCaster voteTest008'],
+				teams: ['Team voteTest008', 'Superteam voteTest008'],
+				tournament: 'Super voteTest008'
 			},
 			[users.user01, users.user02],
 			function (video) {
@@ -175,7 +195,9 @@ module.exports = {
 	voteCastersWrongCount: function (test) {
 		var data = createVideoAndVoteForCasters({
 				youtubeId: 'voteTest009',
-				casters: ['Caster voteTest009', 'AnotherCaster voteTest009']
+				casters: ['Caster voteTest009', 'AnotherCaster voteTest009'],
+				teams: ['Team voteTest009', 'Superteam voteTest009'],
+				tournament: 'Super voteTest009'
 			},
 			[users.user01, users.user02],
 			function (video) {
@@ -194,7 +216,9 @@ module.exports = {
 	voteCastersTwice: function (test) {
 		var data = createVideoAndVoteForCasters({
 				youtubeId: 'voteTest010',
-				casters: ['Caster voteTest010', 'AnotherCaster voteTest010']
+				casters: ['Caster voteTest010', 'AnotherCaster voteTest010'],
+				teams: ['Team voteTest010', 'Superteam voteTest010'],
+				tournament: 'Super voteTest010'
 			},
 			[users.user01, users.user01],
 			function (video) {
@@ -212,7 +236,9 @@ module.exports = {
 	voteStage: function (test) {
 		var video = h.post('/api/video', {
 				youtubeId: 'voteTest012',
-				stage: 'FINAL'
+				stage: 'FINAL',
+				teams: ['Team voteTest012', 'Superteam voteTest012'],
+				tournament: 'Super voteTest012'
 			}, users.user01),
 
 			// User 2 votes for tournament
@@ -234,7 +260,9 @@ module.exports = {
 	voteStageWrongCode: function (test) {
 		var video = h.post('/api/video', {
 				youtubeId: 'voteTest013',
-				stage: 'FINAL'
+				stage: 'FINAL',
+				teams: ['Team voteTest013', 'Superteam voteTest013'],
+				tournament: 'Super voteTest013'
 			}, users.user01),
 
 			// User 2 votes for tournament
@@ -257,7 +285,9 @@ module.exports = {
 	voteFormat: function (test) {
 		var video = h.post('/api/video', {
 				youtubeId: 'voteTest014',
-				format: 'BO3'
+				format: 'BO3',
+				teams: ['Team voteTest014', 'Superteam voteTest014'],
+				tournament: 'Super voteTest014'
 			}, users.user01),
 
 			// User 2 votes for tournament

@@ -7,7 +7,9 @@ module.exports = {
 
 	addVideoSimple: function (test) {
 		var data = {
-			youtubeId: 'addVideo000'
+			youtubeId: 'addVideo000',
+			tournament: 'addVideo000 Tournament',
+			teams: ['addVideo000 team1', 'addVideo000 team2']
 		};
 
 		var res = h.post('/api/video', data, users.user01),
@@ -22,9 +24,41 @@ module.exports = {
 		test.done();
 	},
 
+	addVideoRequireTournament: function (test) {
+		var data = {
+			youtubeId: 'addVideo098',
+			teams: ['addVideo098 team1', 'addVideo098 team2']
+		};
+
+		var res = h.post('/api/video', data, users.user01);
+
+		test.equal(res.status, 'error');
+		test.equal(res.code, 400);
+		test.equal(res.message, 'REQUIRED');
+
+		test.done();
+	},
+
+	addVideoRequireTeams: function (test) {
+		var data = {
+			youtubeId: 'addVideo097',
+			tournament: 'addVideo097 Tournament'
+		};
+
+		var res = h.post('/api/video', data, users.user01);
+
+		test.equal(res.status, 'error');
+		test.equal(res.code, 400);
+		test.equal(res.message, 'REQUIRED');
+
+		test.done();
+	},
+
 	addVideoMultipleIds: function (test) {
 		var data = {
-			youtubeId: ['addVideo100', 'addVideo101', 'addVideo102']
+			youtubeId: ['addVideo100', 'addVideo101', 'addVideo102'],
+			tournament: 'addVideo100 Tournament',
+			teams: ['addVideo100 team1', 'addVideo100 team2']
 		};
 
 		var res = h.post('/api/video', data, users.user01),
@@ -41,7 +75,9 @@ module.exports = {
 
 	addVideoReqAuth: function (test) {
 		var data = {
-			youtubeId: 'addVideo099'
+			youtubeId: 'addVideo099',
+			tournament: 'addVideo099 Tournament',
+			teams: ['addVideo099 team1', 'addVideo099 team2']
 		};
 
 		var res = h.post('/api/video', data);
@@ -55,7 +91,9 @@ module.exports = {
 
 	addVideoPreventSameId: function (test) {
 		var data = {
-			youtubeId: 'addVideo000'
+			youtubeId: 'addVideo000',
+			tournament: 'addVideo000 Tournament2',
+			teams: ['addVideo000 team3', 'addVideo000 team4']
 		};
 
 		h.post('/api/video', data, users.user01);
@@ -70,7 +108,9 @@ module.exports = {
 
 	addVideoPreventSameIdMultipleIds: function (test) {
 		h.post('/api/video', {
-			youtubeId: ['addVideo200', 'addVideo201']
+			youtubeId: ['addVideo200', 'addVideo201'],
+			tournament: 'addVideo200 Tournament',
+			teams: ['addVideo200 team1', 'addVideo200 team2']
 		}, users.user01);
 
 		var	res = h.post('/api/video', {
@@ -86,7 +126,9 @@ module.exports = {
 
 	addVideoPreventSameIdMultipleIdsAmongItself: function (test) {
 		var	res = h.post('/api/video', {
-			youtubeId: ['addVideo210', 'addVideo211', 'addVideo210']
+			youtubeId: ['addVideo210', 'addVideo211', 'addVideo210'],
+			tournament: 'addVideo210 Tournament',
+			teams: ['addVideo210 team1', 'addVideo210 team2']
 		}, users.user01);
 
 		test.equal(res.status, 'error');
@@ -101,7 +143,9 @@ module.exports = {
 			youtubeId: [
 				'addVideo300', 'addVideo301', 'addVideo302', 'addVideo303',
 				'addVideo304', 'addVideo305', 'addVideo306', 'addVideo307'
-			]
+			],
+			tournament: 'addVideo300 Tournament',
+			teams: ['addVideo300 team1', 'addVideo300 team2']
 		};
 
 		var	res = h.post('/api/video', data, users.user01);
@@ -115,7 +159,9 @@ module.exports = {
 
 	addVideoInvalidId: function (test) {
 		var data = {
-			youtubeId: ['aaaa']
+			youtubeId: ['aaaa'],
+			tournament: 'aaaa Tournament',
+			teams: ['aaaa team1', 'aaaa team2']
 		};
 
 		var	res = h.post('/api/video', data, users.user01);
@@ -130,7 +176,8 @@ module.exports = {
 	addVideoTournament: function (test) {
 		var data = {
 			youtubeId: 'addVideo001',
-			tournament: 'addVideoSimpleTest001 Tournament'
+			tournament: 'addVideoSimpleTest001 Tournament',
+			teams: ['addVideo001 team1', 'addVideo001 team2']
 		};
 
 		var res = h.post('/api/video', data, users.user01),
@@ -154,7 +201,8 @@ module.exports = {
 	addVideoTeams: function (test) {
 		var data = {
 			youtubeId: 'addVideo002',
-			teams: ['Team Go)', 'Super Team Go) addVideoSimpleTest002']
+			teams: ['Team Go)', 'Super Team Go) addVideoSimpleTest002'],
+			tournament: 'addVideo002 Tournament'
 		};
 
 		var res = h.post('/api/video', data, users.user01),
@@ -180,7 +228,9 @@ module.exports = {
 	addVideoCasters: function (test) {
 		var data = {
 			youtubeId: 'addVideo003',
-			casters: ['addVideoSimpleTest003 Caster', 'addVideoSimpleTest003 Other Caster']
+			casters: ['addVideoSimpleTest003 Caster', 'addVideoSimpleTest003 Other Caster'],
+			tournament: 'addVideo003 Tournament',
+			teams: ['addVideo003 team1', 'addVideo003 team2']
 		};
 
 		var res = h.post('/api/video', data, users.user01),
@@ -206,7 +256,9 @@ module.exports = {
 	addVideoStage: function (test) {
 		var data = {
 			youtubeId: 'addVideo005',
-			stage: 'FINAL'
+			stage: 'FINAL',
+			tournament: 'addVideo005 Tournament',
+			teams: ['addVideo005 team1', 'addVideo005 team2']
 		};
 
 		var	res = h.post('/api/video', data, users.user01),
@@ -221,7 +273,9 @@ module.exports = {
 	addVideoFormat: function (test) {
 		var data = {
 			youtubeId: 'addVideo006',
-			format: 'BO3'
+			format: 'BO3',
+			tournament: 'addVideo006 Tournament',
+			teams: ['addVideo006 team1', 'addVideo006 team2']
 		};
 
 		var	res = h.post('/api/video', data, users.user01),
@@ -236,7 +290,9 @@ module.exports = {
 	addVideoWrongFormat: function (test) {
 		var data = {
 			youtubeId: 'addVideo007',
-			format: 'BOO'
+			format: 'BOO',
+			tournament: 'addVideo007 Tournament',
+			teams: ['addVideo007 team1', 'addVideo007 team2']
 		};
 
 		var	res = h.post('/api/video', data, users.user01);
@@ -249,7 +305,9 @@ module.exports = {
 	addVideoWrongStage: function (test) {
 		var data = {
 			youtubeId: 'addVideo008',
-			stage: 'FINALOOOO'
+			stage: 'FINALOOOO',
+			tournament: 'addVideo008 Tournament',
+			teams: ['addVideo008 team1', 'addVideo008 team2']
 		};
 
 		var	res = h.post('/api/video', data, users.user01);

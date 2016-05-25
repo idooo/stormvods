@@ -15,19 +15,23 @@ module.exports = {
 		var videos = [
 			{
 				youtubeId: 'touVideo000',
-				tournament: 'Test Tournament 000'
+				tournament: 'Test Tournament 000',
+				teams: ['Team touVideo000', 'Team touVideo001']
 			},
 			{
 				youtubeId: 'touVideo100',
-				tournament: 'Test Tournament 100'
+				tournament: 'Test Tournament 100',
+				teams: ['Team touVideo000', 'Team touVideo001']
 			},
 			{
 				youtubeId: 'touVideo200',
-				tournament: 'Test Tournament 200'
+				tournament: 'Test Tournament 200',
+				teams: ['Team touVideo000', 'Team touVideo001']
 			},
 			{
 				youtubeId: 'touVideo300',
-				tournament: 'Test Tournament 100'
+				tournament: 'Test Tournament 100',
+				teams: ['Team touVideo000', 'Team touVideo001']
 			}
 		];
 

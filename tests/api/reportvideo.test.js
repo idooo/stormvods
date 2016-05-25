@@ -8,11 +8,7 @@ var h = require('../api.helpers'),
 module.exports = {
 
 	reportVideo: function (test) {
-		var data = {
-			youtubeId: 'repVideo000'
-		};
-
-		var res = h.post('/api/video', data, users.user01),
+		var res = createVideo('repVideo000', users.user01),
 			res2 = h.post('/api/video/report', {id: res._id}, users.user01),
 			res3 = h.get('/api/video/' + res._id, undefined, users.admin01);
 
@@ -23,11 +19,7 @@ module.exports = {
 	},
 
 	reportVideoRequireAuth: function (test) {
-		var data = {
-			youtubeId: 'repVideo001'
-		};
-
-		var res = h.post('/api/video', data, users.user01),
+		var res = createVideo('repVideo001', users.user01),
 			res2 = h.post('/api/video/report', {id: res._id}),
 			res3 = h.get('/api/video/' + res._id, undefined, users.admin01);
 
@@ -40,11 +32,7 @@ module.exports = {
 	},
 
 	reportVideoTwice: function (test) {
-		var data = {
-			youtubeId: 'repVideo002'
-		};
-
-		var res = h.post('/api/video', data, users.user01),
+		var res = createVideo('repVideo002', users.user01),
 			res2 = h.post('/api/video/report', {id: res._id}, users.user01),
 			res3 = h.post('/api/video/report', {id: res._id}, users.user01),
 			res4 = h.get('/api/video/' + res._id, undefined, users.admin01);
@@ -57,11 +45,7 @@ module.exports = {
 	},
 
 	reportVideoMultiple: function (test) {
-		var data = {
-			youtubeId: 'repVideo003'
-		};
-
-		var res = h.post('/api/video', data, users.user01),
+		var res = createVideo('repVideo003', users.user01),
 			res2 = h.post('/api/video/report', {id: res._id}, users.user01),
 			res3 = h.post('/api/video/report', {id: res._id}, users.user02),
 			res4 = h.get('/api/video/' + res._id, undefined, users.admin01);
@@ -73,3 +57,18 @@ module.exports = {
 		test.done();
 	}
 };
+
+function createVideo (videoName, user) {
+	var data = {
+		youtubeId: videoName,
+		tournament: `${videoName} Tournament`,
+		teams: [`Team ${videoName}`, `Super ${videoName}`],
+		casters: [`${videoName} Caster`, `${videoName} Other Caster`],
+		stage: 'FINAL',
+		format: 'BO3'
+	};
+
+	var res = h.post('/api/video', data, user);
+
+	return res;
+}

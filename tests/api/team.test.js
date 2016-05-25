@@ -76,19 +76,23 @@ module.exports = {
 		var videos = [
 			{
 				youtubeId: 'teaVideo000',
-				teams: ['Team Test 001', 'Team Test 002']
+				teams: ['Team Test 001', 'Team Test 002'],
+				tournament: 'teaVideo000 Tournament'
 			},
 			{
 				youtubeId: 'teaVideo100',
-				teams: ['Team Test 101', 'Team Test 102']
+				teams: ['Team Test 101', 'Team Test 102'],
+				tournament: 'teaVideo000 Tournament'
 			},
 			{
 				youtubeId: 'teaVideo200',
-				teams: ['Team Test 201', 'Team Test 001']
+				teams: ['Team Test 201', 'Team Test 001'],
+				tournament: 'teaVideo000 Tournament'
 			},
 			{
 				youtubeId: 'teaVideo300',
-				teams: ['Team Test 301', 'Team Test 302']
+				teams: ['Team Test 301', 'Team Test 302'],
+				tournament: 'teaVideo000 Tournament'
 			}
 		];
 
@@ -118,11 +122,11 @@ module.exports = {
 			resVideo3 = h.get('/api/video/' + videos[3]._id);
 
 		test.equal(resVideo0.teams.length, 0);
-		test.equal(resVideo1.teams.teams[0].name, 'Team Test 101');
-		test.equal(resVideo1.teams.teams[1].name, 'Team Test 102');
+		test.ok([resVideo1.teams.teams[1].name, resVideo1.teams.teams[0].name].indexOf('Team Test 101') !== -1);
+		test.ok([resVideo1.teams.teams[1].name, resVideo1.teams.teams[0].name].indexOf('Team Test 102') !== -1);
 		test.equal(resVideo2.teams.length, 0);
-		test.equal(resVideo3.teams.teams[0].name, 'Team Test 301');
-		test.equal(resVideo3.teams.teams[1].name, 'Team Test 302');
+		test.ok([resVideo3.teams.teams[1].name, resVideo3.teams.teams[0].name].indexOf('Team Test 301') !== -1);
+		test.ok([resVideo3.teams.teams[1].name, resVideo3.teams.teams[0].name].indexOf('Team Test 302') !== -1);
 
 		test.equal(res3.values.length, 0);
 
@@ -134,19 +138,23 @@ module.exports = {
 		var videos = [
 			{
 				youtubeId: 'temVideo000',
-				teams: ['Team Test 1001', 'Team Test 1002']
+				teams: ['Team Test 1001', 'Team Test 1002'],
+				tournament: 'temVideo000 Tournament'
 			},
 			{
 				youtubeId: 'temVideo100',
-				teams: ['Team Test 1101', 'Team Test 1102']
+				teams: ['Team Test 1101', 'Team Test 1102'],
+				tournament: 'temVideo000 Tournament'
 			},
 			{
 				youtubeId: 'temVideo200',
-				teams: ['Team Test 1201', 'Team Test 1001']
+				teams: ['Team Test 1201', 'Team Test 1001'],
+				tournament: 'temVideo000 Tournament'
 			},
 			{
 				youtubeId: 'temVideo300',
-				teams: ['Team Test 1301', 'Team Test 1302']
+				teams: ['Team Test 1301', 'Team Test 1302'],
+				tournament: 'temVideo000 Tournament'
 			}
 		];
 
