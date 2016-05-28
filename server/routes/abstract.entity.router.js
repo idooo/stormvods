@@ -96,7 +96,7 @@ class AbstractEntityRouter extends Router {
 
 		self.model.paginate({}, {
 				page: page,
-				sort: {'_id': -1}, // sort by date, latest first
+				sort: {'date': 1, 'name': 1}, // sort by date, and then by name
 				limit: LIST_PAGE_SIZE,
 				select: fields
 			})

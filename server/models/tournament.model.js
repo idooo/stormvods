@@ -29,7 +29,8 @@ class Tournament extends BasicModel {
 			},
 			date: {
 				type: Date,
-				default: Date.now
+				default: Date.now,
+				index: true
 			},
 			author: {
 				type: mongoose.Schema.Types.ObjectId,

@@ -105,5 +105,10 @@ angular
 			BO3: 'Best of 3',
 			BO5: 'Best of 5',
 			BO7: 'Best of 7'
-		}
+		},
+
+		monthNames: [
+			'January', 'February', 'March', 'April', 'May', 'June',
+			'July', 'August', 'September', 'October', 'November', 'December'
+		]
 	});

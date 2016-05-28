@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 /**
+ * import data
  *
  * -c (path to config)
  * -f (filename for csv to import)
@@ -33,7 +34,8 @@ catch (e) {
 
 var file = fs.readFileSync(argv.f);
 
-parse(file, {comment: '#'}, (err, output) => {
+parse(file, {delimiter: ','}, (err, output) => {
+	console.log(err)
 	var data = normaliseData(output),
 		i = -1;
 
@@ -58,25 +60,30 @@ function normaliseData (input) {
 	input.shift();
 
 	var data = [],
-		tournament = '';
+		tournament = '',
+		date = '';
 
 	input.forEach(item => {
 		var record = {};
 		if (!item.join('').trim()) return;
 
-		if (item[0].trim()) tournament = item[0].trim();
+		console.log(item)
 
-		record.stage = item[1].trim();
-		record.format = item[2].trim();
+		if (item[0].trim()) date = item[0].trim();
+		if (item[1].trim()) tournament = item[1].trim();
+
+		record.stage = item[2].trim();
+		record.format = item[3].trim();
 		record.tournament = tournament;
-		record.teams = [item[3].trim(), item[4].trim()];
-		record.youtubeId = item[5]
+		record.date = date;
+		record.teams = [item[4].trim(), item[5].trim()];
+		record.youtubeId = item[6]
 			.split('|')
 			.filter(i => i.trim().length !== 0)
 			.map(i => i.match(/watch\?v=(.+)/)[1].trim());
 
 		record.casters = item
-			.slice(6)
+			.slice(7)
 			.filter(i => i.trim().length !== 0)
 			.map(i => i.trim());
 

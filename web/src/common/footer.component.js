@@ -5,7 +5,7 @@ const TEMPLATE = `
 		</div>
 		<div class="footer-links">
 			<ul>
-				<li><h3>Content</h3></li>
+				<li><h6>Content</h6></li>
 				<li><a href="#">Home</a></li>
 				<li class="nav-link">
 					<a href="#" ui-sref="tournaments">Tournaments</a>
@@ -18,7 +18,7 @@ const TEMPLATE = `
 				</li>
 			</ul>
 			<ul>
-				<li><h3>Community links</h3></li>
+				<li><h6>Community links</h6></li>
 				<li><a href="http://us.heroesofthestorm.com/esports/en/">HoTS eSports</a></li>
 				<li><a href="https://www.reddit.com/r/heroesofthestorm/">/r/heroesofthestorm</a></li>
 				<li><a href="https://www.hotslogs.com">HoTS Logs</a></li>
@@ -26,7 +26,7 @@ const TEMPLATE = `
 				<li><a href="http://www.heroesfire.com/">HeroesFire</a></li>
 			</ul>
 			<ul>
-				<li><h3>Social</h3></li>
+				<li><h6>Social</h6></li>
 				<li><a href="https://www.reddit.com/user/stormvods">/u/stormvods</a></li>
 				<li><a href="https://twitter.com/stormvods">@stormvods</a></li>
 			</ul>
