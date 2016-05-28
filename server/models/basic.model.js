@@ -46,13 +46,20 @@ class BasicModel extends AbstractModel {
 		return {MIN_LENGTH: 3};
 	}
 
-	getOrCreate (entityName, auth) {
+	/**
+	 * @param {String} entityName
+	 * @param {Object} auth
+	 * @param {Object} [data]
+	 * @returns {Promise}
+     */
+	getOrCreate (entityName, auth, data) {
 		var self = this;
-		return new Promise(function (resolve, reject) {
 
+		if (typeof data === 'undefined') data = {};
+
+		return new Promise(function (resolve, reject) {
 			if (!entityName) return resolve({value: null, type: self.modelName});
 
-			// TODO: test this
 			var regexp = entityName.replace('(', '\\(').replace(')', '\\)');
 
 			self.findOne({name: new RegExp(`^${regexp}$`, 'i')}) // case insensitive
@@ -60,10 +67,9 @@ class BasicModel extends AbstractModel {
 					if (entity) return resolve({value: entity, type: self.modelName});
 
 					try {
-						entity = new self({
-							name: entityName,
-							author: auth.id
-						});
+						data.name = entityName;
+						data.author = auth.id;
+						entity = new self(data);
 					}
 					catch (e) {
 						logger.error(`getOrCreate failed for '${self.modelName}': ${e}`);

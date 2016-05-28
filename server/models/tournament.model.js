@@ -27,11 +27,9 @@ class Tournament extends BasicModel {
 				type: Boolean,
 				default: false
 			},
-			dateMonth: {
-				type: Number
-			},
-			dateYear: {
-				type: Number
+			date: {
+				type: Date,
+				default: Date.now
 			},
 			author: {
 				type: mongoose.Schema.Types.ObjectId,

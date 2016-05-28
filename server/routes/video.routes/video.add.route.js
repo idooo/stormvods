@@ -9,6 +9,7 @@
  *
  * @apiParam {String[]} youtubeId youtube Ids (max 7)
  * @apiParam {String} tournament tournament name
+ * @apiParam {String} date when tournament happened (format 'YYYY-MM')
  * @apiParam {String} format format
  * @apiParam {String} stage stage
  * @apiParam {String[]} teams
@@ -20,6 +21,7 @@ var _uniq = require('lodash/array/uniq'),
 	errors = require('../../core/errors'),
 	Router = require('./../abstract.router'),
 	Video = require('../../models/video.model'),
+	TournamentRouter = require('./../tournament.router'),
 	Constants = require('../../constants');
 
 class VideoAddRoute {
@@ -32,6 +34,11 @@ class VideoAddRoute {
 			youtubeIds = [].concat(req.params.youtubeId),
 			format = Router.filter(req.params.format),
 			stage = Router.filter(req.params.stage),
+
+			// Additional tournament data
+			tournamentData = {
+				date: Router.date(req.params.date) || new Date()
+			},
 
 			// Prepopulate some data
 			videoObjectData = {
@@ -50,6 +57,8 @@ class VideoAddRoute {
 			Router.fail(res, {message: {youtubeId: Constants.ERROR_INVALID}});
 			return next();
 		}
+
+		if (!TournamentRouter.isTournamentDateValid(tournamentData.date)) tournament.date = null;
 
 		// Sanitise
 		youtubeIds = youtubeIds.map(Router.filter);
@@ -90,7 +99,7 @@ class VideoAddRoute {
 
 				// Create getOrCreate promises to get entities from database by name
 				// or create them if they are not exist
-				promises.push(self.models.Tournament.getOrCreate(tournament, auth));
+				promises.push(self.models.Tournament.getOrCreate(tournament, auth, tournamentData));
 				teams.forEach(teamName => promises.push(self.models.Team.getOrCreate(teamName, auth)));
 				casters.forEach(casterName => promises.push(self.models.Caster.getOrCreate(casterName, auth)));
 
@@ -181,6 +190,9 @@ class VideoAddRoute {
 
 		return (new self.models.Video(video)).save();
 	}
+
 }
+
+
 
 module.exports = VideoAddRoute;

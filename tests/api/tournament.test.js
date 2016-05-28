@@ -1,4 +1,5 @@
 var h = require('../api.helpers'),
+	moment = require('moment'),
 	users = {
 		user01: h.addUser('teamUser1', 2),
 		user02: h.addUser('teamUser2', 2),
@@ -63,6 +64,26 @@ module.exports = {
 		test.equal(resVideo1.tournament.length, 0);
 		test.equal(resVideo2.tournament.name, 'Test Tournament 200');
 		test.equal(resVideo3.tournament.length, 0);
+
+		test.done();
+	},
+
+	addVideoTournamentDate: function (test) {
+		var data = {
+			youtubeId: 'touVideo001',
+			tournament: 'touVideo001 Tournament',
+			teams: ['touVideo001 team1', 'touVideo001 team2'],
+			date: '2015-03'
+		};
+
+		var res = h.post('/api/video', data, users.user01),
+			res2 = h.get('/api/lookup/tournament?query=touVideo001', undefined, users.user01),
+			user = h.get('/api/users/me', undefined, users.user01),
+			date = new Date(res2.values[0].date);
+
+		test.equal(res2.values[0].name, 'touVideo001 Tournament');
+		test.equal(date.getMonth() + 1, 3);
+		test.equal(date.getFullYear(), 2015);
 
 		test.done();
 	}

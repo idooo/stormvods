@@ -81,6 +81,7 @@ class LookupRouter extends Router {
 			Router.fail(res, {message: Constants.ERROR_TYPE});
 			return next();
 		}
+		 
 
 		// Validate params
 		if (queryString && queryString.length >= QUERY_MIN_LENGTH) {
@@ -102,7 +103,7 @@ class LookupRouter extends Router {
 
 		query.isRemoved = {'$ne': true};
 
-		self.models[modelName].find(query, 'name _id image')
+		self.models[modelName].find(query, '-creationDate -isRemoved -author')
 			.then(function (values) {
 				var result = [];
 

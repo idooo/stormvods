@@ -1,12 +1,12 @@
 'use strict';
 
-var AbstractEntityRouter = require('./abstract.entity.router');
 var logger = require('winston'),
 	_omit = require('lodash/object/omit'),
 	_pick = require('lodash/object/pick'),
-	Router = require('./abstract.router');
+	Router = require('./abstract.router'),
+	AbstractEntityRouter = require('./abstract.entity.router');
 
-const MIN_YEAR = 2015;
+const MIN_TOURNAMENT_YEAR = 2015;
 
 class TournamentRouter extends AbstractEntityRouter {
 
@@ -70,8 +70,7 @@ class TournamentRouter extends AbstractEntityRouter {
 	 * @apiVersion 1.0.0
 	 *
 	 * @apiParam {String} name
-	 * @apiParam {Number} month (1..12)
-	 * @apiParam {Number} year (2015..)
+	 * @apiParam {String} date (format 'YYYY-MM')
 	 *
 	 * @apiSuccessExample Success-Response:
 	 * HTTP/1.1 200 OK
@@ -84,18 +83,17 @@ class TournamentRouter extends AbstractEntityRouter {
 	addRoute (req, res, next, auth) {
 		// Validate params
 		var name = Router.filter(req.params.name),
-			date = TournamentRouter.validateTournamentDate(
-				Router.filter(req.params.month),
-				Router.filter(req.params.year));
+			date = Router.date(req.params.date) || new Date();
+
+		if (!TournamentRouter.isTournamentDateValid(date)) date = null;
 
 		var modelInstance = this.model({
 			name,
 			author: auth.id,
-			dateMonth: date.month,
-			dateYear: date.year
+			date: date
 		});
 
-		modelInstance.save(function (err, responseFromDB) {
+		modelInstance.save((err, responseFromDB) => {
 			if (err) {
 				logger.debug(_omit(err, 'stack'));
 				Router.fail(res, err);
@@ -108,21 +106,15 @@ class TournamentRouter extends AbstractEntityRouter {
 		});
 	}
 
-	/**
-	 * @param rawMonth
-	 * @param rawYear
-	 * @returns {{year: (Number|number), month: (Number|number)}}
-     */
-	static validateTournamentDate (rawMonth, rawYear) {
+	static isTournamentDateValid (date) {
 		let now = new Date(),
-			month = parseInt(rawMonth, 10) || now.getMonth() + 1,
-			year = parseInt(rawYear, 10) || now.getFullYear();
+			month = date.getMonth() + 1,
+			year = date.getFullYear();
 
-		if (month < 1 || month > 12) month = now.getMonth() + 1;
-		if (MIN_YEAR > year || year > now.getFullYear()) year = now.getFullYear();
-		if (year === now.getFullYear() && month > now.getMonth() + 1) month = now.getMonth() + 1;
+		if (MIN_TOURNAMENT_YEAR > year || year > now.getFullYear()) return false;
+		if (year === now.getFullYear() && month > now.getMonth() + 1) return false;
 
-		return {year, month};
+		return true;
 	}
 }
 

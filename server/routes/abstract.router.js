@@ -193,6 +193,13 @@ class Router {
 		return (str.toString() || '').trim().replace(RE_FILTER, '').replace(/(\s+|\t+)/g, ' ');
 	}
 
+	static date (str) {
+		str = Router.filter(str);
+		if (str === null) return null;
+		var date = new Date(str);
+		if (!date.valueOf()) return null;
+		return date;
+	}
 }
 
 module.exports = Router;
