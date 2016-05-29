@@ -40,7 +40,7 @@ const TEMPLATE = `
 		<h1>Quality first</h1>
 
 		<div class="sidebar__block">
-			<h3>Short guidelines</h3>
+			<div class="sidebar__header">Short guidelines</div>
 			<ul>
 				<li>
 					Video must contain at least one competitive Heroes of the Storm
@@ -60,7 +60,7 @@ const TEMPLATE = `
 				</li>
 			</ul>
 
-			<h3>Please don't</h3>
+			<div class="sidebar__header">Please don't</div>
 			<ul>
 				<li>
 					Don't add highlight videos, WTF, funny moments or other videos that
