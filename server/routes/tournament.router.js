@@ -6,7 +6,7 @@ var logger = require('winston'),
 	Router = require('./abstract.router'),
 	AbstractEntityRouter = require('./abstract.entity.router');
 
-const MIN_TOURNAMENT_YEAR = 2015;
+const MIN_TOURNAMENT_YEAR = 2014;
 
 class TournamentRouter extends AbstractEntityRouter {
 

@@ -58,7 +58,7 @@ class VideoAddRoute {
 			return next();
 		}
 
-		if (!TournamentRouter.isTournamentDateValid(tournamentData.date)) tournament.date = null;
+		if (!TournamentRouter.isTournamentDateValid(tournamentData.date)) tournamentData.date = null;
 
 		// Sanitise
 		youtubeIds = youtubeIds.map(Router.filter);

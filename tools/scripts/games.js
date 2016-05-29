@@ -44,6 +44,7 @@ parse(file, {delimiter: ','}, (err, output) => {
 	function insert () {
 		i++;
 		if (!data[i]) return;
+
 		var res = addVideo(argv.u, data[i]);
 		if (res.code > 300) {
 			console.error(res);
@@ -67,10 +68,13 @@ function normaliseData (input) {
 		var record = {};
 		if (!item.join('').trim()) return;
 
-		console.log(item)
-
 		if (item[0].trim()) date = item[0].trim();
 		if (item[1].trim()) tournament = item[1].trim();
+
+		if (date) {
+			date = date.split('/');
+			date = date[2] + '-' + ('0' + date[0]).slice(-2);
+		}
 
 		record.stage = item[2].trim();
 		record.format = item[3].trim();
