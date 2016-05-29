@@ -96,6 +96,11 @@ $video-container-bottom-color: #2C0448;
 		padding: 0 em(20);
 	}
 
+	&__date {
+		font-size: 14px;
+		color: $light-text-color-blend;
+	}
+
 	&__format {
 		font-size: 14px;
 		color: $light-text-color-blend;
@@ -176,7 +181,7 @@ $video-container-bottom-color: #2C0448;
 			display: block;
 		}
 
-		h4 {
+		h6 {
 			font-size: 16px;
 			font-weight: 600;
 			margin-bottom: 6px;

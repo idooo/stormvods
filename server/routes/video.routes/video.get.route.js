@@ -103,7 +103,7 @@ class VideoGetRoute {
 					promises = [];
 
 				if (topTournament) {
-					promises.push(self.models.Tournament.findOne({_id: topTournament._id}, 'name _id'));
+					promises.push(self.models.Tournament.findOne({_id: topTournament._id}, 'name _id date'));
 					promisesNames.push(self.models.Tournament.modelName);
 				}
 				if (topTeams) {
@@ -141,6 +141,7 @@ class VideoGetRoute {
 							video.tournament = {
 								_id: data[i]._id,
 								name: data[i].name,
+								date: data[i].date,
 								rating: video.tournament[0] ? video.tournament[0].rating : null
 							};
 							break;

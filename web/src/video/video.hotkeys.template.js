@@ -1,6 +1,6 @@
 module.exports = `
 	<div class="video__hotkeys-container">
-		<h4>Useful hotkeys for "Hide Duration" mode</h4>
+		<h6>Useful hotkeys for "Hide Duration" mode</h6>
 
 		<div class="video__hotkeys-line">
 			<key>Space</key>

@@ -15,7 +15,9 @@ const TEMPLATE = `
 				{{$ctrl.video.stage }}
 			</span>
 
-			<span class="video-list-item__time" am-time-ago="$ctrl.video.creationDate"></span>
+			<span class="video-list-item__time">
+				{{$ctrl.video.tournament.date | amDateFormat:'MMMM YYYY'}}
+			</span>
 
 		</div>
 

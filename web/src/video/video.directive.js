@@ -28,7 +28,10 @@ const TEMPLATE = `
 			<div class="video__description">
 				<span class="video__stage">{{object.stage.name}}</span>
 				<span class="video__tournament">
-					<a href="#" ui-sref="tournament({id: object.tournament._id})">{{object.tournament.name}}</a>
+					<a href="#" ui-sref="tournament({id: object.tournament._id})">
+						{{object.tournament.name}}
+					</a>
+					<span class="video__date">{{object.tournament.date | amDateFormat:'MMMM YYYY'}}</span> 
 				</span>
 				<span class="video__format">{{object.format.name}}</span>
 				<span class="video__teams" ng-if="object.teams.teams.length">
