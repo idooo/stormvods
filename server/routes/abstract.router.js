@@ -47,6 +47,19 @@ class Router {
 		this.bind(url, 'del', route, options);
 	}
 
+	/**
+	 * Binds router function to route url with additional options.
+	 * Options object:
+	 * {
+	 *     auth: <boolean>,
+	 *     restrict: <number>
+	 * }
+	 *
+	 * @param {String} url
+	 * @param {String} methodName
+	 * @param {Function} route
+     * @param {Object} [options]
+     */
 	bind (url, methodName, route, options) {
 		var wrapper = route.bind(this);
 
@@ -143,42 +156,65 @@ class Router {
 		};
 	}
 
-	static success (r, response) {
-		if (typeof response === 'undefined' || response === null) response = {};
-		response.status = 'ok';
-		r.send(200, response);
+	/**
+	 * Sends success response to the user
+	 * @param {Object} res response object
+	 * @param {Object} [data] content to return
+     */
+	static success (res, data) {
+		if (typeof data === 'undefined' || data === null) data = {};
+		data.status = 'ok';
+		res.send(200, data);
 	}
 
-	static fail (r, response, code) {
-		response = response || {};
+	/**
+	 * Sends error response to the user
+	 * @param {Object} res response object
+	 * @param {Object} [data] content to return
+	 * @param {Number} [code=400] error code
+     */
+	static fail (res, data, code) {
+		data = data || {};
 		code = code || 400;
 
-		if (response.name === 'MongoError') {
+		if (data.name === 'MongoError') {
 			code = 500;
-			response = {error: response.err};
+			data = {error: data.err};
 		}
-		else if (response.name === 'ValidationError') {
+		else if (data.name === 'ValidationError') {
 			var errors = {};
 
-			for (let fieldName of Object.keys(response.errors)) {
-				errors[fieldName] = response.errors[fieldName].properties.message.replace(RE_PRETTIFY_ERROR, '');
+			for (let fieldName of Object.keys(data.errors)) {
+				errors[fieldName] = data.errors[fieldName].properties.message.replace(RE_PRETTIFY_ERROR, '');
 			}
 
-			response = {message: errors};
+			data = {message: errors};
 		}
 
-		response.status = 'error';
-		response.code = code;
+		data.status = 'error';
+		data.code = code;
 
-		r.send(code, response);
+		res.send(code, data);
 	}
 
+	/**
+	 * Sends 404 error response to the user with NOT FOUND message
+	 * @param {Object} res response object
+	 * @param {Object} next
+	 * @param {Object} id object that not found to show to the user
+     * @returns {*}
+     */
 	static notFound (res, next, id) {
 		logger.info(`${Constants.ERROR_NOT_FOUND} "${id}"`);
 		Router.fail(res, {message: Constants.ERROR_NOT_FOUND}, 404);
 		return next();
 	}
 
+	/**
+	 * Attempts to parse request body to get JS object
+	 * @param {Object} req request object
+	 * @returns {{}}
+     */
 	static body (req) {
 		try {
 			return JSON.parse(req.body);
@@ -188,11 +224,23 @@ class Router {
 		}
 	}
 
+	/**
+	 * Attempts to filter incoming string. Returns null if string null or undefined.
+	 * Otherwise returns trimmed and sanitised version of the string
+	 * @param {String} str
+	 * @returns {*}
+     */
 	static filter (str) {
 		if (str === null || str === undefined) return null;
 		return (str.toString() || '').trim().replace(RE_FILTER, '').replace(/(\s+|\t+)/g, ' ');
 	}
 
+	/**
+	 * Attempts to format incoming string as a date.
+	 * Returns null if failed.
+	 * @param {String} str
+	 * @returns {*}
+     */
 	static date (str) {
 		str = Router.filter(str);
 		if (str === null) return null;
