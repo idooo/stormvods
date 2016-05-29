@@ -9,6 +9,7 @@
 			@include transition(all .2s);
 			color: $action-color;
 			text-decoration: none;
+			line-height: 1.3;
 			border-bottom: 1px solid $action-color-blend;
 
 			&:hover {
