@@ -83,6 +83,10 @@ data.forEach(item => {
 	record.push('https://www.youtube.com/watch?v=' + item.youtubeId);
 	record.push('Khaldor');
 
+	record.push('');
+	record.push(item.title);
+	record.push(item.description.split('\n')[0]);
+
 	console.log(record.map(i => i.trim()).join(','))
 });
 

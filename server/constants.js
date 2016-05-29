@@ -56,6 +56,8 @@ module.exports = {
 		'GROUPBL',
 		'GROUPBD',
 		'LR1',
+		'LR2',
+		'LR3',
 		'LF',
 		'WF'
 	],

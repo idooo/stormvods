@@ -39,6 +39,8 @@ angular
 
 		Stages: {
 			LR1: 'Losers\' Round 1',
+			LR2: 'Losers\' Round 2',
+			LR3: 'Losers\' Round 3',
 			LF: 'Losers\' Final',
 			WF: 'Winners\' Final',
 			GROUP: 'Group Stage',
