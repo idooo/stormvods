@@ -155,7 +155,7 @@ function improveVideoDirective () {
 			// User added new entity
 			else if (type === UPDATE_BY_VALUES) {
 				$http.put(`${Constants.Api.VIDEO}/entity`, {
-						videoId: $scope.video._id,
+						id: $scope.video._id,
 						field: $scope.type,
 						values: $scope.entity
 					})
