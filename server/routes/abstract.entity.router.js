@@ -8,7 +8,7 @@ var logger = require('winston'),
 	Router = require('./abstract.router'),
 	Constants = require('../constants');
 
-const LIST_PAGE_SIZE = 100;
+const LIST_PAGE_SIZE = 150;
 
 class AbstractEntityRouter extends Router {
 
