@@ -14,7 +14,7 @@ const TEMPLATE = `
 			
 			<h3>{{tournamentsByYear.year}}</h3>
 			
-			<div ng-repeat="tournamentsByMonth in tournamentsByYear.months">
+			<div ng-repeat="tournamentsByMonth in tournamentsByYear.months | filter:ctrl.tournamentsMatch(filter)">
 				
 				<h4>{{tournamentsByMonth.month}}</h4>
 				
@@ -49,6 +49,7 @@ function tournamentsPage () {
 		self.tournaments = [];
 		self.currentPage = 1;
 		self.pageCount = 1;
+		self.tournamentsMatch = tournamentsMatch;
 
 		$http.get(Constants.Api.GET_TOURNAMENTS)
 			.then(response => {
@@ -132,10 +133,35 @@ function tournamentsPage () {
 			});
 		}
 
+		/**
+		 * Sorting function for strings representation of ObjectId
+		 * @param {String} a
+		 * @param {String} b
+         * @returns {Number}
+         */
 		function compareIds (a, b) {
 			if (a._id < b._id) return 1;
 			else if (a._id > b._id) return -1;
 			else return 0;
+		}
+
+		/**
+		 * Filter function to hide empty months when filtering by tournament name
+		 * @param {String} criteria tournament name
+		 * @returns {Function}
+         */
+		function tournamentsMatch (criteria) {
+			return item => {
+				if (!criteria || !criteria.trim()) return true;
+				criteria = criteria.toLowerCase();
+
+				for (let i = 0; i < item.tournaments.length; i++) {
+					if (item.tournaments[i].name.toLowerCase().indexOf(criteria) !== -1) {
+						return true;
+					}
+				}
+				return false;
+			};
 		}
 	}
 }
