@@ -83,17 +83,10 @@ angular
 			{
 				name: 'PLAYOFF',
 				caption: 'Playoff',
-				codes: ['RO64', 'RO32', 'RO16', 'LR1', 'WF', 'LF']
-			},
-			{
-				name: 'QUARTERFINAL',
-				caption: 'Quaterfinals',
-				codes: ['QUARTERFINAL']
-			},
-			{
-				name: 'SEMIFINAL',
-				caption: 'Semifinals',
-				codes: ['SEMIFINAL']
+				codes: [
+					'RO64', 'RO32', 'RO16', 'QUARTERFINAL', 'LR1',
+					'SEMIFINAL', 'LR2', 'LR3', 'WF', 'LF'
+				]
 			},
 			{
 				name: 'FINAL',
