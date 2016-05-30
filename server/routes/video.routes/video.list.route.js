@@ -96,7 +96,7 @@ class VideoListRoute {
 			query = {isRemoved: {'$ne': true}},
 			sort = {'_id': -1}, // sort by date, latest first by default
 			page = parseInt(req.params.p, 10) || 1,
-			maxResults = parseInt(req.params.p, 10) || MAX_RESULTS_DEFAULT,
+			maxResults = parseInt(req.params.maxResults, 10) || MAX_RESULTS_DEFAULT,
 			fields = '-isRemoved -__v -reports',
 			tournamentId = self.models.ObjectId(req.params.tournament),
 			teamId = self.models.ObjectId(req.params.team),
