@@ -116,7 +116,7 @@ function tournamentsPage () {
 					if (tournaments[year][month].length) {
 						_months.push({
 							month,
-							tournaments: tournaments[year][month]
+							tournaments: tournaments[year][month].sort(compareIds)
 						});
 					}
 				});
@@ -130,6 +130,12 @@ function tournamentsPage () {
 			return _years.sort((a, b) => {
 				return b.year - a.year;
 			});
+		}
+
+		function compareIds (a, b) {
+			if (a._id < b._id) return 1;
+			else if (a._id > b._id) return -1;
+			else return 0;
 		}
 	}
 }
