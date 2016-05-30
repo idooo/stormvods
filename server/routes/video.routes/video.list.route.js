@@ -13,6 +13,7 @@
  * @apiParam {ObjectId} [tournament] tournament Id
  * @apiParam {ObjectId} [team] team Id
  * @apiParam {ObjectId} [caster] caster Id
+ * @apiParam {Number} [maxResults=24] results per page (5..50)
  *
  * @apiParam {Object} [query] ADMIN ONLY: db query
  * @apiParam {Object} [sort] ADMIN ONLY: db sort
@@ -53,7 +54,8 @@
       },
       "tournament": {
         "_id": "56639b2782f4f8973eef2b3a",
-        "name": "Heroes Battle Arena"
+        "name": "Heroes Battle Arena",
+        "data": "2015-12-00T09:40:17.135Z"
       },
       "casters": {
         "rating": 1,
@@ -82,7 +84,9 @@ var _max = require('lodash/math/max'),
 	Router = require('./../abstract.router'),
 	Constants = require('../../constants');
 
-const LIST_PAGE_SIZE = 24;
+const MAX_RESULTS = 50;
+const MAX_RESULTS_DEFAULT = 24;
+const MAX_RESULTS_MIN = 5;
 
 class VideoListRoute {
 
@@ -92,6 +96,7 @@ class VideoListRoute {
 			query = {isRemoved: {'$ne': true}},
 			sort = {'_id': -1}, // sort by date, latest first by default
 			page = parseInt(req.params.p, 10) || 1,
+			maxResults = parseInt(req.params.p, 10) || MAX_RESULTS_DEFAULT,
 			fields = '-isRemoved -__v -reports',
 			tournamentId = self.models.ObjectId(req.params.tournament),
 			teamId = self.models.ObjectId(req.params.team),
@@ -100,6 +105,9 @@ class VideoListRoute {
 		if (tournamentId) query['tournament.0._id'] = tournamentId;
 		else if (teamId) query['teams.0.teams'] = teamId;
 		else if (casterId) query['casters.0.casters'] = casterId;
+
+		if (maxResults > MAX_RESULTS) maxResults = MAX_RESULTS;
+		else if (maxResults < MAX_RESULTS_MIN) maxResults = MAX_RESULTS_MIN;
 
 		// Admin mode
 		if (auth && auth.role >= Constants.ROLES.ADMIN) {
@@ -118,7 +126,7 @@ class VideoListRoute {
 		self.models.Video.paginate(query, {
 			page: page,
 			sort: sort, // sort by date, latest first
-			limit: LIST_PAGE_SIZE,
+			limit: maxResults,
 			select: fields
 		})
 			.then(function (data) {

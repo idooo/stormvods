@@ -11,6 +11,8 @@ const TEMPLATE = `
 	</section>
 `;
 
+const MAX_RESULTS = 50;
+
 angular
 	.module(`${window.APP_NAME}.pages`)
 	.component('tournamentPage', {
@@ -35,7 +37,7 @@ function tournamentPage ($http, $state, Page, Constants) {
 		.catch(notFound);
 
 	function init () {
-		let url = `${Constants.Api.GET_VIDEO_LIST}?tournament=${$state.params.id}`;
+		let url = `${Constants.Api.GET_VIDEO_LIST}?tournament=${$state.params.id}&maxResults=${MAX_RESULTS}`;
 
 		$http.get(url)
 			.then(response => {
