@@ -76,7 +76,9 @@ function improveBlockDirective ($http, Constants) {
 
 		scope.$watch('object', function (object) {
 			if (!object || !object._id) return;
-			scope.questions = scope.questions.filter(key => !object[key].isVoted);
+			scope.questions = scope.questions.filter(key => {
+				return !object[key] || !object[key].isVoted;
+			});
 		});
 
 		scope.toggleImproveVideoBlock = toggleImproveVideoBlock;
