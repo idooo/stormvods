@@ -88,7 +88,7 @@ class AbstractEntityRouter extends Router {
 			fields = '-isRemoved -__v',
 			page = parseInt(req.params.p, 10) || 1,
 			query = {},
-			sort = {'date': 1, 'name': 1}, // sort by date, and then by name
+			sort = {'date': -1, 'name': -1}, // sort by date, and then by name
 			pageCount,
 			itemCount,
 			currentPage,
