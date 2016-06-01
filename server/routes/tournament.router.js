@@ -19,6 +19,9 @@ class TournamentRouter extends AbstractEntityRouter {
 		 * @apiName GetTournaments
 		 * @apiGroup Tournament
 		 * @apiVersion 1.0.0
+		 *
+		 * @apiParam {Object} [query] mongodb query (only for admins)
+		 * @apiParam {Object} [sort] mongodb object (only for admins)
 		 */
 
 		/**

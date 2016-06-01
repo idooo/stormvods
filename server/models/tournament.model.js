@@ -32,6 +32,9 @@ class Tournament extends BasicModel {
 				default: Date.now,
 				index: true
 			},
+			series: {
+				type: String
+			},
 			author: {
 				type: mongoose.Schema.Types.ObjectId,
 				required: true

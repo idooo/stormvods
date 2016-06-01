@@ -87,16 +87,32 @@ class AbstractEntityRouter extends Router {
 		var self = this,
 			fields = '-isRemoved -__v',
 			page = parseInt(req.params.p, 10) || 1,
+			query = {},
+			sort = {'date': 1, 'name': 1}, // sort by date, and then by name
 			pageCount,
 			itemCount,
 			currentPage,
 			items;
 
-		if (auth && auth.role >= Constants.ROLES.ADMIN) fields = '-__v';
+		if (auth && auth.role >= Constants.ROLES.ADMIN) {
+			fields = '-__v';
+			try {
+				query = JSON.parse(req.params.query);
+			}
+			catch (e) {
+				// nothing
+			}
+			try {
+				sort = JSON.parse(req.params.sort);
+			}
+			catch (e) {
+				// nothing
+			}
+		}
 
-		self.model.paginate({}, {
+		self.model.paginate(query, {
 				page: page,
-				sort: {'date': 1, 'name': 1}, // sort by date, and then by name
+				sort: sort,
 				limit: LIST_PAGE_SIZE,
 				select: fields
 			})

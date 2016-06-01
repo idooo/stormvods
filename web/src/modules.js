@@ -53,6 +53,7 @@ require('./caster/casters.page');
 require('./admin/zone.page');
 require('./admin/users.zone.directive');
 require('./admin/videos.zone.directive');
-require('./admin/entities.zone.directive');
+require('./admin/entities.zone.component');
+require('./admin/tournaments.zone.component');
 
 module.exports = modules.concat(appModules);

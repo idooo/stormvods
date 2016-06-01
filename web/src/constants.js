@@ -105,5 +105,16 @@ angular
 		monthNames: [
 			'January', 'February', 'March', 'April', 'May', 'June',
 			'July', 'August', 'September', 'October', 'November', 'December'
+		],
+
+		tournamentSeries: [
+			{name: 'Dreamhack', code: 'dh'},
+			{name: 'HGC', code: 'hgc'},
+			{name: 'GHL', code: 'ghl'},
+			{name: 'Superleague', code: 'superleague'},
+			{name: 'BlizzCon', code: 'blizzcon'},
+			{name: 'Enter The Storm', code: 'ets'},
+			{name: 'ZOTAC', code: 'zotac'},
+			{name: 'Go4', code: 'go4'}
 		]
 	});

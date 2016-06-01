@@ -13,6 +13,9 @@ class CasterRouter extends AbstractEntityRouter {
 		 * @apiName GetCasters
 		 * @apiGroup Caster
 		 * @apiVersion 1.0.0
+		 *
+		 * @apiParam {Object} [query] mongodb query (only for admins)
+		 * @apiParam {Object} [sort] mongodb object (only for admins)
 		 */
 
 		/**
