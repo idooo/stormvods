@@ -1,7 +1,14 @@
 const TEMPLATE = `
 	<section class="tournament">
 
-		<h1>Tournament: {{$ctrl.tournament.name}}</h1>
+		<h1>
+			<img
+				class="entity-page__image"
+				ng-if="$ctrl.tournament.series"
+				ng-src="/dist/images/tournaments/{{$ctrl.tournament.series + '.png'}}">
+
+			{{$ctrl.tournament.name}}
+		</h1>
 
 		<div ng-repeat="stage in $ctrl.videos" ng-show="$ctrl.videos.length > 0">
 			<h3 class="tournament__stage" ng-hide="stage.name == 'Unknown'">{{stage.name}}</h3>

@@ -208,7 +208,7 @@ class VideoListRoute {
 			});
 
 			// Create a list of promises to get entities from other collections
-			promises.push(self.models.Tournament.find({_id: {'$in': tournamentIds}}, 'name _id date'));
+			promises.push(self.models.Tournament.find({_id: {'$in': tournamentIds}}, 'name _id date series'));
 			promises.push(self.models.Team.find({_id: {'$in': teamIds}}, 'name _id image'));
 			promises.push(self.models.Caster.find({_id: {'$in': casterIds}}, 'name _id'));
 			promises.push(self.models.User.find({_id: {'$in': userIds}}, 'name _id'));
@@ -230,6 +230,7 @@ class VideoListRoute {
 						videos[i].tournament.name = lookup[videos[i].tournament._id].name;
 						videos[i].tournament._id = lookup[videos[i].tournament._id]._id;
 						videos[i].tournament.date = lookup[videos[i].tournament._id].date;
+						videos[i].tournament.series = lookup[videos[i].tournament._id].series;
 					}
 					if (videos[i].teams) videos[i].teams.teams = videos[i].teams.teams.map(item => lookup[item]);
 					if (videos[i].casters) videos[i].casters.casters = videos[i].casters.casters.map(item => lookup[item]);

@@ -8,7 +8,11 @@ const TEMPLATE = `
 			ui-sref="video({id: $ctrl.video._id})">
 
 			<span class="video-list-item__tournament">
+			
 				{{$ctrl.video.tournament.name || 'Mysterious match'}}
+				<img 
+					ng-if="$ctrl.video.tournament.series"
+					ng-src="/dist/images/tournaments/{{$ctrl.video.tournament.series + '.png'}}">
 			</span>
 
 			<span class="video-list-item__stage" ng-if="$ctrl.video.stage">
@@ -63,10 +67,10 @@ angular
 			video: '='
 		},
 		template: TEMPLATE,
-		controller: controller
+		controller: videoListItem
 	});
 
-function controller ($rootScope) {
+function videoListItem ($rootScope) {
 	var self = this;
 
 	self.isTeamVisible = $rootScope.isTeamVisible;

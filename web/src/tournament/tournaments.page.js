@@ -19,7 +19,16 @@ const TEMPLATE = `
 					 ng-repeat="tournament in tournamentsByMonth.tournaments 
 								| filter:filter as results">
 					
-					<a href="#" ui-sref="tournament({id: tournament._id})">{{tournament.name}}</a>
+					
+					
+					<span class="entity-list__image">
+						<img ng-if="tournament.series" 
+							ng-src="/dist/images/tournaments/{{tournament.series + '.png'}}">
+					</span>
+					
+					<a href="#" ui-sref="tournament({id: tournament._id})">
+						{{tournament.name}}
+					</a>
 				</div>
 				
 			</div>

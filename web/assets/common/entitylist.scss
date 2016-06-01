@@ -25,4 +25,16 @@
 			}
 		}
 	}
+
+	&__image {
+		display: none;
+
+		@include media($medium-screen-up) {
+			display: inline-block;
+			width: 24px;
+			height: 24px;
+			vertical-align: middle;
+			margin-right: 3px;
+		}
+	}
 }

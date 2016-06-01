@@ -32,7 +32,6 @@ h1 {
 h2 {
 	font-size: em(18);
 	font-weight: 700;
-	padding: ($small-spacing) 0;
 	text-transform: uppercase;
 	text-align: center;
 	margin: 0;
@@ -60,8 +59,8 @@ h4 {
 	padding: 6px 6px 3px;
 	display: inline-block;
 	font-size: 20px;
-	margin-top: 5px;
-	margin-bottom: 5px;
+	margin-top: 12px;
+	margin-bottom: 10px;
 	font-weight: 600;
 	text-transform: uppercase;
 }

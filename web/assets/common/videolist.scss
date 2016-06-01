@@ -42,6 +42,17 @@ $video-list-item-hover-background-color: rgba(43, 6, 73, .07) !default;
 		font-weight: 600;
 		color: $video-list-item-primary-color;
 		line-height: 1.3;
+
+		img {
+			display: none;
+
+			@include media($medium-screen-up) {
+				display: inline-block;
+				float: right;;
+				width: 20px;
+				height: 20px;
+			}
+		}
 	}
 
 	&__stage {

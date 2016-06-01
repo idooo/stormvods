@@ -14,7 +14,9 @@ const TEMPLATE = `
 			class="entity-list__entity entity-list__entity--team"
 			ng-repeat="item in ctrl.items | orderBy:'name' | filter:filter as results">
 
-			<img ng-src="/dist/images/teams/{{item.image || 'unknown.png'}}">
+			<span class="entity-list__image">
+				<img ng-src="/dist/images/teams/{{item.image || 'unknown.png'}}">
+			</span>
 			<a href="#" ui-sref="team({id: item._id})">{{item.name}}</a>
 		</div>
 
