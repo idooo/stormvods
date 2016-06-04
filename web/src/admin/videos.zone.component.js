@@ -1,14 +1,10 @@
-angular
-	.module(`${window.APP_NAME}.pages`)
-	.directive('videosZone', videosZoneDirective);
-
 const TEMPLATE = `
 	<div>
 		<h2>Videos</h2>
 
-		<input class="zone-input" type="text" ng-model="ctrl.query">
-		<input class="zone-input" type="text" ng-model="ctrl.sort">
-		<button ng-click="ctrl.getVideos(ctrl.data.currentPage)">Update</button>
+		<input class="zone-input" type="text" ng-model="$ctrl.query">
+		<input class="zone-input" type="text" ng-model="$ctrl.sort">
+		<button ng-click="$ctrl.getVideos($ctrl.data.currentPage)">Update</button>
 
 		<table class="zone-table">
 			<thead>
@@ -29,7 +25,7 @@ const TEMPLATE = `
 					<th width="50">Removed?</th>
 				</tr>
 			</thead>
-			<tr ng-repeat="video in ctrl.data.videos" ng-class="{'even': $even}">
+			<tr ng-repeat="video in $ctrl.data.videos" ng-class="{'even': $even}">
 				<td am-time-ago="video.creationDate"></td>
 				<td>
 					<div ng-repeat="id in video.youtubeId">
@@ -75,7 +71,7 @@ const TEMPLATE = `
 
 				<td>
 					<a href="javascript:void(0)"
-					   ng-click="ctrl.toggleRemoval(video, !video.isRemoved)">{{video.isRemoved}}</a>
+					   ng-click="$ctrl.toggleRemoval(video, !video.isRemoved)">{{video.isRemoved}}</a>
 				</td>
 
 			</tr>
@@ -85,16 +81,16 @@ const TEMPLATE = `
 
 			<button
 				class="secondary"
-				ng-disabled="ctrl.data.currentPage <= 1"
-				ng-click="ctrl.getVideos(ctrl.data.currentPage-1)">
+				ng-disabled="$ctrl.data.currentPage <= 1"
+				ng-click="$ctrl.getVideos($ctrl.data.currentPage-1)">
 
 				&larr; Prev
 			</button>
 
 			<button
 				class="secondary"
-				ng-disabled="ctrl.data.pageCount == ctrl.data.currentPage"
-				ng-click="ctrl.getVideos(ctrl.data.currentPage+1)">
+				ng-disabled="$ctrl.data.pageCount == $ctrl.data.currentPage"
+				ng-click="$ctrl.getVideos($ctrl.data.currentPage+1)">
 
 				Next &rarr;
 			</button>
@@ -103,38 +99,33 @@ const TEMPLATE = `
 	</div>
 `;
 
-function videosZoneDirective () {
-
-	return {
-		restrict: 'E',
-		controllerAs: 'ctrl',
-		replace: true,
-		scope: true,
+angular
+	.module(`${window.APP_NAME}.pages`)
+	.component('videosZone', {
 		template: TEMPLATE,
-		controller: controller
-	};
+		controller: videosZoneComponent
+	});
 
-	function controller ($http, Constants) {
-		var self = this;
+function videosZoneComponent ($http, Constants) {
+	var self = this;
 
-		self.query = '{}';
-		self.sort = '{"_id": -1}';
-		self.data = {};
+	self.query = '{}';
+	self.sort = '{"_id": -1}';
+	self.data = {};
 
-		self.getVideos = getVideos;
-		self.toggleRemoval = toggleRemoval;
+	self.getVideos = getVideos;
+	self.toggleRemoval = toggleRemoval;
 
-		getVideos(1);
+	getVideos(1);
 
-		function getVideos (page) {
-			let url = `${Constants.Api.GET_VIDEO_LIST}?p=${page}&query=${self.query}&sort=${self.sort}`;
-			self.data = [];
-			$http.get(url).then(response => self.data = response.data);
-		}
+	function getVideos (page) {
+		let url = `${Constants.Api.GET_VIDEO_LIST}?p=${page}&query=${self.query}&sort=${self.sort}`;
+		self.data = [];
+		$http.get(url).then(response => self.data = response.data);
+	}
 
-		function toggleRemoval (user, value) {
-			$http.put(`${Constants.Api.VIDEO}`, {id: user._id, update: {isRemoved: value}});
-			user.isRemoved = value;
-		}
+	function toggleRemoval (user, value) {
+		$http.put(`${Constants.Api.VIDEO}`, {id: user._id, update: {isRemoved: value}});
+		user.isRemoved = value;
 	}
 }

@@ -3,10 +3,6 @@
 		min-height: em(500);
 	}
 
-	&__video-urls {
-		margin-bottom: em(20);
-	}
-
 	&__in-progress {
 		padding: 0 em(10);
 
@@ -45,4 +41,8 @@
 		margin-left: em(10);
 		margin-top: 0;
 	}
+}
+
+.video-urls-container {
+	margin-bottom: em(20);
 }

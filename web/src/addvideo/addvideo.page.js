@@ -9,7 +9,7 @@ const TEMPLATE = `
 
 				<label>Link to video *</label>
 
-				<video-urls urls="$ctrl.urls" class="add-video-page__video-urls"></video-urls>
+				<video-urls urls="$ctrl.urls"></video-urls>
 
 				<div>
 

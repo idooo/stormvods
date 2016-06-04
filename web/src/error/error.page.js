@@ -1,13 +1,9 @@
-angular
-	.module(`${window.APP_NAME}.pages`)
-	.directive('errorPage', errorPage);
-
 const TEMPLATE = `
 	<section style="height: 500px;">
 
-		<h1>Error: {{::ctrl.errorCode}}</h1>
+		<h1>Error: {{::$ctrl.errorCode}}</h1>
 
-		<p>{{::ctrl.errorText}}</p>
+		<p>{{::$ctrl.errorText}}</p>
 
 	</section>
 `;
@@ -19,24 +15,20 @@ const MESSAGES = {
 	AUTH_REQUIRED: 'Auth required to use this feature. Try to login first'
 };
 
-function errorPage () {
-
-	return {
-		restrict: 'E',
-		controllerAs: 'ctrl',
-		scope: true,
+angular
+	.module(`${window.APP_NAME}.pages`)
+	.component('errorPage', {
 		template: TEMPLATE,
-		controller: controller
-	};
+		controller: errorPage
+	});
 
-	function controller ($state, Page) {
-		var self = this;
+function errorPage ($state, Page) {
+	var self = this;
 
-		self.errorCode = $state.params.error;
-		self.errorText = MESSAGES[self.errorCode] || MESSAGES.DEFAULT;
+	self.errorCode = $state.params.error;
+	self.errorText = MESSAGES[self.errorCode] || MESSAGES.DEFAULT;
 
-		Page.loaded();
+	Page.loaded();
 
-		if (!$state.params.error) $state.go('index');
-	}
+	if (!$state.params.error) $state.go('index');
 }
