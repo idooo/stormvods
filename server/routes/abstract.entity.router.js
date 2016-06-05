@@ -12,6 +12,11 @@ const LIST_PAGE_SIZE = 150;
 
 class AbstractEntityRouter extends Router {
 
+	constructor (server, config, defaultSort) {
+		super(server, config);
+		this.defaultSort = defaultSort || {'name': 1};
+	}
+
 	/**
 	 * @param {String} routeName
 	 * @param {AbstractModel} model
@@ -88,7 +93,7 @@ class AbstractEntityRouter extends Router {
 			fields = '-isRemoved -__v',
 			page = parseInt(req.params.p, 10) || 1,
 			query = {},
-			sort = {'date': -1, 'name': -1}, // sort by date, and then by name
+			sort = self.defaultSort,
 			pageCount,
 			itemCount,
 			currentPage,

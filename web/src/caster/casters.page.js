@@ -7,10 +7,15 @@ const TEMPLATE = `
 		<input type="text" ng-model="filter" placeholder="eg. Khaldor" />
 
 		<div
-			ng-repeat="item in $ctrl.items | orderBy:'name' | filter:filter as results"
+			ng-repeat="caster in $ctrl.casters | orderBy:'name' | filter:filter as results"
 			class="entity-list__entity">
-			<a href="#" ui-sref="caster({id: item._id})">{{item.name}}</a>
+			<a href="#" ui-sref="caster({id: caster._id})">{{caster.name}}</a>
 		</div>
+
+		<pagination 
+			current-page="$ctrl.currentPage" 
+			page-count="$ctrl.pageCount"
+			get-data="$ctrl.getCasters"></pagination>
 
 	</section>
 `;
@@ -27,15 +32,23 @@ angular
 function castersPage ($http, Page, Constants) {
 	var self = this;
 
-	self.items = [];
+	self.casters = [];
 	self.currentPage = 1;
-	self.pageCount = 1;
 
-	$http.get(Constants.Api.GET_CASTERS)
-		.then(response => {
-			self.items = response.data.items;
-			self.pageCount = response.data.pageCount;
-			Page.loaded();
-			Page.setTitle(TITLE);
-		});
+	self.getCasters = getCasters;
+
+	getCasters(self.currentPage);
+
+	function getCasters (page) {
+		self.casters = [];
+		$http.get(`${Constants.Api.GET_CASTERS}?p=${page}`)
+			.then(response => {
+				self.currentPage = page;
+				self.casters = response.data.items;
+				self.pageCount = response.data.pageCount;
+				Page.loaded();
+				Page.setTitle(TITLE);
+			});
+	}
+
 }

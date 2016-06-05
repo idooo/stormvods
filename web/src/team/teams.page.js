@@ -8,13 +8,18 @@ const TEMPLATE = `
 
 		<div
 			class="entity-list__entity entity-list__entity--team"
-			ng-repeat="item in $ctrl.items | orderBy:'name' | filter:filter as results">
+			ng-repeat="team in $ctrl.teams | orderBy:'name' | filter:filter as results">
 
 			<span class="entity-list__image">
-				<img ng-src="/dist/images/teams/{{item.image || 'unknown.png'}}">
+				<img ng-src="/dist/images/teams/{{team.image || 'unknown.png'}}">
 			</span>
-			<a href="#" ui-sref="team({id: item._id})">{{item.name}}</a>
+			<a href="#" ui-sref="team({id: team._id})">{{team.name}}</a>
 		</div>
+		
+		<pagination 
+			current-page="$ctrl.currentPage" 
+			page-count="$ctrl.pageCount"
+			get-data="$ctrl.getTeams"></pagination>
 
 	</section>
 `;
@@ -31,15 +36,22 @@ angular
 function teamsPage ($http, Page, Constants) {
 	var self = this;
 
-	self.items = [];
+	self.teams = [];
 	self.currentPage = 1;
-	self.pageCount = 1;
 
-	$http.get(Constants.Api.GET_TEAMS)
-		.then(response => {
-			self.items = response.data.items;
-			self.pageCount = response.data.pageCount;
-			Page.loaded();
-			Page.setTitle(TITLE);
-		});
+	self.getTeams = getTeams;
+
+	getTeams(self.currentPage);
+
+	function getTeams (page) {
+		self.teams = [];
+		$http.get(`${Constants.Api.GET_TEAMS}?p=${page}`)
+			.then(response => {
+				self.currentPage = page;
+				self.teams = response.data.items;
+				self.pageCount = response.data.pageCount;
+				Page.loaded();
+				Page.setTitle(TITLE);
+			});
+	}
 }

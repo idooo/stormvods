@@ -35,6 +35,13 @@ const TEMPLATE = `
 			
 		</div>
 
+		<pagination 
+			current-page="$ctrl.currentPage" 
+			page-count="$ctrl.pageCount"
+			get-data="$ctrl.getTournaments">
+			
+		</pagination>
+			
 	</section>
 `;
 
@@ -52,18 +59,23 @@ function tournamentsPage ($http, Page, Constants) {
 
 	self.tournaments = [];
 	self.currentPage = 1;
-	self.pageCount = 1;
 
+	self.getTournaments = getTournaments;
 	self.tournamentsMatch = tournamentsMatch;
 
-	$http.get(Constants.Api.GET_TOURNAMENTS)
-		.then(response => {
-			self.tournaments = formatTournaments(response.data.items, Constants);
-			self.pageCount = response.data.pageCount;
-			Page.loaded();
-			Page.setTitle(TITLE);
-		});
+	getTournaments(self.currentPage);
 
+	function getTournaments (page) {
+		self.tournaments = [];
+		$http.get(`${Constants.Api.GET_TOURNAMENTS}?p=${page}`)
+			.then(response => {
+				self.currentPage = page;
+				self.tournaments = formatTournaments(response.data.items, Constants);
+				self.pageCount = response.data.pageCount;
+				Page.loaded();
+				Page.setTitle(TITLE);
+			});
+	}
 
 	/**
 	 * Formats tournaments data and returns them in a sorted way

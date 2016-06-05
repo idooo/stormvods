@@ -10,6 +10,10 @@ const MIN_TOURNAMENT_YEAR = 2014;
 
 class TournamentRouter extends AbstractEntityRouter {
 
+	constructor (server, config) {
+		super(server, config, {'date': -1, 'name': 1});
+	}
+
 	configure () {
 
 		this.bindRoutes('tournament', this.models.Tournament);

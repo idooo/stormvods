@@ -30,6 +30,7 @@ require('./common/autocomplete.directive');
 require('./common/spinner.component.js');
 require('./common/rating.component.js');
 require('./common/topselector.component.js');
+require('./common/pagination.component');
 
 require('./index/index.page');
 require('./top/top.page');

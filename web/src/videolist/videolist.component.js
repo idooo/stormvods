@@ -3,25 +3,11 @@ const TEMPLATE = `
 
 		<video-list-item ng-repeat="video in $ctrl.videos" video="video"></video-list-item>
 
-		<div class="pagination" ng-if="$ctrl.showPagination">
-
-			<button
-				class="secondary"
-				ng-disabled="$ctrl.currentPage <= 1"
-				ng-click="$ctrl.getVideos($ctrl.currentPage-1)">
-
-				&larr; Prev
-			</button>
-
-			<button
-				class="secondary"
-				ng-disabled="$ctrl.pageCount == $ctrl.currentPage"
-				ng-click="$ctrl.getVideos($ctrl.currentPage+1)">
-
-				Next &rarr;
-			</button>
-
-		</div>
+		<pagination 
+		 	ng-if="$ctrl.showPagination"
+			current-page="$ctrl.currentPage" 
+			page-count="$ctrl.pageCount"
+			get-data="$ctrl.getVideos"></pagination>
 
 	</div>
 `;
