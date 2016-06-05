@@ -87,27 +87,29 @@ function improveVideoDirective () {
 		$scope.skip = skip;
 
 		var listener = $scope.$watch('video', function (newValue) {
-			if (newValue && newValue._id) {
+			if (!newValue || !newValue._id) return;
 
-				if (Array.isArray($scope.video[$scope.type])) $scope.isInformationCorrect = false;
-
-				$timeout(function () {
-					var data = $scope.TYPES[$scope.type];
-
-					try {
-						data.questionCorrectness.message += ' ' + data.questionCorrectness.func($scope.video, Constants);
-						data.suggestion.message += ' ' + data.suggestion.func($scope.info, Constants);
-					}
-					catch (e) {
-						//
-					}
-
-					if (data.questionLookup.isSelect) {
-						data.questionLookup.options = data.questionLookup.options(Constants);
-					}
-				}, 250);
-				listener();
+			if (typeof $scope.video[$scope.type] === 'undefined'
+				|| Array.isArray($scope.video[$scope.type])) {
+				$scope.isInformationCorrect = false;
 			}
+
+			$timeout(function () {
+				var data = $scope.TYPES[$scope.type];
+
+				try {
+					data.questionCorrectness.message += ' ' + data.questionCorrectness.func($scope.video, Constants);
+					data.suggestion.message += ' ' + data.suggestion.func($scope.info, Constants);
+				}
+				catch (e) {
+					//
+				}
+
+				if (data.questionLookup.isSelect) {
+					data.questionLookup.options = data.questionLookup.options(Constants);
+				}
+			}, 250);
+			listener();
 		});
 
 		function answerCorrectness (isCorrect) {
