@@ -13,7 +13,8 @@ class TeamRouter extends AbstractEntityRouter {
 		 * @apiName GetTeams
 		 * @apiGroup Team
 		 * @apiVersion 1.0.0
-		 * 
+		 *
+		 * @apiParam {Number} [page]
 		 * @apiParam {Object} [query] mongodb query (only for admins)
 		 * @apiParam {Object} [sort] mongodb object (only for admins)
 		 */

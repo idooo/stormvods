@@ -54,8 +54,9 @@
       },
       "tournament": {
         "_id": "56639b2782f4f8973eef2b3a",
-        "name": "Heroes Battle Arena",
-        "data": "2015-12-00T09:40:17.135Z"
+        "name": "DreamHack all stars",
+        "date": "2015-12-00T09:40:17.135Z",
+        "series": 'dh'
       },
       "casters": {
         "rating": 1,
