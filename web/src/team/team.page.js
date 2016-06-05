@@ -6,7 +6,7 @@ const TEMPLATE = `
 				class="entity-page__image"
 				ng-src="/dist/images/teams/{{$ctrl.team.image || 'unknown.png'}}">
 
-			{{ctrl.team.name}}
+			{{$ctrl.team.name}}
 		</h1>
 
 		<video-list params="$ctrl.searchParams" page-load="true"></video-list>
