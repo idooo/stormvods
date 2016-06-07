@@ -8,7 +8,7 @@ angular
 	.config(configuration)
 	.run(init);
 
-function configuration ($httpProvider, $stateProvider, $urlRouterProvider, CookieHelper) {
+function configuration ($httpProvider, $locationProvider, $stateProvider, $urlRouterProvider, CookieHelper) {
 
 	$httpProvider.interceptors.push($q => {
 		return {
@@ -22,6 +22,7 @@ function configuration ($httpProvider, $stateProvider, $urlRouterProvider, Cooki
 		};
 	});
 
+	$locationProvider.html5Mode(true);
 	$urlRouterProvider.otherwise('/');
 
 	$stateProvider
