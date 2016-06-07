@@ -19,7 +19,7 @@
 		"clientId": "Xrx03-_KnT0d0A",
 		"secret": "PNvSrh3eOfO1-NHPqNyNw5N2jNE",
 		"scope": "identity",
-		"callbackUrl": "http:%2F%2Fstormvods.com%2F%23%2Fcallback",
+		"callbackUrl": "http:%2F%2Fstormvods.com%2Fcallback",
 		"duration": "temporary"
 	},
 	"redis": {

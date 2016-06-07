@@ -33,7 +33,6 @@ class RouterLoader {
 			})
 			.forEach(filename => this.loadRouter(filename));
 
-		// static must be the last
 		this.loadRouter(STATIC_ROUTER);
 	}
 

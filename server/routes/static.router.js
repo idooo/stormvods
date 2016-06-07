@@ -13,14 +13,12 @@ class StaticRouter extends Router {
 	configure () {
 		this.compileIndexTemplate();
 
-		// This route should go first
-		this.bindGET(/\/($|\?.*|\#.*|index.html)/, this.indexRender);
-
-		this.server.get(/\/?.*/, restify.serveStatic({
+		this.server.get(/.*\.(gif|png|css|js|jpg)/, restify.serveStatic({
 			directory: __dirname + '/../../web',
-			default: 'index.html',
 			maxAge: this.config.server.staticMaxAge
 		}));
+
+		this.bindGET(/^(?!\/api).*/, this.indexRender);
 	}
 
 	compileIndexTemplate () {
@@ -31,7 +29,7 @@ class StaticRouter extends Router {
 	indexRender (req, res) {
 		var data = {},
 			cookies = req.cookies;
-			
+
 		if (cookies.token && cookies.username && cookies.role) {
 			data.configurationString = `window.Auth = {
 				username: '${cookies.username}', 
@@ -39,7 +37,7 @@ class StaticRouter extends Router {
 				role: '${cookies.role}'
 			};`;
 		}
-		
+
 		if (this.config.debug.disableTemplateCaching) this.compileIndexTemplate();
 
 		var body = this.template(data);
