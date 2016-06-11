@@ -1,6 +1,6 @@
 'use strict';
 
-const STREAMS_UPDATE_INTERVAL = 2 * 60 * 1000;
+const STREAMS_UPDATE_INTERVAL = 5 * 60 * 1000;
 const API_TIMEOUT = 5000;
 const GAME_NAME = 'Heroes of the Storm';
 const TWITCH_STREAMS_URL = 'https://api.twitch.tv/kraken/streams/';
@@ -86,26 +86,31 @@ class Twitch {
 					return callback(streams);
 				}
 
-				var data = JSON.parse(body);
+				try {
+					var data = JSON.parse(body);
 
-				if (data.stream === null || data.stream.game !== GAME_NAME) {
+					if (data.stream === null || data.stream.game !== GAME_NAME) {
+						streams.push({
+							name: streamName,
+							isOnline: false
+						});
+						return callback(streams);
+					}
+
 					streams.push({
 						name: streamName,
-						isOnline: false
+						isOnline: true,
+						preview: data.stream.preview.medium,
+						viewers: data.stream.viewers,
+						logo: data.stream.channel.logo,
+						displayName: data.stream.channel.display_name,
+						status: data.stream.channel.status
 					});
-					return callback(streams);
+					callback(streams);
 				}
-
-				streams.push({
-					name: streamName,
-					isOnline: true,
-					preview: data.stream.preview.medium,
-					viewers: data.stream.viewers,
-					logo: data.stream.channel.logo,
-					displayName: data.stream.channel.display_name,
-					status: data.stream.channel.status
-				});
-				callback(streams);
+				catch (ex) {
+					logger.error(ex);
+				}
 			});
 
 		});
