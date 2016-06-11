@@ -1,4 +1,3 @@
-/* global __dirname, process */
 'use strict';
 
 var	restify = require('restify'),
@@ -6,6 +5,7 @@ var	restify = require('restify'),
 	Database = require('./core/database'),
 	RouterLoader = require('./core/routing'),
 	Cache = require('./core/cache'),
+	Twitch = require('./core/twitch'),
 	Constants = require('./constants');
 
 class Server {
@@ -56,6 +56,7 @@ class Server {
 		// Init other things
 		new Cache().start(this.config.redis);
 	}
+
 	start () {
 		var self = this;
 		self.server.listen(
@@ -63,6 +64,9 @@ class Server {
 			self.config.server.host || 'localhost',
 			() => self.logger.info('Server is listening at %s', self.server.url)
 		);
+
+		// launch Twitch integration
+		new Twitch().start();
 	}
 }
 
