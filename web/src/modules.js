@@ -20,6 +20,7 @@ var appModules = [
 appModules.forEach((moduleName) => angular.module(moduleName, []));
 
 // Common modules
+require('./router');
 require('./constants');
 require('./cookies');
 require('./common/auth.service');
@@ -44,7 +45,6 @@ require('./video/improve.directive');
 require('./video/improve.block.directive');
 require('./videolist/videolist.component.js');
 require('./videolist/videolist.item.component.js');
-require('./sidebar/sidebar.component');
 require('./tournament/tournament.page');
 require('./tournament/tournaments.page');
 require('./team/team.page');
@@ -56,5 +56,8 @@ require('./admin/users.zone.component');
 require('./admin/videos.zone.component');
 require('./admin/entities.zone.component');
 require('./admin/tournaments.zone.component');
+
+require('./sidebar/addvideo.sidebar.component');
+require('./sidebar/addvideorules.sidebar.component');
 
 module.exports = modules.concat(appModules);

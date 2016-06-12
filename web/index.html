@@ -42,7 +42,9 @@
 
 				<div class="page-container" ng-class="$root.pageName" ui-view></div>
 
-				<sidebar></sidebar>
+				<div class="sidebar-container" ui-view="sidebar">
+					<addvideo-sidebar></addvideo-sidebar>
+				</div>
 
 			</div>
 
