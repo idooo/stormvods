@@ -35,6 +35,15 @@ class Tournament extends BasicModel {
 			series: {
 				type: String
 			},
+			masterleagueId: {
+				type: String
+			},
+			hotslogsId: {
+				type: String
+			},
+			teamLiquidWikiUrl: {
+				type: String
+			},
 			author: {
 				type: mongoose.Schema.Types.ObjectId,
 				required: true

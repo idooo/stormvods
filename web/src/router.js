@@ -1,4 +1,7 @@
-const EMPTY_SIDEBAR = {template: ' '};
+const DEFAULT_SIDEBAR = [
+	'<addvideo-sidebar></addvideo-sidebar>',
+	'<streamers-sidebar></streamers-sidebar>'
+];
 
 module.exports = function ($stateProvider) {
 
@@ -11,7 +14,7 @@ module.exports = function ($stateProvider) {
 			url: '/callback',
 			views: {
 				'': {template: '<callback-page/>'},
-				'sidebar@': EMPTY_SIDEBAR
+				'sidebar@': getEmptySidebar()
 			}
 		})
 		.state('addvideo', {
@@ -27,7 +30,10 @@ module.exports = function ($stateProvider) {
 		})
 		.state('tournament', {
 			url: '/tournament/:id',
-			template: '<tournament-page/>'
+			views: {
+				'': {template: '<tournament-page/>'},
+				'sidebar@': getSidebarWithItem('<tournament-info-sidebar></tournament-info-sidebar>')
+			}
 		})
 		.state('tournaments', {
 			url: '/tournaments',
@@ -61,7 +67,17 @@ module.exports = function ($stateProvider) {
 			url: '/zone',
 			views: {
 				'': {template: '<zone-page/>'},
-				'sidebar@': EMPTY_SIDEBAR
+				'sidebar@': getEmptySidebar()
 			}
 		});
 };
+
+function getSidebarWithItem (item) {
+	return {
+		template: item + ' ' + DEFAULT_SIDEBAR.join(' ')
+	};
+}
+
+function getEmptySidebar () {
+	return {template: ' '};
+}

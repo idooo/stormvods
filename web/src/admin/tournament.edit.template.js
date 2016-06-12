@@ -17,6 +17,15 @@ module.exports = `
 			</option>
 		</select>
 		
+		<label>masterleague.net ID</label>
+		<input type="text" ng-model="item.masterleagueId" autocomplete="off">
+		
+		<label>HotsLogs ID</label>
+		<input type="text" ng-model="item.hotslogsId" autocomplete="off">
+		
+		<label>Wiki Team Liquid URL</label>
+		<input type="text" ng-model="item.teamLiquidWikiUrl" autocomplete="off">
+		
 		<button ng-click="updateTournament()">Update</button>
 		
 	</form>

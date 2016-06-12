@@ -118,5 +118,9 @@ angular
 			{name: 'Enter The Storm', code: 'ets'},
 			{name: 'ZOTAC', code: 'zotac'},
 			{name: 'Go4', code: 'go4'}
-		]
+		],
+
+		Event: {
+			TournamentSelectedEvent: 'TournamentSelectedEvent'
+		}
 	});

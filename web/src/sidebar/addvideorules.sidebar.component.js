@@ -6,7 +6,7 @@ const TEMPLATE = `
 	
 		<div class="sidebar__block">
 			<div class="sidebar__header">Short guidelines</div>
-			<ul>
+			<ul class="numeric">
 				<li>
 					Video must contain at least one competitive Heroes of the Storm
 					full match
@@ -18,15 +18,14 @@ const TEMPLATE = `
 					Game should have commentary in English by a caster
 				</li>
 				<li>
-					Use <a href="http://wiki.teamliquid.net/heroes/Main_Page" target="_blank">Team Liquid Wiki</a>
-					as a source of correct names
+					Use Team Liquid Wiki as a source of correct names
 					for <a href="http://wiki.teamliquid.net/heroes/Portal:Teams" target="_blank" >teams</a>
 					and <a href="http://wiki.teamliquid.net/heroes/Portal:Tournaments" target="_blank">tournaments</a>
 				</li>
 			</ul>
 	
 			<div class="sidebar__header">Please don't</div>
-			<ul>
+			<ul class="numeric">
 				<li>
 					Don't add highlight videos, WTF, funny moments or other videos that
 					don't contain full competitive Heroes of the Storm match

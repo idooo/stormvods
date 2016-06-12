@@ -27,7 +27,10 @@ angular
 		controller: tournamentPage
 	});
 
-function tournamentPage ($http, $state, Page, Constants) {
+/**
+ * @emits Constants.Event.TournamentSelectedEvent(tournament:Object)
+ */
+function tournamentPage ($http, $rootScope, $state, Page, Constants) {
 	var self = this;
 
 	self.videos = [];
@@ -40,6 +43,7 @@ function tournamentPage ($http, $state, Page, Constants) {
 			if (!response.data.values || !response.data.values.length) return notFound();
 			self.tournament = response.data.values[0];
 			Page.setTitle(self.tournament.name);
+			$rootScope.$broadcast(Constants.Event.TournamentSelectedEvent, self.tournament);
 		})
 		.catch(notFound);
 

@@ -42,7 +42,9 @@ const TEMPLATE = `
 	</div>
 `;
 
-const FIELDS_TO_UPDATE = ['date', 'name', 'series'];
+const FIELDS_TO_UPDATE = [
+	'date', 'name', 'series', 'masterleagueId', 'hotslogsId', 'teamLiquidWikiUrl'
+];
 
 angular
 	.module(`${window.APP_NAME}.pages`)
@@ -115,6 +117,7 @@ function tournamentsZone ($http, ngDialog, Constants) {
 						})
 						.then(() => {
 							$scope.message = 'Tournament has been updated';
+							ngDialog.close();
 						})
 						.catch(err => $scope.message = JSON.stringify(err));
 

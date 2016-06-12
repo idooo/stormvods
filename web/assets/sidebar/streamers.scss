@@ -2,25 +2,15 @@
 	display: inline-block;
 	padding: 4px 10px 4px 0;
 
-	a {
-		text-decoration: none;
-	}
-
 	&--online {
 
-		a {
-			color: $action-color;
-
-			&:hover {
-				border-bottom: 1px solid $action-color;
-			}
-		}
 	}
 
 	&--offline {
 
 		a {
 			color: $light-text-color-secondary;
+			border-bottom: none;
 
 			&:hover {
 				border-bottom: 1px solid $light-text-color-secondary;

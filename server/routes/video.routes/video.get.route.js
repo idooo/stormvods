@@ -103,7 +103,7 @@ class VideoGetRoute {
 					promises = [];
 
 				if (topTournament) {
-					promises.push(self.models.Tournament.findOne({_id: topTournament._id}, 'name _id date series'));
+					promises.push(self.models.Tournament.findOne({_id: topTournament._id}, '-author -isRemoved -creationDate'));
 					promisesNames.push(self.models.Tournament.modelName);
 				}
 				if (topTeams) {
@@ -138,12 +138,17 @@ class VideoGetRoute {
 
 					switch (modelName) {
 						case self.models.Tournament.modelName:
+
+							// TODO: refactor it - ugly
 							video.tournament = {
 								_id: data[i]._id,
 								name: data[i].name,
 								date: data[i].date,
 								series: data[i].series,
-								rating: video.tournament[0] ? video.tournament[0].rating : null
+								rating: video.tournament[0] ? video.tournament[0].rating : null,
+								masterleagueId: data[i].masterleagueId,
+								hotslogsId: data[i].hotslogsId,
+								teamliquidId: data[i].teamliquidId,
 							};
 							break;
 
