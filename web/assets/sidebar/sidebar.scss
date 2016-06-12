@@ -1,12 +1,15 @@
 .sidebar {
 
+	&-container {
+		padding: 0 10px;
+
+		section {
+			margin-bottom: 2em;
+		}
+	}
+
 	&__block {
 		font-size: em(14);
-		padding: 15px;
-
-		@include media($medium-screen-up) {
-			border: 2px solid #6B62DC;
-		}
 
 		p {
 			margin-bottom: 10px;

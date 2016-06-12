@@ -23,7 +23,6 @@
 @import './common/improve';
 @import './common/top';
 @import './common/video';
-@import './common/sidebar';
 @import './common/tabs';
 @import './common/entitylist';
 @import './common/entity';
@@ -31,6 +30,9 @@
 @import './pages/addvideo';
 @import './pages/callback';
 @import './pages/zone';
+
+@import './sidebar/sidebar';
+@import './sidebar/streamers';
 
 // Minor helpers
 a[ng-click] {

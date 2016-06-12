@@ -23,7 +23,9 @@ angular
 			GET_TOURNAMENTS: `${PREFIX}/tournaments`,
 			GET_CASTERS: `${PREFIX}/casters`,
 
-			VOTE: `${PREFIX}/vote`
+			VOTE: `${PREFIX}/vote`,
+
+			TWITCH_STREAMERS: `${PREFIX}/twitch/streamers`
 		},
 
 		Roles: {
