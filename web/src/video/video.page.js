@@ -31,6 +31,11 @@ const TEMPLATE = `
 	</section>
 `;
 
+
+/**
+ * @emits Constants.Event.TournamentSelectedEvent(tournament:Object)
+ * @emits Constants.Event.CastersSelectedEvent(casters:Array<Object>)
+ */
 function videoPage () {
 
 	return {
@@ -41,7 +46,7 @@ function videoPage () {
 		controllerAs: 'ctrl'
 	};
 
-	function controller ($http, $state, Page, Constants) {
+	function controller ($http, $rootScope, $state, Page, Constants) {
 		var self = this;
 
 		self.video = {};
@@ -51,6 +56,8 @@ function videoPage () {
 				self.video = response.data;
 				Page.loaded();
 				setTitle(self.video);
+				$rootScope.$broadcast(Constants.Event.CastersSelectedEvent, self.video.casters.casters);
+				$rootScope.$broadcast(Constants.Event.TournamentSelectedEvent, self.video.tournament);
 			})
 			.catch(response => {
 				self.error = response.data;

@@ -1,6 +1,15 @@
+const SIDEBAR = {
+	ADDVIDEO: '<addvideo-sidebar></addvideo-sidebar>',
+	ADDVIDEO_RULES: '<addvideo-rules-sidebar></addvideo-rules-sidebar>',
+	STREAMERS: '<streamers-sidebar></streamers-sidebar>',
+	TOURNAMENT: '<tournament-info-sidebar></tournament-info-sidebar>',
+	CASTERS: '<casters-info-sidebar></casters-info-sidebar>',
+	EMPTY: {template: ' '}
+};
+
 const DEFAULT_SIDEBAR = [
-	'<addvideo-sidebar></addvideo-sidebar>',
-	'<streamers-sidebar></streamers-sidebar>'
+	SIDEBAR.ADDVIDEO,
+	SIDEBAR.STREAMERS
 ];
 
 module.exports = function ($stateProvider) {
@@ -14,25 +23,31 @@ module.exports = function ($stateProvider) {
 			url: '/callback',
 			views: {
 				'': {template: '<callback-page/>'},
-				'sidebar@': getEmptySidebar()
+				'sidebar@': SIDEBAR.EMPTY
 			}
 		})
 		.state('addvideo', {
 			url: '/addvideo',
 			views: {
 				'': {template: '<add-video-page/>'},
-				'sidebar@': {template: '<addvideo-rules-sidebar/>'}
+				'sidebar@': {template: SIDEBAR.ADDVIDEO_RULES}
 			}
 		})
 		.state('video', {
 			url: '/video/:id',
-			template: '<video-page/>'
+			views: {
+				'': {template: '<video-page/>'},
+				'sidebar@': getSidebarWithItems([
+					SIDEBAR.TOURNAMENT,
+					SIDEBAR.CASTERS
+				])
+			}
 		})
 		.state('tournament', {
 			url: '/tournament/:id',
 			views: {
 				'': {template: '<tournament-page/>'},
-				'sidebar@': getSidebarWithItem('<tournament-info-sidebar></tournament-info-sidebar>')
+				'sidebar@': getSidebarWithItem(SIDEBAR.TOURNAMENT)
 			}
 		})
 		.state('tournaments', {
@@ -49,7 +64,10 @@ module.exports = function ($stateProvider) {
 		})
 		.state('caster', {
 			url: '/caster/:id',
-			template: '<caster-page/>'
+			views: {
+				'': {template: '<caster-page/>'},
+				'sidebar@': getSidebarWithItem(SIDEBAR.CASTERS)
+			}
 		})
 		.state('casters', {
 			url: '/casters',
@@ -67,7 +85,7 @@ module.exports = function ($stateProvider) {
 			url: '/zone',
 			views: {
 				'': {template: '<zone-page/>'},
-				'sidebar@': getEmptySidebar()
+				'sidebar@': SIDEBAR.EMPTY
 			}
 		});
 };
@@ -78,6 +96,8 @@ function getSidebarWithItem (item) {
 	};
 }
 
-function getEmptySidebar () {
-	return {template: ' '};
+function getSidebarWithItems (items) {
+	return {
+		template: items.join(' ') + ' ' + DEFAULT_SIDEBAR.join(' ')
+	};
 }

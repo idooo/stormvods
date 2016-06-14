@@ -11,19 +11,19 @@ const TEMPLATE = `
 		
 			<ul>
 				<li ng-if="$ctrl.tournament.masterleagueId">
-					<img src="http://c.masterleague.net/static/favicon.ico">
+					<img src="/dist/images/third-party/masterleague.png">
 					<a ng-href="http://masterleague.net/tournament/{{$ctrl.tournament.masterleagueId}}">
 						masterleague.net
 					</a>
 				</li>
 				<li ng-if="$ctrl.tournament.hotslogsId">
-					<img src="http://www.hotslogs.com/favicon.ico?v=2">
+					<img src="/dist/images/third-party/hotslogs.png">
 					<a ng-href="http://www.hotslogs.com/Event/Overview?EventID={{$ctrl.tournament.hotslogsId}}">
 						HotsLogs
 					</a>
 				</li>
 				<li ng-if="$ctrl.tournament.teamLiquidWikiUrl">
-					<img src="http://wiki.teamliquid.net/favicon.ico">
+					<img src="/dist/images/third-party/wikiteamliquid.png">
 					<a ng-href="http://wiki.teamliquid.net/heroes/{{$ctrl.tournament.teamLiquidWikiUrl}}">
 						Team Liquid Wiki
 					</a>

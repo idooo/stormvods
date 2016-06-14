@@ -111,7 +111,7 @@ class VideoGetRoute {
 					promisesNames.push(self.models.Team.modelName);
 				}
 				if (topCasters) {
-					promises.push(self.models.Caster.find({_id: {'$in': topCasters.casters}}, 'name _id'));
+					promises.push(self.models.Caster.find({_id: {'$in': topCasters.casters}}, '-author -isRemoved -creationDate'));
 					promisesNames.push(self.models.Caster.modelName);
 				}
 				promises.push(self.models.User.findOne({_id: video.author}, 'name _id'));

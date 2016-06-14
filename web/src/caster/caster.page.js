@@ -1,7 +1,7 @@
 const TEMPLATE = `
 	<section>
 
-		<h1>Caster: {{ctrl.caster.name}}</h1>
+		<h1>Caster: {{$ctrl.caster.name}}</h1>
 
 		<video-list params="$ctrl.searchParams" page-load="true"></video-list>
 
@@ -15,7 +15,10 @@ angular
 		controller: casterPage
 	});
 
-function casterPage ($http, $state, Page, Constants) {
+/**
+ * @emits Constants.Event.CastersSelectedEvent(casters:Array<Object>)
+ */
+function casterPage ($http, $rootScope, $state, Page, Constants) {
 	var self = this;
 
 	self.videos = [];
@@ -27,6 +30,7 @@ function casterPage ($http, $state, Page, Constants) {
 			if (!response.data.values || !response.data.values.length) return notFound();
 			self.caster = response.data.values[0];
 			Page.setTitle(self.caster.name);
+			$rootScope.$broadcast(Constants.Event.CastersSelectedEvent, [self.caster]);
 		})
 		.catch(notFound);
 

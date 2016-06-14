@@ -22,7 +22,7 @@ const TEMPLATE = `
 `;
 
 const TABS = ['Videos', 'Users', 'Teams', 'Tournaments', 'Casters'];
-const DEFAULT_TAB = 'Casters';
+const DEFAULT_TAB = 'Videos';
 
 angular
 	.module(`${window.APP_NAME}.pages`)

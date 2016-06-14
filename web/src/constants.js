@@ -121,6 +121,7 @@ angular
 		],
 
 		Event: {
-			TournamentSelectedEvent: 'TournamentSelectedEvent'
+			TournamentSelectedEvent: 'TournamentSelectedEvent',
+			CastersSelectedEvent: 'CastersSelectedEvent'
 		}
 	});
