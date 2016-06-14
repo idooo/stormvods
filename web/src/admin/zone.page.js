@@ -14,13 +14,15 @@ const TEMPLATE = `
 
 		<videos-zone ng-if="$ctrl.selectedTab === 0"></videos-zone>
 		<users-zone ng-if="$ctrl.selectedTab === 1"></users-zone>
-		<entities-zone ng-if="$ctrl.selectedTab === 2"></entities-zone>
+		<teams-zone ng-if="$ctrl.selectedTab === 2"></teams-zone>
 		<tournaments-zone ng-if="$ctrl.selectedTab === 3"></tournaments-zone>
+		<casters-zone ng-if="$ctrl.selectedTab === 4"></casters-zone>
 
 	</section>
 `;
 
-const TABS = ['Videos', 'Users', 'Entities', 'Tournaments'];
+const TABS = ['Videos', 'Users', 'Teams', 'Tournaments', 'Casters'];
+const DEFAULT_TAB = 'Casters';
 
 angular
 	.module(`${window.APP_NAME}.pages`)
@@ -33,7 +35,7 @@ function zonePage ($rootScope, $state, Page, Constants) {
 	var self = this;
 
 	self.tabs = TABS;
-	self.selectedTab = 0;
+	self.selectedTab = TABS.indexOf(DEFAULT_TAB);
 
 	if (!$rootScope.username || $rootScope.role < Constants.Roles.ADMIN) return $state.go('index');
 

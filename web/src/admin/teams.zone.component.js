@@ -1,6 +1,6 @@
 const TEMPLATE = `
 	<div>
-		<h2>Tournaments</h2>
+		<h2>Teams</h2>
 
 		<input placeholder='eg {"name": {"$regex": ".*dream.*", "$options": "i"}}' 
 			class="zone-input" type="text" ng-model="$ctrl.query">
@@ -13,9 +13,6 @@ const TEMPLATE = `
 				<tr>
 					<th width="40">id</th>
 					<th>Name</th>
-					<th>Series</th>
-					<th>Date</th>
-					<th>Author</th>
 					<th>Creation Date</th>
 					<th></th>
 				</tr>
@@ -23,9 +20,6 @@ const TEMPLATE = `
 			<tr ng-repeat="item in $ctrl.data.items" ng-class="{'even': $even}">
 				<td>{{item._id}}</td>
 				<td>{{item.name}}</td>
-				<td>{{item.series}}</td>
-				<td>{{item.date | amDateFormat:'MMMM YYYY'}}</td>
-				<td>{{item.author.name}}</td>
 				<td am-time-ago="item.creationDate"></td>
 				<td><span ng-click="$ctrl.openEditPopup(item)">Edit</span></td>
 			</tr>
@@ -43,16 +37,16 @@ const TEMPLATE = `
 `;
 
 const CONFIGURATION = {
-	getUrl: '/tournaments',
-	mergeUrl: '/tournament/merge',
-	updateUrl: '/tournament',
-	fieldsToUpdate: ['date', 'name', 'series', 'masterleagueId', 'hotslogsId', 'teamLiquidWikiUrl'],
-	template: require('./tournament.edit.template')
+	getUrl: '/teams',
+	mergeUrl: '/team/merge',
+	updateUrl: '/team',
+	fieldsToUpdate: ['name'],
+	template: require('./team.edit.template')
 };
 
 angular
 	.module(`${window.APP_NAME}.pages`)
-	.component('tournamentsZone', {
+	.component('teamsZone', {
 		template: TEMPLATE,
 		controller: require('./abstract.zone.controller.factory')(CONFIGURATION)
 	});

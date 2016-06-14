@@ -1,7 +1,7 @@
 module.exports = `
 	<h2>Edit tournament</h2>
 	
-	<form name="$ctrl.form" novalidate ng-hide="$ctrl.isVideoUploading">
+	<form name="$ctrl.form" novalidate>
 
 	
 		<label>Name</label>
@@ -10,7 +10,7 @@ module.exports = `
 		<label>Date (YYYY-MM)</label>
 		<input type="text" ng-model="item.date" autocomplete="off">
 			
-		<label>Stage</label>
+		<label>Series</label>
 		<select ng-model="item.series">
 			<option ng-repeat="option in series" value="{{option.code}}">
 				{{option.name}}
@@ -26,7 +26,7 @@ module.exports = `
 		<label>Wiki Team Liquid URL</label>
 		<input type="text" ng-model="item.teamLiquidWikiUrl" autocomplete="off">
 		
-		<button ng-click="updateTournament()">Update</button>
+		<button ng-click="updateEntity()">Update</button>
 		
 	</form>
 		
