@@ -13,7 +13,7 @@ class StaticRouter extends Router {
 	configure () {
 		this.compileIndexTemplate();
 
-		this.server.get(/.*\.(gif|png|css|js|jpg)/, restify.serveStatic({
+		this.server.get(/.*\.(gif|png|css|js|jpg|eot|woff|ttf|woff2|svg)/, restify.serveStatic({
 			directory: __dirname + '/../../web',
 			maxAge: this.config.server.staticMaxAge
 		}));
