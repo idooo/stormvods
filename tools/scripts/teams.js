@@ -45,7 +45,9 @@ const teams = [
 	{name: 'GIA', image: 'gia.png'},
 	{name: 'Big Gods', image: 'big_gods.png'},
 	{name: 'Renovatio I', image: 'renovatio.png'},
-	{name: 'Negative Synergy', image: 'negative_synergy.png'}
+	{name: 'Negative Synergy', image: 'negative_synergy.png'},
+	{name: 'Tempest', image: 'tempest.png'},
+	{name: 'Please Buff Arthas', image: 'pba.png'}
 ];
 
 

@@ -56,7 +56,14 @@ angular
 			GROUPBW: 'Group B. Winners Match',
 			GROUPBL: 'Group B. Losers Match',
 			GROUPBD: 'Group B. Decider Match',
-			RO64: 'Round of 64',
+			GROUP2A: 'Second stage, group A',
+			GROUP2B: 'Second stage, group B',
+			GROUP2AW: 'Second stage, group A. Winners Match',
+			GROUP2AL: 'Second stage, group A. Losers Match',
+			GROUP2AD: 'Second stage, group A. Decider Match',
+			GROUP2BW: 'Second stage, group B. Winners Match',
+			GROUP2BL: 'Second stage, group B. Losers Match',
+			GROUP2BD: 'Second stage, group B. Decider Match',
 			RO32: 'Round of 32',
 			RO16: 'Round of 16',
 			QUARTERFINAL: 'Quarter final',
@@ -80,6 +87,14 @@ angular
 					'GROUPA', 'GROUPAW', 'GROUPAL', 'GROUPAD',
 					'GROUPB', 'GROUPBW', 'GROUPBL', 'GROUPBD',
 					'GROUPC', 'GROUPD'
+				]
+			},
+			{
+				name: 'GROUP_2_STAGE',
+				caption: 'Second Group Stage',
+				codes: [
+					'GROUP2A', 'GROUP2AW', 'GROUP2AL', 'GROUP2AD',
+					'GROUP2B', 'GROUP2BW', 'GROUP2BL', 'GROUP2BD'
 				]
 			},
 			{
@@ -117,6 +132,7 @@ angular
 			{name: 'BlizzCon', code: 'blizzcon'},
 			{name: 'Enter The Storm', code: 'ets'},
 			{name: 'ZOTAC', code: 'zotac'},
+			{name: 'Heroes of the Dorm', code: 'dorm'},
 			{name: 'Go4', code: 'go4'}
 		],
 
