@@ -34,7 +34,7 @@ function init ($location, $rootScope, $window, Auth, Page) {
 	$window.ga('create', 'UA-38569190-2', 'auto');
 
 	$rootScope.isDurationHidden = true;
-	$rootScope.isTeamVisible = false;
+	$rootScope.isTeamVisible = true;
 
 	$rootScope.$on('$stateChangeStart', () => {
 		window.scrollTo(0, 0);

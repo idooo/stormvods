@@ -84,8 +84,12 @@ function controller ($rootScope, $timeout, localStorageService, Auth) {
 
 	// Move to the next digest cycle
 	$timeout(() => {
-		$rootScope.isTeamVisible = localStorageService.get(IS_TEAM_VISIBLE_KEY);
-		$rootScope.isDurationHidden = localStorageService.get(IS_DURATION_HIDDEN);
+		if (localStorageService.get(IS_TEAM_VISIBLE_KEY) !== null) {
+			$rootScope.isTeamVisible = localStorageService.get(IS_TEAM_VISIBLE_KEY);
+		}
+		if (localStorageService.get(IS_DURATION_HIDDEN) !== null) {
+			$rootScope.isDurationHidden = localStorageService.get(IS_DURATION_HIDDEN);
+		}
 	});
 
 	function toogleShowTeams () {

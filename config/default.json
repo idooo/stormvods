@@ -40,5 +40,8 @@
 	},
 	"actions": {
 		"delayRestriction": 30000
+	},
+	"prerender": {
+		"token": "whatever"
 	}
 }

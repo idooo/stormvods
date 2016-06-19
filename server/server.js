@@ -55,6 +55,11 @@ class Server {
 
 		// Init other things
 		new Cache().start(this.config.redis);
+
+		if (this.config.prerender && this.config.prerender.token) {
+			this.logger.info('Preprender configuration loaded...');
+			this.server.use(require('prerender-node').set('prerenderToken', this.config.prerender.token));
+		}
 	}
 
 	start () {
