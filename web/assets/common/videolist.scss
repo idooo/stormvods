@@ -1,81 +1,90 @@
-$video-list-item-primary-color: #000000 !default;
-$video-list-item-secondary-color: #777777 !default;
-$video-list-item-info-border-color: #E1E1E1 !default;
-$video-list-item-hover-background-color: rgba(43, 6, 73, .07) !default;
+$video-list-item-tournament-color: rgb(156, 156, 156) !default;
+$video-list-item-time-color: $light-text-color-secondary;
 
 .video-list {
+
 }
 
 .video-list-item {
-	@include transition(background-color .15s);
-	cursor: pointer;
-	padding: em(20) em(10) 0;
+	@include display(flex);
+	@include justify-content(flex-start);
+	@include flex-direction(row);
+
+	margin: 0 0.5em 1.5em;
+
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAGCAMAAADNLv/0AAAABlBMVEX////JyckzPGiiAAAAAXRSTlMAQObYZgAAABdJREFUeAFjYGRAAEYYDcEIEkWOEVU9AAGMAAvTXO59AAAAAElFTkSuQmCC);
+	background-repeat: repeat-x;
+	background-position: 0 bottom;;
 
 	@include media($medium-screen-up) {
-		padding: em(20) em(20) 0;
-		margin: 0 em(-20) em(20);
+		margin-left: 0;
+		margin-right: 0;
 	}
 
-	&:hover {
-		& * {
-			color: $action-color;
-		}
-	}
-
-	rating {
-		float: left;
-	}
-
-	&__info {
+	&__inner-container {
 		width: 100%;
-		margin-left: em(10);
-		padding-left: em(40);
-		min-height: em(40);
+		cursor: pointer;
+		margin-left: 0.5em;
+		margin-bottom: 1em;
 
 		@include media($medium-screen-up) {
-			margin-top: em(5);
+			margin-left: 1em;
+
+			&:hover {
+				& * {
+					color: $action-color;
+				}
+			}
 		}
 	}
 
 	&__tournament {
-		display: block;
 		font-weight: 600;
-		color: $video-list-item-primary-color;
 		line-height: 1.3;
+
+		@include media($medium-screen-up) {
+			margin-top: em(10);
+		}
 
 		img {
 			display: none;
 
 			@include media($medium-screen-up) {
 				display: inline-block;
-				float: right;;
+				float: right;
 				width: 20px;
 				height: 20px;
 			}
 		}
 	}
 
-	&__stage {
-		display: block;
-		color: $video-list-item-secondary-color;
-		font-weight: 600;
-		line-height: 1.3;
-	}
+		&__time {
+			display: none;
 
-	&__time {
-		display: block;
-		color: $light-text-color-secondary;
-		font-size: em(12);
+			@include media($medium-screen-up) {
+				display: block;
+				color: $video-list-item-time-color;
+				font-size: em(12);
+				line-height: 2;
+				margin-right: em(10);
+				float: right;
+				font-weight: 300;
+			}
+		}
+
+	&__stage {
+		font-size: em(14);
 		line-height: 1.3;
+		color: $video-list-item-tournament-color;
 	}
 
 	&__teams {
 		display: table;
-		margin-top: em(20);
 		width: 100%;
+		margin: 1em 0 1em -1em;
 
 		@include media($medium-screen-up) {
-			margin-top: em(-10);
+			margin: 0.5em 0 0.5em -1em;
 		}
 
 		& > * {
@@ -84,57 +93,52 @@ $video-list-item-hover-background-color: rgba(43, 6, 73, .07) !default;
 		}
 
 		.vs {
-			color: $light-text-color-secondary;
-		}
-	}
-
-	&__team-name {
-		width: 50%;
-
-		&:first-child {
-			text-align: right;
-		}
-	}
-
-	&__team-logo {
-		width: 100px;
-		padding: 0 10px;
-
-		img {
-			width: em(30);
+			display: none;
 
 			@include media($medium-screen-up) {
-				width: em(60);
-				margin: 0 em(5);
+				display: table-cell;
+				color: $light-text-color-secondary;
 			}
 		}
 	}
 
-	&__show-teams {
-	}
+		&__team-name {
+			width: 50%;
+			font-size: em(14);
 
-	&__delimiter {
-		background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAGCAMAAADNLv/0AAAABlBMVEX////JyckzPGiiAAAAAXRSTlMAQObYZgAAABdJREFUeAFjYGRAAEYYDcEIEkWOEVU9AAGMAAvTXO59AAAAAElFTkSuQmCC);
-		background-repeat: repeat-x;
-		min-height: em(16);
-		margin-top: em(10);
-		background-position: 0 em(8);
-	}
+			@include media($medium-screen-up) {
+				font-size: em(16);
+			}
+
+			&:first-child {
+				text-align: right;
+			}
+		}
+
+		&__team-logo {
+			width: 100px;
+			padding: 0 10px;
+
+			img {
+				width: em(30);
+
+				@include media($medium-screen-up) {
+					width: 3.5em;
+					margin: 0 em(5);
+				}
+			}
+		}
 
 	&__show-teams {
-		text-align: center;
+		margin: 1em 0;
 
 		span {
-			background-color: white;
-			display: inline-block;
 			color: $action-color;
-			font-size: 12px;
-			padding: 4px 5px 5px;
-			border-bottom: 1px dotted $light-text-color-secondary;
+			cursor: pointer;
+			border-bottom: 1px dotted $action-color-blend;
 
 			&:hover {
-				color: darken($action-color, 50%);
-				border-bottom: 1px dotted $action-color;
+				color: darken($action-color, 20%);
 			}
 		}
 	}

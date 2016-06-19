@@ -47,10 +47,16 @@ h3 {
 	background-color: #7C90A5;
 	padding: 6px 6px 3px;
 	display: inline-block;
-	font-size: 26px;
-	margin-top: 20px;
+	font-size: em(26);
+	margin-top: em(16);
+	margin-bottom: em(16);
+	letter-spacing: 1px;
 	font-weight: 600;
 	text-transform: uppercase;
+
+	&.no-bottom-margin {
+		margin-bottom: 0;
+	}
 }
 
 h4 {
@@ -61,6 +67,7 @@ h4 {
 	font-size: 20px;
 	margin-top: 12px;
 	margin-bottom: 10px;
+	letter-spacing: 1px;
 	font-weight: 600;
 	text-transform: uppercase;
 }

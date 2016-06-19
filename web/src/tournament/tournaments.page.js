@@ -8,7 +8,7 @@ const TEMPLATE = `
 
 		<div ng-repeat="tournamentsByYear in $ctrl.tournaments">
 			
-			<h3>{{tournamentsByYear.year}}</h3>
+			<h3 class="no-bottom-margin">{{tournamentsByYear.year}}</h3>
 			
 			<div ng-repeat="tournamentsByMonth in tournamentsByYear.months 
 							| filter:$ctrl.tournamentsMatch(filter)">

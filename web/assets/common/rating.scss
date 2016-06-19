@@ -1,46 +1,49 @@
-$rating-voted-color: #122E5A;
-$rating-not-voted-color: $action-color;
-$rating-hover-color: #62835C;
+$rating-upvote-color: $action-color;
+$rating-available-color: $light-text-color-secondary;
+$rating-unavailable-color: lighten($light-text-color-secondary, 20%);
+$rating-votes-color: $light-text-color-blend;
 
 .rating {
 	@include user-select(none);
-	margin-top: 3px;
-	font-weight: 600;
 
-	text {
-		@include user-select(none);
-
-		&:last-child {
-			display: none;
-		}
+	&__votes {
+		text-align: center;
+		margin: 4px 0;
+		font-weight: 600;
+		color: $rating-available-color;
 	}
 
-	path {
-		@include transition(all .25s);
-		fill: $rating-not-voted-color;
-	}
-
-	&--not-voted.rating--authorised {
+	&__upvote {
 		cursor: pointer;
+		color: $rating-available-color;
+	}
 
-		&:hover {
-			text {
-				display: none;
+	&__downvote {
+		color: $rating-unavailable-color;
+	}
 
-				&:last-child {
-					display: block;
-				}
-			}
 
-			path {
-				fill: $rating-hover-color;
+	// modifiers
+
+	&--available-for-vote {
+
+		.rating__upvote {
+
+			&:hover {
+				color: $rating-upvote-color;
 			}
 		}
 	}
 
 	&--voted {
-		path {
-			fill: $rating-voted-color;
+
+		.rating__votes {
+			color: $rating-upvote-color;
+		}
+
+		.rating__upvote {
+			cursor: default;
+			color: $rating-upvote-color;
 		}
 	}
 }
