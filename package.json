@@ -1,6 +1,6 @@
 {
   "name": "stormvods",
-  "version": "1.5.3",
+  "version": "1.6.0",
   "description": "Community-driven spoiler-free catalog of competitive videos for Heroes of the Storm",
   "main": "server/server.js",
   "scripts": {
@@ -66,7 +66,7 @@
     "mongoose-paginate": "^5.0.0",
     "mongoose-unique-validator": "^0.6.1",
     "newrelic": "^1.27.2",
-    "node-uuid": "^1.4.4",
+    "node-uuid": "^1.4.7",
     "prerender-node": "^2.3.0",
     "redis": "^2.3.0",
     "request": "^2.65.0",

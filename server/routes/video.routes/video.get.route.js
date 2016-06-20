@@ -117,8 +117,8 @@ class VideoGetRoute {
 				promises.push(self.models.User.findOne({_id: video.author}, 'name _id'));
 				promisesNames.push(self.models.User.modelName);
 
-				if (auth && auth.id) {
-					promises.push(self.models.User.findOne({_id: auth.id}, 'votes'));
+				if (req.cookies.uuid) {
+					promises.push(self.models.Votes.findOne({uuid: req.cookies.uuid}, 'votes'));
 					promisesNames.push('votes');
 				}
 

@@ -38,7 +38,7 @@ class VideoTopListRoute extends VideoListRoute {
 				return self.models.Video.find(query, fields, {rating: -1});
 			})
 			.then(function (data) {
-				return VideoTopListRoute.mapReduce.call(self, data, auth);
+				return VideoTopListRoute.mapReduce.call(self, data, auth, req);
 			})
 			.then(function (data) {
 				data.videos = data.videos.sort((x, y) => y.rating - x.rating);
