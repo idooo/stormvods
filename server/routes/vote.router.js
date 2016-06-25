@@ -5,6 +5,7 @@ var logger = require('winston'),
 	Constants = require('../constants');
 
 const API_VOTE_PATH = '/api/vote';
+const UUID_LENGTH = 36;
 
 class VoteRouter extends Router {
 
@@ -14,10 +15,10 @@ class VoteRouter extends Router {
 		* @api {post} /api/vote Vote for video or video's entity
 		* @apiName Vote
 		* @apiGroup Vote
-		* @apiPermission USER
-		* @apiVersion 1.0.0
+		* @apiVersion 2.0.0
 		*
 		* @apiParam {ObjectId} videoId
+		* @apiParam {String} uuid User UUID
 		* @apiParam {String} [entityType] One of entity types: video, tournament, teams, stage, format, casters
 		* @apiParam {ObjectId} [entityId] (or array of enitity IDs)
 		*
@@ -32,15 +33,13 @@ class VoteRouter extends Router {
 		* @apiError WRONG_TYPE Wrong entity type
 		* @apiError TIME_RESTRICTION User can't vote too often
 		*/
-		this.bindPOST(API_VOTE_PATH, this.routeVote, {
-			auth:true,
-			restrict: Constants.ROLES.USER
-		});
+		this.bindPOST(API_VOTE_PATH, this.routeVote);
 	}
 
-	routeVote (req, res, next, auth) {
+	routeVote (req, res, next) {
 		var self = this,
 			entityType = req.params.entityType || Constants.ENTITY_TYPES[0], // video by default
+			uuid = req.params.uuid,
 			entityId,
 			videoId,
 			user;
@@ -48,6 +47,12 @@ class VoteRouter extends Router {
 		// Validate params
 		videoId = this.models.ObjectId(req.params.videoId);
 		if (!videoId) return Router.notFound(res, next, req.params.videoId);
+
+		if (!uuid && uuid.length !== UUID_LENGTH) {
+			logger.info('Wrong UUID during voting');
+			Router.fail(res, {message: Constants.ERROR_INVALID}, 400);
+			return next();
+		}
 
 		if (Constants.ENTITY_TYPES.indexOf(entityType) === -1) {
 			logger.info(`${Constants.ERROR_TYPE} "${entityType}"`);
@@ -77,7 +82,13 @@ class VoteRouter extends Router {
 
 		// Main logic: searching for users,
 		// checking can he vote and vote if everything is ok
-		self.models.User.findOne({name: auth.name}, 'votes stats lastVoteTime')
+		self.models.Votes.findOne({uuid: uuid}, 'votes lastVoteTime')
+			.then(function (user) {
+				if (!user) {
+					return new self.models.Votes({uuid: uuid}).save();
+				}
+				return Promise.resolve(user);
+			})
 			.then(function (_user) {
 				user = _user;
 				var isAllowedByTime = user.lastVoteTime.getTime() <= Date.now() + (self.config.votes || {}).delayRestriction || 1000;

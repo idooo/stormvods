@@ -56,8 +56,11 @@ function videoPage () {
 				self.video = response.data;
 				Page.loaded();
 				setTitle(self.video);
-				$rootScope.$broadcast(Constants.Event.CastersSelectedEvent, self.video.casters.casters);
+
 				$rootScope.$broadcast(Constants.Event.TournamentSelectedEvent, self.video.tournament);
+				if (self.video.casters.length) {
+					$rootScope.$broadcast(Constants.Event.CastersSelectedEvent, self.video.casters.casters);
+				}
 			})
 			.catch(response => {
 				self.error = response.data;

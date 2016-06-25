@@ -1,5 +1,7 @@
 window.APP_NAME = 'StormVods';
 
+const VOTE_COOKIE_EXPIRE_DAYS = 365;
+
 var modules = require('./modules'),
 	router = require('./router');
 
@@ -17,6 +19,7 @@ function configuration ($httpProvider, $locationProvider, $urlRouterProvider, Co
 			responseError: function (response) {
 				if (response.status === 403) {
 					CookieHelper.deleteAllCookies();
+					CookieHelper.setCookie('uuid', window.UUID, VOTE_COOKIE_EXPIRE_DAYS);
 					window.location.assign(`/#/error/${response.data.message}`);
 				}
 				return $q.reject(response);
@@ -26,6 +29,8 @@ function configuration ($httpProvider, $locationProvider, $urlRouterProvider, Co
 
 	$locationProvider.html5Mode(true);
 	$urlRouterProvider.otherwise('/');
+
+	CookieHelper.setCookie('uuid', window.UUID, VOTE_COOKIE_EXPIRE_DAYS);
 }
 
 function init ($location, $rootScope, $window, Auth, Page) {

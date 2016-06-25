@@ -2,7 +2,8 @@
 
 const TEMPLATES_PATH = `${__dirname}/../../web`;
 
-var restify = require('restify'),
+var uuid = require('node-uuid'),
+	restify = require('restify'),
 	fs = require('fs'),
 	logger = require('winston'),
 	Handlebars = require('handlebars'),
@@ -27,7 +28,7 @@ class StaticRouter extends Router {
 	}
 
 	indexRender (req, res) {
-		var data = {},
+		var data = {configurationString: ''},
 			cookies = req.cookies;
 
 		if (cookies.token && cookies.username && cookies.role) {
@@ -37,6 +38,8 @@ class StaticRouter extends Router {
 				role: '${cookies.role}'
 			};`;
 		}
+
+		data.configurationString += `window.UUID = '${cookies.uuid ? cookies.uuid : uuid.v4()}';`;
 
 		if (this.config.debug.disableTemplateCaching) this.compileIndexTemplate();
 

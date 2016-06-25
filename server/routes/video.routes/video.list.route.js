@@ -131,7 +131,7 @@ class VideoListRoute {
 			select: fields
 		})
 			.then(function (data) {
-				return VideoListRoute.mapReduce.call(self, data, auth);
+				return VideoListRoute.mapReduce.call(self, data, auth, req);
 			})
 			.then(function (data) {
 				Router.success(res, data);
@@ -163,9 +163,10 @@ class VideoListRoute {
 	 *
 	 * @param {Object} result
 	 * @param {Object} auth
+	 * @param {Object} req
 	 * @returns {Promise}
 	 */
-	static mapReduce (result, auth) {
+	static mapReduce (result, auth, req) {
 		var self = this,
 			videos = [],
 			currentPage,
@@ -173,14 +174,12 @@ class VideoListRoute {
 			itemCount;
 
 		return new Promise(function (resolve) {
-			mapPromise(result)
-				.then(reducePromise)
-				.then(function (data) {
-					resolve({videos: data, pageCount, itemCount, currentPage});
-				});
+			mapPromise(result, req)
+				.then(data => reducePromise(data, req))
+				.then(data => resolve({videos: data, pageCount, itemCount, currentPage}));
 		});
 
-		function mapPromise (data) {
+		function mapPromise (data, req) {
 			var tournamentIds = [],
 				teamIds = [],
 				casterIds = [],
@@ -214,19 +213,23 @@ class VideoListRoute {
 			promises.push(self.models.Caster.find({_id: {'$in': casterIds}}, 'name _id'));
 			promises.push(self.models.User.find({_id: {'$in': userIds}}, 'name _id'));
 
-			if (auth && auth.id) promises.push(self.models.User.findOne({_id: auth.id}, 'name _id votes'));
+			if (req.cookies.uuid) promises.push(self.models.Votes.findOne({uuid: req.cookies.uuid}, '_id uuid votes'));
 
 			return Promise.all(promises);
 		}
 
-		function reducePromise (data) {
+		function reducePromise (data, req) {
 
 			return new Promise(function (resolve) {
 				var lookup = {};
-				_flatten(data).forEach(i => lookup[i._id] = i);
+
+				// flatten response from promises to let us easier to construct objects,
+				// use UUID for votes data
+				_flatten(data).forEach(i => i.uuid ? lookup[i.uuid] = i : lookup[i._id] = i);
 
 				// Populate video data using entities data resolved from other collections
 				for (let i = 0; i < videos.length; i++) {
+
 					if (videos[i].tournament) {
 						videos[i].tournament.name = lookup[videos[i].tournament._id].name;
 						videos[i].tournament._id = lookup[videos[i].tournament._id]._id;
@@ -252,9 +255,9 @@ class VideoListRoute {
 					}
 				}
 
-				if (auth && auth.id) {
+				if (req.cookies.uuid) {
 					for (let i = 0; i < videos.length; i++) {
-						videos[i].isVoted = lookup[auth.id].votes.video.indexOf(videos[i]._id.toString()) !== -1;
+						videos[i].isVoted = lookup[req.cookies.uuid].votes.video.indexOf(videos[i]._id.toString()) !== -1;
 					}
 				}
 

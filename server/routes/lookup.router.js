@@ -81,7 +81,6 @@ class LookupRouter extends Router {
 			Router.fail(res, {message: Constants.ERROR_TYPE});
 			return next();
 		}
-		 
 
 		// Validate params
 		if (queryString && queryString.length >= QUERY_MIN_LENGTH) {

@@ -117,8 +117,8 @@ class VideoGetRoute {
 				promises.push(self.models.User.findOne({_id: video.author}, 'name _id'));
 				promisesNames.push(self.models.User.modelName);
 
-				if (auth && auth.id) {
-					promises.push(self.models.User.findOne({_id: auth.id}, 'votes'));
+				if (req.cookies.uuid) {
+					promises.push(self.models.Votes.findOne({uuid: req.cookies.uuid}, 'votes'));
 					promisesNames.push('votes');
 				}
 
@@ -148,7 +148,7 @@ class VideoGetRoute {
 								rating: video.tournament[0] ? video.tournament[0].rating : null,
 								masterleagueId: data[i].masterleagueId,
 								hotslogsId: data[i].hotslogsId,
-								teamliquidId: data[i].teamliquidId,
+								teamLiquidWikiUrl: data[i].teamLiquidWikiUrl
 							};
 							break;
 
