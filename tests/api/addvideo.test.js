@@ -19,7 +19,6 @@ module.exports = {
 
 		// video automatically upvoted by author
 		test.equal(res.rating, 1);
-		test.ok(user.votes.video.indexOf(res._id) !== -1);
 
 		test.done();
 	},
@@ -68,7 +67,6 @@ module.exports = {
 
 		// video automatically upvoted by author
 		test.equal(res.rating, 1);
-		test.ok(user.votes.video.indexOf(res._id) !== -1);
 
 		test.done();
 	},
@@ -193,7 +191,6 @@ module.exports = {
 
 		// tournament automatically upvoted by author
 		test.equal(res.tournament[0].rating, 1);
-		test.ok(user.votes.tournament.indexOf(res._id) !== -1);
 
 		test.done();
 	},
@@ -220,7 +217,6 @@ module.exports = {
 
 		// teams automatically upvoted by author
 		test.equal(res.teams[0].rating, 1);
-		test.ok(user.votes.teams.indexOf(res._id) !== -1);
 
 		test.done();
 	},
@@ -248,7 +244,6 @@ module.exports = {
 
 		// teams automatically upvoted by author
 		test.equal(res.casters[0].rating, 1);
-		test.ok(user.votes.casters.indexOf(res._id) !== -1);
 
 		test.done();
 	},
@@ -261,11 +256,9 @@ module.exports = {
 			teams: ['addVideo005 team1', 'addVideo005 team2']
 		};
 
-		var	res = h.post('/api/video', data, users.user01),
-			user = h.get('/api/users/me', undefined, users.user01);
+		var	res = h.post('/api/video', data, users.user01);
 
 		test.equal(res.stage[0].code, 'FINAL');
-		test.ok(user.votes.stage.indexOf(res._id) !== -1);
 
 		test.done();
 	},
@@ -278,11 +271,9 @@ module.exports = {
 			teams: ['addVideo006 team1', 'addVideo006 team2']
 		};
 
-		var	res = h.post('/api/video', data, users.user01),
-			user = h.get('/api/users/me', undefined, users.user01);
+		var	res = h.post('/api/video', data, users.user01);
 
 		test.equal(res.format[0].code, 'BO3');
-		test.ok(user.votes.format.indexOf(res._id) !== -1);
 
 		test.done();
 	},

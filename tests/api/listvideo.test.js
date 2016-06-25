@@ -71,31 +71,8 @@ module.exports = {
 		test.ok(typeof list.videos[1].tournament.isVoted === 'undefined');
 
 		test.done();
-	},
-
-	getListAuthSelf: function (test) {
-		var list = h.get('/api/video/list', undefined, users.user01);
-
-		// isVoted fields
-		test.ok(list.videos[5].isVoted);
-		test.ok(!list.videos[5].tournament.isVoted); // no votes for entities in the list
-		test.ok(list.videos[2].isVoted);
-		test.ok(list.videos[15].isVoted);
-
-		test.done();
-	},
-
-	getListAuthOther: function (test) {
-		var list = h.get('/api/video/list', undefined, users.user02);
-
-		// isVoted fields
-		test.ok(list.videos[5].isVoted === false);
-		test.ok(!list.videos[5].tournament.isVoted); // no votes for entities in the list
-		test.ok(list.videos[2].isVoted === false);
-		test.ok(list.videos[15].isVoted === false);
-
-		test.done();
 	}
+	
 };
 
 function createVideo (videoName) {

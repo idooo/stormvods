@@ -5,6 +5,7 @@ var logger = require('winston'),
 	Constants = require('../constants');
 
 const API_VOTE_PATH = '/api/vote';
+const UUID_LENGTH = 36;
 
 class VoteRouter extends Router {
 
@@ -47,8 +48,8 @@ class VoteRouter extends Router {
 		videoId = this.models.ObjectId(req.params.videoId);
 		if (!videoId) return Router.notFound(res, next, req.params.videoId);
 
-		if (!uuid) {
-			logger.info('No UUID during voting');
+		if (!uuid && uuid.length !== UUID_LENGTH) {
+			logger.info('Wrong UUID during voting');
 			Router.fail(res, {message: Constants.ERROR_INVALID}, 400);
 			return next();
 		}

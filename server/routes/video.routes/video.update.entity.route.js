@@ -64,15 +64,23 @@ class UpdateVideoEntityRoute {
 			return next();
 		}
 
-		self.models.User.findOne({name: auth.name}, 'votes stats lastCreateTime')
+		self.models.User.findOne({name: auth.name}, 'stats lastCreateTime')
 			.then(function (_user) {
 				user = _user;
 				var isAllowedByTime = user.lastCreateTime.getTime() <= Date.now() + (self.config.actions || {}).delayRestriction || 1000;
 				if (!isAllowedByTime) return Promise.reject({message: Constants.ERROR_TIME_RESTRICTION});
 
+				if (!req.cookies.uuid) {
+					logger.warn('UUID is not defined during video creation');
+					Router.fail(res, {message: Constants.ERROR_INVALID});
+					return next();
+				}
+				return self.models.Votes.findOne({uuid: req.cookie.uuid});
+			})
+			.then(function (votes) {
 				// Search through the list of already voted entities
-				var isAllowedById = user.votes[field].indexOf(videoId) === -1;
-				if (!isAllowedById) return Promise.reject({message: Constants.ERROR_VOTE_TWICE});
+				var isAllowedById = votes[field].indexOf(videoId) === -1;
+				if (!isAllowedById) return Promise.reject({message: Constants.ERROR_INVALID});
 
 				return self.models.Video.findOne({_id: videoId, isRemoved: {'$ne': true}});
 			})
@@ -120,7 +128,6 @@ class UpdateVideoEntityRoute {
 				// we can use 'field' but for switch below types look better
 				// (data = [] only if field is code based entity)
 				type = data.length ? data[0].type : field;
-
 				switch (type) {
 					case self.models.Tournament.modelName:
 						video.tournament.push({rating: 1, _id: entityId}); break;
@@ -137,7 +144,6 @@ class UpdateVideoEntityRoute {
 					case 'stage':
 						video.stage.push({rating: 1, code: entityId}); break;
 				}
-
 				// Save video
 				video.markModified(type);
 				video.save(err => {

@@ -111,18 +111,27 @@ class VideoAddRoute {
 				return VideoAddRoute.createVideoObject.call(self, videoObjectData, data);
 			})
 			.then(function (_videoFromDB) {
-				var userUpdate = {};
 				videoFromDB = _videoFromDB;
 
+				if (!req.cookies.uuid) {
+					logger.warn('UUID is not defined during video creation');
+					return Promise.resolve();
+				}
+
+				var update = {};
 				// store user votes for video and entities
-				userUpdate['votes.video'] = videoFromDB._id;
+				update['votes.video'] = videoFromDB._id;
 				Constants.ENTITY_TYPES.forEach(key => {
-					if (videoFromDB[key] && videoFromDB[key].length) userUpdate[`votes.${key}`] = videoFromDB._id;
+					if (videoFromDB[key] && videoFromDB[key].length) update[`votes.${key}`] = videoFromDB._id;
 				});
 
-				// Update user votes
+				return self.models.Votes.update({uuid: req.cookies.uuid}, {
+					$push: update
+				});
+			})
+			.then(function () {
+				// Update user stats
 				return self.models.User.update({_id: auth.id}, {
-					$push: userUpdate,
 					$inc: {'stats.videosAdded': 1}
 				});
 			})
