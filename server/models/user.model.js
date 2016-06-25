@@ -1,10 +1,8 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-	logger = require('winston'),
 	mongoosePaginate = require('mongoose-paginate'),
 	AbstractModel = require('./abstract.model'),
-	Video = require('./video.model'),
 	Constants = require('../constants');
 
 class User extends AbstractModel {
