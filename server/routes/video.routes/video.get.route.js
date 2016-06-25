@@ -148,7 +148,7 @@ class VideoGetRoute {
 								rating: video.tournament[0] ? video.tournament[0].rating : null,
 								masterleagueId: data[i].masterleagueId,
 								hotslogsId: data[i].hotslogsId,
-								teamliquidId: data[i].teamliquidId
+								teamLiquidWikiUrl: data[i].teamLiquidWikiUrl
 							};
 							break;
 
