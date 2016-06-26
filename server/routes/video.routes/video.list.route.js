@@ -225,7 +225,9 @@ class VideoListRoute {
 
 				// flatten response from promises to let us easier to construct objects,
 				// use UUID for votes data
-				_flatten(data).forEach(i => i.uuid ? lookup[i.uuid] = i : lookup[i._id] = i);
+				_flatten(data)
+					.filter(i => i !== null) // if votes object not found
+					.forEach(i => i.uuid ? lookup[i.uuid] = i : lookup[i._id] = i);
 
 				// Populate video data using entities data resolved from other collections
 				for (let i = 0; i < videos.length; i++) {
@@ -255,7 +257,7 @@ class VideoListRoute {
 					}
 				}
 
-				if (req.cookies.uuid) {
+				if (req.cookies.uuid && lookup[req.cookies.uuid]) {
 					for (let i = 0; i < videos.length; i++) {
 						videos[i].isVoted = lookup[req.cookies.uuid].votes.video.indexOf(videos[i]._id.toString()) !== -1;
 					}
