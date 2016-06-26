@@ -1,12 +1,10 @@
-/* global __dirname */
-
 const RE_STACK_REPLACE1 = /(^[^\(]+?[\n$]|^\s+at\s+)/gm;
 const RE_STACK_REPLACE2 = /(.*)(\s+\().*(\/server.*)\)/;
 
 var winston = require('winston');
 
 module.exports = function (config) {
-	
+
 	winston.remove(winston.transports.Console);
 
 	winston.add(winston.transports.Console, {
@@ -30,7 +28,7 @@ module.exports = function (config) {
 		json: false,
 		filename: (config.logs || {}).file || `${__dirname}/../logs/server.log`
 	});
-	
+
 	function getMeta (options) {
 		if (Object.keys(options.meta).length) return ' - ' + JSON.stringify(options.meta);
 		else return '';

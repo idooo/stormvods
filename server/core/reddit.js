@@ -1,4 +1,3 @@
-/* global Buffer */
 'use strict';
 
 const REDDIT_UA = 'web:heroesVideos:v1.0.0 (by /u/idonreddit)';
@@ -12,7 +11,7 @@ class RedditAPIClient {
 		this.config = config;
 		this.callbackPath = callbackPath;
 	}
-	
+
 	getAccessToken (code) {
 		var r = this.config,
 			auth = 'Basic ' + new Buffer(`${r.clientId}:${r.secret}`).toString('base64');
@@ -27,7 +26,7 @@ class RedditAPIClient {
 				},
 				body: `grant_type=authorization_code&code=${code}&redirect_uri=${r.callbackUrl}`
 			};
-			
+
 			logger.debug(`Sending request to ${r.url}access_token`, options);
 			request(options, function (error, response, body) {
 				try {
@@ -44,7 +43,7 @@ class RedditAPIClient {
 			});
 		});
 	}
-	
+
 	getUserData (accessToken) {
 		var r = this.config;
 
@@ -57,7 +56,7 @@ class RedditAPIClient {
 					'User-Agent': REDDIT_UA
 				}
 			};
-			
+
 			logger.debug(`Sending request to ${r.oauthUrl}me`, options);
 			request(options, function (error, response, body) {
 				try {
@@ -74,7 +73,7 @@ class RedditAPIClient {
 			});
 		});
 	}
-	
+
 	generateAuthUrl (state) {
 		var r = this.config,
 			url = `${r.url}authorize?client_id=${r.clientId}&response_type=code&state=${state}&redirect_uri=${r.callbackUrl}&duration=${r.duration}&scope=${r.scope}`;
