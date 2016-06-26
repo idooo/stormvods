@@ -26,7 +26,8 @@ const TEMPLATE = `
 				<li><a href="http://www.heroesfire.com/">HeroesFire</a></li>
 			</ul>
 			<ul>
-				<li><h6>Social</h6></li>
+				<li><h6>Misc</h6></li>
+				<li><a href="https://github.com/idooo/stormvods">Github</a></li>
 				<li><a href="https://www.reddit.com/user/stormvods">/u/stormvods</a></li>
 				<li><a href="https://twitter.com/stormvods">@stormvods</a></li>
 			</ul>
