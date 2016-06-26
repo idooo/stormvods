@@ -17,13 +17,13 @@ and that the work being submitted is under appropriate copyright.
 
 Heroes of the Storm is a trademark of Blizzard Entertainment, Inc.
 
-##### Important: you can use Stormvods source code in any way MIT license allows you,
+You can use Stormvods source code in any way MIT license allows you,
 but you have no rights to use "Stormvods" trademark and you must clearly specify that your
 product is based on Stormvods.com Source Code
 
 ## Setup
 
-### Install
+#### Install
 
 Checkout repo and install all the dependencies:
 
@@ -33,9 +33,9 @@ cd stormvods
 npm i
 ```
 
-### Database
+#### Database
 
-Stormvods uses MongoDB as a database. For development you need to setup database locally
+Stormvods uses MongoDB as a database. For development you need to setup a database locally
 or use one of cloud-based solutions like [mlab](https://mlab.com/) -
 free tier there is more than enough for the development
 
@@ -50,21 +50,21 @@ ufw allow from ip_address_of_your_stormvods_app
 ufw enable
 ```
 
-### Reddit app
+#### Reddit app
 
 You have to create a Reddit application to be able to use login feature.
 The setup is pretty straightforward, use `http://localhost:8080/callback` as your redirect uri
 
-### Config
+#### Config
 
 Edit `default.conf` or to set right permissions for database, redis and other minor stuff
 
-### Scripts
+#### Scripts
 
 Use scripts from `/tools/scripts` folder to set admin rights for your user, import teams
 and other data if needed
 
-### Development
+## Development
 
 Run development server and watch client resources for changes:
 
@@ -81,7 +81,6 @@ To run api tests (add `--tests testname.test.js` to run specific test)
 ```
 ./tools/scripts/api-test-runner.sh config/test.json
 ```
-
 
 ### Production Build
 
