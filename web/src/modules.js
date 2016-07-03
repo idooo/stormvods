@@ -1,5 +1,5 @@
 // Project third-party dependencies
-var modules = [
+const modules = [
 	'ngAnimate',
 	'ngSanitize',
 	'ui.router',
@@ -10,17 +10,17 @@ var modules = [
 ];
 
 // Application modules list
-var appModules = [
+const appModules = [
 	`${window.APP_NAME}.core`,
 	`${window.APP_NAME}.pages`,
 	`${window.APP_NAME}.common`
 ];
 
 // Create modules
-appModules.forEach((moduleName) => angular.module(moduleName, []));
+appModules.forEach(moduleName => angular.module(moduleName, []));
 
 // Common modules
-require('./router');
+// require('./router');
 require('./constants');
 require('./cookies');
 require('./common/auth.service');
@@ -33,9 +33,8 @@ require('./common/rating.component');
 require('./common/topselector.component');
 require('./common/pagination.component');
 
-require('./index/index.page');
-require('./top/top.page');
-require('./error/error.page');
+// require('./top/top.page');
+// require('./error/error.page');
 require('./callback/callback.page');
 require('./addvideo/addvideo.page');
 require('./addvideo/videourls.component');
@@ -65,4 +64,17 @@ require('./sidebar/streamers.sidebar.component');
 require('./sidebar/tournament.sidebar.component');
 require('./sidebar/casters.sidebar.component');
 
-module.exports = modules.concat(appModules);
+import IndexPageComponent from './index/index.page';
+import TopPageComponent from './top/top.page';
+import ErrorPageComponent from './error/error.page';
+
+angular
+	.module(`${window.APP_NAME}.pages`)
+	.component('indexPage', IndexPageComponent)
+	.component('topPage', TopPageComponent)
+	.component('errorPage', ErrorPageComponent);
+
+
+const MODULES_LIST = modules.concat(appModules);
+
+export default MODULES_LIST;

@@ -1,5 +1,9 @@
 {
 	"extends": "eslint:recommended",
+	"parserOptions": {
+		"ecmaVersion": 6,
+		"sourceType": "module"
+	},
 	"env": {
 		"browser": true,
 		"es6": true,
@@ -9,15 +13,6 @@
 		"angular": true,
 		"module": true,
 		"require": true
-	},
-	"ecmaFeatures": {
-		"arrowFunctions": true,
-		"blockBindings": true,
-		"classes ": true,
-		"defaultParams": true,
-		"forOf": true,
-		"modules": true,
-		"templateStrings": true
 	},
 	"rules": {
 		"array-bracket-spacing": [2, "never"],

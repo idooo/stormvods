@@ -15,20 +15,20 @@ const MESSAGES = {
 	AUTH_REQUIRED: 'Auth required to use this feature. Try to login first'
 };
 
-angular
-	.module(`${window.APP_NAME}.pages`)
-	.component('errorPage', {
-		template: TEMPLATE,
-		controller: errorPage
-	});
+export class ErrorPage {
 
-function errorPage ($state, Page) {
-	var self = this;
+	constructor ($state, Page) {
+		this.errorCode = $state.params.error;
+		this.errorText = MESSAGES[self.errorCode] || MESSAGES.DEFAULT;
 
-	self.errorCode = $state.params.error;
-	self.errorText = MESSAGES[self.errorCode] || MESSAGES.DEFAULT;
+		Page.loaded();
 
-	Page.loaded();
-
-	if (!$state.params.error) $state.go('index');
+		if (!$state.params.error) $state.go('index');
+	}
 }
+
+export default {
+	template: TEMPLATE,
+	controller: ErrorPage
+}
+

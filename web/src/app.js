@@ -1,15 +1,13 @@
-window.APP_NAME = 'StormVods';
+import MODULES_LIST from './modules';
+import routerConfiguration from './router';
 
 const VOTE_COOKIE_EXPIRE_DAYS = 365;
 
-var modules = require('./modules'),
-	router = require('./router');
-
 // Initial app config
 angular
-	.module(window.APP_NAME, modules)
+	.module(window.APP_NAME, MODULES_LIST)
 	.config(configuration)
-	.config(router)
+	.config(routerConfiguration)
 	.run(init);
 
 function configuration ($httpProvider, $locationProvider, $urlRouterProvider, CookieHelper) {

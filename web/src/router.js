@@ -12,7 +12,19 @@ const DEFAULT_SIDEBAR = [
 	SIDEBAR.STREAMERS
 ];
 
-module.exports = function ($stateProvider) {
+function getSidebarWithItem (item) {
+	return {
+		template: item + ' ' + DEFAULT_SIDEBAR.join(' ')
+	};
+}
+
+function getSidebarWithItems (items) {
+	return {
+		template: items.join(' ') + ' ' + DEFAULT_SIDEBAR.join(' ')
+	};
+}
+
+export default function routerConfiguration ($stateProvider) {
 
 	$stateProvider
 		.state('index', {
@@ -88,16 +100,5 @@ module.exports = function ($stateProvider) {
 				'sidebar@': SIDEBAR.EMPTY
 			}
 		});
-};
-
-function getSidebarWithItem (item) {
-	return {
-		template: item + ' ' + DEFAULT_SIDEBAR.join(' ')
-	};
 }
 
-function getSidebarWithItems (items) {
-	return {
-		template: items.join(' ') + ' ' + DEFAULT_SIDEBAR.join(' ')
-	};
-}
