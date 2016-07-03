@@ -3,7 +3,7 @@
 const STREAMS_UPDATE_INTERVAL = 5 * 60 * 1000;
 const API_TIMEOUT = 5000;
 const GAME_NAME = 'Heroes of the Storm';
-const TWITCH_STREAMS_URL = 'https://api.twitch.tv/kraken/streams/';
+const TWITCH_STREAMS_URL = 'https://api.twitch.tv/kraken/streams';
 const STREAMS = [
 	'DunkTrain',
 	'mcintyrelol',
