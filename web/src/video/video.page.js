@@ -58,7 +58,7 @@ function videoPage () {
 				setTitle(self.video);
 
 				$rootScope.$broadcast(Constants.Event.TournamentSelectedEvent, self.video.tournament);
-				if (self.video.casters.length) {
+				if (self.video.casters.casters) {
 					$rootScope.$broadcast(Constants.Event.CastersSelectedEvent, self.video.casters.casters);
 				}
 			})
