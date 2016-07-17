@@ -2,6 +2,8 @@
 
 Community-driven spoiler-free catalog of competitive videos for Heroes of the Storm.
 
+[![Dependency Status](https://dependencyci.com/github/idooo/stormvods/badge)](https://dependencyci.com/github/idooo/stormvods)
+
 ## Contribution
 
 Stormvods.com is currently accepting contributions in the form of bug fixes or features
