@@ -86,7 +86,7 @@ function improveVideoDirective () {
 		$scope.update = update;
 		$scope.skip = skip;
 
-		var listener = $scope.$watch('video', function (newValue) {
+		let listener = $scope.$watch('video', function (newValue) {
 			if (!newValue || !newValue._id) return;
 
 			if (typeof $scope.video[$scope.type] === 'undefined'
@@ -95,7 +95,7 @@ function improveVideoDirective () {
 			}
 
 			$timeout(function () {
-				var data = $scope.TYPES[$scope.type];
+				let data = $scope.TYPES[$scope.type];
 
 				try {
 					data.questionCorrectness.message += ' ' + data.questionCorrectness.func($scope.video, Constants);
@@ -115,7 +115,7 @@ function improveVideoDirective () {
 		function answerCorrectness (isCorrect) {
 			$scope.isInformationCorrect = isCorrect;
 			if (isCorrect) {
-				var entity = $scope.video[$scope.type]._id || $scope.video[$scope.type].code;
+				let entity = $scope.video[$scope.type]._id || $scope.video[$scope.type].code;
 
 				if (!entity) entity = $scope.video[$scope.type][$scope.type].map(item => item._id);
 
@@ -130,7 +130,7 @@ function improveVideoDirective () {
 		function answerSuggestion (isCorrect) {
 			$scope.isSuggestionCorrect = isCorrect;
 			if (isCorrect) {
-				var data = $scope.info[$scope.type][0],
+				let data = $scope.info[$scope.type][0],
 					entity;
 
 				if (data._id) entity = data._id;
@@ -170,6 +170,7 @@ function improveVideoDirective () {
 
 		function skip () {
 			$scope.info.answeredQuestions += 1;
+			$timeout(() => $element.find('input')[0].focus());
 		}
 	}
 }
