@@ -32,7 +32,7 @@ var logger = require('winston'),
 class UpdateVideoEntityRoute {
 
 	static route (req, res, next, auth) {
-		var self = this,
+		let self = this,
 			videoId = self.models.ObjectId(req.params.id),
 			field = Router.filter(req.params.field),
 			values = req.params.values,
@@ -67,7 +67,7 @@ class UpdateVideoEntityRoute {
 		self.models.User.findOne({name: auth.name}, 'stats lastCreateTime')
 			.then(function (_user) {
 				user = _user;
-				var isAllowedByTime = user.lastCreateTime.getTime() <= Date.now() + (self.config.actions || {}).delayRestriction || 1000;
+				let isAllowedByTime = user.lastCreateTime.getTime() <= Date.now() + (self.config.actions || {}).delayRestriction || 1000;
 				if (!isAllowedByTime) return Promise.reject({message: Constants.ERROR_TIME_RESTRICTION});
 
 				if (!req.cookies.uuid) {
@@ -75,17 +75,17 @@ class UpdateVideoEntityRoute {
 					Router.fail(res, {message: Constants.ERROR_INVALID});
 					return next();
 				}
-				return self.models.Votes.findOne({uuid: req.cookie.uuid});
+				return self.models.Votes.findOne({uuid: req.cookies.uuid});
 			})
 			.then(function (votes) {
 				// Search through the list of already voted entities
-				var isAllowedById = votes[field].indexOf(videoId) === -1;
+				let isAllowedById = votes === null || votes[field].indexOf(videoId) === -1;
 				if (!isAllowedById) return Promise.reject({message: Constants.ERROR_INVALID});
 
 				return self.models.Video.findOne({_id: videoId, isRemoved: {'$ne': true}});
 			})
 			.then(function (_video) {
-				var promises = [];
+				let promises = [];
 
 				video = _video;
 
@@ -101,7 +101,7 @@ class UpdateVideoEntityRoute {
 				return Promise.all(promises);
 			})
 			.then(function (data) {
-				var entityId = [],
+				let entityId = [],
 					type;
 
 				// We need to get all the entities that were created in promises above
@@ -117,7 +117,7 @@ class UpdateVideoEntityRoute {
 				else entityId = values;
 
 				// Searh if we already have that entity in video
-				var isFound = Video.matchEntity(video, field, entityId);
+				let isFound = Video.matchEntity(video, field, entityId);
 
 				if (isFound) {
 					Router.fail(res, {message: Constants.ERROR_DUPLICATE});
@@ -154,9 +154,7 @@ class UpdateVideoEntityRoute {
 
 				// Save video Id in the list of votes
 				return new Promise(function (resolve, reject) {
-					user.votes[field].push(video._id);
 					user.stats.videosUpdated += 1;
-					user.markModified('votes');
 					user.save(function (err) {
 						if (err) reject(err);
 						else resolve({value: entityId});
