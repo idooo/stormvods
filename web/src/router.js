@@ -3,6 +3,7 @@ const SIDEBAR = {
 	ADDVIDEO_RULES: '<addvideo-rules-sidebar></addvideo-rules-sidebar>',
 	STREAMERS: '<streamers-sidebar></streamers-sidebar>',
 	TOURNAMENT: '<tournament-info-sidebar></tournament-info-sidebar>',
+	TEAM: '<team-info-sidebar></team-info-sidebar>',
 	CASTERS: '<casters-info-sidebar></casters-info-sidebar>',
 	EMPTY: {template: ' '}
 };
@@ -56,7 +57,10 @@ module.exports = function ($stateProvider) {
 		})
 		.state('team', {
 			url: '/team/:id',
-			template: '<team-page/>'
+			views: {
+				'': {template: '<team-page/>'},
+				'sidebar@': getSidebarWithItem(SIDEBAR.TEAM)
+			}
 		})
 		.state('teams', {
 			url: '/teams',

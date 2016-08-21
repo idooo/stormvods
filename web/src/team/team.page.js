@@ -21,7 +21,10 @@ angular
 		controller: teamPage
 	});
 
-function teamPage ($http, $state, Page, Constants) {
+/**
+ * @emits Constants.Event.TeamSelectedEvent(team:Object)
+ */
+function teamPage ($rootScope, $http, $state, Page, Constants) {
 	var self = this;
 
 	self.videos = [];
@@ -35,6 +38,7 @@ function teamPage ($http, $state, Page, Constants) {
 			if (!response.data.values || !response.data.values.length) return notFound();
 			self.team = response.data.values[0];
 			Page.setTitle(self.team.name);
+			$rootScope.$broadcast(Constants.Event.TeamSelectedEvent, self.team);
 		})
 		.catch(notFound);
 

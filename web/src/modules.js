@@ -63,6 +63,7 @@ require('./sidebar/addvideo.sidebar.component');
 require('./sidebar/addvideorules.sidebar.component');
 require('./sidebar/streamers.sidebar.component');
 require('./sidebar/tournament.sidebar.component');
+require('./sidebar/team.sidebar.component');
 require('./sidebar/casters.sidebar.component');
 
 module.exports = modules.concat(appModules);

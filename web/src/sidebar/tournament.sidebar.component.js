@@ -50,7 +50,7 @@ function tournamentInfoSidebarComponent ($scope, Constants) {
 	self.tournament = null;
 	self.isAdditionalDataAvailable = false;
 
-	$scope.$on(Constants.Event.TournamentSelectedEvent, function (event, data) {
+	$scope.$on(Constants.Event.TournamentSelectedEvent, (event, data) => {
 		self.tournament = data;
 		self.isAdditionalDataAvailable = !!(data.masterleagueId || data.hotslogsId || data.teamLiquidWikiUrl);
 	});

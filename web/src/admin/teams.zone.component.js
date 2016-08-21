@@ -40,7 +40,7 @@ const CONFIGURATION = {
 	getUrl: '/teams',
 	mergeUrl: '/team/merge',
 	updateUrl: '/team',
-	fieldsToUpdate: ['name'],
+	fieldsToUpdate: ['name', 'masterleagueId', 'website', 'teamLiquidWikiUrl'],
 	template: require('./team.edit.template')
 };
 

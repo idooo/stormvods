@@ -2,7 +2,6 @@ module.exports = `
 	<h2>Edit tournament</h2>
 	
 	<form name="$ctrl.form" novalidate>
-
 	
 		<label>Name</label>
 		<input type="text" ng-model="item.name" autocomplete="off">
