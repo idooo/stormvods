@@ -47,7 +47,14 @@ const teams = [
 	{name: 'Renovatio I', image: 'renovatio.png'},
 	{name: 'Negative Synergy', image: 'negative_synergy.png'},
 	{name: 'Tempest', image: 'tempest.png'},
-	{name: 'Please Buff Arthas', image: 'pba.png'}
+	{name: 'Please Buff Arthas', image: 'pba.png'},
+	{name: 'Denial eSports', image: 'denial.png'},
+	{name: 'ePunks', image: 'epunks.png'},
+	{name: 'ExcelenteEleccion', image: 'excelente.png'},
+	{name: 'GoogleIshetZont', image: 'giz.png'},
+	{name: 'Mistfits', image: 'misfits.png'},
+	{name: 'Team Name Change', image: 'tnc.png'},
+	{name: 'Vox Nihili', image: 'vox.png'}
 ];
 
 
