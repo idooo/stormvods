@@ -1,5 +1,5 @@
 module.exports = `
-	<h2>Edit Caster</h2>
+	<h2>Edit Team</h2>
 	
 	<form name="$ctrl.form" novalidate>
 	
