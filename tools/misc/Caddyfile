@@ -1,0 +1,21 @@
+stormvods.com {
+
+	root /path-to-/web/
+	gzip
+	header /dist/ Cache-Control "max-age=604800"
+
+	proxy / 127.0.0.1:8080 {
+		header_upstream Host {host}
+		header_upstream X-Real-IP {remote}
+		header_upstream X-Forwarded-For {remote}
+		header_upstream X-Forwarded-Proto {scheme}
+		header_upstream X-Prerender-Token TOKEN
+		except /dist/
+	}
+
+	errors {
+		502 500.html
+	}
+}
+
+
