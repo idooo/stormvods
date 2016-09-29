@@ -1,6 +1,6 @@
 {
   "name": "stormvods",
-  "version": "1.6.3",
+  "version": "1.7.0",
   "description": "Community-driven spoiler-free catalog of competitive videos for Heroes of the Storm",
   "main": "server/server.js",
   "scripts": {
