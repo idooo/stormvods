@@ -1,5 +1,7 @@
 'use strict';
 
+const MIN_LENGTH = 2;
+
 var mongoose = require('mongoose'),
 	uniqueValidator = require('mongoose-unique-validator'),
 	mongoosePaginate = require('mongoose-paginate'),
@@ -17,7 +19,7 @@ class Team extends BasicModel {
 				unique: true,
 				index: true,
 				required: true,
-				minlength: BasicModel.constants().MIN_LENGTH
+				minlength: MIN_LENGTH
 			},
 			creationDate: {
 				type: Date,
