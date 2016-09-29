@@ -29,6 +29,7 @@ const teams = [
 	{name: 'Team DK KR', image: 'teamdk.png'},
 	{name: 'Natus Vincere', image: 'navi.png'},
 	{name: 'MVP Black', image: 'mvp.png'},
+	{name: 'MVP Miracle', image: 'mvp.png'},
 	{name: 'Mighty', image: 'mighty.png'},
 	{name: 'RAVE HOTS', image: 'rave.png'},
 	{name: 'Team Hero', image: 'team_hero.png'},
@@ -54,7 +55,8 @@ const teams = [
 	{name: 'GoogleIshetZont', image: 'giz.png'},
 	{name: 'Mistfits', image: 'misfits.png'},
 	{name: 'Team Name Change', image: 'tnc.png'},
-	{name: 'Vox Nihili', image: 'vox.png'}
+	{name: 'Vox Nihili', image: 'vox.png'},
+	{name: 'L5', image: 'l5.png'}
 ];
 
 
