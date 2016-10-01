@@ -9,8 +9,6 @@ class TwitchRouter extends Router {
 
 	configure () {
 
-		this.twitch = new Twitch();
-
 		/**
 		* @api {get} /api/twitch/streamers Get list of selected streamers from Twitch
 		* @apiName Twitch streamers statuses
@@ -45,6 +43,8 @@ class TwitchRouter extends Router {
 	}
 
 	routeStreamersData (req, res) {
+		this.twitch = new Twitch();
+
 		return Router.success(res, {
 			streamers: this.twitch.getStreams().sort(sortByViewers),
 			lastUpdate: this.twitch.getLastUpdate()

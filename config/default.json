@@ -30,6 +30,9 @@
 		"maxAttempts": 5,
 		"expire": 604800
 	},
+	"twitch": {
+		"clientId": "ccc000111hhhttttddddeevvvv33333"
+	},
 	"debug": {
 		"disableTemplateCaching": true,
 		"showStackTrace": true,

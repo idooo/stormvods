@@ -63,15 +63,14 @@ class Server {
 	}
 
 	start () {
-		var self = this;
-		self.server.listen(
-			self.config.server.port || 8080,
-			self.config.server.host || 'localhost',
-			() => self.logger.info('Server is listening at %s', self.server.url)
+		this.server.listen(
+			this.config.server.port || 8080,
+			this.config.server.host || 'localhost',
+			() => this.logger.info('Server is listening at %s', this.server.url)
 		);
 
 		// launch Twitch integration
-		new Twitch().start();
+		new Twitch(this.config.twitch).start();
 	}
 }
 

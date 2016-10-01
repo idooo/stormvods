@@ -38,10 +38,11 @@ var request = require('request'),
 /** singleton */
 class Twitch {
 
-	constructor () {
+	constructor (config) {
 		if (instance) return instance;
 		instance = this; // eslint-disable-line consistent-this
 
+		this.clientId = (config || {}).clientId;
 		this.streams = [];
 		this.lastUpdate = null;
 		this.isUpdateInProgress = false;
@@ -57,6 +58,9 @@ class Twitch {
 	}
 
 	start () {
+		if (!this.clientId) {
+			return logger.warn('Twich ClientID is not specified. Twitch integration disabled.');
+		}
 		this.requestStreamsData();
 		this.timer = setInterval(() => this.requestStreamsData(), STREAMS_UPDATE_INTERVAL);
 	}
@@ -76,7 +80,8 @@ class Twitch {
 			var options = {
 				url: `${TWITCH_STREAMS_URL}/${streamName}`,
 				headers: {
-					'User-Agent': 'stormvods.com bot 1.0'
+					'User-Agent': 'stormvods.com bot 1.0',
+					'Client-ID': this.clientId
 				},
 				timeout: API_TIMEOUT
 			};
