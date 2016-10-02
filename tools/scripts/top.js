@@ -34,6 +34,9 @@ catch (e) {
 	return console.error(`Incorrect config path "${configPath}"`);
 }
 
+// Exit after 10 seconds if anything went wrong
+setTimeout(() => process.exit(1), 10000);
+
 var db = new Database(this.config.database),
 	models = db.loadModel(),
 	promises = [];
@@ -82,8 +85,4 @@ models.Tops.findOne({})
 
 		return models.Tops.update({}, data, {upsert: true});
 	})
-	.then(db.disconnect)
-	.catch(err => {
-		console.error('Database error', err);
-		db.disconnect();
-	});
+	.then(db.disconnect);
