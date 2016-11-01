@@ -33,6 +33,8 @@ Checkout repo and install all the dependencies:
 git clone https://github.com/idooo/stormvods.git
 cd stormvods
 npm i
+# or
+yarn install
 ```
 
 #### Database
