@@ -57,8 +57,13 @@ const TEMPLATE = `
 			</div>
 
 		</div>
-
+		
 	</header>
+	
+	<div class="announcement">
+		Blizzard has done a great job. The new <a href="http://us.heroesofthestorm.com/esports/en/">HGC website</a> 
+		is awesome and has all the VODs for 2017 season. <a href="http://us.heroesofthestorm.com/esports/en/">Check it out</a>!
+	</div>
 `;
 
 const IS_TEAM_VISIBLE_KEY = 'isTeamVisible';

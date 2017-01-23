@@ -182,3 +182,22 @@ $navigation-submenu-width: 12em;
 		}
 	}
 }
+
+.announcement {
+	text-align: center;
+	padding: 0.8em;
+	background-color: rgb(71, 125, 202);
+	color: white;
+	line-height: 1.4;
+
+	a {
+		color: white;
+		font-weight: 700;
+		text-decoration: none;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.47);
+
+		&:hover {
+			border-bottom: 1px solid white;
+		}
+	}
+}
