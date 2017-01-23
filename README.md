@@ -4,13 +4,13 @@ Community-driven spoiler-free catalog of competitive videos for Heroes of the St
 
 [![Dependency Status](https://dependencyci.com/github/idooo/stormvods/badge)](https://dependencyci.com/github/idooo/stormvods)
 
+This project is not as relevant as before because Blizzard has done a great job and finally launched their HGC eSports website: [Check it out](http://us.heroesofthestorm.com/esports/en/)! gg wp =)
+
 ## Contribution
 
 Stormvods.com is currently accepting contributions in the form of bug fixes or features
 (things that add new or improved functionality). Your pull requests will be reviewed
 and merged to master branch as soon as possible and deployed to the production.
-
-You also can vote for features in our [Trello board](https://trello.com/b/srPZ3LZD/stormvods)
 
 ##### Legal
 Commiting your code to this repository, submitting pull requests you are granting us permission
