@@ -70,7 +70,7 @@
     "prerender-node": "2.3.0",
     "redis": "2.3.0",
     "request": "2.65.0",
-    "restify": "4.0.3",
+    "restify": "4.3.1",
     "restify-cookies": "0.2.0",
     "winston": "2.1.0",
     "yargs": "3.30.0"
